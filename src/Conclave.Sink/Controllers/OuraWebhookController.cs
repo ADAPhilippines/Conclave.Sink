@@ -35,7 +35,7 @@ public class OuraWebhookController : ControllerBase
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
         if (_event is not null && _event.Context is not null)
         {
-            _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}");
+            _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
             switch (_event.Variant)
             {
                 case OuraVariant.TxOutput:
@@ -65,7 +65,8 @@ public class OuraWebhookController : ControllerBase
 
                 if (entry is not null)
                 {
-                    entry.PaymentAddresses.Add(outputAddress.ToString());
+                    if (!entry.PaymentAddresses.Any(address => address == outputAddress.ToString()))
+                        entry.PaymentAddresses.Add(outputAddress.ToString());
                 }
                 else
                 {
