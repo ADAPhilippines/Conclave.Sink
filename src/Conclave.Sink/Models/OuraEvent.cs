@@ -8,7 +8,8 @@ public enum OuraVariant
 {
     Unknown,
     Block,
-    TxOutput
+    TxOutput,
+    TxInput
 }
 
 public record OuraEvent

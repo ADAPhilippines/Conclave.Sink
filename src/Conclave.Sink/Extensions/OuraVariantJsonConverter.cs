@@ -10,7 +10,8 @@ public class OuraVariantJsonConverter : JsonConverter<OuraVariant>
     private static Dictionary<string, OuraVariant> VariantJsonMap = new Dictionary<string, OuraVariant>()
     {
         ["Block"] = OuraVariant.Block,
-        ["TxOutput"] = OuraVariant.TxOutput
+        ["TxOutput"] = OuraVariant.TxOutput,
+        ["TxInput"] = OuraVariant.TxInput,
     };
 
     public override OuraVariant Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

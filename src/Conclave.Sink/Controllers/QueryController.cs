@@ -15,10 +15,6 @@ public class QueryController : ControllerBase
 {
     private readonly ILogger<QueryController> _logger;
     private readonly ConclaveSinkDbContext _dbContext;
-    private readonly JsonSerializerOptions ConclaveJsonSerializerOptions = new JsonSerializerOptions()
-    {
-        PropertyNameCaseInsensitive = true
-    };
 
     public QueryController(
         ILogger<QueryController> logger,

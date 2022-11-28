@@ -27,5 +27,6 @@ public record OuraContext
 
     [JsonPropertyName("output_address")]
     public string? OutputAddress { get; init; }
+    
     public ulong? CertificateIdx { get; init; }
 }
