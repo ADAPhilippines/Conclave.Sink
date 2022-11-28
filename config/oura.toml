@@ -1,0 +1,23 @@
+[source]
+type = "N2C"
+address = ["Unix", "./ipc/node.socket"]
+magic = "preview"
+
+[[filters]]
+type = "Fingerprint"
+
+[[filters]]
+type = "Selection"
+
+[filters.check]
+predicate = "variant_in"
+argument = ["Block"]
+
+[sink]
+type = "Webhook"
+url = "https://endpoint:5000/events"
+timeout = 30000
+error_policy = "Continue"
+
+[source.mapper]
+include_transaction_details = true
