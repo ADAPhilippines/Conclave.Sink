@@ -3,6 +3,9 @@ type = "N2C"
 address = ["Unix", "./ipc/node.socket"]
 magic = "preview"
 
+[source.intersect]
+type = "Origin"
+
 [[filters]]
 type = "Fingerprint"
 
@@ -11,11 +14,11 @@ type = "Selection"
 
 [filters.check]
 predicate = "variant_in"
-argument = ["Block"]
+argument = ["TxOutput", "Block", "TxInput"]
 
 [sink]
 type = "Webhook"
-url = "https://endpoint:5000/events"
+url = "http://localhost:5087/ourawebhook/"
 timeout = 30000
 error_policy = "Continue"
 
