@@ -1,6 +1,8 @@
 using System.Text.Json;
 using Conclave.Sink.Data;
 using Conclave.Sink.Extensions;
+using Conclave.Sink.Models;
+using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextFactory<ConclaveSinkDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"))
 );
-
+builder.Services.Configure<ConclaveSinkSettings>(options => builder.Configuration.GetSection("ConclaveSinkSettings").Bind(options));
+builder.Services.AddSingleton<CardanoService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

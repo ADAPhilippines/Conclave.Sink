@@ -4,6 +4,7 @@ using CardanoSharp.Wallet.Extensions.Models;
 using CardanoSharp.Wallet.Models.Addresses;
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
+using Conclave.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,14 +20,17 @@ public class OuraWebhookController : ControllerBase
     {
         PropertyNameCaseInsensitive = true
     };
+    private readonly CardanoService _cardanoService;
 
     public OuraWebhookController(
         ILogger<OuraWebhookController> logger,
-        IDbContextFactory<ConclaveSinkDbContext> dbContextFactory
+        IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
+        CardanoService cardanoService
     )
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
+        _cardanoService = cardanoService;
     }
 
     [HttpPost]
@@ -38,6 +42,13 @@ public class OuraWebhookController : ControllerBase
             _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
             switch (_event.Variant)
             {
+                case OuraVariant.Block:
+                    OuraBlockEvent? blockEvent = _eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions);
+                    if (blockEvent is not null)
+                        await Task.WhenAll(
+                            _ProcessBlockAsync(blockEvent)
+                        );
+                    break;
                 case OuraVariant.TxOutput:
                     OuraTxOutputEvent? txOutputEvent = _eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions);
                     if (txOutputEvent is not null)
@@ -61,6 +72,25 @@ public class OuraWebhookController : ControllerBase
         return Ok();
     }
 
+    private async Task _ProcessBlockAsync(OuraBlockEvent blockEvent)
+    {
+        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        if (blockEvent.Context is not null &&
+            blockEvent.Context.BlockNumber is not null &&
+            blockEvent.Context.Slot is not null &&
+            blockEvent.Context.BlockHash is not null)
+        {
+            await _dbContext.Block.AddAsync(new()
+            {
+                BlockNumber = (ulong)blockEvent.Context.BlockNumber,
+                Slot = (ulong)blockEvent.Context.Slot,
+                BlockHash = blockEvent.Context.BlockHash,
+                Epoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot)
+            });
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+
     private async Task _ProcessTxOutputAsync(OuraTxOutputEvent txOutputEvent)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
@@ -68,6 +98,7 @@ public class OuraWebhookController : ControllerBase
             txOutputEvent.TxOutput is not null &&
             txOutputEvent.Context.TxHash is not null &&
             txOutputEvent.Context.OutputIdx is not null &&
+            txOutputEvent.Context.BlockHash is not null &&
             txOutputEvent.TxOutput.Amount is not null &&
             txOutputEvent.TxOutput.Address is not null)
         {
@@ -83,7 +114,8 @@ public class OuraWebhookController : ControllerBase
                     TxHash = txOutputEvent.Context.TxHash,
                     Index = (ulong)txOutputEvent.Context.OutputIdx,
                     Amount = (ulong)txOutputEvent.TxOutput.Amount,
-                    Address = txOutputEvent.TxOutput.Address
+                    Address = txOutputEvent.TxOutput.Address,
+                    Block = await _dbContext.Block.Where(block => block.BlockHash == txOutputEvent.Context.BlockHash).FirstOrDefaultAsync()
                 });
             }
             else

@@ -6,4 +6,5 @@ public class TxOutput
     public ulong Index { get; init; }
     public ulong Amount { get; set; }
     public string Address { get; set; } = string.Empty;
+    public Block? Block { get; set; }
 }
