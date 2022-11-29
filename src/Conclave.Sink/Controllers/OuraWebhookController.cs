@@ -71,13 +71,25 @@ public class OuraWebhookController : ControllerBase
             txOutputEvent.TxOutput.Amount is not null &&
             txOutputEvent.TxOutput.Address is not null)
         {
-            await _dbContext.TxOutput.AddAsync(new()
+            // This should only happen if there has been a rollback
+            if (!await _dbContext.TxOutput
+                    .AnyAsync(
+                        txOut => txOut.TxHash == txOutputEvent.Context.TxHash &&
+                        txOut.Index == (ulong)txOutputEvent.Context.OutputIdx)
+                )
             {
-                TxHash = txOutputEvent.Context.TxHash,
-                Index = (ulong)txOutputEvent.Context.OutputIdx,
-                Amount = (ulong)txOutputEvent.TxOutput.Amount,
-                Address = txOutputEvent.TxOutput.Address
-            });
+                await _dbContext.TxOutput.AddAsync(new()
+                {
+                    TxHash = txOutputEvent.Context.TxHash,
+                    Index = (ulong)txOutputEvent.Context.OutputIdx,
+                    Amount = (ulong)txOutputEvent.TxOutput.Amount,
+                    Address = txOutputEvent.TxOutput.Address
+                });
+            }
+            else
+            {
+                _logger.LogWarning($"Duplicate UTXO detected TxHash: {txOutputEvent.Context.TxHash} TxIndex: {txOutputEvent.Context.OutputIdx}");
+            }
 
             await _dbContext.SaveChangesAsync();
         }

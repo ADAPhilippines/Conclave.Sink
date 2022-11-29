@@ -2,6 +2,7 @@
 type = "N2C"
 address = ["Unix", "./ipc/node.socket"]
 magic = "preview"
+min_depth = 10
 
 [source.intersect]
 type = "Origin"
@@ -24,3 +25,7 @@ error_policy = "Continue"
 
 [source.mapper]
 include_transaction_details = true
+
+[cursor]
+type = "File"
+path = "cursor"
