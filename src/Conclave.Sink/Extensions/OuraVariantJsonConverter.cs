@@ -1,7 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Conclave.Sink.Models;
-using System.Linq;
 
 namespace Conclave.Sink.Extensions;
 

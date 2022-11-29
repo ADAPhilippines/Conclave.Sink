@@ -18,6 +18,8 @@ builder.Services.AddDbContextFactory<ConclaveSinkDbContext>(options =>
 );
 builder.Services.Configure<ConclaveSinkSettings>(options => builder.Configuration.GetSection("ConclaveSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
+builder.Services.AddOuraReducers();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
