@@ -7,6 +7,7 @@ namespace Conclave.Sink.Models;
 public enum OuraVariant
 {
     Unknown,
+    RollBack,
     Block,
     TxOutput,
     TxInput
@@ -19,6 +20,6 @@ public record OuraEvent
 
     [JsonConverter(typeof(OuraVariantJsonConverter))]
     public OuraVariant? Variant { get; init; }
-    
+
     public ulong? Timestamp { get; init; }
 }

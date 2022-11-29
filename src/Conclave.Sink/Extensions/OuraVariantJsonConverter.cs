@@ -7,33 +7,17 @@ namespace Conclave.Sink.Extensions;
 
 public class OuraVariantJsonConverter : JsonConverter<OuraVariant>
 {
-    private static Dictionary<string, OuraVariant> VariantJsonMap = new Dictionary<string, OuraVariant>()
-    {
-        ["Block"] = OuraVariant.Block,
-        ["TxOutput"] = OuraVariant.TxOutput,
-        ["TxInput"] = OuraVariant.TxInput,
-    };
-
     public override OuraVariant Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
+        OuraVariant result = OuraVariant.Unknown;
         string? key = reader.GetString();
-        if (key is null || !OuraVariantJsonConverter.VariantJsonMap.ContainsKey(key)) return OuraVariant.Unknown;
-        return OuraVariantJsonConverter.VariantJsonMap[key];
+        if (key is not null)
+            Enum.TryParse<OuraVariant>(key, true, out result);
+        return result;
     }
 
     public override void Write(Utf8JsonWriter writer, OuraVariant value, JsonSerializerOptions options)
     {
-        if (OuraVariantJsonConverter.VariantJsonMap.ContainsValue(value))
-        {
-            string? key = OuraVariantJsonConverter.VariantJsonMap.Values
-                .Where(v => v == value)
-                .Select(v => OuraVariantJsonConverter.VariantJsonMap.Keys
-                    .Where(k => OuraVariantJsonConverter.VariantJsonMap[k] == v)
-                    .Select(k => k).FirstOrDefault()
-                ).FirstOrDefault();
-
-            if (key is null) writer.WriteStringValue(string.Empty);
-            else writer.WriteStringValue(key);
-        }
+        writer.WriteStringValue(value.ToString());
     }
 }

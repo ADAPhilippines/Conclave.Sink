@@ -30,7 +30,7 @@ public class OuraWebhookController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> ReceiveBlockAsync([FromBody] JsonElement _eventJson)
+    public async Task<IActionResult> ReceiveEventAsync([FromBody] JsonElement _eventJson)
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
         if (_event is not null && _event.Context is not null)
@@ -127,6 +127,7 @@ public class OuraWebhookController : ControllerBase
             }
         }
     }
+
     private async Task _ProcessProduceBalanceByAddressAsync(OuraTxOutputEvent txOutputEvent)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
