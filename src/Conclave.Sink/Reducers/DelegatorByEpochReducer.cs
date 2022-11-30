@@ -30,14 +30,14 @@ public class DelegatorByEpochReducer : OuraReducerBase
             if (block is null) return;
 
             string stakeAddress = string.IsNullOrEmpty(stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash) ?
-                                stakeDelegationEvent.StakeDelegation.Credential.Scripthash :
-                                stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash;
+                stakeDelegationEvent.StakeDelegation.Credential.Scripthash :
+                stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash;
 
             DelegatorByEpoch? entry = await _dbContext.DelegatorByEpoch.Include(dbe => dbe.Block)
-                                .Where((dbe) => dbe.StakeAddress == stakeAddress &&
-                                        dbe.Slot == block.Slot &&
-                                        dbe.PoolHash == stakeDelegationEvent.StakeDelegation.PoolHash)
-                                .FirstOrDefaultAsync();
+                .Where((dbe) => dbe.StakeAddress == stakeAddress &&
+                        dbe.Slot == block.Slot &&
+                        dbe.PoolHash == stakeDelegationEvent.StakeDelegation.PoolHash)
+                .FirstOrDefaultAsync();
 
             if (entry is not null &&
                 entry.Block is not null &&
@@ -47,8 +47,8 @@ public class DelegatorByEpochReducer : OuraReducerBase
             await _dbContext.DelegatorByEpoch.AddAsync(new()
             {
                 StakeAddress = string.IsNullOrEmpty(stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash) ?
-                                stakeDelegationEvent.StakeDelegation.Credential.Scripthash :
-                                stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash,
+                    stakeDelegationEvent.StakeDelegation.Credential.Scripthash :
+                    stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash,
                 PoolHash = stakeDelegationEvent.StakeDelegation.PoolHash,
                 Slot = block.Slot,
                 Block = block
@@ -58,8 +58,13 @@ public class DelegatorByEpochReducer : OuraReducerBase
         }
     }
 
-    public new async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(Block rollbackBlock)
     {
         _logger.LogInformation("DelegatorByEpoch Rollback...");
+        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        IEnumerable<DelegatorByEpoch>? delegatorByEpoch = _dbContext.DelegatorByEpoch.Include(dbe => dbe.Block)
+            .Where(dbe => dbe.Block!.BlockHash == rollbackBlock.BlockHash);
+        _dbContext.DelegatorByEpoch.RemoveRange(delegatorByEpoch);
+        await _dbContext.SaveChangesAsync();
     }
 }
