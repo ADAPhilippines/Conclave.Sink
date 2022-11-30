@@ -1,8 +1,7 @@
 [source]
 type = "N2C"
-address = ["Unix", "./ipc/node.socket"]
+address = ["Unix", "/Users/rjlacanlale/Desktop/projects/cardano-preview/ipc/node.socket"]
 magic = "preview"
-min_depth = 10
 
 [source.intersect]
 type = "Origin"
@@ -15,7 +14,7 @@ type = "Selection"
 
 [filters.check]
 predicate = "variant_in"
-argument = ["TxOutput", "Block", "TxInput", "RollBack"]
+argument = ["TxOutput", "Block", "TxInput", "StakeDelegation"]
 
 [sink]
 type = "Webhook"
