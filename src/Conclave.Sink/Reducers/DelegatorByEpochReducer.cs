@@ -7,10 +7,11 @@ namespace Conclave.Sink.Reducers;
 [OuraReducer(OuraVariant.StakeDelegation)]
 public class DelegatorByEpochReducer : OuraReducerBase
 {
-
+    private readonly ILogger<DelegatorByEpochReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
-    public DelegatorByEpochReducer(IDbContextFactory<ConclaveSinkDbContext> dbContextFactory)
+    public DelegatorByEpochReducer(ILogger<DelegatorByEpochReducer> logger, IDbContextFactory<ConclaveSinkDbContext> dbContextFactory)
     {
+        _logger = logger;
         _dbContextFactory = dbContextFactory;
     }
     public async Task ReduceAsync(OuraStakeDelegationEvent stakeDelegationEvent)
@@ -55,5 +56,10 @@ public class DelegatorByEpochReducer : OuraReducerBase
 
             await _dbContext.SaveChangesAsync();
         }
+    }
+
+    public new async Task RollbackAsync(Block rollbackBlock)
+    {
+        _logger.LogInformation("DelegatorByEpoch Rollback...");
     }
 }
