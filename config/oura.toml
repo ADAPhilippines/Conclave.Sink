@@ -15,7 +15,7 @@ type = "Selection"
 
 [filters.check]
 predicate = "variant_in"
-argument = ["TxOutput", "Block", "TxInput"]
+argument = ["TxOutput", "Block", "TxInput", "RollBack"]
 
 [sink]
 type = "Webhook"

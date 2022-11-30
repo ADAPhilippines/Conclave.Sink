@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxOutput)]
-public class AddressByStakeReducer : OuraReducerBase
+public class TxOutputReducer : OuraReducerBase
 {
-
-    private readonly ILogger<AddressByStakeReducer> _logger;
+    private readonly ILogger<TxOutputReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
-    public AddressByStakeReducer(
-        ILogger<AddressByStakeReducer> logger,
+    public TxOutputReducer(
+        ILogger<TxOutputReducer> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory)
     {
         _logger = logger;
@@ -30,20 +29,31 @@ public class AddressByStakeReducer : OuraReducerBase
          txOutputEvent.TxOutput.Amount is not null &&
          txOutputEvent.TxOutput.Address is not null)
         {
-            await _dbContext.TxOutput.AddAsync(new()
+            Block? block = await _dbContext.Block.Where(block => block.BlockHash == txOutputEvent.Context.BlockHash).FirstOrDefaultAsync();
+            if (block is not null)
             {
-                TxHash = txOutputEvent.Context.TxHash,
-                Index = (ulong)txOutputEvent.Context.OutputIdx,
-                Amount = (ulong)txOutputEvent.TxOutput.Amount,
-                Address = txOutputEvent.TxOutput.Address,
-                Block = await _dbContext.Block.Where(block => block.BlockHash == txOutputEvent.Context.BlockHash).FirstOrDefaultAsync()
-            });
-            await _dbContext.SaveChangesAsync();
+                await _dbContext.TxOutput.AddAsync(new()
+                {
+                    TxHash = txOutputEvent.Context.TxHash,
+                    Index = (ulong)txOutputEvent.Context.OutputIdx,
+                    Amount = (ulong)txOutputEvent.TxOutput.Amount,
+                    Address = txOutputEvent.TxOutput.Address,
+                    Block = block
+                });
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 
-    public new async Task RollbackAsync(OuraTxOutputEvent txOutputEvent)
+    public async Task RollbackAsync(Block rollbackBlock)
     {
+        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        TxOutput? rollbackTxOutput = await _dbContext.TxOutput.Where(txOutput => txOutput.Block == rollbackBlock).FirstOrDefaultAsync();
+        if (rollbackTxOutput is not null)
+        {
+            _dbContext.TxOutput.Remove(rollbackTxOutput);
+        }
 
+        await _dbContext.SaveChangesAsync();
     }
 }

@@ -5,10 +5,10 @@ namespace Conclave.Sink.Reducers;
 
 public class OuraReducerAttribute : System.Attribute
 {
-    public OuraVariant Variant { get; private set; }
+    public ICollection<OuraVariant> Variants { get; private set; }
 
-    public OuraReducerAttribute(OuraVariant variant)
+    public OuraReducerAttribute(params OuraVariant[] variants)
     {
-        Variant = variant;
+        Variants = variants.ToList();
     }
 }

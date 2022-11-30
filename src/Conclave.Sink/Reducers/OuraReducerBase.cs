@@ -9,9 +9,10 @@ public class OuraReducerBase : IOuraReducer
 {
     public Task HandleReduceAsync(IOuraEvent? _event)
     {
+        ArgumentNullException.ThrowIfNull(_event);
         MethodInfo? MI = this.GetType().GetMethod("ReduceAsync");
 
-        if (MI is not null && _event is not null)
+        if (MI is not null)
         {
             Task? result = MI.Invoke(this, new object[] { _event }) as Task;
             if (result is not null) return result;
@@ -20,9 +21,17 @@ public class OuraReducerBase : IOuraReducer
         throw new NotImplementedException();
     }
 
-    public Task HandleRollbackAsync(IOuraEvent? _event)
+    public Task HandleRollbackAsync(Block rollbackBlock)
     {
-        return Task.Run(() => { });
+        MethodInfo? MI = this.GetType().GetMethod("RollbackAsync");
+
+        if (MI is not null)
+        {
+            Task? result = MI.Invoke(this, new object[] { rollbackBlock }) as Task;
+            if (result is not null) return result;
+        }
+
+        throw new NotImplementedException();
     }
 
 }
