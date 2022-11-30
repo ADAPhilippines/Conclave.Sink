@@ -9,7 +9,14 @@ public partial class Index
     [Inject]
     public AppStateService? AppStateService { get; set; }
 
-    public int Counter { get; set; }
+    public bool IsDarkMode
+    {
+        get => AppStateService?.IsDarkMode ?? false;
+        set
+        {
+            if (AppStateService is not null) AppStateService.IsDarkMode = value;
+        }
+    }
 
     protected override void OnInitialized()
     {

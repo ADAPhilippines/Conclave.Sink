@@ -8,8 +8,7 @@ Welcome to your new app.
 
 <MudButton>Hello World</MudButton>
 
-<MudToggleIconButton @bind-Toggled="AppStateService.IsDarkMode" Icon="Icons.Material.Filled.AlarmOff" Color="Color.Success" Title="Off"
+<MudToggleIconButton @bind-Toggled="IsDarkMode" Icon="Icons.Material.Filled.AlarmOff" Color="Color.Success" Title="Off"
     ToggledIcon="Icons.Material.Filled.AlarmOn" ToggledColor="Color.Success" ToggledTitle="On" />
 
-@AppStateService.IsDarkMode <br />
-@Counter
+@IsDarkMode <br />

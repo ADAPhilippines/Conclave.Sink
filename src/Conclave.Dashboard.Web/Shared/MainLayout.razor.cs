@@ -9,6 +9,9 @@ public partial class MainLayout
     [Inject]
     public AppStateService? AppStateService { get; set; }
 
+    public bool IsDarkMode => AppStateService?.IsDarkMode ?? false;
+    public ConclaveTheme Theme { get; set; } = new ConclaveTheme();
+
     protected override void OnInitialized()
     {
         if (AppStateService is not null)
