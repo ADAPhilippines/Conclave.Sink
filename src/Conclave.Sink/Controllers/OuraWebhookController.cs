@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
@@ -5,7 +6,6 @@ using Conclave.Sink.Reducers;
 using Conclave.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Conclave.Sink.Controllers;
 
@@ -54,7 +54,7 @@ public class OuraWebhookController : ControllerBase
                 _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
                 await Task.WhenAll(_reducers.SelectMany((reducer) =>
                 {
-                    Task emptyTask = Task.Run(()=>{});
+                    Task emptyTask = Task.Run(() => { });
                     ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
                     return reducerVariants.ToList().Select((reducerVariant) =>
                     {
@@ -66,6 +66,7 @@ public class OuraWebhookController : ControllerBase
                                 OuraVariant.RollBack => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.TxInput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
+                                OuraVariant.StakeDelegation => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraStakeDelegationEvent>(ConclaveJsonSerializerOptions)),
                                 _ => emptyTask
                             };
                         }
