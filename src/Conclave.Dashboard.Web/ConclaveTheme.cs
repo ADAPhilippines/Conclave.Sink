@@ -9,7 +9,9 @@ public class ConclaveTheme : MudTheme
     {
         Palette = new Palette()
         {
-            Primary = new MudColor("#F00")
+            Primary = new MudColor("#F00"),
+            Warning = new MudColor("A98E32"),
+            Tertiary = new MudColor("rgba(65, 251, 251, 0.1)")
         };
     }
 }

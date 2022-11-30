@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Conclave.Dashboard.Web.Components
 
 <PageTitle>Index</PageTitle>
 
@@ -12,3 +13,8 @@ Welcome to your new app.
     ToggledIcon="Icons.Material.Filled.AlarmOn" ToggledColor="Color.Success" ToggledTitle="On" />
 
 @IsDarkMode <br />
+
+<div class="ml-7">
+    <PoolCards />
+
+</div>
