@@ -145,6 +145,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
         _logger.LogInformation("BalanceByStakeAddressEpoch Rollback...");
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         List<TxOutput> txOutputs = await _dbContext.TxOutput.Where(txOut => txOut.Block.BlockHash == rollbackBlock.BlockHash).ToListAsync();
+        
         //TODO:get txInputs with same blockhash as rollback
         foreach (TxOutput txOutput in txOutputs)
         {
@@ -153,15 +154,16 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
             if (stakeAddress is null) continue;
 
-            BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+            BalanceByStakeAddressEpoch? rollBackBbsae = await _dbContext.BalanceByStakeAddressEpoch
                 .Where(bbsae => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
                 .FirstOrDefaultAsync();
 
-            if (entry is null) continue;
+            if (rollBackBbsae is null) continue;
 
-            entry.Balance -= txOutput.Amount;
+            rollBackBbsae.Balance -= txOutput.Amount;
+
+            //TxInput txInput = await _dbContext.TxInputs.Where().FirsOrDefaultAsync();
         }
-        
         
         //TODO: create another loop for txInputs
         await _dbContext.SaveChangesAsync();

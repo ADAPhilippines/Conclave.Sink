@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201070209_Added Pool Registered Model")]
+    partial class AddedPoolRegisteredModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,9 +87,12 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("Block");
                 });
 
-            modelBuilder.Entity("Conclave.Sink.Models.Pool", b =>
+            modelBuilder.Entity("Conclave.Sink.Models.PoolRegistration", b =>
                 {
                     b.Property<string>("Operator")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VRFKeyHash")
                         .HasColumnType("text");
 
                     b.Property<decimal>("Cost")
@@ -106,21 +112,13 @@ namespace Conclave.Sink.Migrations
                         .IsRequired()
                         .HasColumnType("text[]");
 
-                    b.Property<List<string>>("Relays")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
                     b.Property<string>("RewardAccount")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("VRFKeyHash")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("Operator", "VRFKeyHash");
 
-                    b.HasKey("Operator");
-
-                    b.ToTable("Pools");
+                    b.ToTable("PoolRegistrations");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxOutput", b =>

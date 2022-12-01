@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201072906_Edited Pools Model")]
+    partial class EditedPoolsModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,6 +92,9 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("Operator")
                         .HasColumnType("text");
 
+                    b.Property<string>("VRFKeyHash")
+                        .HasColumnType("text");
+
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric(20,0)");
 
@@ -106,19 +112,11 @@ namespace Conclave.Sink.Migrations
                         .IsRequired()
                         .HasColumnType("text[]");
 
-                    b.Property<List<string>>("Relays")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
                     b.Property<string>("RewardAccount")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("VRFKeyHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Operator");
+                    b.HasKey("Operator", "VRFKeyHash");
 
                     b.ToTable("Pools");
                 });

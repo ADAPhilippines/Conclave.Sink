@@ -10,7 +10,8 @@ public enum OuraVariant
     RollBack,
     Block,
     TxOutput,
-    TxInput
+    TxInput,
+    PoolRegistration
 }
 
 public interface IOuraEvent
