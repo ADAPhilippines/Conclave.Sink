@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201101750_FixedBugInTxInputModel")]
+    partial class FixedBugInTxInputModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,22 +52,6 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("BalanceByAddress");
                 });
 
-            modelBuilder.Entity("Conclave.Sink.Models.BalanceByStakeAddressEpoch", b =>
-                {
-                    b.Property<string>("StakeAddress")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Epoch")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.HasKey("StakeAddress", "Epoch");
-
-                    b.ToTable("BalanceByStakeAddressEpoch");
-                });
-
             modelBuilder.Entity("Conclave.Sink.Models.Block", b =>
                 {
                     b.Property<string>("BlockHash")
@@ -82,44 +69,6 @@ namespace Conclave.Sink.Migrations
                     b.HasKey("BlockHash");
 
                     b.ToTable("Block");
-                });
-
-            modelBuilder.Entity("Conclave.Sink.Models.Pool", b =>
-                {
-                    b.Property<string>("Operator")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.Property<decimal>("Margin")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Pledge")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.Property<string>("PoolMetadata")
-                        .HasColumnType("text");
-
-                    b.Property<List<string>>("PoolOwners")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
-                    b.Property<List<string>>("Relays")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
-                    b.Property<string>("RewardAccount")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("VRFKeyHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Operator");
-
-                    b.ToTable("Pools");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>
