@@ -1,5 +1,4 @@
-<div class="max-w-[335px] backdrop-blur-3xl">
-  @* Style="@($"background:{Color.Warning}") *@
+<div class="w-[335px] backdrop-blur-3xl mx-2">
   <MudCard Class="@CardBorder" Style="border-radius: 1rem; padding: 0">
     <MudCardHeader Class="@CardColor" Style="display: flex; justify-content: space-between; align-items: center;">
       <div class="flex items-center w-[13px]">
@@ -15,7 +14,6 @@
         <MudText Typo="Typo.body2">Ticker: ADAPH</MudText>
         <MudText Typo="Typo.caption">#1 Cardano Stake Pool in the Philippines</MudText>
       </div>
-
       <div class="flex justify-between mb-4">
         <MudText Typo="Typo.body2">Blocks: 7</MudText>
         <MudText Typo="Typo.body2">Interest: 40%</MudText>
@@ -24,18 +22,18 @@
         <MudText Typo="Typo.body2">Saturation</MudText>
         <MudText Typo="Typo.body2">A 17.14M (24.97%)</MudText>
       </div>
-
       <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Medium" Value="50" Class="my-3" />
-
       <MudText Typo="Typo.body2">Pledge</MudText>
       <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Medium" Value="50" Class="mt-3" />
     </MudCardContent>
     <MudCardActions Class="mb-4">
       <MudButton 
-        Class="rounded-xl border-solid border mud-border-tertiary" 
+        Class="@ButtonBorder" 
         FullWidth="true" 
         Variant="Variant.Filled"
-        Color="ButtonColor">
+        Color="ButtonColor"
+        Style="border-radius: 1rem"
+        >
         Stake
       </MudButton>
     </MudCardActions>

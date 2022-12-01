@@ -522,6 +522,21 @@ video {
   margin-bottom: 0.75rem;
 }
 
+.mx-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+}
+
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mr-3\.5 {
   margin-right: 0.875rem;
 }
@@ -552,6 +567,10 @@ video {
 
 .w-\[13px\] {
   width: 13px;
+}
+
+.w-\[335px\] {
+  width: 335px;
 }
 
 .max-w-\[335px\] {
