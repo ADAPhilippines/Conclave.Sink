@@ -1,0 +1,22 @@
+[
+  {
+    "Id": 0,
+    "Ticker": "ADAPH",
+    "Description": "#1 Cardano StakePool in the Philippines",
+    "Blocks": 8,
+    "Interest": 40,
+    "Saturation": 24.97,
+    "Pledge": 10,
+    "IsConclave": true
+  },
+  {
+    "Id": 0,
+    "Ticker": "Brie Pool",
+    "Description": "#1 Catto",
+    "Blocks": 8,
+    "Interest": 22,
+    "Saturation": 7,
+    "Pledge": 200,
+    "IsConclave": false
+  }
+]

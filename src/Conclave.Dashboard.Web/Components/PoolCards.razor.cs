@@ -1,3 +1,4 @@
+using Conclave.Dashboard.Web.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -7,25 +8,29 @@ public partial class PoolCards
 {
   [Parameter]
   public bool IsConclavePool { get; set; }
-  private string CardBorder => IsConclavePool switch
+
+  [Parameter]
+  public PoolsModel PoolDetails { get; set; } = new();
+
+  private string CardBorder => PoolDetails.IsConclave switch
   {
     true => "border-4 mud-border-warning",
     false => "border-4 mud-border-primary"
   };
 
-  private string CardColor => IsConclavePool switch
+  private string CardColor => PoolDetails.IsConclave switch
   {
     true => "mud-theme-warning",
     false => "mud-theme-primary"
   };
 
-  private Color ButtonColor => IsConclavePool switch
+  private Color ButtonColor => PoolDetails.IsConclave switch
   {
     true => Color.Tertiary,
     false => Color.Secondary
   };
 
-  private string ButtonBorder => IsConclavePool switch
+  private string ButtonBorder => PoolDetails.IsConclave switch
   {
     true => "border-solid border mud-border-tertiary",
     false => "border-solid border mud-border-primary"

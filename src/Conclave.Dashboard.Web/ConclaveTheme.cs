@@ -17,7 +17,6 @@ public class ConclaveTheme : MudTheme
             SecondaryContrastText = new MudColor("#FFFFFF"),
             TertiaryContrastText = new MudColor("#FFFFFF"),
             InfoContrastText = new MudColor("rgba(37, 19, 109, 1)"),
-
         };
 
         PaletteDark = new PaletteDark()
@@ -29,7 +28,7 @@ public class ConclaveTheme : MudTheme
             Info = new MudColor("rgba(255, 255, 255, 0.1)"),
             SecondaryContrastText = new MudColor("#41FBFB"),
             TertiaryContrastText = new MudColor("#41FBFB"),
-            InfoContrastText = new MudColor("rgba(65, 251, 251, 1)")
+            InfoContrastText = new MudColor("#FFFFFF")
         };
     }
 }
