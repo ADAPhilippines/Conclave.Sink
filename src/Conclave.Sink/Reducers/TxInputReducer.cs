@@ -24,7 +24,8 @@ public class TxInputReducer : OuraReducerBase
         if (txInputEvent is not null &&
             txInputEvent.TxInput is not null &&
             txInputEvent.Context is not null &&
-            txInputEvent.Context.Slot is not null)
+            txInputEvent.Context.Slot is not null && 
+             txInputEvent.Context.TxHash is not null)
         {
             Console.WriteLine(JsonSerializer.Serialize(txInputEvent));
             Block? block = await _dbContext.Block.Where(block => block.BlockHash == txInputEvent.Context.BlockHash).FirstOrDefaultAsync();
@@ -32,8 +33,9 @@ public class TxInputReducer : OuraReducerBase
             {
                 await _dbContext.TxInput.AddAsync(new()
                 {
-                    TxHash = txInputEvent.TxInput.TxHash,
-                    Index = (ulong)txInputEvent.TxInput.Index,
+                    TxHash = txInputEvent.Context.TxHash,
+                    TxInputOutputHash = txInputEvent.TxInput.TxHash,
+                    TxInputOutputIndex = (ulong)txInputEvent.TxInput.Index,
                     Slot = (ulong)txInputEvent.Context.Slot,
                     Block = block
                 });

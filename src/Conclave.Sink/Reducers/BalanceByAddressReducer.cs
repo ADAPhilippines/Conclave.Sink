@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxInput, OuraVariant.TxOutput)]
-public class AddressByStakeReducer : OuraReducerBase
+public class BalanceByAddressReducer : OuraReducerBase
 {
-    private readonly ILogger<AddressByStakeReducer> _logger;
+    private readonly ILogger<BalanceByAddressReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
-    public AddressByStakeReducer(
-        ILogger<AddressByStakeReducer> logger,
+    public BalanceByAddressReducer(
+        ILogger<BalanceByAddressReducer> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory)
     {
         _logger = logger;
@@ -92,7 +92,7 @@ public class AddressByStakeReducer : OuraReducerBase
         IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
         {
             TxOutput? input = await _dbContext.TxOutput
-            .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.Index).FirstOrDefaultAsync();
+            .Where(txOut => txOut.TxHash == txInput.TxInputOutputHash && txOut.Index == txInput.TxInputOutputIndex).FirstOrDefaultAsync();
             if (input is not null)
             {
                 BalanceByAddress? entry = await _dbContext.BalanceByAddress
