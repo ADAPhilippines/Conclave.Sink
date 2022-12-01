@@ -11,6 +11,8 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<TxOutput> TxOutput => Set<TxOutput>();
     public DbSet<Block> Block => Set<Block>();
     public DbSet<DelegatorByEpoch> DelegatorByEpoch => Set<DelegatorByEpoch>();
+    public DbSet<RegistrationByStake> RegistrationByStake => Set<RegistrationByStake>();
+    public DbSet<RewardAddressByPoolPerEpoch> RewardAddressByPoolPerEpoch => Set<RewardAddressByPoolPerEpoch>();
 
     public ConclaveSinkDbContext(DbContextOptions<ConclaveSinkDbContext> options) : base(options) { }
 
@@ -21,6 +23,8 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<DelegatorByEpoch>().HasKey(de => new { de.StakeAddress, de.PoolHash, de.Slot });
+        modelBuilder.Entity<RegistrationByStake>().HasKey(reg => new { reg.StakeHash, reg.TxHash, reg.TxIndex });
+        modelBuilder.Entity<RewardAddressByPoolPerEpoch>().HasKey(rabppe => new { rabppe.PoolId, rabppe.Slot, rabppe.RewardAddress });
         base.OnModelCreating(modelBuilder);
     }
 }

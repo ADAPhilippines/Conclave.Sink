@@ -11,7 +11,9 @@ public enum OuraVariant
     Block,
     TxOutput,
     TxInput,
-    StakeDelegation
+    StakeDelegation,
+    StakeRegistration,
+    PoolRegistration
 }
 
 public interface IOuraEvent

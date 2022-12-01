@@ -68,7 +68,7 @@ public class BlockReducer : OuraReducerBase
         }
     }
 
-     public async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(Block rollbackBlock)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         _dbContext.Block.Remove(rollbackBlock);

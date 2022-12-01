@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201082257_UpdateMarginToDecimal")]
+    partial class UpdateMarginToDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,18 +113,13 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("PoolId")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Slot")
+                    b.Property<decimal>("Epoch")
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("RewardAddress")
                         .HasColumnType("text");
 
-                    b.Property<string>("BlockHash")
-                        .HasColumnType("text");
-
-                    b.HasKey("PoolId", "Slot", "RewardAddress");
-
-                    b.HasIndex("BlockHash");
+                    b.HasKey("PoolId", "Epoch", "RewardAddress");
 
                     b.ToTable("RewardAddressByPoolPerEpoch");
                 });
@@ -152,15 +150,6 @@ namespace Conclave.Sink.Migrations
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.DelegatorByEpoch", b =>
-                {
-                    b.HasOne("Conclave.Sink.Models.Block", "Block")
-                        .WithMany()
-                        .HasForeignKey("BlockHash");
-
-                    b.Navigation("Block");
-                });
-
-            modelBuilder.Entity("Conclave.Sink.Models.RewardAddressByPoolPerEpoch", b =>
                 {
                     b.HasOne("Conclave.Sink.Models.Block", "Block")
                         .WithMany()
