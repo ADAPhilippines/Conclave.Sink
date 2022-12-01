@@ -33,7 +33,7 @@ public class BlockReducer : OuraReducerBase
             blockEvent.Context.Slot is not null &&
             blockEvent.Context.BlockHash is not null)
         {
-            await RollbackAsync((ulong)blockEvent.Context.Slot);
+            await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
 
             // New Context for this insert
             _dbContext = await _dbContextFactory.CreateDbContextAsync();
@@ -56,7 +56,7 @@ public class BlockReducer : OuraReducerBase
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task RollbackAsync(ulong rollbackSlot)
+    public async Task RollbackBySlotAsync(ulong rollbackSlot)
     {
         ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         ulong currentTipSlot = await _dbContext.Block.AnyAsync() ? await _dbContext.Block.MaxAsync(block => block.Slot) : 0;
