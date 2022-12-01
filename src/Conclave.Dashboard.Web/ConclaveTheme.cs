@@ -13,8 +13,10 @@ public class ConclaveTheme : MudTheme
             Secondary = new MudColor("rgba(37, 155, 155, 1)"), // normal pool button
             Tertiary = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool button
             Warning = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool card
+            Info = new MudColor("#FFFFFF"),
             SecondaryContrastText = new MudColor("#FFFFFF"),
-            TertiaryContrastText = new MudColor("#FFFFFF")
+            TertiaryContrastText = new MudColor("#FFFFFF"),
+            InfoContrastText = new MudColor("rgba(37, 19, 109, 1)"),
 
         };
 
@@ -24,8 +26,10 @@ public class ConclaveTheme : MudTheme
             Secondary = new MudColor("rgba(65, 251, 251, 0.1)"), // normal pool button
             Tertiary = new MudColor("rgba(65, 251, 251, 0.1)"), //conclave pool button
             Warning = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool card
+            Info = new MudColor("rgba(255, 255, 255, 0.1)"),
             SecondaryContrastText = new MudColor("#41FBFB"),
-            TertiaryContrastText = new MudColor("#41FBFB")
+            TertiaryContrastText = new MudColor("#41FBFB"),
+            InfoContrastText = new MudColor("rgba(65, 251, 251, 1)")
         };
     }
 }

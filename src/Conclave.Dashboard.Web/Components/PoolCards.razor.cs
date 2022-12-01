@@ -9,8 +9,8 @@ public partial class PoolCards
   public bool IsConclavePool { get; set; }
   private string CardBorder => IsConclavePool switch
   {
-    true => "border mud-border-warning",
-    false => "border mud-border-primary"
+    true => "border-4 mud-border-warning",
+    false => "border-4 mud-border-primary"
   };
 
   private string CardColor => IsConclavePool switch
