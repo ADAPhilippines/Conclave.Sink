@@ -6,7 +6,11 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
-<div class="ml-7">
-<PoolCards />
+
+<MudSwitch @bind-Checked="@IsDarkMode" Color="Color.Primary" />
+
+<div class="m-7">
+  <PoolCards IsConclavePool="true" />
+  <PoolCards IsConclavePool="false" />
 
 </div>
