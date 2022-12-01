@@ -21,7 +21,7 @@ public class ConclaveSinkDbContext : DbContext
     {
         modelBuilder.Entity<AddressByStake>().HasKey(s => s.StakeAddress);
         modelBuilder.Entity<BalanceByAddress>().HasKey(s => s.Address);
-        modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.Index, txInput.Slot });
+        modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash });
         modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<DelegatorByEpoch>().HasKey(de => new { de.StakeAddress, de.PoolHash, de.Slot });
