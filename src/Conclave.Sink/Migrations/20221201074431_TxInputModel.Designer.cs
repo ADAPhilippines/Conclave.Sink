@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201074431_TxInputModel")]
+    partial class TxInputModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,13 +79,10 @@ namespace Conclave.Sink.Migrations
                     b.Property<decimal>("Index")
                         .HasColumnType("numeric(20,0)");
 
-                    b.Property<decimal>("Slot")
-                        .HasColumnType("numeric(20,0)");
-
                     b.Property<string>("BlockHash")
                         .HasColumnType("text");
 
-                    b.HasKey("TxHash", "Index", "Slot");
+                    b.HasKey("TxHash", "Index");
 
                     b.HasIndex("BlockHash");
 

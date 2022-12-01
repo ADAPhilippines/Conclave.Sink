@@ -48,10 +48,16 @@ public class TxOutputReducer : OuraReducerBase
     public async Task RollbackAsync(Block rollbackBlock)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        TxOutput? rollbackTxOutput = await _dbContext.TxOutput.Where(txOutput => txOutput.Block == rollbackBlock).FirstOrDefaultAsync();
-        if (rollbackTxOutput is not null)
+        IEnumerable<TxOutput>? rollbackTxOutputs = await _dbContext.TxOutput
+            .Where(txOutput => txOutput.Block == rollbackBlock)
+            .ToListAsync();
+
+        if (rollbackTxOutputs is not null)
         {
-            _dbContext.TxOutput.Remove(rollbackTxOutput);
+            rollbackTxOutputs.ToList().ForEach(txOutput =>
+            {
+                _dbContext.TxOutput.Remove(txOutput);
+            });
         }
 
         await _dbContext.SaveChangesAsync();
