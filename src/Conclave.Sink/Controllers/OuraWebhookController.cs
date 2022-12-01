@@ -51,7 +51,7 @@ public class OuraWebhookController : ControllerBase
                     BlockReducer? blockReducer = _reducers.Where(r => r is BlockReducer).FirstOrDefault() as BlockReducer;
 
                     if (blockReducer is not null)
-                        await blockReducer.RollbackAsync((ulong)rollbackEvent.RollBack.BlockSlot);
+                        await blockReducer.RollbackBySlotAsync((ulong)rollbackEvent.RollBack.BlockSlot);
                 }
             }
             else
