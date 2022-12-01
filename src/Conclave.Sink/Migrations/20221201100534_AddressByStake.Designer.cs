@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    [Migration("20221201074431_TxInputModel")]
-    partial class TxInputModel
+    [Migration("20221201100534_AddressByStake")]
+    partial class AddressByStake
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,64 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("Block");
                 });
 
+            modelBuilder.Entity("Conclave.Sink.Models.DelegatorByEpoch", b =>
+                {
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PoolHash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Slot")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("BlockHash")
+                        .HasColumnType("text");
+
+                    b.HasKey("StakeAddress", "PoolHash", "Slot");
+
+                    b.HasIndex("BlockHash");
+
+                    b.ToTable("DelegatorByEpoch");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.RegistrationByStake", b =>
+                {
+                    b.Property<string>("StakeHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TxHash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TxIndex")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("StakeHash", "TxHash", "TxIndex");
+
+                    b.ToTable("RegistrationByStake");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.RewardAddressByPoolPerEpoch", b =>
+                {
+                    b.Property<string>("PoolId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Slot")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("RewardAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BlockHash")
+                        .HasColumnType("text");
+
+                    b.HasKey("PoolId", "Slot", "RewardAddress");
+
+                    b.HasIndex("BlockHash");
+
+                    b.ToTable("RewardAddressByPoolPerEpoch");
+                });
+
             modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>
                 {
                     b.Property<string>("TxHash")
@@ -79,10 +137,13 @@ namespace Conclave.Sink.Migrations
                     b.Property<decimal>("Index")
                         .HasColumnType("numeric(20,0)");
 
+                    b.Property<decimal>("Slot")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<string>("BlockHash")
                         .HasColumnType("text");
 
-                    b.HasKey("TxHash", "Index");
+                    b.HasKey("TxHash", "Index", "Slot");
 
                     b.HasIndex("BlockHash");
 
@@ -112,6 +173,24 @@ namespace Conclave.Sink.Migrations
                     b.HasIndex("BlockHash");
 
                     b.ToTable("TxOutput");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.DelegatorByEpoch", b =>
+                {
+                    b.HasOne("Conclave.Sink.Models.Block", "Block")
+                        .WithMany()
+                        .HasForeignKey("BlockHash");
+
+                    b.Navigation("Block");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.RewardAddressByPoolPerEpoch", b =>
+                {
+                    b.HasOne("Conclave.Sink.Models.Block", "Block")
+                        .WithMany()
+                        .HasForeignKey("BlockHash");
+
+                    b.Navigation("Block");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>

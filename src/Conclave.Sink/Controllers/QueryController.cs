@@ -25,13 +25,31 @@ public class QueryController : ControllerBase
         _dbContext = dbContext;
     }
 
-    [HttpGet("AddressesByStake/{stakeAddress}")]
-    public async Task<IActionResult> GetAddressesByStake(string stakeAddress)
+    // [HttpGet("AddressesByStake/{stakeAddress}")]
+    // public async Task<IActionResult> GetAddressesByStake(string stakeAddress)
+    // {
+    //     if (_dbContext.AddressByStake is not null)
+    //         return Ok(await _dbContext.AddressByStake.Where(abs => abs.StakeAddress == stakeAddress).ToListAsync());
+    //     else
+    //         return StatusCode(500);
+    // }
+
+    [HttpGet("DelegatorByEpoch/{epoch}/{poolHash}")]
+    public async Task<IActionResult> GetDelegatorByEpoch(ulong epoch, string poolHash)
     {
-        if(_dbContext.AddressByStake is not null)
-            return Ok(await _dbContext.AddressByStake.Where(abs => abs.StakeAddress == stakeAddress).ToListAsync());
-        else
-            return StatusCode(500);
+        if (_dbContext.DelegatorByEpoch is null) return StatusCode(500);
+
+        var delegatorByEpoch = await _dbContext.DelegatorByEpoch.Include(de => de.Block)
+                                .Where(de => de.Block!.Epoch <= epoch)
+                                .GroupBy(de => de.StakeAddress)
+                                .Select(de => de.OrderByDescending(d => d.Slot).First())
+                                .ToListAsync();
+
+        var stakeAddressesByPool = delegatorByEpoch.Where(de => de.PoolHash == poolHash)
+                                .Select(de => new DelegatorByPool(de.StakeAddress, de.Block!.Epoch))
+                                .OrderBy(sabp => sabp.SinceEpoch);
+
+        return Ok(stakeAddressesByPool);
     }
 
 }
