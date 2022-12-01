@@ -8,6 +8,7 @@ public class ConclaveSinkDbContext : DbContext
 {
     public DbSet<AddressByStake> AddressByStake => Set<AddressByStake>();
     public DbSet<BalanceByAddress> BalanceByAddress => Set<BalanceByAddress>();
+    public DbSet<TxInput> TxInput => Set<TxInput>();
     public DbSet<TxOutput> TxOutput => Set<TxOutput>();
     public DbSet<Block> Block => Set<Block>();
     public DbSet<BalanceByStakeAddressEpoch> BalanceByStakeAddressEpoch => Set<BalanceByStakeAddressEpoch>();
@@ -18,6 +19,7 @@ public class ConclaveSinkDbContext : DbContext
     {
         modelBuilder.Entity<AddressByStake>().HasKey(s => s.StakeAddress);
         modelBuilder.Entity<BalanceByAddress>().HasKey(s => s.Address);
+        modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.Index, txInput.Slot });
         modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<BalanceByStakeAddressEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });

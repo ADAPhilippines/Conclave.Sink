@@ -11,5 +11,5 @@ public class Pool
     public string RewardAccount { get; set; } = string.Empty;
     public List<string> PoolOwners { get; set; } = new();
     public List<string> Relays { get; set; } = new();
-    public string PoolMetadata { get; set; } = string.Empty;
+    public string? PoolMetadata { get; set; }
 }

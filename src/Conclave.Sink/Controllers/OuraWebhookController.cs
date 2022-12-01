@@ -44,9 +44,14 @@ public class OuraWebhookController : ControllerBase
             if (_event.Variant == OuraVariant.RollBack)
             {
                 OuraRollbackEvent? rollbackEvent = _eventJson.Deserialize<OuraRollbackEvent?>();
-                if (rollbackEvent is not null && rollbackEvent.RollBack is not null)
+                if (rollbackEvent is not null && rollbackEvent.RollBack is not null && rollbackEvent.RollBack.BlockSlot is not null)
                 {
                     _logger.LogInformation($"Rollback : Block Slot: {rollbackEvent.RollBack.BlockSlot}, Block Hash: {rollbackEvent.RollBack.BlockHash}");
+
+                    BlockReducer? blockReducer = _reducers.Where(r => r is BlockReducer).FirstOrDefault() as BlockReducer;
+
+                    if (blockReducer is not null)
+                        await blockReducer.RollbackAsync((ulong)rollbackEvent.RollBack.BlockSlot);
                 }
             }
             else
@@ -54,7 +59,7 @@ public class OuraWebhookController : ControllerBase
                 _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
                 await Task.WhenAll(_reducers.SelectMany((reducer) =>
                 {
-                    Task emptyTask = Task.Run(()=>{});
+                    Task emptyTask = Task.Run(() => { });
                     ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
                     return reducerVariants.ToList().Select((reducerVariant) =>
                     {
