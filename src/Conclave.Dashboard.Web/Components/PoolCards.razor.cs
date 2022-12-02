@@ -35,4 +35,10 @@ public partial class PoolCards
     true => "border-solid border mud-border-tertiary",
     false => "border-solid border mud-border-primary"
   };
+
+  private string IconDisplay => PoolDetails.IsConclave switch
+  {
+    true => "block",
+    false => "hidden"
+  };
 }

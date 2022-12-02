@@ -1,11 +1,11 @@
 <div class="w-[335px] backdrop-blur-3xl mx-2">
-  <MudCard Class="@CardBorder" Style="border-radius: 1rem; padding: 0">
+  <MudCard Class="@CardBorder" Style="border-radius: 1rem; padding: 0; background: transparent; backdrop-filter: blur(20px);">
     <MudCardHeader Class="@CardColor" Style="display: flex; justify-content: space-between; align-items: center; border-radius: 0;">
       <div class="flex items-center ">
         <p class="text-white mr-3.5 ml-4 text-sm">@PoolDetails.Ticker</p>
         <MudImage Src="images/link.svg" Alt="Link" />
       </div>
-      <div class="mr-3.5">
+      <div class="@IconDisplay">
         <MudImage Src="images/conclave.svg" Alt="Conclave Icon" />
       </div>
     </MudCardHeader>

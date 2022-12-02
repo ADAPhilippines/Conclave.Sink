@@ -517,24 +517,14 @@ video {
   margin: 1.75rem;
 }
 
-.my-3 {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.mx-5 {
-  margin-left: 1.25rem;
-  margin-right: 1.25rem;
-}
-
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .mr-3\.5 {
@@ -557,24 +547,20 @@ video {
   margin-top: 0.75rem;
 }
 
-.ml-7 {
-  margin-left: 1.75rem;
+.block {
+  display: block;
 }
 
 .flex {
   display: flex;
 }
 
-.w-\[13px\] {
-  width: 13px;
+.hidden {
+  display: none;
 }
 
 .w-\[335px\] {
   width: 335px;
-}
-
-.max-w-\[335px\] {
-  max-width: 335px;
 }
 
 .items-center {
@@ -585,29 +571,33 @@ video {
   justify-content: space-between;
 }
 
-.rounded-xl {
-  border-radius: 0.75rem;
+.border-4 {
+  border-width: 4px;
 }
 
 .border {
   border-width: 1px;
 }
 
-.border-2 {
-  border-width: 2px;
-}
-
 .border-solid {
   border-style: solid;
 }
 
-.bg-\[\#A98E32\] {
+.bg-black {
   --tw-bg-opacity: 1;
-  background-color: rgb(169 142 50 / var(--tw-bg-opacity));
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
-.p-0 {
-  padding: 0px;
+.bg-landing {
+  background-image: url('/images/Group.png');
+}
+
+.bg-\[url\(\'\.\.\/images\/Group\.png\'\)\] {
+  background-image: url('../images/Group.png');
+}
+
+.bg-\[url\(\'\.\.\/images\/dialog\.webp\'\)\] {
+  background-image: url('../images/dialog.webp');
 }
 
 .text-sm {
@@ -620,8 +610,22 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.blur {
+  --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .backdrop-blur-3xl {
   --tw-backdrop-blur: blur(64px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.backdrop-filter {
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
@@ -724,4 +728,9 @@ a, .btn-link {
 
 .loading-progress-text:after {
   content: var(--blazor-load-percentage-text, "Loading");
+}
+
+.mud-card-header 
+{
+  padding: 12px 16px !important;
 }

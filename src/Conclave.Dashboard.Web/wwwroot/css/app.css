@@ -101,3 +101,8 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+.mud-card-header 
+{
+    padding: 12px 16px !important;
+}
