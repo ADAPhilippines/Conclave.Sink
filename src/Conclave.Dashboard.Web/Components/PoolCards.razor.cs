@@ -7,9 +7,6 @@ namespace Conclave.Dashboard.Web.Components;
 public partial class PoolCards
 {
   [Parameter]
-  public bool IsConclavePool { get; set; }
-
-  [Parameter]
   public PoolsModel PoolDetails { get; set; } = new();
 
   private string CardBorder => PoolDetails.IsConclave switch
