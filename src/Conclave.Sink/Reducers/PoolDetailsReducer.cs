@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.PoolRegistration, OuraVariant.PoolRetirement)]
-
 public class PoolDetailsReducer : OuraReducerBase
 {
     private readonly ILogger<TxOutputReducer> _logger;
