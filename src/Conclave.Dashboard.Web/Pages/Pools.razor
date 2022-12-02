@@ -1,5 +1,5 @@
 @page "/pools"
-@using Conclave.Dashboard.Web.Components
+@using Conclave.Dashboard.Web.Components;
 
 <PageTitle>Pools</PageTitle>
 
@@ -9,11 +9,40 @@ Light / Dark mode
 
 <MudSwitch @bind-Checked="@IsDarkMode" Color="Color.Primary" />
 
-<div class="flex flex-col mx-4">
-  @foreach (var item in PoolsList)
-  {
-    <PoolCards PoolDetails="item" />
-  }
-</div>
+@* flex flex-col lg:flex-row justify-center lg:justify-end lg:items-end items-center *@
+<div class="max-w-[1102px] mx-4">
+  <div class="my-4">
+    <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">
+      @foreach (var item in PoolsList)
+      {
+        <PoolCards PoolDetails="item" />
+      }
+    </div>
+    <div class="mt-6 lg:mt-5 text-right mb-[70px] md:mb-0">
+      <MudPagination Rectangular="true" Variant="Variant.Filled" Color="Color.Info" BoundaryCount="1" MiddleCount="1"
+        Count="4" />
+    </div>
+  </div>
 
-<MudPagination Rectangular="true" Variant="Variant.Filled" Count="6" Color="Color.Info" />
+  <div class="my-4">
+    <div class="flex flex-col items-start justify-between md:flex-row mb-6">
+      <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
+      <div>
+        <MudTextField @bind-Value="Search" Label="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
+          AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
+          Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" />
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      @foreach (var item in PoolsList)
+      {
+        <PoolCards PoolDetails="item" />
+      }
+    </div>
+    <div class="mt-6 lg:mt-5 text-right">
+      <MudPagination Rectangular="true" Variant="Variant.Filled" Color="Color.Info" BoundaryCount="1" MiddleCount="1"
+        Count="4" />
+    </div>
+  </div>
+</div>

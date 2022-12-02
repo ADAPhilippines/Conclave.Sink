@@ -2,6 +2,7 @@ using System.ComponentModel;
 using Conclave.Dashboard.Web.Models;
 using Conclave.Dashboard.Web.Services;
 using Microsoft.AspNetCore.Components;
+using Conclave.Dashboard.Web.Components;
 
 namespace Conclave.Dashboard.Web.Pages;
 
@@ -38,4 +39,6 @@ public partial class Pools
     {
         await InvokeAsync(StateHasChanged);
     }
+
+    public string Search { get; set; } = string.Empty;
 }

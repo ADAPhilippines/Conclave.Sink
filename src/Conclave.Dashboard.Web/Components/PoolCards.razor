@@ -4,11 +4,11 @@
     Style="border-radius: 1rem; background: transparent; backdrop-filter: blur(20px);">
     <MudCardHeader Class="@CardColor"
       Style="display: flex; justify-content: space-between; align-items: center; border-radius: 0;">
-      <div class="flex items-center my-2 ">
+      <div class="flex items-center my-2 xs:my-3 mx-3 xs:mx-4">
         <p class="text-white mr-3.5 ml-4 text-sm">@PoolDetails.Ticker</p>
         <MudImage Src="images/link.svg" Alt="Link" />
       </div>
-      <div class="@IconDisplay xs:my-3 mx-3 xs:mx-4">
+      <div class="@IconDisplay mr-3 xs:mr-4">
         <MudImage Src="images/conclave.svg" Alt="Conclave Icon" />
       </div>
     </MudCardHeader>
@@ -32,7 +32,7 @@
       </div>
       <MudProgressLinear Color="Color.Info" Rounded="true" Size="Size.Large" Min="0" Max="1000000" Value="PoolDetails.Pledge" Class="mt-3" />
     </MudCardContent>
-    <MudCardActions Class="mb-4">
+    <MudCardActions Class="mb-2">
       <MudButton Class="@ButtonBorder" FullWidth="true" Variant="Variant.Filled" Color="ButtonColor" Style="border-radius: 1rem">
         Stake
       </MudButton>
