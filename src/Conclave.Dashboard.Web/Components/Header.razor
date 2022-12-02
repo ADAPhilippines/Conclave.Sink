@@ -1,16 +1,21 @@
-<header>
+<header class="absolute top-0 left-0 right-0 z-[2000] overflow-x-hidden">
     <div class="flex justify-between items-center py-[21px] px-[18px]">
         <div class="flex items-center gap-[9px]">
             <MudImage Width="35" Src="images/conclave-logo.svg" Alt="Conclave logo" />
             <MudImage Width="82" Src="images/conclave-text.svg" Alt="Conclave text" />
         </div>
         <div class="w-[25px] relative">
-            <input type="checkbox" class="burger-checkbox absolute top-[-10px] w-full h-[22px] cursor-pointer z-[2000] opacity-0">
+            <input type="checkbox" onchange="@OnBurgerMenuClicked" class="burger-checkbox absolute top-[-10px] w-full h-[22px] cursor-pointer z-[2000] opacity-0">
             <div class="burger-menu relative w-full">
-                <span class="top absolute bottom-[6px] h-0.5 w-full bg-white duration-300 ease-linear rounded"></span>
-                <span class="middle h-0.5 w-full bg-white absolute duration-300 ease-linear rounded"></span>
-                <span class="bottom absolute top-[8px] h-0.5 w-full bg-white duration-300 rounded"></span>
+                <span class="top absolute bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
+                <span class="middle h-0.5 w-full bg-white absolute duration-200 ease-linear rounded"></span>
+                <span class="bottom absolute top-[8px] h-0.5 w-full bg-white duration-200 rounded"></span>
             </div>
         </div>
     </div>
 </header>
+
+@code {
+    [Parameter]
+    public EventCallback OnBurgerMenuClicked { get; set; }
+}
