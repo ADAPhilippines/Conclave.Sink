@@ -6,7 +6,7 @@
     "Blocks": 8,
     "Interest": 40,
     "Saturation": 24.97,
-    "Pledge": 10,
+    "Pledge": 20000,
     "IsConclave": true
   },
   {
@@ -16,7 +16,7 @@
     "Blocks": 8,
     "Interest": 22,
     "Saturation": 7,
-    "Pledge": 200,
+    "Pledge": 100000,
     "IsConclave": false
   }
 ]

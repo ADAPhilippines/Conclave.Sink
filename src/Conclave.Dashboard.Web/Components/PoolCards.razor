@@ -1,6 +1,8 @@
 <div class="w-[335px] backdrop-blur-3xl mx-2">
-  <MudCard Class="@CardBorder" Style="border-radius: 1rem; padding: 0; background: transparent; backdrop-filter: blur(20px);">
-    <MudCardHeader Class="@CardColor" Style="display: flex; justify-content: space-between; align-items: center; border-radius: 0;">
+  <MudCard Class="@CardBorder"
+    Style="border-radius: 1rem; padding: 0; background: transparent; backdrop-filter: blur(20px);">
+    <MudCardHeader Class="@CardColor"
+      Style="display: flex; justify-content: space-between; align-items: center; border-radius: 0;">
       <div class="flex items-center ">
         <p class="text-white mr-3.5 ml-4 text-sm">@PoolDetails.Ticker</p>
         <MudImage Src="images/link.svg" Alt="Link" />
@@ -22,21 +24,16 @@
         <MudText Typo="Typo.body2">Saturation</MudText>
         <MudText Typo="Typo.body2">A 17.14M (@PoolDetails.Saturation%)</MudText>
       </div>
-      <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Medium" Value="50" Class="my-3" />
+      <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Large" Min="0" Max="100" Value="PoolDetails.Saturation" Class="my-3" />
       <div class="flex justify-between mb-4">
         <MudText Typo="Typo.body2">Pledge</MudText>
-        <MudText Typo="Typo.body2">A @PoolDetails.Pledge</MudText>
+        <MudText Typo="Typo.body2">A @String.Format("{0:n0}", PoolDetails.Pledge)</MudText>
       </div>
-      <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Medium" Value="50" Class="mt-3" />
+      <MudProgressLinear Color="Color.Warning" Rounded="true" Size="Size.Large" Min="0" Max="1000000" Value="PoolDetails.Pledge" Class="mt-3" />
     </MudCardContent>
     <MudCardActions Class="mb-4">
-      <MudButton 
-        Class="@ButtonBorder" 
-        FullWidth="true" 
-        Variant="Variant.Filled"
-        Color="ButtonColor"
-        Style="border-radius: 1rem"
-        >
+      <MudButton Class="@ButtonBorder" FullWidth="true" Variant="Variant.Filled" Color="ButtonColor"
+        Style="border-radius: 1rem">
         Stake
       </MudButton>
     </MudCardActions>
