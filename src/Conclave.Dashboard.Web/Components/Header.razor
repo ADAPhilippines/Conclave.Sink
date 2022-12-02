@@ -1,14 +1,20 @@
 <header class="absolute top-0 left-0 right-0 z-[2000] overflow-x-hidden">
     <div class="flex justify-between items-center py-[21px] lg:py-[17px] px-[18px] lg:px-[38px]">
 
-        <div class="flex items-center gap-[9px] lg:gap-[12px]">
-            <div class="w-[35px] lg:w-[44px]">
-                <MudImage Width="100" Src="images/conclave-logo.svg" Alt="Conclave logo" />
+        <MudLink Href="/">
+            <div class="flex items-center gap-[9px] lg:gap-[12px]">
+                <div class="w-[35px] lg:w-[44px]">
+                    <MudImage Width="100" Src="images/conclave-logo.svg" Alt="Conclave logo" />
+                </div>
+                <div class="w-[82px] lg:w-[103px]">
+                    <MudImage Width="100" Src="images/conclave-text.svg" Alt="Conclave text" />
+                </div>
             </div>
-            <div class="w-[82px] lg:w-[103px]">
-                <MudImage Width="100" Src="images/conclave-text.svg" Alt="Conclave text" />
-            </div>
-        </div>
+        </MudLink>
+
+        
+        <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1>
+       
 
         <div class="flex items-center gap-6">
             <div class="lg:hidden">
@@ -26,21 +32,17 @@
                 </div>
             </div>
 
-            <MudButton Class="!py-[12.5px] !px-[24px] !rounded-[50px] !border-[1px] !border-[#ffffff1a] !border-solid">
-                <div class="flex items-center gap-4">
-                    <MudImage Src="images/nami.svg" Alt="Nami logo" />
-                    <span class="lowercase font-normal text-white">@WalletAddress</span>
-                    <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" />
-                </div>
-            </MudButton>
+            <div class="hidden lg:flex items-center gap-[17px]">
+                <ThemeSwitch />
+
+                <MudButton Class="!py-[12.5px] !px-[24px] !rounded-[50px] !border-[1px] !border-[#ffffff1a] !border-solid">
+                    <div class="flex items-center gap-2">
+                        <MudImage Src="images/nami.svg" Alt="Nami logo" />
+                        <span class="lowercase font-normal text-white">@WalletAddress</span>
+                        <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" />
+                    </div>
+                </MudButton>
+            </div>
         </div>
     </div>
 </header>
-
-@code {
-    [Parameter]
-    public EventCallback OnBurgerMenuClicked { get; set; }
-
-    [Parameter]
-    public string WalletAddress { get; set; } = string.Empty;
-}

@@ -3,7 +3,10 @@ module.exports = {
     content: ["./**/*.{razor,cs}"],
     theme: {
         extend: {
-        }
+            backgroundImage: {
+                'addressButtonBg': "linear-gradient(174.21deg, #00FFFF -1.29%, rgba(65, 251, 251, 0.06) -1.28%, rgba(13, 4, 53, 0.1) 102.19%)"
+            }
+        },
     },
     plugins: [],
     screens: {

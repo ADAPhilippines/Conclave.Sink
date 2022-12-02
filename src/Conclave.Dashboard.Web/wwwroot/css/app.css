@@ -4,6 +4,7 @@
 
 html, body {
     font-family: 'Poppins', sans-serif !important;
+    overflow-y: hidden;
 }
 
 h1:focus {
@@ -153,4 +154,9 @@ a, .btn-link {
 .burger-checkbox:checked ~ .burger-menu .middle {
     transform: translate(20px);
     opacity: 0;
+}
+
+.nav-menu a {
+    padding-top: 17px !important;
+    padding-bottom: 17px !important;
 }
