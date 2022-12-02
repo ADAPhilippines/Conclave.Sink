@@ -10,12 +10,12 @@ namespace Conclave.Sink.Reducers;
 [OuraReducer(OuraVariant.TxInput, OuraVariant.TxOutput)]
 public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 {
-    private readonly ILogger<AddressByStakeReducer> _logger;
+    private readonly ILogger<BalanceByStakeAddressEpoch> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private CardanoService _cardanoService;
 
     public BalanceByStakeAddressEpochReducer(
-        ILogger<AddressByStakeReducer> logger,
+        ILogger<BalanceByStakeAddressEpoch> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
         CardanoService cardanoService)
     {
@@ -37,10 +37,9 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     TxOutput? input = await _dbContext.TxOutput.Include(i => i.Block)
                         .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index).FirstOrDefaultAsync();
 
-                    if (input is not null && input.Block is not null)
+                    if (input is not null)
                     {
-                        Address outputAddress = new Address(input.Address);
-                        Address? stakeAddress = TryGetStakeAddress(outputAddress);
+                        Address? stakeAddress = TryGetStakeAddress(new Address(input.Address));
 
                         if (stakeAddress is null || txInputEvent.Context is null || txInputEvent.Context.Slot is null) return;
 
@@ -142,30 +141,52 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        _logger.LogInformation("BalanceByStakeAddressEpoch Rollback...");
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        List<TxOutput> txOutputs = await _dbContext.TxOutput.Where(txOut => txOut.Block.BlockHash == rollbackBlock.BlockHash).ToListAsync();
-        
-        //TODO:get txInputs with same blockhash as rollback
-        foreach (TxOutput txOutput in txOutputs)
+
+        IEnumerable<TxInput> consumed = await _dbContext.TxInput.Where(txInput => txInput.Block == rollbackBlock).ToListAsync();
+        IEnumerable<TxOutput> produced = await _dbContext.TxOutput.Where(txOutput => txOutput.Block == rollbackBlock).ToListAsync();
+
+        IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
         {
-            Address outputAddress = new Address(txOutput.Address);
-            Address? stakeAddress = TryGetStakeAddress(outputAddress);
-
-            if (stakeAddress is null) continue;
-
-            BalanceByStakeAddressEpoch? rollBackBbsae = await _dbContext.BalanceByStakeAddressEpoch
-                .Where(bbsae => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
+            TxOutput? input = await _dbContext.TxOutput.Include(i => i.Block)
+                .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.TxInputOutputIndex)
                 .FirstOrDefaultAsync();
 
-            if (rollBackBbsae is null) continue;
+            if (input is not null)
+            {
+                Address? stakeAddress = TryGetStakeAddress(new Address(input.Address));
 
-            rollBackBbsae.Balance -= txOutput.Amount;
+                if (stakeAddress is not null)
+                {
+                    BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+                        .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
+                        .FirstOrDefaultAsync();
 
-            //TxInput txInput = await _dbContext.TxInputs.Where().FirsOrDefaultAsync();
-        }
-        
-        //TODO: create another loop for txInputs
+                    if (entry is not null)
+                        entry.Balance += input.Amount;
+                }
+            }
+        }));
+
+        foreach (Task consumeTask in consumeTasks) await consumeTask;
+
+        IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
+        {
+            Address? stakeAddress = TryGetStakeAddress(new Address(txOutput.Address));
+
+            if (stakeAddress is not null)
+            {
+                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+                    .Where((bba) => (bba.StakeAddress == stakeAddress.ToString()) && (bba.Epoch == rollbackBlock.Epoch))
+                    .FirstOrDefaultAsync();
+
+                if (entry is not null)
+                    entry.Balance -= txOutput.Amount;
+            };
+        }));
+
+        foreach (Task produceTask in produceTasks) await produceTask;
+
         await _dbContext.SaveChangesAsync();
     }
 }

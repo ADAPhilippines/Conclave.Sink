@@ -38,7 +38,24 @@ public class QueryController : ControllerBase
     [HttpGet("BalanceByStakeAddressEpoch/{stakeAddress}/{epoch}")]
     public async Task<IActionResult> GetBalanceByStakeAddressEpoch(string stakeAddress, ulong epoch)
     {
-        BalanceByStakeAddressEpoch? balanceByEpoch = await _dbContext.BalanceByStakeAddressEpoch.Where(s => (s.Epoch <= epoch) && (s.StakeAddress == stakeAddress)).OrderByDescending(s => s.Epoch).FirstOrDefaultAsync();
+        BalanceByStakeAddressEpoch? balanceByEpoch = await _dbContext.BalanceByStakeAddressEpoch
+            .Where(s => (s.Epoch <= epoch) && (s.StakeAddress == stakeAddress))
+            .OrderByDescending(s => s.Epoch)
+            .FirstOrDefaultAsync();
+
         return Ok(balanceByEpoch is null ? 0 : balanceByEpoch.Balance);
+    }
+
+    [HttpGet("PoolDetailsByEpoch/{poolId}/{epoch}")]
+    public async Task<IActionResult> GetPoolDetailsByEpoch(string poolId, ulong epoch)
+    {
+        PoolDetails? poolDetails = await _dbContext.Pools
+            .Where(s => (s.Block.Epoch <= epoch) && (s.Operator == poolId))
+            .OrderByDescending(s => s.Block.Epoch).ThenByDescending(s => s.Block.Slot).FirstOrDefaultAsync();
+        
+        if (poolDetails is not null)
+            return Ok(poolDetails);
+        else 
+            return NotFound();
     }
 }

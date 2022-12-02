@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    [Migration("20221201074431_TxInputModel")]
-    partial class TxInputModel
+    [Migration("20221201162226_EditedPoolModel")]
+    partial class EditedPoolModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,22 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("BalanceByAddress");
                 });
 
+            modelBuilder.Entity("Conclave.Sink.Models.BalanceByStakeAddressEpoch", b =>
+                {
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("StakeAddress", "Epoch");
+
+                    b.ToTable("BalanceByStakeAddressEpoch");
+                });
+
             modelBuilder.Entity("Conclave.Sink.Models.Block", b =>
                 {
                     b.Property<string>("BlockHash")
@@ -71,18 +87,78 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("Block");
                 });
 
+            modelBuilder.Entity("Conclave.Sink.Models.Pool", b =>
+                {
+                    b.Property<string>("Operator")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HomePage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Margin")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Pledge")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<List<string>>("PoolOwners")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<List<string>>("Relays")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<string>("RewardAccount")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Ticker")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("VRFKeyHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Operator", "Epoch");
+
+                    b.ToTable("Pools");
+                });
+
             modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>
                 {
                     b.Property<string>("TxHash")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Index")
+                    b.Property<string>("TxInputOutputHash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TxInputOutputIndex")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("BlockHash")
                         .HasColumnType("text");
 
-                    b.HasKey("TxHash", "Index");
+                    b.HasKey("TxHash", "TxInputOutputHash", "TxInputOutputIndex", "Slot");
 
                     b.HasIndex("BlockHash");
 

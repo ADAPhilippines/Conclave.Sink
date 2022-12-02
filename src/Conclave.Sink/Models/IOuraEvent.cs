@@ -11,7 +11,8 @@ public enum OuraVariant
     Block,
     TxOutput,
     TxInput,
-    PoolRegistration
+    PoolRegistration,
+    PoolRetirement
 }
 
 public interface IOuraEvent

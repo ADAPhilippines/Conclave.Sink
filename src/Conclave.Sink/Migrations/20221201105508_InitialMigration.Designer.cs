@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    [Migration("20221201083441_edited pools data")]
-    partial class editedpoolsdata
+    [Migration("20221201105508_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,7 +102,6 @@ namespace Conclave.Sink.Migrations
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("PoolMetadata")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<List<string>>("PoolOwners")
@@ -124,6 +123,30 @@ namespace Conclave.Sink.Migrations
                     b.HasKey("Operator");
 
                     b.ToTable("Pools");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>
+                {
+                    b.Property<string>("TxHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TxInputOutputHash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TxInputOutputIndex")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Slot")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("BlockHash")
+                        .HasColumnType("text");
+
+                    b.HasKey("TxHash", "TxInputOutputHash", "TxInputOutputIndex", "Slot");
+
+                    b.HasIndex("BlockHash");
+
+                    b.ToTable("TxInput");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxOutput", b =>
@@ -149,6 +172,15 @@ namespace Conclave.Sink.Migrations
                     b.HasIndex("BlockHash");
 
                     b.ToTable("TxOutput");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>
+                {
+                    b.HasOne("Conclave.Sink.Models.Block", "Block")
+                        .WithMany()
+                        .HasForeignKey("BlockHash");
+
+                    b.Navigation("Block");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxOutput", b =>

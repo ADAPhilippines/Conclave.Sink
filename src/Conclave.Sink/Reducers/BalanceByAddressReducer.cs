@@ -87,39 +87,39 @@ public class BalanceByAddressReducer : OuraReducerBase
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         IEnumerable<TxInput> consumed = await _dbContext.TxInput.Where(txInput => txInput.Block == rollbackBlock).ToListAsync();
         IEnumerable<TxOutput> produced = await _dbContext.TxOutput.Where(txOutput => txOutput.Block == rollbackBlock).ToListAsync();
-
+        
         // process consumed
-        IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
-        {
-            TxOutput? input = await _dbContext.TxOutput
-            .Where(txOut => txOut.TxHash == txInput.TxInputOutputHash && txOut.Index == txInput.TxInputOutputIndex).FirstOrDefaultAsync();
-            if (input is not null)
-            {
-                BalanceByAddress? entry = await _dbContext.BalanceByAddress
-                    .Where((bba) => bba.Address == input.Address)
-                    .FirstOrDefaultAsync();
+        // IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
+        // {
+        //     TxOutput? input = await _dbContext.TxOutput
+        //     .Where(txOut => txOut.TxHash == txInput.TxInputOutputHash && txOut.Index == txInput.TxInputOutputIndex).FirstOrDefaultAsync();
+        //     if (input is not null)
+        //     {
+        //         BalanceByAddress? entry = await _dbContext.BalanceByAddress
+        //             .Where((bba) => bba.Address == input.Address)
+        //             .FirstOrDefaultAsync();
 
-                if (entry is not null)
-                {
-                    entry.Balance += input.Amount;
-                }
-            }
-        }));
+        //         if (entry is not null)
+        //         {
+        //             entry.Balance += input.Amount;
+        //         }
+        //     }
+        // }));
 
-        foreach (Task consumeTask in consumeTasks) await consumeTask;
+        // foreach (Task consumeTask in consumeTasks) await consumeTask;
 
         // process produced
         IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
-         {
-             BalanceByAddress? entry = await _dbContext.BalanceByAddress
-                  .Where((bba) => bba.Address == txOutput.Address)
-                  .FirstOrDefaultAsync();
+        {
+            BalanceByAddress? entry = await _dbContext.BalanceByAddress
+                .Where((bba) => bba.Address == txOutput.Address)
+                .FirstOrDefaultAsync();
 
-             if (entry is not null)
-             {
-                 entry.Balance -= txOutput.Amount;
-             }
-         }));
+            if (entry is not null)
+            {
+                entry.Balance -= txOutput.Amount;
+            }
+        }));
 
         foreach (Task produceTask in produceTasks) await produceTask;
 

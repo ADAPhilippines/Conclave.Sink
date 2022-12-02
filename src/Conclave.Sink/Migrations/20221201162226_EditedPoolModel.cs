@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Conclave.Sink.Migrations
 {
     /// <inheritdoc />
-    public partial class editedpoolsdata : Migration
+    public partial class EditedPoolModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,16 +14,14 @@ namespace Conclave.Sink.Migrations
                 name: "PK_Pools",
                 table: "Pools");
 
-            migrationBuilder.AddColumn<List<string>>(
-                name: "Relays",
-                table: "Pools",
-                type: "text[]",
-                nullable: false);
+            migrationBuilder.DropColumn(
+                name: "MetadataLink",
+                table: "Pools");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Pools",
                 table: "Pools",
-                column: "Operator");
+                columns: new[] { "Operator", "Epoch" });
         }
 
         /// <inheritdoc />
@@ -34,14 +31,16 @@ namespace Conclave.Sink.Migrations
                 name: "PK_Pools",
                 table: "Pools");
 
-            migrationBuilder.DropColumn(
-                name: "Relays",
-                table: "Pools");
+            migrationBuilder.AddColumn<string>(
+                name: "MetadataLink",
+                table: "Pools",
+                type: "text",
+                nullable: true);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Pools",
                 table: "Pools",
-                columns: new[] { "Operator", "VRFKeyHash" });
+                column: "Operator");
         }
     }
 }

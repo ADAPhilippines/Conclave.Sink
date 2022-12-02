@@ -16,5 +16,5 @@ public record OuraPoolRegistration : OuraEvent
     public List<string> PoolOwners { get; init; } = new();
     public List<string> Relays { get; init; } = new();
     [JsonPropertyName("pool_metadata")]
-    public string PoolMetadata { get; init; } = string.Empty;
+    public string? PoolMetadata { get; init; }
 }

@@ -84,9 +84,16 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("Block");
                 });
 
-            modelBuilder.Entity("Conclave.Sink.Models.Pool", b =>
+            modelBuilder.Entity("Conclave.Sink.Models.PoolDetails", b =>
                 {
                     b.Property<string>("Operator")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TxHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BlockHash")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<decimal>("Cost")
@@ -99,6 +106,7 @@ namespace Conclave.Sink.Migrations
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("PoolMetadata")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<List<string>>("PoolOwners")
@@ -117,7 +125,9 @@ namespace Conclave.Sink.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Operator");
+                    b.HasKey("Operator", "TxHash");
+
+                    b.HasIndex("BlockHash");
 
                     b.ToTable("Pools");
                 });
@@ -169,6 +179,17 @@ namespace Conclave.Sink.Migrations
                     b.HasIndex("BlockHash");
 
                     b.ToTable("TxOutput");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.PoolDetails", b =>
+                {
+                    b.HasOne("Conclave.Sink.Models.Block", "Block")
+                        .WithMany()
+                        .HasForeignKey("BlockHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Block");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>

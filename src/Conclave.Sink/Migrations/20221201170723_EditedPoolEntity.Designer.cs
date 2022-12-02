@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    [Migration("20221201100222_edited poolregistered models")]
-    partial class editedpoolregisteredmodels
+    [Migration("20221201170723_EditedPoolEntity")]
+    partial class EditedPoolEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,17 +92,29 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("Operator")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HomePage")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Margin")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal>("Pledge")
                         .HasColumnType("numeric(20,0)");
-
-                    b.Property<string>("PoolMetadata")
-                        .HasColumnType("text");
 
                     b.Property<List<string>>("PoolOwners")
                         .IsRequired()
@@ -116,11 +128,15 @@ namespace Conclave.Sink.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Ticker")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("VRFKeyHash")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Operator");
+                    b.HasKey("Operator", "Epoch");
 
                     b.ToTable("Pools");
                 });
@@ -130,7 +146,10 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("TxHash")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Index")
+                    b.Property<string>("TxInputOutputHash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TxInputOutputIndex")
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<decimal>("Slot")
@@ -139,7 +158,7 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("BlockHash")
                         .HasColumnType("text");
 
-                    b.HasKey("TxHash", "Index", "Slot");
+                    b.HasKey("TxHash", "TxInputOutputHash", "TxInputOutputIndex", "Slot");
 
                     b.HasIndex("BlockHash");
 
