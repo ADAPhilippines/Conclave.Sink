@@ -103,14 +103,14 @@ public class PoolDetailsReducer : OuraReducerBase
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(IEnumerable<Block> rollbackBlocks)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        List<PoolDetails> rollbackEntry = await _dbContext.Pools.Where(p => p.Block == rollbackBlock).ToListAsync();
+        // using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        // List<PoolDetails> rollbackEntry = await _dbContext.Pools.Where(p => p.Block == rollbackBlock).ToListAsync();
 
-        if (rollbackEntry is not null && rollbackEntry.Count is not 0)
-            _dbContext.RemoveRange(rollbackEntry);
+        // if (rollbackEntry is not null && rollbackEntry.Count is not 0)
+        //     _dbContext.RemoveRange(rollbackEntry);
 
-        await _dbContext.SaveChangesAsync();
+        // await _dbContext.SaveChangesAsync();
     }
 }

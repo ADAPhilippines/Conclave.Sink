@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxOutput)]
-public class TxOutputReducer : OuraReducerBase
+public class TxOutputReducer : OuraReducerBase, ICoreReducer
 {
     private readonly ILogger<TxOutputReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
@@ -45,21 +45,9 @@ public class TxOutputReducer : OuraReducerBase
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(IEnumerable<Block> rollbackBlocks)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        IEnumerable<TxOutput>? rollbackTxOutputs = await _dbContext.TxOutput
-            .Where(txOutput => txOutput.Block == rollbackBlock)
-            .ToListAsync();
-
-        if (rollbackTxOutputs is not null)
-        {
-            rollbackTxOutputs.ToList().ForEach(txOutput =>
-            {
-                _dbContext.TxOutput.Remove(txOutput);
-            });
-        }
-
-        await _dbContext.SaveChangesAsync();
+        // No Implementation
+        await Task.Run(() => { });
     }
 }

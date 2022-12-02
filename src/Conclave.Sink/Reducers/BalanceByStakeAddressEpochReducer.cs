@@ -139,54 +139,54 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
         return lastEpoch;
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(IEnumerable<Block> rollbackBlocks)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        // using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        IEnumerable<TxInput> consumed = await _dbContext.TxInput
-        .Where(txInput => txInput.Block == rollbackBlock)
-        .Include(txInput => txInput.TxOutput)
-        .ToListAsync();
+        // IEnumerable<TxInput> consumed = await _dbContext.TxInput
+        // .Where(txInput => txInput.Block == rollbackBlock)
+        // .Include(txInput => txInput.TxOutput)
+        // .ToListAsync();
 
-        IEnumerable<TxOutput> produced = await _dbContext.TxOutput
-            .Where(txOutput => txOutput.Block == rollbackBlock)
-            .ToListAsync();
+        // IEnumerable<TxOutput> produced = await _dbContext.TxOutput
+        //     .Where(txOutput => txOutput.Block == rollbackBlock)
+        //     .ToListAsync();
 
-        IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
-        {
+        // IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
+        // {
 
-            Address? stakeAddress = TryGetStakeAddress(new Address(txInput.TxOutput.Address));
+        //     Address? stakeAddress = TryGetStakeAddress(new Address(txInput.TxOutput.Address));
 
-            if (stakeAddress is not null)
-            {
-                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
-                    .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
-                    .FirstOrDefaultAsync();
+        //     if (stakeAddress is not null)
+        //     {
+        //         BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+        //             .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
+        //             .FirstOrDefaultAsync();
 
-                if (entry is not null)
-                    entry.Balance += txInput.TxOutput.Amount;
-            }
-        }));
+        //         if (entry is not null)
+        //             entry.Balance += txInput.TxOutput.Amount;
+        //     }
+        // }));
 
-        foreach (Task consumeTask in consumeTasks) await consumeTask;
+        // foreach (Task consumeTask in consumeTasks) await consumeTask;
 
-        IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
-        {
-            Address? stakeAddress = TryGetStakeAddress(new Address(txOutput.Address));
+        // IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
+        // {
+        //     Address? stakeAddress = TryGetStakeAddress(new Address(txOutput.Address));
 
-            if (stakeAddress is not null)
-            {
-                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
-                    .Where((bba) => (bba.StakeAddress == stakeAddress.ToString()) && (bba.Epoch == rollbackBlock.Epoch))
-                    .FirstOrDefaultAsync();
+        //     if (stakeAddress is not null)
+        //     {
+        //         BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+        //             .Where((bba) => (bba.StakeAddress == stakeAddress.ToString()) && (bba.Epoch == rollbackBlock.Epoch))
+        //             .FirstOrDefaultAsync();
 
-                if (entry is not null)
-                    entry.Balance -= txOutput.Amount;
-            };
-        }));
+        //         if (entry is not null)
+        //             entry.Balance -= txOutput.Amount;
+        //     };
+        // }));
 
-        foreach (Task produceTask in produceTasks) await produceTask;
+        // foreach (Task produceTask in produceTasks) await produceTask;
 
-        await _dbContext.SaveChangesAsync();
+        // await _dbContext.SaveChangesAsync();
     }
 }

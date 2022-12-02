@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Block)]
-public class BlockReducer : OuraReducerBase
+public class BlockReducer : OuraReducerBase, ICoreReducer
 {
     private readonly ILogger<BlockReducer> _logger;
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
@@ -49,10 +49,10 @@ public class BlockReducer : OuraReducerBase
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(IEnumerable<Block> rollbackBlocks)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        _dbContext.Block.Remove(rollbackBlock);
+        _dbContext.Block.RemoveRange(rollbackBlocks);
         await _dbContext.SaveChangesAsync();
     }
 
@@ -66,35 +66,29 @@ public class BlockReducer : OuraReducerBase
         if (rollbackSlot <= currentTipSlot)
         {
             List<Block> blocksToRollback = await _dbContext.Block
+                .Include(block => block.TxInputs)
+                .Include(block => block.TxOutputs)
                 .Where(block => block.Slot >= rollbackSlot)
                 .OrderByDescending(block => block.Slot)
+                .AsSplitQuery()
                 .ToListAsync();
 
             IEnumerable<IOuraReducer> reducers = _serviceProvider.GetServices<IOuraReducer>();
 
-            foreach (Block rollbackBlock in blocksToRollback)
+            _logger.LogInformation($"Rolling back blocks: {blocksToRollback.Min(block => block.BlockNumber)}...{blocksToRollback.Max(block => block.BlockNumber)}, this might take several minutes...");
+
+            IEnumerable<IOuraReducer> nonCoreReducers = reducers.Where(reducer => reducer is not ICoreReducer);
+
+            foreach (IOuraReducer rollbackTask in nonCoreReducers) await rollbackTask.HandleRollbackAsync(blocksToRollback);
+
+            TxInputReducer? txInputReducer = reducers.Where(reducer => reducer is TxInputReducer).ToList().FirstOrDefault() as TxInputReducer;
+            TxOutputReducer? txOutputReducer = reducers.Where(reducer => reducer is TxOutputReducer).ToList().FirstOrDefault() as TxOutputReducer;
+            if (txOutputReducer is not null && txInputReducer is not null)
             {
-                _logger.LogInformation($"Rolling back Block No: {rollbackBlock.BlockNumber}, Block Hash: {rollbackBlock.BlockHash}");
-
-                IEnumerable<IOuraReducer> nonCoreReducers = reducers
-                    .Where
-                    (
-                        reducer => reducer is not BlockReducer &&
-                            reducer is not TxOutputReducer &&
-                            reducer is not TxInputReducer
-                    );
-
-                foreach (IOuraReducer rollbackTask in nonCoreReducers) await rollbackTask.HandleRollbackAsync(rollbackBlock);
-
-                TxOutputReducer? txOutputReducer = reducers.Where(reducer => reducer is TxOutputReducer).ToList().FirstOrDefault() as TxOutputReducer;
-                TxInputReducer? txInputReducer = reducers.Where(reducer => reducer is TxInputReducer).ToList().FirstOrDefault() as TxInputReducer;
-                if (txOutputReducer is not null && txInputReducer is not null)
-                {
-                    await txOutputReducer.HandleRollbackAsync(rollbackBlock);
-                    await txInputReducer.HandleRollbackAsync(rollbackBlock);
-                }
-                await this.HandleRollbackAsync(rollbackBlock);
+                await txOutputReducer.HandleRollbackAsync(blocksToRollback);
+                await txInputReducer.HandleRollbackAsync(blocksToRollback);
             }
+            await this.HandleRollbackAsync(blocksToRollback);
         }
     }
 }

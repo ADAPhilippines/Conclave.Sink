@@ -74,13 +74,13 @@ public class DelegatorByEpochReducer : OuraReducerBase
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(IEnumerable<Block> rollbackBlocks)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        IEnumerable<DelegatorByEpoch>? delegatorByEpoch = _dbContext.DelegatorByEpoch.Include(dbe => dbe.Block)
-            .Where(dbe => dbe.Block!.BlockHash == rollbackBlock.BlockHash);
-        if (delegatorByEpoch is null) return;
-        _dbContext.DelegatorByEpoch.RemoveRange(delegatorByEpoch);
-        await _dbContext.SaveChangesAsync();
+        // using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        // IEnumerable<DelegatorByEpoch>? delegatorByEpoch = _dbContext.DelegatorByEpoch.Include(dbe => dbe.Block)
+        //     .Where(dbe => dbe.Block!.BlockHash == rollbackBlock.BlockHash);
+        // if (delegatorByEpoch is null) return;
+        // _dbContext.DelegatorByEpoch.RemoveRange(delegatorByEpoch);
+        // await _dbContext.SaveChangesAsync();
     }
 }

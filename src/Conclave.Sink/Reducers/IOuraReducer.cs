@@ -5,5 +5,5 @@ namespace Conclave.Sink.Reducers;
 public interface IOuraReducer
 {
     Task HandleReduceAsync(IOuraEvent? _event);
-    Task HandleRollbackAsync(Block rollbackBlock);
+    Task HandleRollbackAsync(IEnumerable<Block> rollbackBlocks);
 }

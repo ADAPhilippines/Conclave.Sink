@@ -21,13 +21,13 @@ public class OuraReducerBase : IOuraReducer
         throw new NotImplementedException();
     }
 
-    public Task HandleRollbackAsync(Block rollbackBlock)
+    public Task HandleRollbackAsync(IEnumerable<Block> rollbackBlocks)
     {
         MethodInfo? MI = this.GetType().GetMethod("RollbackAsync");
 
         if (MI is not null)
         {
-            Task? result = MI.Invoke(this, new object[] { rollbackBlock }) as Task;
+            Task? result = MI.Invoke(this, new object[] { rollbackBlocks }) as Task;
             if (result is not null) return result;
         }
 

@@ -6,4 +6,6 @@ public class Block
     public ulong BlockNumber { get; set; }
     public ulong Slot { get; set; }
     public ulong Epoch { get; set; }
+    public IEnumerable<TxOutput> TxOutputs { get; set; } = new List<TxOutput>();
+    public IEnumerable<TxInput> TxInputs { get; set; } = new List<TxInput>();
 }

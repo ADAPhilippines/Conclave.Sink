@@ -82,15 +82,15 @@ public class BalanceByAddressReducer : OuraReducerBase
         });
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
+    public async Task RollbackAsync(IEnumerable<Block> rollbackBlocks)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         IEnumerable<TxInput> consumed = await _dbContext.TxInput
             .Include(txInput => txInput.TxOutput)
-            .Where(txInput => txInput.Block == rollbackBlock)
+            .Where(txInput => rollbackBlocks.Contains(txInput.Block))
             .ToListAsync();
         IEnumerable<TxOutput> produced = await _dbContext.TxOutput
-            .Where(txOutput => txOutput.Block == rollbackBlock)
+            .Where(txOutput => rollbackBlocks.Contains(txOutput.Block))
             .ToListAsync();
 
         // process consumed
@@ -106,7 +106,7 @@ public class BalanceByAddressReducer : OuraReducerBase
             }
         }));
 
-        // foreach (Task consumeTask in consumeTasks) await consumeTask;
+        foreach (Task consumeTask in consumeTasks) await consumeTask;
 
         // process produced
         IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
