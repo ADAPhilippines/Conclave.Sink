@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221202070402_ReplacePrimaryKeysToTxHashAndIndex")]
+    partial class ReplacePrimaryKeysToTxHashAndIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +76,7 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
-                    b.Property<string>("PoolId")
+                    b.Property<string>("PoolHash")
                         .HasColumnType("text");
 
                     b.Property<string>("TxHash")
@@ -85,7 +88,7 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("BlockHash")
                         .HasColumnType("text");
 
-                    b.HasKey("StakeAddress", "PoolId", "TxHash", "TxIndex");
+                    b.HasKey("StakeAddress", "PoolHash", "TxHash", "TxIndex");
 
                     b.HasIndex("BlockHash");
 

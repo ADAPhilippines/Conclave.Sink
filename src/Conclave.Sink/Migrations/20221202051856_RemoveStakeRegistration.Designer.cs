@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221202051856_RemoveStakeRegistration")]
+    partial class RemoveStakeRegistration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,19 +76,16 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
-                    b.Property<string>("PoolId")
+                    b.Property<string>("PoolHash")
                         .HasColumnType("text");
 
-                    b.Property<string>("TxHash")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("TxIndex")
+                    b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("BlockHash")
                         .HasColumnType("text");
 
-                    b.HasKey("StakeAddress", "PoolId", "TxHash", "TxIndex");
+                    b.HasKey("StakeAddress", "PoolHash", "Slot");
 
                     b.HasIndex("BlockHash");
 
@@ -97,19 +97,16 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("PoolId")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Slot")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<string>("RewardAddress")
                         .HasColumnType("text");
-
-                    b.Property<string>("TxHash")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("TxIndex")
-                        .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("BlockHash")
                         .HasColumnType("text");
 
-                    b.HasKey("PoolId", "RewardAddress", "TxHash", "TxIndex");
+                    b.HasKey("PoolId", "Slot", "RewardAddress");
 
                     b.HasIndex("BlockHash");
 
