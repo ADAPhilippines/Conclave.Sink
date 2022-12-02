@@ -169,19 +169,6 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                 {
                     entry.Balance += txInput.TxOutput.Amount;
                 }
-                else
-                {
-                    BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), rollbackBlock.Epoch);
-
-                    ulong balance = lastEpochBalance is null ? txInput.TxOutput.Amount : (lastEpochBalance.Balance + txInput.TxOutput.Amount);
-
-                    await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
-                    {
-                        StakeAddress = stakeAddress.ToString(),
-                        Balance = balance,
-                        Epoch = rollbackBlock.Epoch
-                    });
-                }
             }
         }));
 
