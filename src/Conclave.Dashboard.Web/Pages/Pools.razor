@@ -9,7 +9,7 @@ Light / Dark mode
 
 <MudSwitch @bind-Checked="@IsDarkMode" Color="Color.Primary" />
 
-<div class="flex m-7">
+<div class="flex flex-col mx-4">
   @foreach (var item in PoolsList)
   {
     <PoolCards PoolDetails="item" />

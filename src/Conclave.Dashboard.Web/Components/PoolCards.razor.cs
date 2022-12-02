@@ -9,33 +9,20 @@ public partial class PoolCards
   [Parameter]
   public PoolsModel PoolDetails { get; set; } = new();
 
-  private string CardBorder => PoolDetails.IsConclave switch
-  {
-    true => "border-4 mud-border-warning",
-    false => "border-4 mud-border-primary"
-  };
+  private string CardBorder => PoolDetails.IsConclave 
+    ? "border-4 mud-border-warning" 
+    : "border-4 mud-border-primary";
 
-  private string CardColor => PoolDetails.IsConclave switch
-  {
-    true => "mud-theme-warning",
-    false => "mud-theme-primary"
-  };
+  private string CardColor => PoolDetails.IsConclave ? "mud-theme-warning" : "mud-theme-primary";
 
-  private Color ButtonColor => PoolDetails.IsConclave switch
-  {
-    true => Color.Tertiary,
-    false => Color.Secondary
-  };
+  private Color ButtonColor => PoolDetails.IsConclave ? Color.Tertiary : Color.Secondary;
 
-  private string ButtonBorder => PoolDetails.IsConclave switch
-  {
-    true => "border-solid border mud-border-tertiary",
-    false => "border-solid border mud-border-primary"
-  };
+  private string ButtonBorder => PoolDetails.IsConclave
+    ? "border-solid border mud-border-tertiary"
+    : "border-solid border mud-border-primary";
 
-  private string IconDisplay => PoolDetails.IsConclave switch
-  {
-    true => "block",
-    false => "hidden"
-  };
+  private string IconDisplay => PoolDetails.IsConclave ? "block" : "hidden";
+
+  private Color ProgressBar => PoolDetails.Saturation >= 50 ? Color.Error : Color.Success;
+
 }
