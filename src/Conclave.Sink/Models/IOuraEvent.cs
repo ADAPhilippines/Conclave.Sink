@@ -11,6 +11,7 @@ public enum OuraVariant
     Block,
     TxOutput,
     TxInput,
+    StakeDelegation,
     PoolRegistration,
     PoolRetirement
 }

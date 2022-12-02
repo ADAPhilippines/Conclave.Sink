@@ -143,28 +143,28 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        IEnumerable<TxInput> consumed = await _dbContext.TxInput.Where(txInput => txInput.Block == rollbackBlock).ToListAsync();
-        IEnumerable<TxOutput> produced = await _dbContext.TxOutput.Where(txOutput => txOutput.Block == rollbackBlock).ToListAsync();
+        IEnumerable<TxInput> consumed = await _dbContext.TxInput
+        .Where(txInput => txInput.Block == rollbackBlock)
+        .Include(txInput => txInput.TxOutput)
+        .ToListAsync();
+
+        IEnumerable<TxOutput> produced = await _dbContext.TxOutput
+            .Where(txOutput => txOutput.Block == rollbackBlock)
+            .ToListAsync();
 
         IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
         {
-            TxOutput? input = await _dbContext.TxOutput.Include(i => i.Block)
-                .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.TxInputOutputIndex)
-                .FirstOrDefaultAsync();
 
-            if (input is not null)
+            Address? stakeAddress = TryGetStakeAddress(new Address(txInput.TxOutput.Address));
+
+            if (stakeAddress is not null)
             {
-                Address? stakeAddress = TryGetStakeAddress(new Address(input.Address));
+                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+                    .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
+                    .FirstOrDefaultAsync();
 
-                if (stakeAddress is not null)
-                {
-                    BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
-                        .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
-                        .FirstOrDefaultAsync();
-
-                    if (entry is not null)
-                        entry.Balance += input.Amount;
-                }
+                if (entry is not null)
+                    entry.Balance += txInput.TxOutput.Amount;
             }
         }));
 

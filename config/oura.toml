@@ -1,8 +1,7 @@
 [source]
 type = "N2C"
-address = ["Unix", "/home/jmqb/cardano-preview/ipc/node.socket"]
+address = ["Unix", "./ipc/node.socket"]
 magic = "preview"
-min_depth = 10
 
 [source.intersect]
 type = "Origin"
@@ -15,7 +14,14 @@ type = "Selection"
 
 [filters.check]
 predicate = "variant_in"
-argument = ["TxOutput", "Block", "TxInput", "RollBack", "PoolRegistration"]
+argument = [
+    "TxOutput",
+    "Block",
+    "TxInput",
+    "RollBack",
+    "StakeDelegation",
+    "PoolRegistration",
+]
 
 [sink]
 type = "Webhook"
@@ -32,6 +38,6 @@ path = "cursor"
 
 [sink.retry_policy]
 max_retries = 0
-backoff_unit =  5000
+backoff_unit = 5000
 backoff_factor = 2
 max_backoff = 100000
