@@ -1,78 +1,54 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider IsDarkMode="IsDarkMode" Theme="Theme"/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-<div class="h-screen w-full bg-[#131529]">
-    <header class="py-[21px] lg:py-[25px] px-[18px] lg:px-[38px] fixed top-0 left-0 right-0 z-10">
-        <div class="flex justify-between items-center w-full relative">
+<div class="h-screen w-full bg-[#131529] grid place-content-center">
+    <Header OnBurgerMenuClicked="ToggleDrawer" WalletAddress="@_walletAddress2" />
+        
+    <MenuDrawer IsDrawerOpen="_isDrawerOpen" WalletAddress="@_walletAddress" />
 
-            <div class="flex items-center gap-3">
-                <div class="w-[35px] lg:w-[44px]">
-                    <MudImage Src="images/conclave-logo.svg" Alt="Conclave logo" />
-                </div>
-                <div class="w-[81px] lg:w-[103px]">
-                    <MudImage Src="images/conclave-text.svg" Alt="Conclave text" />
-                </div>
-            </div>
-
-            <h2 class="font-medium text-white text-[24px] hidden lg:block absolute left-[270px]">Staking</h2>
-
-            <div class="flex items-center gap-[7px] lg:gap-[17px]">
-                <div class="lg:hidden lg:w-[47px] lg:rounded-[38px] bg-transparent lg:flex">
-                    <div class="rounded-full relative after:bg-[#41FBFB] after:rounded-full after:opacity-10 after:top-0 after:bottom-0 after:left-0 after:right-0 after:absolute p-1">
-                        <div class="w-[11px]">
-                            <MudImage Src="images/moon.svg" Alt="Moon" />
+    <div class="hidden lg:block absolute top-0 left-0 bottom-0">
+        <MudPaper Height="100%" Width="260px" Class="!bg-transparent relative" Elevation="0">
+            <div class="nav-menu h-full w-full pt-[119px] outline outline-1 outline-[##ffffff1a] rounded-tr-[20px] rounded-br-[20px]">
+                <MudNavMenu class="h-full w-full" Bordered="true">
+                    <MudNavLink Href="/staking">
+                        <div class="flex items-center w-full gap-[17px]">
+                            <MudImage Src="images/staking.png" Width="20" />
+                            <div class="text-white">Staking Center</div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="hidden lg:block temp-border lg:w-[47px] lg:rounded-[38px] bg-transparent lg:flex">
-                    <div class="rounded-full relative after:bg-[#41FBFB] after:rounded-full after:opacity-10 after:top-0 after:bottom-0 after:left-0 after:right-0 after:absolute p-1">
-                        <div class="w-[11px]">
-                            <MudImage Src="images/moon.svg" Alt="Moon" />
+                    </MudNavLink>
+                    <MudNavLink Href="/lottery">
+                        <div class="flex items-center w-full gap-[17px]">
+                            <MudImage Src="images/lottery.svg" Width="20" />
+                            <div class="text-white">Lottery</div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="outline outline-1 rounded-[50px] flex items-center py-[9px] lg:py-[12px] px-[18px] lg:px-[24px] gap-[8px] test-btn">
-                    <div class="w-[15px] lg:w-[20px]">
-                        <MudImage Src="images/nami-logo.png" Alt="Nami wallet logo" />
-                    </div>
-                    <div class="text-white">e656565...</div>
-                    <div class="w-[7px] lg:w-[10px]">
-                        <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" Title="Expand for more wallet info" Class="text-white"/>
-                    </div>
-                </div>
+                    </MudNavLink>
+                    <MudNavLink Href="/oracle">
+                        <div class="flex items-center w-full gap-[17px]">
+                            <MudImage Src="images/oracle.svg" Width="20" />
+                            <div class="text-white">Oracle</div>
+                        </div>
+                    </MudNavLink>
+                </MudNavMenu>
             </div>
-        </div>
-    </header>
-
-    <aside class="sidebar hidden lg:block">
-        <div class="mt-[119px] ml-[25px]">
-            <div class="flex items-center gap-[17px] w-full py-[18px]">
-                <MudImage Src="images/staking.svg" Alt="" />
-                <p>Staking Center</p>
+            <div class="w-full flex gap-4 items-center justify-center absolute left-0 right-0 bottom-[15px]">
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/facebook.svg" Alt="Facebook logo" />
+                </MudLink>
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/twitter.svg" Alt="Twitter logo" />
+                </MudLink>
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/telegram.svg" Alt="Telegram logo" />
+                </MudLink>
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/discord.svg" Alt="Discord logo" />
+                </MudLink>
             </div>
-            <div class="flex items-center gap-[17px] w-full py-[18px]">
-                <MudImage Src="images/lottery.svg" Alt="" />
-                <p>Lottery</p>
-            </div>
-            <div class="flex items-center gap-[17px] w-full py-[18px]">
-                <MudImage Src="images/oracle.svg" Alt="" />
-                <p>Oracle</p>
-            </div>
-        </div>
-
-        <div class="absolute bottom-0 left-0 right-0 flex justify-center items-center py-[19px] gap-[26px]">
-            <MudImage Src="images/facebook.svg" Alt="" />
-            <MudImage Src="images/twitter.svg" Alt="" />
-            <MudImage Src="images/telegram.svg" Alt="" />
-            <MudImage Src="images/discord.svg" Alt="" />
-        </div>
-    </aside>
-
+        </MudPaper>
+    </div>
 
     <main>@Body</main>
 </div>

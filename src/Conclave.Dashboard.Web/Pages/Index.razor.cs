@@ -18,15 +18,15 @@ public partial class Index
         }
     }
 
-    protected override void OnInitialized()
-    {
-        if (AppStateService is not null)
-            AppStateService.PropertyChanged += OnAppStatePropertyChanged;
-        base.OnInitialized();
-    }
+    // protected override void OnInitialized()
+    // {
+    //     if (AppStateService is not null)
+    //         AppStateService.PropertyChanged += OnAppStatePropertyChanged;
+    //     base.OnInitialized();
+    // }
 
-    private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        await InvokeAsync(StateHasChanged);
-    }
+    // private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    // {
+    //     await InvokeAsync(StateHasChanged);
+    // }
 }
