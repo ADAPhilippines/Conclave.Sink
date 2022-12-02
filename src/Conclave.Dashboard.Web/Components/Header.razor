@@ -1,16 +1,38 @@
 <header class="absolute top-0 left-0 right-0 z-[2000] overflow-x-hidden">
-    <div class="flex justify-between items-center py-[21px] px-[18px]">
-        <div class="flex items-center gap-[9px]">
-            <MudImage Width="35" Src="images/conclave-logo.svg" Alt="Conclave logo" />
-            <MudImage Width="82" Src="images/conclave-text.svg" Alt="Conclave text" />
-        </div>
-        <div class="w-[25px] relative">
-            <input type="checkbox" onchange="@OnBurgerMenuClicked" class="burger-checkbox absolute top-[-10px] w-full h-[22px] cursor-pointer z-[2000] opacity-0">
-            <div class="burger-menu relative w-full">
-                <span class="top absolute bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
-                <span class="middle h-0.5 w-full bg-white absolute duration-200 ease-linear rounded"></span>
-                <span class="bottom absolute top-[8px] h-0.5 w-full bg-white duration-200 rounded"></span>
+    <div class="flex justify-between items-center py-[21px] lg:py-[17px] px-[18px] lg:px-[38px]">
+
+        <div class="flex items-center gap-[9px] lg:gap-[12px]">
+            <div class="w-[35px] lg:w-[44px]">
+                <MudImage Width="100" Src="images/conclave-logo.svg" Alt="Conclave logo" />
             </div>
+            <div class="w-[82px] lg:w-[103px]">
+                <MudImage Width="100" Src="images/conclave-text.svg" Alt="Conclave text" />
+            </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div class="lg:hidden">
+                <MudToggleIconButton Color="Color.Secondary">
+                    <MudImage Src="images/moon.svg" Alt="Moon icon" />
+                </MudToggleIconButton>
+            </div>
+
+            <div class="w-[25px] relative lg:hidden">
+                <input type="checkbox" onchange="@OnBurgerMenuClicked" class="burger-checkbox absolute top-[-10px] w-full h-[22px] cursor-pointer z-[2000] opacity-0">
+                <div class="burger-menu relative w-full">
+                    <span class="top absolute bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
+                    <span class="middle h-0.5 w-full bg-white absolute duration-200 ease-linear rounded"></span>
+                    <span class="bottom absolute top-[8px] h-0.5 w-full bg-white duration-200 rounded"></span>
+                </div>
+            </div>
+
+            <MudButton Class="!py-[12.5px] !px-[24px] !rounded-[50px] !border-[1px] !border-[#ffffff1a] !border-solid">
+                <div class="flex items-center gap-4">
+                    <MudImage Src="images/nami.svg" Alt="Nami logo" />
+                    <span class="lowercase font-normal text-white">@WalletAddress</span>
+                    <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" />
+                </div>
+            </MudButton>
         </div>
     </div>
 </header>
@@ -18,4 +40,7 @@
 @code {
     [Parameter]
     public EventCallback OnBurgerMenuClicked { get; set; }
+
+    [Parameter]
+    public string WalletAddress { get; set; } = string.Empty;
 }
