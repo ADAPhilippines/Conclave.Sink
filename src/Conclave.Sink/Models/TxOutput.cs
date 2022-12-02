@@ -4,7 +4,8 @@ public class TxOutput
 {
     public string TxHash { get; init; } = string.Empty;
     public ulong Index { get; init; }
-    public ulong Amount { get; set; }
-    public string Address { get; set; } = string.Empty;
-    public Block? Block { get; set; }
+    public ulong Amount { get; init; }
+    public string Address { get; init; } = string.Empty;
+    public Block Block { get; init; } = new Block();
+    public IEnumerable<TxInput> Inputs { get; init; } = new List<TxInput>();
 }
