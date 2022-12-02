@@ -1,8 +1,8 @@
-using Conclave.Sink.Data;
-using Conclave.Sink.Models;
 using CardanoSharp.Wallet.Enums;
 using CardanoSharp.Wallet.Extensions.Models;
 using CardanoSharp.Wallet.Models.Addresses;
+using Conclave.Sink.Data;
+using Conclave.Sink.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conclave.Sink.Reducers;
