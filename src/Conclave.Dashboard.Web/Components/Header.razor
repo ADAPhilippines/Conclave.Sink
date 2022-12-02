@@ -1,68 +1,16 @@
-<header class="absolute top-0 left-0 right-0 z-[1500]">
-    <div class="z-[21] py-[21px] lg:py-[25px] px-[18px] lg:px-[38px] flex justify-between items-center w-full relative">
-
-        <div class="flex items-center gap-3">
-            <div class="w-[35px] lg:w-[44px]">
-                <MudImage Src="images/conclave-logo.svg" Alt="Conclave logo" />
-            </div>
-            <div class="w-[81px] lg:w-[103px]">
-                <MudImage Src="images/conclave-text.svg" Alt="Conclave text" />
-            </div>
+<header>
+    <div class="flex justify-between items-center py-[21px] px-[18px]">
+        <div class="flex items-center gap-[9px]">
+            <MudImage Width="35" Src="images/conclave-logo.svg" Alt="Conclave logo" />
+            <MudImage Width="82" Src="images/conclave-text.svg" Alt="Conclave text" />
         </div>
-
-        <div class="burger-menu relative">
-            <input type="checkbox" name="" id="" @onchange="ToggleDrawer">
-
-            <div class="bar">
-                <span class="top"></span>
-                <span class="middle"></span>
-                <span class="bottom"></span>
+        <div class="w-[25px] relative">
+            <input type="checkbox" class="burger-checkbox absolute top-[-10px] w-full h-[22px] cursor-pointer z-[2000] opacity-0">
+            <div class="burger-menu relative w-full">
+                <span class="top absolute bottom-[6px] h-0.5 w-full bg-white duration-300 ease-linear rounded"></span>
+                <span class="middle h-0.5 w-full bg-white absolute duration-300 ease-linear rounded"></span>
+                <span class="bottom absolute top-[8px] h-0.5 w-full bg-white duration-300 rounded"></span>
             </div>
         </div>
     </div>
 </header>
-
-<MudDrawer Class="!bg-[#20163B] px-[18px]" Width="100%" Height="100%" @bind-Open="_open" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
-
-    <div class="mt-28">
-        <MudButton FullWidth="true" Class="!py-[9px] !px-[18px] !rounded-[38px] !border-[1px] !border-[#ffffff1a] !border-solid address-btn-bg">
-            <div class="flex items-center gap-6">
-                <MudImage Src="images/nami.svg" Alt="Nami logo" />
-                <span class="lowercase font-normal text-white">@_walletAddress</span>
-                <MudIcon Class="text-white" Icon="@Icons.Filled.KeyboardArrowDown" Title="" Size="Size.Small" />
-            </div>
-        </MudButton>
-    </div>
-
-    <MudNavMenu Rounded="true" Class="dialog-bg !mt-10">
-
-        <MudNavLink Href="/#" Class="border-l-[7px] border-solid border-[#41FBFB] rounded-tl-[4px] relative">
-            <div class="flex items-center w-full gap-[17px]">
-                <MudImage Src="images/staking.png" Width="20" />
-                <div class="text-white">Staking Center</div>
-            </div>
-        </MudNavLink>
-
-        <MudNavLink Match="NavLinkMatch.Prefix" Href="#" Class="border-l-[7px] border-[transparent]">
-            <div class="flex items-center w-full gap-[17px]">
-                <MudImage Src="images/lottery.svg" Width="20" />
-                <div class="text-white">Lottery</div>
-            </div>
-        </MudNavLink>
-        <MudNavLink Href="#" Class="border-l-[7px] border-[transparent]">
-            <div class="flex items-center w-full gap-[17px]">
-                <MudImage Src="images/oracle.svg" Width="20" />
-                <div class="text-white">Oracle</div>
-            </div>
-        </MudNavLink>
-    </MudNavMenu>
-
-</MudDrawer>
-
-@code{ 
-    private bool _open; 
-
-    private void ToggleDrawer() => _open = !_open;
-
-    private string _walletAddress { get; set; } = "addr_test1qrr86cuspxp7e3cn...";
-}
