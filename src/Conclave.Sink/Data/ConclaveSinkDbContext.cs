@@ -15,11 +15,19 @@ public class ConclaveSinkDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Primary Keys
         modelBuilder.Entity<AddressByStake>().HasKey(s => s.StakeAddress);
         modelBuilder.Entity<BalanceByAddress>().HasKey(s => s.Address);
-        modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.TxInputOutputHash, txInput.TxInputOutputIndex, txInput.Slot });
+        modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
         modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
+
+        // Relations
+        modelBuilder.Entity<TxInput>()
+            .HasOne<TxOutput>(txInput => txInput.TxOutput)
+            .WithMany(txOutput => txOutput.Inputs)
+            .HasForeignKey(txInput => new { txInput.TxOutputHash, txInput.TxOutputIndex });
+
         base.OnModelCreating(modelBuilder);
     }
 }

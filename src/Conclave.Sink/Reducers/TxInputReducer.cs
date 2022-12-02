@@ -27,15 +27,18 @@ public class TxInputReducer : OuraReducerBase
             txInputEvent.Context.Slot is not null && 
              txInputEvent.Context.TxHash is not null)
         {
-            Block? block = await _dbContext.Block.Where(block => block.BlockHash == txInputEvent.Context.BlockHash).FirstOrDefaultAsync();
-            if (block is not null)
+            Block? block = await _dbContext.Block
+                .Where(block => block.BlockHash == txInputEvent.Context.BlockHash).FirstOrDefaultAsync();
+            TxOutput? txOutput = await _dbContext.TxOutput
+                .Where(txOutput => txOutput.TxHash == txInputEvent.TxInput.TxHash && txOutput.Index == txInputEvent.TxInput.Index).FirstOrDefaultAsync();
+            if (block is not null && txOutput is not null)
             {
                 await _dbContext.TxInput.AddAsync(new()
                 {
                     TxHash = txInputEvent.Context.TxHash,
-                    TxInputOutputHash = txInputEvent.TxInput.TxHash,
-                    TxInputOutputIndex = (ulong)txInputEvent.TxInput.Index,
-                    Slot = (ulong)txInputEvent.Context.Slot,
+                    TxOutputHash = txInputEvent.TxInput.TxHash,
+                    TxOutputIndex = txInputEvent.TxInput.Index,
+                    TxOutput = txOutput,
                     Block = block
                 });
                 await _dbContext.SaveChangesAsync();
