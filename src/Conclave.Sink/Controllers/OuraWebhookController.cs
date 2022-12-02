@@ -1,12 +1,11 @@
 using System.Text.Json;
-using CardanoSharp.Wallet.Enums;
-using CardanoSharp.Wallet.Extensions.Models;
-using CardanoSharp.Wallet.Models.Addresses;
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
+using Conclave.Sink.Reducers;
 using Conclave.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Conclave.Sink.Controllers;
 
@@ -21,206 +20,75 @@ public class OuraWebhookController : ControllerBase
         PropertyNameCaseInsensitive = true
     };
     private readonly CardanoService _cardanoService;
+    private readonly IEnumerable<IOuraReducer> _reducers;
 
     public OuraWebhookController(
         ILogger<OuraWebhookController> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
-        CardanoService cardanoService
+        CardanoService cardanoService,
+        IEnumerable<IOuraReducer> reducers
     )
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
         _cardanoService = cardanoService;
+        _reducers = reducers;
     }
 
     [HttpPost]
-    public async Task<IActionResult> ReceiveBlockAsync([FromBody] JsonElement _eventJson)
+    public async Task<IActionResult> ReceiveEventAsync([FromBody] JsonElement _eventJson)
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
         if (_event is not null && _event.Context is not null)
         {
-            _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
-            switch (_event.Variant)
+            if (_event.Variant == OuraVariant.RollBack)
             {
-                case OuraVariant.Block:
-                    OuraBlockEvent? blockEvent = _eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions);
-                    if (blockEvent is not null)
-                        await Task.WhenAll(
-                            _ProcessBlockAsync(blockEvent)
-                        );
-                    break;
-                case OuraVariant.TxOutput:
-                    OuraTxOutputEvent? txOutputEvent = _eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions);
-                    if (txOutputEvent is not null)
-                        await Task.WhenAll(
-                            _ProcessAddressByStakeAsync(txOutputEvent),
-                            _ProcessTxOutputAsync(txOutputEvent),
-                            _ProcessProduceBalanceByAddressAsync(txOutputEvent)
-                        );
-                    break;
-                case OuraVariant.TxInput:
-                    OuraTxInputEvent? txInputEvent = _eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions);
-                    if (txInputEvent is not null)
-                        await Task.WhenAll(
-                            _ProcessConsumeBalanceByAddressAsync(txInputEvent)
-                        );
-                    break;
-                default:
-                    break;
+                OuraRollbackEvent? rollbackEvent = _eventJson.Deserialize<OuraRollbackEvent?>();
+                if (rollbackEvent is not null && rollbackEvent.RollBack is not null && rollbackEvent.RollBack.BlockSlot is not null)
+                {
+                    _logger.LogInformation($"Rollback : Block Slot: {rollbackEvent.RollBack.BlockSlot}, Block Hash: {rollbackEvent.RollBack.BlockHash}");
+
+                    BlockReducer? blockReducer = _reducers.Where(r => r is BlockReducer).FirstOrDefault() as BlockReducer;
+
+                    if (blockReducer is not null)
+                        await blockReducer.RollbackBySlotAsync((ulong)rollbackEvent.RollBack.BlockSlot);
+                }
+            }
+            else
+            {
+                _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
+                await Task.WhenAll(_reducers.SelectMany((reducer) =>
+                {
+                    Task emptyTask = Task.Run(() => { });
+                    ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
+                    return reducerVariants.ToList().Select((reducerVariant) =>
+                    {
+                        if (reducerVariant == _event.Variant)
+                        {
+                            return reducerVariant switch
+                            {
+                                OuraVariant.Block => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions)),
+                                OuraVariant.RollBack => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions)),
+                                OuraVariant.TxInput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions)),
+                                OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
+                                _ => emptyTask
+                            };
+                        }
+                        else return emptyTask;
+                    });
+                }));
             }
         }
         return Ok();
     }
 
-    private async Task _ProcessBlockAsync(OuraBlockEvent blockEvent)
+    private ICollection<OuraVariant> _GetReducerVariants(IOuraReducer reducer)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        if (blockEvent.Context is not null &&
-            blockEvent.Context.BlockNumber is not null &&
-            blockEvent.Context.Slot is not null &&
-            blockEvent.Context.BlockHash is not null)
-        {
-            await _dbContext.Block.AddAsync(new()
-            {
-                BlockNumber = (ulong)blockEvent.Context.BlockNumber,
-                Slot = (ulong)blockEvent.Context.Slot,
-                BlockHash = blockEvent.Context.BlockHash,
-                Epoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot)
-            });
-            await _dbContext.SaveChangesAsync();
-        }
-    }
-
-    private async Task _ProcessTxOutputAsync(OuraTxOutputEvent txOutputEvent)
-    {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        if (txOutputEvent.Context is not null &&
-            txOutputEvent.TxOutput is not null &&
-            txOutputEvent.Context.TxHash is not null &&
-            txOutputEvent.Context.OutputIdx is not null &&
-            txOutputEvent.Context.BlockHash is not null &&
-            txOutputEvent.TxOutput.Amount is not null &&
-            txOutputEvent.TxOutput.Address is not null)
-        {
-            // This should only happen if there has been a rollback
-            if (!await _dbContext.TxOutput
-                    .AnyAsync(
-                        txOut => txOut.TxHash == txOutputEvent.Context.TxHash &&
-                        txOut.Index == (ulong)txOutputEvent.Context.OutputIdx)
-                )
-            {
-                await _dbContext.TxOutput.AddAsync(new()
-                {
-                    TxHash = txOutputEvent.Context.TxHash,
-                    Index = (ulong)txOutputEvent.Context.OutputIdx,
-                    Amount = (ulong)txOutputEvent.TxOutput.Amount,
-                    Address = txOutputEvent.TxOutput.Address,
-                    Block = await _dbContext.Block.Where(block => block.BlockHash == txOutputEvent.Context.BlockHash).FirstOrDefaultAsync()
-                });
-            }
-            else
-            {
-                _logger.LogWarning($"Duplicate UTXO detected TxHash: {txOutputEvent.Context.TxHash} TxIndex: {txOutputEvent.Context.OutputIdx}");
-            }
-
-            await _dbContext.SaveChangesAsync();
-        }
-    }
-
-    private async Task _ProcessAddressByStakeAsync(OuraTxOutputEvent txOutputEvent)
-    {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        if (txOutputEvent is not null && txOutputEvent.TxOutput is not null)
-        {
-            Address outputAddress = new Address(txOutputEvent.TxOutput.Address);
-            Address? stakeAddress = TryGetStakeAddress(outputAddress);
-
-            if (stakeAddress is not null && _dbContext.AddressByStake is not null)
-            {
-                AddressByStake? entry = await _dbContext.AddressByStake
-                    .Where((stakeByAddress) => stakeByAddress.StakeAddress == stakeAddress.ToString())
-                    .FirstOrDefaultAsync();
-
-                if (entry is not null)
-                {
-                    if (!entry.PaymentAddresses.Any(address => address == outputAddress.ToString()))
-                        entry.PaymentAddresses.Add(outputAddress.ToString());
-                }
-                else
-                {
-                    await _dbContext.AddressByStake.AddAsync(new()
-                    {
-                        StakeAddress = stakeAddress.ToString(),
-                        PaymentAddresses = new List<string>() { outputAddress.ToString() }
-                    });
-                }
-
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-    }
-    private async Task _ProcessProduceBalanceByAddressAsync(OuraTxOutputEvent txOutputEvent)
-    {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        if (txOutputEvent is not null &&
-            txOutputEvent.TxOutput is not null &&
-            txOutputEvent.TxOutput.Amount is not null)
-        {
-            Address outputAddress = new Address(txOutputEvent.TxOutput.Address);
-            ulong amount = (ulong)txOutputEvent.TxOutput.Amount;
-
-            BalanceByAddress? entry = await _dbContext.BalanceByAddress
-                .Where((bba) => bba.Address == outputAddress.ToString())
-                .FirstOrDefaultAsync();
-
-            if (entry is not null)
-            {
-                entry.Balance += amount;
-            }
-            else
-            {
-                await _dbContext.BalanceByAddress.AddAsync(new()
-                {
-                    Address = outputAddress.ToString(),
-                    Balance = amount
-                });
-            }
-
-            await _dbContext.SaveChangesAsync();
-        }
-    }
-
-    private async Task _ProcessConsumeBalanceByAddressAsync(OuraTxInputEvent txInputEvent)
-    {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        if (txInputEvent is not null && txInputEvent.TxInput is not null)
-        {
-            TxOutput? input = await _dbContext.TxOutput
-                .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index).FirstOrDefaultAsync();
-
-            if (input is not null)
-            {
-
-                BalanceByAddress? entry = await _dbContext.BalanceByAddress
-                    .Where((bba) => bba.Address == input.Address)
-                    .FirstOrDefaultAsync();
-
-                if (entry is not null)
-                {
-                    entry.Balance -= input.Amount;
-                }
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-    }
-
-    private Address? TryGetStakeAddress(Address paymentAddress)
-    {
-        try
-        {
-            return paymentAddress.GetStakeAddress();
-        }
-        catch { }
-        return null;
+        OuraReducerAttribute? reducerAttribute = reducer.GetType().GetCustomAttributes(typeof(OuraReducerAttribute), true)
+            .Where(
+                reducerAttributeObject => reducerAttributeObject as OuraReducerAttribute is not null
+            )
+            .Select(reducerAttributeObject => (reducerAttributeObject as OuraReducerAttribute)).FirstOrDefault();
+        return reducerAttribute?.Variants ?? new OuraVariant[] { OuraVariant.Unknown }.ToList();
     }
 }

@@ -3,12 +3,20 @@ using Conclave.Sink.Extensions;
 
 namespace Conclave.Sink.Models;
 
-public record OuraEvent : IOuraEvent
+
+public enum OuraVariant
+{
+    Unknown,
+    RollBack,
+    Block,
+    TxInput,
+    TxOutput
+}
+
+public interface IOuraEvent
 {
     public OuraContext? Context { get; init; }
     public string? Fingerprint { get; init; }
-
-    [JsonConverter(typeof(OuraVariantJsonConverter))]
     public OuraVariant? Variant { get; init; }
 
     public ulong? Timestamp { get; init; }

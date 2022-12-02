@@ -15,13 +15,13 @@ type = "Selection"
 
 [filters.check]
 predicate = "variant_in"
-argument = ["TxOutput", "Block", "TxInput"]
+argument = ["TxOutput", "Block", "TxInput", "RollBack"]
 
 [sink]
 type = "Webhook"
 url = "http://localhost:5087/ourawebhook/"
-timeout = 30000
-error_policy = "Continue"
+timeout = 9999999999999
+error_policy = "Exit"
 
 [source.mapper]
 include_transaction_details = true
@@ -29,3 +29,9 @@ include_transaction_details = true
 [cursor]
 type = "File"
 path = "cursor"
+
+[sink.retry_policy]
+max_retries = 0
+backoff_unit =  5000
+backoff_factor = 2
+max_backoff = 100000

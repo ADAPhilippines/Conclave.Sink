@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201074431_TxInputModel")]
+    partial class TxInputModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,21 +76,15 @@ namespace Conclave.Sink.Migrations
                     b.Property<string>("TxHash")
                         .HasColumnType("text");
 
-                    b.Property<string>("TxOutputHash")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("TxOutputIndex")
+                    b.Property<decimal>("Index")
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("BlockHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("TxHash", "TxOutputHash", "TxOutputIndex");
+                    b.HasKey("TxHash", "Index");
 
                     b.HasIndex("BlockHash");
-
-                    b.HasIndex("TxOutputHash", "TxOutputIndex");
 
                     b.ToTable("TxInput");
                 });
@@ -108,7 +105,6 @@ namespace Conclave.Sink.Migrations
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("BlockHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("TxHash", "Index");
@@ -122,35 +118,18 @@ namespace Conclave.Sink.Migrations
                 {
                     b.HasOne("Conclave.Sink.Models.Block", "Block")
                         .WithMany()
-                        .HasForeignKey("BlockHash")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Conclave.Sink.Models.TxOutput", "TxOutput")
-                        .WithMany("Inputs")
-                        .HasForeignKey("TxOutputHash", "TxOutputIndex")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlockHash");
 
                     b.Navigation("Block");
-
-                    b.Navigation("TxOutput");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxOutput", b =>
                 {
                     b.HasOne("Conclave.Sink.Models.Block", "Block")
                         .WithMany()
-                        .HasForeignKey("BlockHash")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BlockHash");
 
                     b.Navigation("Block");
-                });
-
-            modelBuilder.Entity("Conclave.Sink.Models.TxOutput", b =>
-                {
-                    b.Navigation("Inputs");
                 });
 #pragma warning restore 612, 618
         }
