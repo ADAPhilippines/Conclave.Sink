@@ -9,9 +9,9 @@ public class ConclaveTheme : MudTheme
     {
         Palette = new Palette()
         {
-            Primary = new MudColor("rgba(37, 155, 155, 1)"), // normal pool card
-            Secondary = new MudColor("rgba(37, 155, 155, 1)"), // normal pool button
-            SecondaryDarken ="#1b7272",
+            Primary = Colors.Blue.Accent2, // normal pool card
+            Secondary = Colors.Blue.Accent2, // normal pool button
+            SecondaryDarken ="#2979FF",
             Tertiary = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool button
             TertiaryDarken = "#826d26",
             Warning = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool card
