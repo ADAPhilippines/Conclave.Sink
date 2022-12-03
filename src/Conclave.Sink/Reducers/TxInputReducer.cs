@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxInput)]
-public class TxInputReducer : OuraReducerBase
+public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TxInputReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
@@ -24,7 +24,7 @@ public class TxInputReducer : OuraReducerBase
         if (txInputEvent is not null &&
             txInputEvent.TxInput is not null &&
             txInputEvent.Context is not null &&
-            txInputEvent.Context.Slot is not null && 
+            txInputEvent.Context.Slot is not null &&
              txInputEvent.Context.TxHash is not null)
         {
             Block? block = await _dbContext.Block
