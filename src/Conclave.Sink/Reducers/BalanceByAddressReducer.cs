@@ -106,7 +106,7 @@ public class BalanceByAddressReducer : OuraReducerBase
             }
         }));
 
-        // foreach (Task consumeTask in consumeTasks) await consumeTask;
+        foreach (Task consumeTask in consumeTasks) await consumeTask;
 
         // process produced
         IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Block)]
-public class BlockReducer : OuraReducerBase
+public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<BlockReducer> _logger;
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
@@ -76,25 +76,19 @@ public class BlockReducer : OuraReducerBase
             {
                 _logger.LogInformation($"Rolling back Block No: {rollbackBlock.BlockNumber}, Block Hash: {rollbackBlock.BlockHash}");
 
-                IEnumerable<IOuraReducer> nonCoreReducers = reducers
+                await Task.WhenAll(reducers
                     .Where
                     (
-                        reducer => reducer is not BlockReducer &&
-                            reducer is not TxOutputReducer &&
-                            reducer is not TxInputReducer
-                    );
-
-                foreach (IOuraReducer rollbackTask in nonCoreReducers) await rollbackTask.HandleRollbackAsync(rollbackBlock);
-
-                TxOutputReducer? txOutputReducer = reducers.Where(reducer => reducer is TxOutputReducer).ToList().FirstOrDefault() as TxOutputReducer;
-                TxInputReducer? txInputReducer = reducers.Where(reducer => reducer is TxInputReducer).ToList().FirstOrDefault() as TxInputReducer;
-                if (txOutputReducer is not null && txInputReducer is not null)
-                {
-                    await txOutputReducer.HandleRollbackAsync(rollbackBlock);
-                    await txInputReducer.HandleRollbackAsync(rollbackBlock);
-                }
+                        reducer => reducer is not IOuraCoreReducer
+                    )
+                    .Select((reducer) => Task.Run(async () =>
+                    {
+                        await reducer.HandleRollbackAsync(rollbackBlock);
+                    }))
+                );
                 await this.HandleRollbackAsync(rollbackBlock);
             }
+
         }
     }
 }
