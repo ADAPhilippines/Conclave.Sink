@@ -14,6 +14,7 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<BalanceByStakeAddressEpoch> BalanceByStakeAddressEpoch => Set<BalanceByStakeAddressEpoch>();
     public DbSet<PoolDetails> Pools => Set<PoolDetails>();
     public DbSet<DelegatorByEpoch> DelegatorByEpoch => Set<DelegatorByEpoch>();
+    public DbSet<WithdrawalByStakeAddressEpoch> WithdrawalByStakeAddressEpoch => Set<WithdrawalByStakeAddressEpoch>();
     public DbSet<RewardAddressByPoolPerEpoch> RewardAddressByPoolPerEpoch => Set<RewardAddressByPoolPerEpoch>();
 
     public ConclaveSinkDbContext(DbContextOptions<ConclaveSinkDbContext> options) : base(options) { }
@@ -30,6 +31,7 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<PoolDetails>().HasKey(s => new { s.Operator, s.TxHash });
         modelBuilder.Entity<DelegatorByEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
         modelBuilder.Entity<RewardAddressByPoolPerEpoch>().HasKey(rabppe => new { rabppe.PoolId, rabppe.RewardAddress, rabppe.TxHash, rabppe.TxIndex });
+        modelBuilder.Entity<WithdrawalByStakeAddressEpoch>().HasKey(wbsea => new { wbsea.StakeAddress, wbsea.Transactionhash });
 
         // Relations
         modelBuilder.Entity<TxInput>()
