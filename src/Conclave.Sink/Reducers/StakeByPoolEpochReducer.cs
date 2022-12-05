@@ -76,6 +76,6 @@ public class StakeByPoolEpochReducer : OuraReducerBase
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        await Task.Run(() => { });
+        await Task.CompletedTask;
     }
 }
