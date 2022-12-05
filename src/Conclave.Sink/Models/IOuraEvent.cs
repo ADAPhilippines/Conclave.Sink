@@ -9,6 +9,7 @@ public enum OuraVariant
     Unknown,
     RollBack,
     Block,
+    Transaction,
     TxOutput,
     TxInput,
     StakeDelegation,
