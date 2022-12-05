@@ -4,5 +4,5 @@ namespace Conclave.Sink.Models;
 
 public record OuraTransactionEvent : OuraEvent
 {
-    public Transaction? Transaction { get; init; }
+    public TransactionData? Transaction { get; init; }
 }
