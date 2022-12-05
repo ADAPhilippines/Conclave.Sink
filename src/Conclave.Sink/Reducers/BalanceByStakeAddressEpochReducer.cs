@@ -59,7 +59,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                         }
                         else
                         {
-                            BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), epoch);
+                            BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
 
                             ulong balance = lastEpochBalance is null ? input.Amount : (lastEpochBalance.Balance - input.Amount);
 
@@ -101,7 +101,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     }
                     else
                     {
-                        BalanceByStakeAddressEpoch? previousEntry = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), epoch);
+                        BalanceByStakeAddressEpoch? previousEntry = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
 
                         ulong balance = previousEntry is null ? (ulong)txOutputEvent.TxOutput.Amount : (previousEntry.Balance + (ulong)txOutputEvent.TxOutput.Amount);
 
@@ -129,7 +129,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
         return null;
     }
 
-    public async Task<BalanceByStakeAddressEpoch?> GetLastEpochBalanceByStakeAddress(string stakeAddress, ulong? epoch)
+    public async Task<BalanceByStakeAddressEpoch?> GetLastEpochBalanceByStakeAddressAsync(string stakeAddress, ulong? epoch)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         List<BalanceByStakeAddressEpoch> sortedEpochBalances = await _dbContext.BalanceByStakeAddressEpoch
@@ -183,7 +183,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     .Where((bba) => (bba.StakeAddress == stakeAddress.ToString()) && (bba.Epoch == rollbackBlock.Epoch))
                     .FirstOrDefaultAsync();
 
-                BalanceByStakeAddressEpoch? previousEntry = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), rollbackBlock.Epoch);
+                BalanceByStakeAddressEpoch? previousEntry = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), rollbackBlock.Epoch);
 
                 if (entry is not null)
                 {

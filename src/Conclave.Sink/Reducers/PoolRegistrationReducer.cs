@@ -9,10 +9,10 @@ using CardanoSharp.Wallet.Utilities;
 
 namespace Conclave.Sink.Reducers;
 
-[OuraReducer(OuraVariant.PoolRegistration, OuraVariant.PoolRetirement)]
+[OuraReducer(OuraVariant.PoolRegistration)]
 public class PoolRegistrationReducer : OuraReducerBase
 {
-    private static int GET_METADATA_DELAY = 300;
+    private static int GET_METADATA_DELAY = 200;
     private static int MAX_RETRY_COUNT = 5;
     private readonly ILogger<PoolRegistrationReducer> _logger;
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
@@ -47,7 +47,7 @@ public class PoolRegistrationReducer : OuraReducerBase
                 .FirstOrDefaultAsync();
 
             JsonDocument? poolMetadataJSON = await GetJsonFromURLAsync(poolRegistrationEvent.PoolRegistration.PoolMetadata);
-            string? metaDataHash = HashUtility.Blake2b256(poolMetadataJSON?.RootElement.ToString().ToBytes()).ToStringHex();
+            string? metaDataHash = poolMetadataJSON is null ? null : HashUtility.Blake2b256(poolMetadataJSON.RootElement.ToString().ToBytes()).ToStringHex();
 
             if (metaDataHash == poolRegistrationEvent.PoolRegistration.PoolMetadataHash)
             {
