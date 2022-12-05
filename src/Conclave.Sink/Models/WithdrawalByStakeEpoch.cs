@@ -1,7 +1,7 @@
 
 namespace Conclave.Sink.Models;
 
-public class WithdrawalByStakeAddressEpoch
+public class WithdrawalByStakeEpoch
 {
     public string StakeAddress { get; set; } = string.Empty;
     public ulong Amount { get; init; }

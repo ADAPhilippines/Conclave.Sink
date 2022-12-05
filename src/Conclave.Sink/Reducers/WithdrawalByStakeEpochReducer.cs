@@ -11,13 +11,13 @@ using Microsoft.Extensions.Options;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Transaction)]
-public class WithdrawalByStakeAddressEpochReducer : OuraReducerBase
+public class WithdrawalByStakeEpochReducer : OuraReducerBase
 {
-    private readonly ILogger<WithdrawalByStakeAddressEpochReducer> _logger;
+    private readonly ILogger<WithdrawalByStakeEpochReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly ConclaveSinkSettings _settings;
-    public WithdrawalByStakeAddressEpochReducer(ILogger<WithdrawalByStakeAddressEpochReducer> logger,
+    public WithdrawalByStakeEpochReducer(ILogger<WithdrawalByStakeEpochReducer> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
         IOptions<ConclaveSinkSettings> settings,
         CardanoService cardanoService)
@@ -48,13 +48,13 @@ public class WithdrawalByStakeAddressEpochReducer : OuraReducerBase
 
                 foreach (Withdrawal withdrawal in withdrawals)
                 {
-                    WithdrawalByStakeAddressEpoch? withdrawalByStakeAddressEpoch = await _dbContext.WithdrawalByStakeAddressEpoch
+                    WithdrawalByStakeEpoch? withdrawalByStakeAddressEpoch = await _dbContext.WithdrawalByStakeEpoch
                         .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
                             w.Transactionhash == transactionEvent.Context.BlockHash).FirstOrDefaultAsync();
 
                     if (withdrawalByStakeAddressEpoch is null)
                     {
-                        await _dbContext.WithdrawalByStakeAddressEpoch.AddAsync(new()
+                        await _dbContext.WithdrawalByStakeEpoch.AddAsync(new()
                         {
                             StakeAddress = Bech32.Encode(withdrawal.RewardAccount.HexToByteArray(),
                                 AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
