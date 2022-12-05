@@ -9,4 +9,8 @@ public partial class Header
 
     [Parameter]
     public string WalletAddress { get; set; } = string.Empty;
+
+    private bool _isDropDownVisible { get; set; }
+
+    private void OnDropDownClicked() => _isDropDownVisible = !_isDropDownVisible;
 }

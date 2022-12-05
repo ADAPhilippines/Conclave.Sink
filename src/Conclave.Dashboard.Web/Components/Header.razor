@@ -1,4 +1,4 @@
-<header class="absolute top-0 left-0 right-0 z-[2000] overflow-x-hidden">
+<header class="absolute top-0 left-0 right-0 z-[2000]">
     <div class="flex justify-between items-center py-[21px] lg:py-[17px] px-[18px] lg:px-[38px]">
 
         <MudLink Href="/">
@@ -43,9 +43,27 @@
                     </div>
                 </MudButton> *@
 
-                <MudButton Class="!py-[12.5px] !px-[24px] !rounded-[50px] !border-[1px] !border-[#ffffff1a] !border-solid">
+                
+                <div class="relative">
+                    <div class="py-[12.5px] px-[24px] rounded-[50px] border-[1px] border-[#ffffff1a] border-solid">
+                        <div class="flex items-center gap-2">
+                            <MudImage Src="images/nami.svg" Alt="Nami logo" />
+                            <span class="lowercase font-normal text-white">@WalletAddress</span>
+                            <MudButton OnClick="OnDropDownClicked" Class="!min-w-fit !p-0">
+                                <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" />
+                            </MudButton>
+                        </div>
+                    </div>
+
+                    <div class="@(_isDropDownVisible ? "block" : "hidden") absolute bottom-[-243px] w-full">
+                        <ConnectedWalletDropDownMenu AdaBalance="1000" CnclvBalance="5000" />
+                    </div>
+                </div>
+               
+
+                @* <MudButton Class="!py-[12.5px] !px-[24px] !rounded-[50px] !border-[1px] !border-[#ffffff1a] !border-solid">
                     Connect Wallet
-                </MudButton>
+                </MudButton> *@
             </div>
         </div>
     </div>
