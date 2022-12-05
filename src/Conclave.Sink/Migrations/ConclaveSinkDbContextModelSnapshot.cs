@@ -84,7 +84,7 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("Block");
                 });
 
-            modelBuilder.Entity("Conclave.Sink.Models.DelegatorByEpoch", b =>
+            modelBuilder.Entity("Conclave.Sink.Models.DelegatorByPoolEpoch", b =>
                 {
                     b.Property<string>("StakeAddress")
                         .HasColumnType("text");
@@ -99,13 +99,14 @@ namespace Conclave.Sink.Migrations
                         .HasColumnType("numeric(20,0)");
 
                     b.Property<string>("BlockHash")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("StakeAddress", "PoolId", "TxHash", "TxIndex");
 
                     b.HasIndex("BlockHash");
 
-                    b.ToTable("DelegatorByEpoch");
+                    b.ToTable("DelegatorByPoolEpoch");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.PoolDetails", b =>
@@ -154,30 +155,6 @@ namespace Conclave.Sink.Migrations
                     b.HasIndex("BlockHash");
 
                     b.ToTable("Pools");
-                });
-
-            modelBuilder.Entity("Conclave.Sink.Models.RewardAddressByPoolPerEpoch", b =>
-                {
-                    b.Property<string>("PoolId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RewardAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TxHash")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("TxIndex")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.Property<string>("BlockHash")
-                        .HasColumnType("text");
-
-                    b.HasKey("PoolId", "RewardAddress", "TxHash", "TxIndex");
-
-                    b.HasIndex("BlockHash");
-
-                    b.ToTable("RewardAddressByPoolPerEpoch");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.TxInput", b =>
@@ -230,11 +207,13 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("TxOutput");
                 });
 
-            modelBuilder.Entity("Conclave.Sink.Models.DelegatorByEpoch", b =>
+            modelBuilder.Entity("Conclave.Sink.Models.DelegatorByPoolEpoch", b =>
                 {
                     b.HasOne("Conclave.Sink.Models.Block", "Block")
                         .WithMany()
-                        .HasForeignKey("BlockHash");
+                        .HasForeignKey("BlockHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Block");
                 });
@@ -246,15 +225,6 @@ namespace Conclave.Sink.Migrations
                         .HasForeignKey("BlockHash")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Block");
-                });
-
-            modelBuilder.Entity("Conclave.Sink.Models.RewardAddressByPoolPerEpoch", b =>
-                {
-                    b.HasOne("Conclave.Sink.Models.Block", "Block")
-                        .WithMany()
-                        .HasForeignKey("BlockHash");
 
                     b.Navigation("Block");
                 });
