@@ -29,7 +29,7 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<BalanceByStakeAddressEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
         modelBuilder.Entity<PoolDetails>().HasKey(s => new { s.Operator, s.TxHash });
-        modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbsea => new { wbsea.StakeAddress, wbsea.Transactionhash });
+        modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
         modelBuilder.Entity<StakeByPoolEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Transaction>().Property(b => b.Withdrawals).HasColumnType("jsonb");
