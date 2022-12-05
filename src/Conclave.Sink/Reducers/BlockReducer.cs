@@ -1,3 +1,5 @@
+using CardanoSharp.Wallet.Extensions;
+using CardanoSharp.Wallet.Utilities;
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
 using Conclave.Sink.Services;
@@ -31,7 +33,8 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
         if (blockEvent.Context is not null &&
             blockEvent.Context.BlockNumber is not null &&
             blockEvent.Context.Slot is not null &&
-            blockEvent.Context.BlockHash is not null)
+            blockEvent.Context.BlockHash is not null &&
+            blockEvent.Block is not null)
         {
             await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
 
@@ -43,6 +46,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
                 VrfKeyhash = HashUtility.Blake2b256(blockEvent.Block.VrfVkey.HexToByteArray()).ToStringHex(),
                 Slot = (ulong)blockEvent.Context.Slot,
                 BlockHash = blockEvent.Context.BlockHash,
+                Era = blockEvent.Block.Era,
                 Epoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot)
             });
             await _dbContext.SaveChangesAsync();
