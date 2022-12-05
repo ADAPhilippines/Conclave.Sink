@@ -46,6 +46,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
                 VrfKeyhash = HashUtility.Blake2b256(blockEvent.Block.VrfVkey.HexToByteArray()).ToStringHex(),
                 Slot = (ulong)blockEvent.Context.Slot,
                 BlockHash = blockEvent.Context.BlockHash,
+                Era = blockEvent.Block.Era,
                 Epoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot)
             });
             await _dbContext.SaveChangesAsync();
