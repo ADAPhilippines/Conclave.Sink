@@ -26,4 +26,7 @@ public record OuraPoolRegistration : OuraEvent
 
     [JsonPropertyName("pool_metadata")]
     public string? PoolMetadata { get; init; }
+
+    [JsonPropertyName("pool_metadata_hash")]
+    public string? PoolMetadataHash { get; init; }
 }

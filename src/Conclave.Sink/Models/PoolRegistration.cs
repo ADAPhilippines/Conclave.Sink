@@ -14,6 +14,7 @@ public class PoolRegistration
     public List<string> PoolOwners { get; init; } = new();
     public List<string> Relays { get; init; } = new();
     public string? TxHash { get; init; } = string.Empty;
-    public string? PoolMetadata { get; init; }
+    public JsonDocument? PoolMetadata { get; init; }
+    public string? PoolMetadataHash { get; init; }
     public Block? Block { get; init; } = new();
 }

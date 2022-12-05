@@ -16,7 +16,6 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<PoolRetirement> PoolRetirement => Set<PoolRetirement>();
     public DbSet<DelegatorByEpoch> DelegatorByEpoch => Set<DelegatorByEpoch>();
     public DbSet<RewardAddressByPoolPerEpoch> RewardAddressByPoolPerEpoch => Set<RewardAddressByPoolPerEpoch>();
-
     public ConclaveSinkDbContext(DbContextOptions<ConclaveSinkDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +28,7 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<BalanceByStakeAddressEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
         modelBuilder.Entity<PoolRegistration>().HasKey(s => new { s.Operator, s.TxHash });
+        modelBuilder.Entity<PoolRegistration>().Property(a => a.PoolMetadata).HasColumnType("jsonb");
         modelBuilder.Entity<DelegatorByEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
         modelBuilder.Entity<RewardAddressByPoolPerEpoch>().HasKey(rabppe => new { rabppe.PoolId, rabppe.RewardAddress, rabppe.TxHash, rabppe.TxIndex });
         modelBuilder.Entity<PoolRetirement>().HasKey(prt => prt.Pool);
