@@ -35,7 +35,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                 if (txInputEvent is not null && txInputEvent.TxInput is not null)
                 {
                     TxOutput? input = await _dbContext.TxOutput.Include(i => i.Block)
-                        .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index)
+                        .Where(txOut => (txOut.TxHash == txInputEvent.TxInput.TxHash) && (txOut.Index == txInputEvent.TxInput.Index))
                         .FirstOrDefaultAsync();
 
                     if (input is not null)
@@ -185,6 +185,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     .FirstOrDefaultAsync();
 
                 BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), rollbackBlock.Epoch);
+
                 if (entry is not null)
                 {
                     entry.Balance -= txOutput.Amount;
