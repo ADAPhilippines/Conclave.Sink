@@ -35,36 +35,45 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
             transactionEvent.Transaction.Withdrawals is not null &&
             transactionEvent.Context is not null &&
             transactionEvent.Context.BlockHash is not null &&
-            transactionEvent.Context.TxHash is not null)
+            transactionEvent.Context.TxHash is not null &&
+            transactionEvent.Context.Slot is not null)
         {
             IEnumerable<Withdrawal> withdrawals = transactionEvent.Transaction.Withdrawals;
 
             if (withdrawals.Any())
             {
-                Block? block = await _dbContext.Block
-                    .Where(b => b.BlockHash == transactionEvent.Context.BlockHash).FirstOrDefaultAsync();
-
-                if (block is null) return;
-
+                ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)transactionEvent.Context.Slot);
                 foreach (Withdrawal withdrawal in withdrawals)
                 {
-                    WithdrawalByStakeEpoch? withdrawalByStakeAddressEpoch = await _dbContext.WithdrawalByStakeEpoch
-                        .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
-                            w.Transactionhash == transactionEvent.Context.BlockHash).FirstOrDefaultAsync();
+                    if (withdrawal.Coin <= 0) continue;
 
-                    if (withdrawalByStakeAddressEpoch is null)
+                    WithdrawalByStakeEpoch? withdrawalByStakeEpoch = await _dbContext.WithdrawalByStakeEpoch
+                        .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
+                            w.Epoch == epoch).FirstOrDefaultAsync();
+
+                    if (withdrawalByStakeEpoch is not null)
                     {
+                        withdrawalByStakeEpoch.Amount += withdrawal.Coin;
+                    }
+                    else
+                    {
+                        string stakeAddress = Bech32.Encode(withdrawal.RewardAccount.HexToByteArray(),
+                            AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType));
+                        ulong previousWithdrawal = await _dbContext.WithdrawalByStakeEpoch
+                            .Where(w => w.StakeAddress == stakeAddress &&
+                                w.Epoch < epoch)
+                            .OrderByDescending(w => w.Epoch)
+                            .Select(w => w.Amount)
+                            .FirstOrDefaultAsync();
+
                         await _dbContext.WithdrawalByStakeEpoch.AddAsync(new()
                         {
-                            StakeAddress = Bech32.Encode(withdrawal.RewardAccount.HexToByteArray(),
-                                AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
-                            Transactionhash = transactionEvent.Context.TxHash,
-                            Amount = withdrawal.Coin,
-                            Block = block
+                            StakeAddress = stakeAddress,
+                            Amount = withdrawal.Coin + previousWithdrawal,
+                            Epoch = epoch
                         });
                     }
                 }
-
                 await _dbContext.SaveChangesAsync();
             }
         }
@@ -73,6 +82,42 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        await Task.CompletedTask;
+        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+        IEnumerable<Transaction>? transactions = await _dbContext.Transaction
+            .Include(t => t.Block)
+            .Where(t => t.Block.BlockHash == rollbackBlock.BlockHash && t.Withdrawals != null)
+            .ToListAsync();
+
+        if (transactions is null) return;
+
+        foreach (Transaction transaction in transactions)
+        {
+            if (transaction.Withdrawals is null) continue;
+
+            foreach (Withdrawal withdrawal in transaction.Withdrawals)
+            {
+                WithdrawalByStakeEpoch? withdrawalByStakeEpoch = await _dbContext.WithdrawalByStakeEpoch
+                    .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
+                        w.Epoch == rollbackBlock.Epoch)
+                    .FirstOrDefaultAsync();
+
+                if (withdrawalByStakeEpoch is null) return;
+
+                ulong previousWithdrawal = await _dbContext.WithdrawalByStakeEpoch
+                    .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
+                        w.Epoch < rollbackBlock.Epoch)
+                    .OrderByDescending(w => w.Epoch)
+                    .Select(w => w.Amount)
+                    .FirstOrDefaultAsync();
+
+                withdrawalByStakeEpoch.Amount -= withdrawal.Coin;
+
+                if (withdrawalByStakeEpoch.Amount <= 0 || withdrawalByStakeEpoch.Amount <= previousWithdrawal)
+                    _dbContext.WithdrawalByStakeEpoch.Remove(withdrawalByStakeEpoch);
+            }
+        }
+
+        await _dbContext.SaveChangesAsync();
     }
 }
