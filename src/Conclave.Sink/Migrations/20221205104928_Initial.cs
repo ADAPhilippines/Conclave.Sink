@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Conclave.Sink.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,7 +53,9 @@ namespace Conclave.Sink.Migrations
                 columns: table => new
                 {
                     BlockHash = table.Column<string>(type: "text", nullable: false),
+                    Era = table.Column<string>(type: "text", nullable: false),
                     BlockNumber = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    VrfKeyhash = table.Column<string>(type: "text", nullable: false),
                     Slot = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Epoch = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
                 },
@@ -63,23 +65,24 @@ namespace Conclave.Sink.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DelegatorByEpoch",
+                name: "DelegatorByPoolEpoch",
                 columns: table => new
                 {
                     StakeAddress = table.Column<string>(type: "text", nullable: false),
                     PoolId = table.Column<string>(type: "text", nullable: false),
                     TxHash = table.Column<string>(type: "text", nullable: false),
                     TxIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    BlockHash = table.Column<string>(type: "text", nullable: true)
+                    BlockHash = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DelegatorByEpoch", x => new { x.StakeAddress, x.PoolId, x.TxHash, x.TxIndex });
+                    table.PrimaryKey("PK_DelegatorByPoolEpoch", x => new { x.StakeAddress, x.PoolId, x.TxHash, x.TxIndex });
                     table.ForeignKey(
-                        name: "FK_DelegatorByEpoch_Block_BlockHash",
+                        name: "FK_DelegatorByPoolEpoch_Block_BlockHash",
                         column: x => x.BlockHash,
                         principalTable: "Block",
-                        principalColumn: "BlockHash");
+                        principalColumn: "BlockHash",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,26 +113,6 @@ namespace Conclave.Sink.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RewardAddressByPoolPerEpoch",
-                columns: table => new
-                {
-                    PoolId = table.Column<string>(type: "text", nullable: false),
-                    RewardAddress = table.Column<string>(type: "text", nullable: false),
-                    TxHash = table.Column<string>(type: "text", nullable: false),
-                    TxIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    BlockHash = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RewardAddressByPoolPerEpoch", x => new { x.PoolId, x.RewardAddress, x.TxHash, x.TxIndex });
-                    table.ForeignKey(
-                        name: "FK_RewardAddressByPoolPerEpoch_Block_BlockHash",
-                        column: x => x.BlockHash,
-                        principalTable: "Block",
-                        principalColumn: "BlockHash");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TxOutput",
                 columns: table => new
                 {
@@ -144,6 +127,26 @@ namespace Conclave.Sink.Migrations
                     table.PrimaryKey("PK_TxOutput", x => new { x.TxHash, x.Index });
                     table.ForeignKey(
                         name: "FK_TxOutput_Block_BlockHash",
+                        column: x => x.BlockHash,
+                        principalTable: "Block",
+                        principalColumn: "BlockHash",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WithdrawalByStakeAddressEpoch",
+                columns: table => new
+                {
+                    StakeAddress = table.Column<string>(type: "text", nullable: false),
+                    Transactionhash = table.Column<string>(type: "text", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    BlockHash = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WithdrawalByStakeAddressEpoch", x => new { x.StakeAddress, x.Transactionhash });
+                    table.ForeignKey(
+                        name: "FK_WithdrawalByStakeAddressEpoch_Block_BlockHash",
                         column: x => x.BlockHash,
                         principalTable: "Block",
                         principalColumn: "BlockHash",
@@ -177,18 +180,13 @@ namespace Conclave.Sink.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DelegatorByEpoch_BlockHash",
-                table: "DelegatorByEpoch",
+                name: "IX_DelegatorByPoolEpoch_BlockHash",
+                table: "DelegatorByPoolEpoch",
                 column: "BlockHash");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pools_BlockHash",
                 table: "Pools",
-                column: "BlockHash");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RewardAddressByPoolPerEpoch_BlockHash",
-                table: "RewardAddressByPoolPerEpoch",
                 column: "BlockHash");
 
             migrationBuilder.CreateIndex(
@@ -205,6 +203,11 @@ namespace Conclave.Sink.Migrations
                 name: "IX_TxOutput_BlockHash",
                 table: "TxOutput",
                 column: "BlockHash");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WithdrawalByStakeAddressEpoch_BlockHash",
+                table: "WithdrawalByStakeAddressEpoch",
+                column: "BlockHash");
         }
 
         /// <inheritdoc />
@@ -220,16 +223,16 @@ namespace Conclave.Sink.Migrations
                 name: "BalanceByStakeAddressEpoch");
 
             migrationBuilder.DropTable(
-                name: "DelegatorByEpoch");
+                name: "DelegatorByPoolEpoch");
 
             migrationBuilder.DropTable(
                 name: "Pools");
 
             migrationBuilder.DropTable(
-                name: "RewardAddressByPoolPerEpoch");
+                name: "TxInput");
 
             migrationBuilder.DropTable(
-                name: "TxInput");
+                name: "WithdrawalByStakeAddressEpoch");
 
             migrationBuilder.DropTable(
                 name: "TxOutput");

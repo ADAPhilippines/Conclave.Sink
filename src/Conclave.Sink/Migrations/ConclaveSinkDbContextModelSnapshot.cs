@@ -76,8 +76,16 @@ namespace Conclave.Sink.Migrations
                     b.Property<decimal>("Epoch")
                         .HasColumnType("numeric(20,0)");
 
+                    b.Property<string>("Era")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("VrfKeyhash")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("BlockHash");
 
@@ -207,6 +215,28 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("TxOutput");
                 });
 
+            modelBuilder.Entity("Conclave.Sink.Models.WithdrawalByStakeAddressEpoch", b =>
+                {
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Transactionhash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("BlockHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("StakeAddress", "Transactionhash");
+
+                    b.HasIndex("BlockHash");
+
+                    b.ToTable("WithdrawalByStakeAddressEpoch");
+                });
+
             modelBuilder.Entity("Conclave.Sink.Models.DelegatorByPoolEpoch", b =>
                 {
                     b.HasOne("Conclave.Sink.Models.Block", "Block")
@@ -252,6 +282,17 @@ namespace Conclave.Sink.Migrations
                 {
                     b.HasOne("Conclave.Sink.Models.Block", "Block")
                         .WithMany("Outputs")
+                        .HasForeignKey("BlockHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Block");
+                });
+
+            modelBuilder.Entity("Conclave.Sink.Models.WithdrawalByStakeAddressEpoch", b =>
+                {
+                    b.HasOne("Conclave.Sink.Models.Block", "Block")
+                        .WithMany()
                         .HasForeignKey("BlockHash")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
