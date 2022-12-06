@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Conclave.Sink.Models;
 
-public class BlockData
+public class OuraBlock
 {
 
     [JsonPropertyName("vrf_vkey")]
