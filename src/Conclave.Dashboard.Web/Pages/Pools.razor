@@ -27,14 +27,14 @@ Light / Dark mode
 
   <div class="my-4">
     <div class="flex flex-col items-start justify-between md:flex-row mb-6">
-      <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
+      <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
       <div>
         <MudTextField @bind-Value="Search" Label="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
           AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
           Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" />
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">
       @foreach (var item in PoolsList)
       {
         <PoolCards PoolDetails="item" />
