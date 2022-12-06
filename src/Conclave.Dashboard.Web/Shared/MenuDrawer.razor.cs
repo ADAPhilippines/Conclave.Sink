@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Conclave.Dashboard.Web.Components;
+namespace Conclave.Dashboard.Web.Shared;
 
 public partial class MenuDrawer
 {
