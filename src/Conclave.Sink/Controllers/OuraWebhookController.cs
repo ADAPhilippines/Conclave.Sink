@@ -52,14 +52,13 @@ public class OuraWebhookController : ControllerBase
 
                     if (blockReducer is not null)
                         await blockReducer.RollbackBySlotAsync((ulong)rollbackEvent.RollBack.BlockSlot);
-                }
+                }   
             }
             else
             {
                 _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
                 await Task.WhenAll(_reducers.SelectMany((reducer) =>
                 {
-                    Task emptyTask = Task.Run(() => { });
                     ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
                     return reducerVariants.ToList().Select((reducerVariant) =>
                     {
@@ -68,17 +67,16 @@ public class OuraWebhookController : ControllerBase
                             return reducerVariant switch
                             {
                                 OuraVariant.Block => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.RollBack => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.Transaction => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTransactionEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.TxInput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.PoolRegistration => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRegistrationEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.PoolRetirement => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRetirementEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.StakeDelegation => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraStakeDelegationEvent>(ConclaveJsonSerializerOptions)),
-                                _ => emptyTask
+                                _ => Task.CompletedTask
                             };
                         }
-                        else return emptyTask;
+                        else return Task.CompletedTask;
                     });
                 }));
             }

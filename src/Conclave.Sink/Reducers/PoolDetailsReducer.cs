@@ -38,7 +38,7 @@ public class PoolDetailsReducer : OuraReducerBase
                     poolRegistrationEvent.Context.Slot is not null &&
                     poolRegistrationEvent.Context.BlockHash is not null)
                 {
-                    Block? block = await _dbContext.Block.Where(block => block.BlockHash == poolRegistrationEvent.Context.BlockHash).FirstOrDefaultAsync();
+                    Block? block = await _dbContext.Blocks.Where(block => block.BlockHash == poolRegistrationEvent.Context.BlockHash).FirstOrDefaultAsync();
 
                     string? poolMetadataJSON = await GetJsonFromURL(poolRegistrationEvent.PoolRegistration.PoolMetadata);
 

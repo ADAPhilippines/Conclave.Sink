@@ -1,3 +1,4 @@
+using System.Text.Json;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
 using Conclave.Sink.Data;
@@ -34,13 +35,14 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
             blockEvent.Context.BlockNumber is not null &&
             blockEvent.Context.Slot is not null &&
             blockEvent.Context.BlockHash is not null &&
-            blockEvent.Block is not null)
+            blockEvent.Block is not null &&
+            blockEvent.Block.Era is not null)
         {
             await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
 
             // New Context for this insert
             _dbContext = await _dbContextFactory.CreateDbContextAsync();
-            await _dbContext.Block.AddAsync(new()
+            await _dbContext.Blocks.AddAsync(new()
             {
                 BlockNumber = (ulong)blockEvent.Context.BlockNumber,
                 VrfKeyhash = HashUtility.Blake2b256(blockEvent.Block.VrfVkey.HexToByteArray()).ToStringHex(),
@@ -57,20 +59,20 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
     public async Task RollbackAsync(Block rollbackBlock)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        _dbContext.Block.Remove(rollbackBlock);
+        _dbContext.Blocks.Remove(rollbackBlock);
         await _dbContext.SaveChangesAsync();
     }
 
     public async Task RollbackBySlotAsync(ulong rollbackSlot)
     {
         ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        ulong currentTipSlot = await _dbContext.Block.AnyAsync() ? await _dbContext.Block.MaxAsync(block => block.Slot) : 0;
+        ulong currentTipSlot = await _dbContext.Blocks.AnyAsync() ? await _dbContext.Blocks.MaxAsync(block => block.Slot) : 0;
 
         // Check if current database tip clashes with the current tip oura is pushing
         // if so then we should rollback and insert the new tip oura is pushing
         if (rollbackSlot <= currentTipSlot)
         {
-            List<Block> blocksToRollback = await _dbContext.Block
+            List<Block> blocksToRollback = await _dbContext.Blocks
                 .Where(block => block.Slot >= rollbackSlot)
                 .OrderByDescending(block => block.Slot)
                 .ToListAsync();
