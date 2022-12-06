@@ -35,14 +35,13 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
     {
-        ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-
         if (transactionEvent is not null &&
             transactionEvent.Context is not null &&
             transactionEvent.Context.TxHash is not null &&
             transactionEvent.Transaction is not null &&
             transactionEvent.Transaction.Fee is not null)
         {
+            ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
