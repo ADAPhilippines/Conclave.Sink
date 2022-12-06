@@ -4,7 +4,7 @@ module.exports = {
     theme: {
         extend: {
             backgroundImage: {
-                'card-gradient': "radial-gradient(rgba(68,138,255, 0.5), transparent)"
+                'card-gradient': "radial-gradient(rgba(68,138,255, 0.4), transparent)"
             }
         },
         screens: {

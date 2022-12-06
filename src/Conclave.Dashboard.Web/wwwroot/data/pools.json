@@ -7,7 +7,7 @@
     "Interest": 22,
     "Saturation": 62,
     "Pledge": 100000,
-    "IsConclave": true,
+    "IsConclave": false,
     "IsStaked": false
   },
   {
@@ -53,6 +53,16 @@
     "Pledge": 100000,
     "IsConclave": true,
     "IsStaked": false
+  },
+  {
+    "Id": 6,
+    "Ticker": "Peanut Pool",
+    "Description": "#1 Grandmama Dog",
+    "Blocks": 8,
+    "Interest": 22,
+    "Saturation": 62,
+    "Pledge": 100000,
+    "IsConclave": true,
+    "IsStaked": false
   }
-  
 ]

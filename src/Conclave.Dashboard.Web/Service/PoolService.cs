@@ -33,4 +33,11 @@ public class PoolService
     List<PoolsModel> FilteredPools = ListOfPools.FindAll(x => x.Ticker.ToLower().Contains(filter.ToLower()) && x.IsConclave == false);
     return FilteredPools;
   }
+
+  public async Task<List<PoolsModel>> GetPaginatedPools(int page)
+  {
+    List<PoolsModel> ListOfPools = await _httpClient.GetFromJsonAsync<List<PoolsModel>>("data/pools.json") ?? new();
+    // List<PoolsModel> FilteredPools = ListOfPools.FindAll(x => x.Ticker.ToLower().Contains(filter.ToLower()) && x.IsConclave == false);
+    return ListOfPools;
+  }
 }
