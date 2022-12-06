@@ -30,7 +30,7 @@ public class BalanceByAddressReducer : OuraReducerBase
                 OuraTxInputEvent? txInputEvent = ouraEvent as OuraTxInputEvent;
                 if (txInputEvent is not null && txInputEvent.TxInput is not null)
                 {
-                    TxOutput? input = await _dbContext.TxOutput
+                    TxOutput? input = await _dbContext.TxOutputs
                         .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index).FirstOrDefaultAsync();
 
                     if (input is not null)
@@ -85,24 +85,31 @@ public class BalanceByAddressReducer : OuraReducerBase
     public async Task RollbackAsync(Block rollbackBlock)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        IEnumerable<TxInput> consumed = await _dbContext.TxInput
+        IEnumerable<TxInput> consumed = await _dbContext.TxInputs
             .Include(txInput => txInput.TxOutput)
-            .Where(txInput => txInput.Block == rollbackBlock)
+            .Include(txInput => txInput.Transaction)
+            .ThenInclude(tx => tx.Block)
+            .Where(txInput => txInput.Transaction.Block == rollbackBlock)
             .ToListAsync();
-        IEnumerable<TxOutput> produced = await _dbContext.TxOutput
-            .Where(txOutput => txOutput.Block == rollbackBlock)
+        IEnumerable<TxOutput> produced = await _dbContext.TxOutputs
+            .Include(txOutput => txOutput.Transaction)
+            .ThenInclude(tx => tx.Block)
+            .Where(txOutput => txOutput.Transaction.Block == rollbackBlock)
             .ToListAsync();
 
         // process consumed
         IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
         {
-            BalanceByAddress? entry = await _dbContext.BalanceByAddress
-                       .Where((bba) => bba.Address == txInput.TxOutput.Address)
-                       .FirstOrDefaultAsync();
-
-            if (entry is not null)
+            if (txInput.TxOutput is not null)
             {
-                entry.Balance += txInput.TxOutput.Amount;
+                BalanceByAddress? entry = await _dbContext.BalanceByAddress
+                           .Where((bba) => bba.Address == txInput.TxOutput.Address)
+                           .FirstOrDefaultAsync();
+
+                if (entry is not null)
+                {
+                    entry.Balance += txInput.TxOutput.Amount;
+                }
             }
         }));
 

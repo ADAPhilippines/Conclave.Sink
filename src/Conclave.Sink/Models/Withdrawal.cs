@@ -2,9 +2,8 @@ using System.Text.Json.Serialization;
 
 namespace Conclave.Sink.Models;
 
-public class Withdrawal
+public record Withdrawal
 {
-    [JsonPropertyName("reward_account")]
-    public string RewardAccount { get; set; } = string.Empty;
-    public ulong Coin { get; init; }
+    public string StakeAddress { get; init; }  = string.Empty;
+    public ulong Amount { get; init; }
 }

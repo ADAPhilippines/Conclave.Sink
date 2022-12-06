@@ -14,8 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextFactory<ConclaveSinkDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"))
-);
+{
+    options.EnableSensitiveDataLogging(true);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"));
+});
 builder.Services.Configure<ConclaveSinkSettings>(options => builder.Configuration.GetSection("ConclaveSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddOuraReducers();

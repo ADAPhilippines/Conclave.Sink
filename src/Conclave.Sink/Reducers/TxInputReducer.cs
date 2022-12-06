@@ -27,40 +27,48 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
             txInputEvent.Context.Slot is not null &&
              txInputEvent.Context.TxHash is not null)
         {
-            Block? block = await _dbContext.Block
-                .Where(block => block.BlockHash == txInputEvent.Context.BlockHash).FirstOrDefaultAsync();
-            TxOutput? txOutput = await _dbContext.TxOutput
+            TxOutput? txOutput = await _dbContext.TxOutputs
                 .Where(txOutput => txOutput.TxHash == txInputEvent.TxInput.TxHash && txOutput.Index == txInputEvent.TxInput.Index).FirstOrDefaultAsync();
-            if (block is not null && txOutput is not null)
+            Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txInputEvent.Context.TxHash).FirstOrDefaultAsync();
+            if (tx is not null)
             {
-                await _dbContext.TxInput.AddAsync(new()
+                if (txOutput is not null)
                 {
-                    TxHash = txInputEvent.Context.TxHash,
-                    TxOutputHash = txInputEvent.TxInput.TxHash,
-                    TxOutputIndex = txInputEvent.TxInput.Index,
-                    TxOutput = txOutput,
-                    Block = block
-                });
+                    await _dbContext.TxInputs.AddAsync(new()
+                    {
+                        TxHash = txInputEvent.Context.TxHash,
+                        Transaction = tx,
+                        TxOutputHash = txInputEvent.TxInput.TxHash,
+                        TxOutputIndex = txInputEvent.TxInput.Index,
+                        TxOutput = txOutput
+                    });
+                }
+                else
+                {
+                    Block? blockZero = await _dbContext.Blocks.Where(block => block.BlockNumber == 0).FirstOrDefaultAsync();
+                    if (blockZero is not null)
+                    {
+                        await _dbContext.TxInputs.AddAsync(new()
+                        {
+                            TxHash = txInputEvent.Context.TxHash,
+                            Transaction = tx,
+                            // GENESIS TX HACK
+                            TxOutput = new TxOutput
+                            {
+                                Transaction = new Transaction
+                                {
+                                    Hash = $"GENESIS_{tx.Hash}",
+                                    Block = blockZero
+                                },
+                                Address = "GENESIS"
+                            }
+                        });
+                    }
+                }
                 await _dbContext.SaveChangesAsync();
             }
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        IEnumerable<TxInput>? rollbackTxInputs = await _dbContext.TxInput
-            .Where(txInput => txInput.Block == rollbackBlock)
-            .ToListAsync();
-
-        if (rollbackTxInputs is not null)
-        {
-            rollbackTxInputs.ToList().ForEach(txInput =>
-            {
-                _dbContext.TxInput.Remove(txInput);
-            });
-        }
-
-        await _dbContext.SaveChangesAsync();
-    }
+    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }

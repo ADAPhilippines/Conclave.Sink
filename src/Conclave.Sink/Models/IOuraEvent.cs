@@ -10,8 +10,9 @@ public enum OuraVariant
     RollBack,
     Block,
     Transaction,
-    TxOutput,
     TxInput,
+    TxOutput,
+    OutputAsset,
     StakeDelegation,
     PoolRegistration,
     PoolRetirement
@@ -22,6 +23,5 @@ public interface IOuraEvent
     public OuraContext? Context { get; init; }
     public string? Fingerprint { get; init; }
     public OuraVariant? Variant { get; init; }
-
     public ulong? Timestamp { get; init; }
 }

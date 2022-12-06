@@ -26,96 +26,97 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
     public async Task ReduceAsync(OuraEvent ouraEvent)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        await (ouraEvent.Variant switch
-        {
-            OuraVariant.TxInput => Task.Run(async () =>
-            {
-                OuraTxInputEvent? txInputEvent = ouraEvent as OuraTxInputEvent;
-                if (txInputEvent is not null && txInputEvent.TxInput is not null)
-                {
-                    TxOutput? input = await _dbContext.TxOutput.Include(i => i.Block)
-                        .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index)
-                        .FirstOrDefaultAsync();
+        // using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        // await (ouraEvent.Variant switch
+        // {
+        //     OuraVariant.TxInput => Task.Run(async () =>
+        //     {
+        //         OuraTxInputEvent? txInputEvent = ouraEvent as OuraTxInputEvent;
+        //         if (txInputEvent is not null && txInputEvent.TxInput is not null)
+        //         {
+        //             TxOutput? input = await _dbContext.TxOutputs.Include(i => i.Block)
+        //                 .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index)
+        //                 .FirstOrDefaultAsync();
 
-                    if (input is not null)
-                    {
-                        Address? stakeAddress = TryGetStakeAddress(new Address(input.Address));
+        //             if (input is not null)
+        //             {
+        //                 Address? stakeAddress = TryGetStakeAddress(new Address(input.Address));
 
-                        if (stakeAddress is null || txInputEvent.Context is null || txInputEvent.Context.Slot is null) return;
+        //                 if (stakeAddress is null || txInputEvent.Context is null || txInputEvent.Context.Slot is null) return;
 
-                        ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInputEvent.Context.Slot);
+        //                 ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInputEvent.Context.Slot);
 
-                        BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
-                            .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
-                            .FirstOrDefaultAsync();
+        //                 BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+        //                     .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
+        //                     .FirstOrDefaultAsync();
 
-                        if (entry is not null)
-                        {
-                            entry.Balance -= input.Amount;
-                        }
-                        else
-                        {
-                            BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), epoch);
+        //                 if (entry is not null)
+        //                 {
+        //                     entry.Balance -= input.Amount;
+        //                 }
+        //                 else
+        //                 {
+        //                     BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), epoch);
 
-                            ulong balance = lastEpochBalance is null ? input.Amount : (lastEpochBalance.Balance - input.Amount);
+        //                     ulong balance = lastEpochBalance is null ? input.Amount : (lastEpochBalance.Balance - input.Amount);
 
-                            await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
-                            {
-                                StakeAddress = stakeAddress.ToString(),
-                                Balance = balance,
-                                Epoch = epoch
-                            });
-                        }
-                    }
+        //                     await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
+        //                     {
+        //                         StakeAddress = stakeAddress.ToString(),
+        //                         Balance = balance,
+        //                         Epoch = epoch
+        //                     });
+        //                 }
+        //             }
 
-                    await _dbContext.SaveChangesAsync();
-                }
-            }),
-            OuraVariant.TxOutput => Task.Run(async () =>
-            {
-                OuraTxOutputEvent? txOutputEvent = ouraEvent as OuraTxOutputEvent;
-                if (txOutputEvent is not null &&
-                    txOutputEvent.TxOutput is not null &&
-                    txOutputEvent.TxOutput.Amount is not null &&
-                    txOutputEvent.TxOutput.Address is not null &&
-                    txOutputEvent.Context is not null)
-                {
-                    ulong amount = (ulong)txOutputEvent.TxOutput.Amount;
-                    Address outputAddress = new Address(txOutputEvent.TxOutput.Address);
-                    Address? stakeAddress = TryGetStakeAddress(outputAddress);
+        //             await _dbContext.SaveChangesAsync();
+        //         }
+        //     }),
+        //     OuraVariant.TxOutput => Task.Run(async () =>
+        //     {
+        //         OuraTxOutputEvent? txOutputEvent = ouraEvent as OuraTxOutputEvent;
+        //         if (txOutputEvent is not null &&
+        //             txOutputEvent.TxOutput is not null &&
+        //             txOutputEvent.TxOutput.Amount is not null &&
+        //             txOutputEvent.TxOutput.Address is not null &&
+        //             txOutputEvent.Context is not null)
+        //         {
+        //             ulong amount = (ulong)txOutputEvent.TxOutput.Amount;
+        //             Address outputAddress = new Address(txOutputEvent.TxOutput.Address);
+        //             Address? stakeAddress = TryGetStakeAddress(outputAddress);
 
-                    if (stakeAddress is null || txOutputEvent.Context is null || txOutputEvent.Context.Slot is null) return;
+        //             if (stakeAddress is null || txOutputEvent.Context is null || txOutputEvent.Context.Slot is null) return;
 
-                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutputEvent.Context.Slot);
+        //             ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutputEvent.Context.Slot);
 
-                    BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
-                        .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
-                        .FirstOrDefaultAsync();
+        //             BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+        //                 .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
+        //                 .FirstOrDefaultAsync();
 
-                    if (entry is not null)
-                    {
-                        entry.Balance += amount;
-                    }
-                    else
-                    {
-                        BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), epoch);
+        //             if (entry is not null)
+        //             {
+        //                 entry.Balance += amount;
+        //             }
+        //             else
+        //             {
+        //                 BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), epoch);
 
-                        ulong balance = lastEpochBalance is null ? amount : (lastEpochBalance.Balance + amount);
+        //                 ulong balance = lastEpochBalance is null ? amount : (lastEpochBalance.Balance + amount);
 
-                        await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
-                        {
-                            StakeAddress = stakeAddress.ToString(),
-                            Balance = balance,
-                            Epoch = epoch
-                        });
-                    }
+        //                 await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
+        //                 {
+        //                     StakeAddress = stakeAddress.ToString(),
+        //                     Balance = balance,
+        //                     Epoch = epoch
+        //                 });
+        //             }
 
-                    await _dbContext.SaveChangesAsync();
-                }
-            }),
-            _ => Task.Run(() => { })
-        });
+        //             await _dbContext.SaveChangesAsync();
+        //         }
+        //     }),
+        //     _ => Task.Run(() => { })
+        // });
+        await Task.CompletedTask;
     }
 
     private Address? TryGetStakeAddress(Address paymentAddress)
@@ -142,58 +143,59 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        // using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        IEnumerable<TxInput> consumed = await _dbContext.TxInput
-            .Include(i => i.Block)
-            .Include(txInput => txInput.TxOutput)
-            .Where(txInput => txInput.Block == rollbackBlock)
-            .ToListAsync();
+        // IEnumerable<TxInput> consumed = await _dbContext.TxInputs
+        //     .Include(i => i.Block)
+        //     .Include(txInput => txInput.TxOutput)
+        //     .Where(txInput => txInput.Block == rollbackBlock)
+        //     .ToListAsync();
 
-        IEnumerable<TxOutput> produced = await _dbContext.TxOutput
-            .Include(i => i.Block)
-            .Where(txOutput => txOutput.Block == rollbackBlock)
-            .ToListAsync();
+        // IEnumerable<TxOutput> produced = await _dbContext.TxOutputs
+        //     .Include(i => i.Block)
+        //     .Where(txOutput => txOutput.Block == rollbackBlock)
+        //     .ToListAsync();
 
-        IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
-        {
-            Address? stakeAddress = TryGetStakeAddress(new Address(txInput.TxOutput.Address));
+        // IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>
+        // {
+        //     Address? stakeAddress = TryGetStakeAddress(new Address(txInput.TxOutput.Address));
 
-            if (stakeAddress is not null)
-            {
-                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
-                    .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
-                    .FirstOrDefaultAsync();
+        //     if (stakeAddress is not null)
+        //     {
+        //         BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+        //             .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
+        //             .FirstOrDefaultAsync();
 
-                if (entry is not null)
-                {
-                    entry.Balance += txInput.TxOutput.Amount;
-                }
-            }
-        }));
+        //         if (entry is not null)
+        //         {
+        //             entry.Balance += txInput.TxOutput.Amount;
+        //         }
+        //     }
+        // }));
 
-        foreach (Task consumeTask in consumeTasks) await consumeTask;
+        // foreach (Task consumeTask in consumeTasks) await consumeTask;
 
-        IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
-        {
-            Address? stakeAddress = TryGetStakeAddress(new Address(txOutput.Address));
+        // IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
+        // {
+        //     Address? stakeAddress = TryGetStakeAddress(new Address(txOutput.Address));
 
-            if (stakeAddress is not null)
-            {
-                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
-                    .Where((bba) => (bba.StakeAddress == stakeAddress.ToString()) && (bba.Epoch == rollbackBlock.Epoch))
-                    .FirstOrDefaultAsync();
+        //     if (stakeAddress is not null)
+        //     {
+        //         BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
+        //             .Where((bba) => (bba.StakeAddress == stakeAddress.ToString()) && (bba.Epoch == rollbackBlock.Epoch))
+        //             .FirstOrDefaultAsync();
 
-                BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), rollbackBlock.Epoch);
-                if (entry is not null)
-                {
-                    entry.Balance -= txOutput.Amount;
-                }
-            };
-        }));
+        //         BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddress(stakeAddress.ToString(), rollbackBlock.Epoch);
+        //         if (entry is not null)
+        //         {
+        //             entry.Balance -= txOutput.Amount;
+        //         }
+        //     };
+        // }));
 
-        foreach (Task produceTask in produceTasks) await produceTask;
+        // foreach (Task produceTask in produceTasks) await produceTask;
 
-        await _dbContext.SaveChangesAsync();
+        // await _dbContext.SaveChangesAsync();
+        await Task.CompletedTask;
     }
 }
