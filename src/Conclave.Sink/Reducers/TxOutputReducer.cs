@@ -1,6 +1,7 @@
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Conclave.Sink.Reducers;
 
@@ -40,29 +41,25 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
                     Index = (ulong)txOutputEvent.Context.OutputIdx
                 };
 
+                newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };
+
+                EntityEntry<TxOutput> insertResult = await _dbContext.TxOutputs.AddAsync(newTxOutput);
+                await _dbContext.SaveChangesAsync();
+
                 if (txOutputEvent.TxOutput.Assets is not null && txOutputEvent.TxOutput.Assets.Count() > 0)
                 {
-                    newTxOutput = newTxOutput with
+                    await _dbContext.AddRangeAsync(txOutputEvent.TxOutput.Assets.Select(ouraAsset =>
                     {
-                        Assets = txOutputEvent.TxOutput.Assets.Select(ouraAsset =>
+                        return new Asset
                         {
-                            return new Asset
-                            {
-                                PolicyId = ouraAsset.Policy ?? string.Empty,
-                                Name = ouraAsset.Asset ?? string.Empty,
-                                Amount = ouraAsset.Amount ?? 0,
-                            };
-                        }),
-                        Transaction = tx
-                    };
+                            PolicyId = ouraAsset.Policy ?? string.Empty,
+                            Name = ouraAsset.Asset ?? string.Empty,
+                            Amount = ouraAsset.Amount ?? 0,
+                            TxOutput = insertResult.Entity
+                        };
+                    }));
+                    await _dbContext.SaveChangesAsync();
                 }
-                else
-                {
-                    newTxOutput = newTxOutput with { Transaction = tx };
-                }
-
-                await _dbContext.TxOutputs.AddAsync(newTxOutput);
-                await _dbContext.SaveChangesAsync();
             }
         }
     }
