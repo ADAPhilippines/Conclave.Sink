@@ -51,6 +51,7 @@ public class PoolRegistrationReducer : OuraReducerBase
 
             string? poolMetadataString = await GetJsonStringFromURLAsync(poolRegistrationEvent.PoolRegistration.PoolMetadata);
             string? metaDataHash = poolMetadataString is null ? null : HashUtility.Blake2b256(poolMetadataString.ToBytes()).ToStringHex();
+            List<string> poolOwnersbech32 = poolRegistrationEvent.PoolRegistration.PoolOwners.Select(po => _cardanoService.RewardAddressHashToBech32(po)).ToList();
 
             if (metaDataHash == poolRegistrationEvent.PoolRegistration.PoolMetadataHash)
             {
@@ -58,13 +59,14 @@ public class PoolRegistrationReducer : OuraReducerBase
 
                 await _dbContext.PoolRegistration.AddAsync(new()
                 {
-                    Operator = poolRegistrationEvent.PoolRegistration.Operator,
+                    PoolId = poolRegistrationEvent.PoolRegistration.Operator,
+                    PoolIdBech32 = _cardanoService.PoolHashToBech32(poolRegistrationEvent.PoolRegistration.Operator),
                     VRFKeyHash = poolRegistrationEvent.PoolRegistration.VRFKeyHash,
                     Pledge = poolRegistrationEvent.PoolRegistration.Pledge,
                     Cost = poolRegistrationEvent.PoolRegistration.Cost,
                     Margin = poolRegistrationEvent.PoolRegistration.Margin,
-                    RewardAccount = poolRegistrationEvent.PoolRegistration.RewardAccount,
-                    PoolOwners = poolRegistrationEvent.PoolRegistration.PoolOwners,
+                    RewardAccount = _cardanoService.RewardAddressHashToBech32(poolRegistrationEvent.PoolRegistration.RewardAccount),
+                    PoolOwners = poolOwnersbech32,
                     Relays = poolRegistrationEvent.PoolRegistration.Relays,
                     PoolMetadataJSON = poolMetadataJSON,
                     PoolMetadataString = poolMetadataString,

@@ -5,7 +5,8 @@ namespace Conclave.Sink.Models;
 
 public class PoolRegistration
 {
-    public string Operator { get; init; } = string.Empty;
+    public string PoolId { get; init; } = string.Empty;
+    public string PoolIdBech32 { get; init; } = string.Empty;
     public string VRFKeyHash { get; init; } = string.Empty;
     public ulong Pledge { get; init; }
     public ulong Cost { get; init; }
