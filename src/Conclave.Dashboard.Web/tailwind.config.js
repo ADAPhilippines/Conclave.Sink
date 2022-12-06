@@ -3,6 +3,9 @@ module.exports = {
     content: ["./**/*.{razor,cs}"],
     theme: {
         extend: {
+            backgroundImage: {
+                'card-gradient': "radial-gradient(rgba(68,138,255, 0.5), transparent)"
+            }
         },
         screens: {
             "xs": "375px",

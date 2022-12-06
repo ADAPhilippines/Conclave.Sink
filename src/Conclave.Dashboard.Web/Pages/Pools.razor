@@ -16,7 +16,7 @@ Light / Dark mode
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">
       @foreach (var item in ConclavePoolsList)
       {
-        <PoolCards PoolDetails="item" />
+        <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode"/>
       }
     </div>
     <div class="mt-6 lg:mt-5 text-right mb-[70px] md:mb-0">
@@ -37,7 +37,7 @@ Light / Dark mode
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">
       @foreach (var item in OtherPoolsList)
       {
-        <PoolCards PoolDetails="item" />
+        <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode"/>
       }
     </div>
     <div class="mt-6 lg:mt-5 text-right">

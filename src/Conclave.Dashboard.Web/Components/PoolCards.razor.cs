@@ -9,6 +9,9 @@ public partial class PoolCards
   [Parameter]
   public PoolsModel PoolDetails { get; set; } = new();
 
+  [Parameter]
+  public bool IsDarkMode { get; set; }
+
   private string CardBorder => PoolDetails.IsConclave
     ? "border-4 mud-border-warning"
     : "border-4 mud-border-primary";
@@ -32,11 +35,15 @@ public partial class PoolCards
 
   private string ButtonBorder()
   {
-    return PoolDetails.IsStaked 
+    return PoolDetails.IsStaked
     ? "border-solid border mud-border-error"
     : PoolDetails.IsConclave
       ? "border-solid border mud-border-tertiary"
       : "border-solid border mud-border-primary";
   }
 
+  private string HighlightClass()
+  {
+    return IsDarkMode ? "hover:bg-card-gradient" : "hover:bg-white";
+  }
 }
