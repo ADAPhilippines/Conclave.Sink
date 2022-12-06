@@ -10,7 +10,6 @@ namespace Conclave.Sink.Reducers;
 [OuraReducer(OuraVariant.TxInput, OuraVariant.TxOutput)]
 public class CnclvByStakeReducer : OuraReducerBase
 {
-
     private readonly ILogger<CnclvByStakeReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly ConclaveSinkSettings _settings;
