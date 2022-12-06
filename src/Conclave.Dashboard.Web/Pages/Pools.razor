@@ -31,7 +31,7 @@ Light / Dark mode
       <div>
         <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
           AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
-          Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" />
+          Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" OnKeyUp="OnKeyPressed"/>
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">

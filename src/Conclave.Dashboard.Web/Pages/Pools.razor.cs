@@ -3,6 +3,7 @@ using Conclave.Dashboard.Web.Models;
 using Conclave.Dashboard.Web.Services;
 using Microsoft.AspNetCore.Components;
 using Conclave.Dashboard.Web.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Conclave.Dashboard.Web.Pages;
 
@@ -13,6 +14,8 @@ public partial class Pools
 
     [Inject]
     private PoolService PoolService { get; set; } = default!;
+
+    public string Search { get; set; } = string.Empty;
 
     private List<PoolsModel> ConclavePoolsList { get; set; } = new();
 
@@ -46,5 +49,13 @@ public partial class Pools
         await InvokeAsync(StateHasChanged);
     }
 
-    public string Search { get; set; } = string.Empty;
+    private async Task OnKeyPressed(KeyboardEventArgs e) 
+    {
+        if(e.Key == "Enter") 
+        {
+            Console.WriteLine("Search");
+            Console.WriteLine(Search);
+            OtherPoolsList = await PoolService.GetPoolsSearchedList(Search);
+        }
+    }
 }
