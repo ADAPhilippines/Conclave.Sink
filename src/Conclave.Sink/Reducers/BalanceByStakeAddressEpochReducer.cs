@@ -100,7 +100,6 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     else
                     {
                         BalanceByStakeAddressEpoch? previousEntry = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
-
                         ulong balance = previousEntry is null ? (ulong)txOutputEvent.TxOutput.Amount : (previousEntry.Balance + amount);
 
                         await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
@@ -110,7 +109,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                             Epoch = epoch
                         });
                     }
-                    
+
                     await _dbContext.SaveChangesAsync();
                 }
             }),
