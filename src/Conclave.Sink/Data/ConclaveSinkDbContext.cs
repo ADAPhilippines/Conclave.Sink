@@ -29,9 +29,9 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<BalanceByStakeAddressEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
-        modelBuilder.Entity<PoolRegistration>().HasKey(s => new { s.Operator, s.TxHash });
-        modelBuilder.Entity<PoolRegistration>().Property(a => a.PoolMetadata).HasColumnType("jsonb");
-        modelBuilder.Entity<PoolRetirement>().HasKey(prt => prt.Pool);
+        modelBuilder.Entity<PoolRegistration>().HasKey(prg => new { prg.Operator, prg.TxHash });
+        modelBuilder.Entity<PoolRegistration>().Property(prg => prg.PoolMetadataJSON).HasColumnType("jsonb");
+        modelBuilder.Entity<PoolRetirement>().HasKey(prt => new { prt.Pool, prt.TxHash });
         modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
         modelBuilder.Entity<StakeByPoolEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
@@ -42,6 +42,12 @@ public class ConclaveSinkDbContext : DbContext
             .HasOne<TxOutput>(txInput => txInput.TxOutput)
             .WithMany(txOutput => txOutput.Inputs)
             .HasForeignKey(txInput => new { txInput.TxOutputHash, txInput.TxOutputIndex });
+
+        modelBuilder.Entity<PoolRegistration>()
+            .HasOne(pool => pool.Block)
+            .WithMany(block => block.PoolRegistrations)
+            .HasForeignKey(pool => pool.BlockHash)
+            .OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
     }

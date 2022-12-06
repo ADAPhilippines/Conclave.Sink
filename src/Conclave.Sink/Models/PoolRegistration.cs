@@ -13,8 +13,11 @@ public class PoolRegistration
     public string RewardAccount { get; init; } = string.Empty;
     public List<string> PoolOwners { get; init; } = new();
     public List<string> Relays { get; init; } = new();
-    public string? TxHash { get; init; } = string.Empty;
-    public JsonDocument? PoolMetadata { get; init; }
+    public JsonDocument? PoolMetadataJSON { get; init; }
+    public string? PoolMetadataString { get; init; } = string.Empty;
     public string? PoolMetadataHash { get; init; }
     public Block? Block { get; init; } = new();
+    public string? BlockHash { get; init; } = string.Empty;
+    public string? TxHash { get; init; } = string.Empty;
+    public Transaction? Transaction { get; init; } = new();
 }

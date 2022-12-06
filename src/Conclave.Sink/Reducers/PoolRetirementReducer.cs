@@ -32,19 +32,27 @@ public class PoolRetirementReducer : OuraReducerBase
             poolRetirementEvent.Context is not null &&
             poolRetirementEvent.PoolRetirement is not null &&
             poolRetirementEvent.PoolRetirement.Pool is not null &&
-            poolRetirementEvent.PoolRetirement.Epoch is not null)
+            poolRetirementEvent.PoolRetirement.Epoch is not null &&
+            poolRetirementEvent.Context.TxHash is not null)
         {
             Block? block = await _dbContext.Block
-                .Where(block => block.BlockHash == poolRetirementEvent.Context.BlockHash)
+                .Where(b => b.BlockHash == poolRetirementEvent.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
-            if (block is not null)
+            Transaction? transaction = await _dbContext.Transaction
+                .Where(t => t.Hash == poolRetirementEvent.Context.TxHash)
+                .FirstOrDefaultAsync();
+
+            if (block is not null &&
+                transaction is not null)
             {
                 await _dbContext.PoolRetirement.AddAsync(new()
                 {
                     Pool = poolRetirementEvent.PoolRetirement.Pool,
-                    Epoch = (ulong)poolRetirementEvent.PoolRetirement.Epoch,
-                    Block = block
+                    EffectiveEpoch = (ulong)poolRetirementEvent.PoolRetirement.Epoch,
+                    TxHash = poolRetirementEvent.Context.TxHash,
+                    Block = block,
+                    Transaction = transaction
                 });
             }
 
@@ -54,15 +62,6 @@ public class PoolRetirementReducer : OuraReducerBase
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        List<PoolRetirement> rollbackEntriesList = await _dbContext.PoolRetirement
-            .Where(pr => pr.Block == rollbackBlock)
-            .ToListAsync();
-
-        if (rollbackEntriesList is not null &&
-            rollbackEntriesList.Count is not 0)
-            _dbContext.RemoveRange(rollbackEntriesList);
-
-        await _dbContext.SaveChangesAsync();
+        await Task.CompletedTask;
     }
 }

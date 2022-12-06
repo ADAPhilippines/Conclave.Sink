@@ -42,14 +42,20 @@ public class PoolRegistrationReducer : OuraReducerBase
             poolRegistrationEvent.Context.BlockHash is not null)
         {
             Block? block = await _dbContext.Block
-                .Where(block => block.BlockHash == poolRegistrationEvent.Context.BlockHash)
+                .Where(b => b.BlockHash == poolRegistrationEvent.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
-            JsonDocument? poolMetadataJSON = await GetJsonFromURLAsync(poolRegistrationEvent.PoolRegistration.PoolMetadata);
-            string? metaDataHash = poolMetadataJSON is null ? null : HashUtility.Blake2b256(poolMetadataJSON.RootElement.ToString().ToBytes()).ToStringHex();
+            Transaction? transaction = await _dbContext.Transaction
+                .Where(t => t.Hash == poolRegistrationEvent.Context.TxHash)
+                .FirstOrDefaultAsync();
+
+            string? poolMetadataString = await GetJsonStringFromURLAsync(poolRegistrationEvent.PoolRegistration.PoolMetadata);
+            string? metaDataHash = poolMetadataString is null ? null : HashUtility.Blake2b256(poolMetadataString.ToBytes()).ToStringHex();
 
             if (metaDataHash == poolRegistrationEvent.PoolRegistration.PoolMetadataHash)
             {
+                JsonDocument? poolMetadataJSON = poolMetadataString is null ? null : JsonDocument.Parse(poolMetadataString);
+
                 await _dbContext.PoolRegistration.AddAsync(new()
                 {
                     Operator = poolRegistrationEvent.PoolRegistration.Operator,
@@ -60,10 +66,12 @@ public class PoolRegistrationReducer : OuraReducerBase
                     RewardAccount = poolRegistrationEvent.PoolRegistration.RewardAccount,
                     PoolOwners = poolRegistrationEvent.PoolRegistration.PoolOwners,
                     Relays = poolRegistrationEvent.PoolRegistration.Relays,
-                    PoolMetadata = poolMetadataJSON,
+                    PoolMetadataJSON = poolMetadataJSON,
+                    PoolMetadataString = poolMetadataString,
                     Block = block,
+                    PoolMetadataHash = metaDataHash,
                     TxHash = poolRegistrationEvent.Context.TxHash,
-                    PoolMetadataHash = poolRegistrationEvent.PoolRegistration.PoolMetadataHash
+                    Transaction = transaction
                 });
 
                 await _dbContext.SaveChangesAsync();
@@ -72,7 +80,7 @@ public class PoolRegistrationReducer : OuraReducerBase
     }
 
 
-    public async Task<JsonDocument?> GetJsonFromURLAsync(string? metaDataURL)
+    public async Task<string?> GetJsonStringFromURLAsync(string? metaDataURL)
     {
         using HttpClient client = _httpClientFactory.CreateClient();
         int retries = 0;
@@ -81,7 +89,7 @@ public class PoolRegistrationReducer : OuraReducerBase
         {
             try
             {
-                return await client.GetFromJsonAsync<JsonDocument>(metaDataURL);
+                return await client.GetStringAsync(metaDataURL);
             }
             catch
             {
@@ -89,20 +97,12 @@ public class PoolRegistrationReducer : OuraReducerBase
                 retries++;
             }
         }
+
         return null;
     }
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        List<PoolRegistration> rollbackEntriesList = await _dbContext.PoolRegistration
-            .Where(p => p.Block == rollbackBlock)
-            .ToListAsync();
-
-        if (rollbackEntriesList is not null &&
-            rollbackEntriesList.Count is not 0)
-            _dbContext.RemoveRange(rollbackEntriesList);
-
-        await _dbContext.SaveChangesAsync();
+        await Task.CompletedTask;
     }
 }
