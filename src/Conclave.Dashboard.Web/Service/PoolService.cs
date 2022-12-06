@@ -19,4 +19,11 @@ public class PoolService
     List<PoolsModel> Pools = await _httpClient.GetFromJsonAsync<List<PoolsModel>>("data/pools.json") ?? new();
     return Pools;
   }
+
+  public async Task<List<PoolsModel>> GetFilteredPoolsListAsync(bool isConclave)
+  {
+    List<PoolsModel> ListOfPools = await _httpClient.GetFromJsonAsync<List<PoolsModel>>("data/pools.json") ?? new();
+    List<PoolsModel> FilteredPools = ListOfPools.FindAll(x => x.IsConclave == isConclave);
+    return FilteredPools;
+  }
 }

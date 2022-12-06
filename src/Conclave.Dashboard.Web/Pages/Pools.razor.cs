@@ -14,6 +14,10 @@ public partial class Pools
     [Inject]
     private PoolService PoolService { get; set; } = default!;
 
+    private List<PoolsModel> ConclavePoolsList { get; set; } = new();
+
+    private List<PoolsModel> OtherPoolsList { get; set; } = new();
+
     private List<PoolsModel> PoolsList { get; set; } = new();
 
     public bool IsDarkMode
@@ -31,6 +35,8 @@ public partial class Pools
             AppStateService.PropertyChanged += OnAppStatePropertyChanged;
 
         PoolsList = await PoolService.GetPoolsListAsync();
+        ConclavePoolsList = await PoolService.GetFilteredPoolsListAsync(true);
+        OtherPoolsList = await PoolService.GetFilteredPoolsListAsync(false);
 
         await base.OnInitializedAsync();
     }

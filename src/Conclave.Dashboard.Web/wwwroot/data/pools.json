@@ -19,7 +19,7 @@
     "Saturation": 62,
     "Pledge": 100000,
     "IsConclave": false,
-    "IsStaked": true
+    "IsStaked": false
   },
   {
     "Id": 3,
@@ -31,5 +31,28 @@
     "Pledge": 100000,
     "IsConclave": false,
     "IsStaked": false
+  },
+  {
+    "Id": 4,
+    "Ticker": "Ning Pool",
+    "Description": "#1 Mama Cat",
+    "Blocks": 8,
+    "Interest": 22,
+    "Saturation": 62,
+    "Pledge": 100000,
+    "IsConclave": true,
+    "IsStaked": true
+  },
+  {
+    "Id": 5,
+    "Ticker": "Beng Pool",
+    "Description": "#1 Mama Dog",
+    "Blocks": 8,
+    "Interest": 22,
+    "Saturation": 62,
+    "Pledge": 100000,
+    "IsConclave": true,
+    "IsStaked": false
   }
+  
 ]
