@@ -17,4 +17,7 @@ public record PoolsModel
   public int Pledge { get; set; }
 
   public bool IsConclave { get; set; }
+
+  public bool IsStaked { get; set; }
+
 }

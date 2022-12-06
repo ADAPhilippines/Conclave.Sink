@@ -25,7 +25,7 @@
         <MudText Typo="Typo.body2">Saturation</MudText>
         <MudText Typo="Typo.body2">A 17.14M (@PoolDetails.Saturation%)</MudText>
       </div>
-      <MudProgressLinear Color="ProgressBar" Rounded="true" Size="Size.Large" Min="0" Max="100" Value="PoolDetails.Saturation" Class="my-3" />
+      <MudProgressLinear Color="Color.Primary" Rounded="true" Size="Size.Large" Min="0" Max="100" Value="PoolDetails.Saturation" Class="my-3" />
       <div class="flex justify-between mb-4">
         <MudText Typo="Typo.body2">Pledge</MudText>
         <MudText Typo="Typo.body2">A @String.Format("{0:n0}", PoolDetails.Pledge)</MudText>
@@ -33,8 +33,8 @@
       <MudProgressLinear Color="Color.Info" Rounded="true" Size="Size.Large" Min="0" Max="1000000" Value="PoolDetails.Pledge" Class="mt-3" />
     </MudCardContent>
     <MudCardActions Class="mb-2">
-      <MudButton Class="@ButtonBorder" FullWidth="true" Variant="Variant.Filled" Color="ButtonColor" Style="border-radius: 1rem">
-        Stake
+      <MudButton Class="@ButtonBorder()" FullWidth="true" Variant="Variant.Filled" Color="ButtonColor()" Style="border-radius: 1rem">
+       @ButtonTitle
       </MudButton>
     </MudCardActions>
   </MudCard>

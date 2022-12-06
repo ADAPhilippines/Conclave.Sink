@@ -7,7 +7,8 @@
     "Interest": 22,
     "Saturation": 62,
     "Pledge": 100000,
-    "IsConclave": true
+    "IsConclave": true,
+    "IsStaked": false
   },
   {
     "Id": 2,
@@ -17,7 +18,8 @@
     "Interest": 22,
     "Saturation": 62,
     "Pledge": 100000,
-    "IsConclave": false
+    "IsConclave": false,
+    "IsStaked": true
   },
   {
     "Id": 3,
@@ -27,6 +29,7 @@
     "Interest": 22,
     "Saturation": 62,
     "Pledge": 100000,
-    "IsConclave": false
+    "IsConclave": false,
+    "IsStaked": false
   }
 ]

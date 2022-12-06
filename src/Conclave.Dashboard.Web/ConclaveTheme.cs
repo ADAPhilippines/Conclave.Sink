@@ -17,10 +17,11 @@ public class ConclaveTheme : MudTheme
             Warning = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool card
             Info = new MudColor("#35B5B5"),
             Success = new MudColor("#079F36"),
-            Error = new MudColor("#C37B21"),
+            Error = Colors.Red.Default,
             SecondaryContrastText = new MudColor("#FFFFFF"),
             TertiaryContrastText = new MudColor("#FFFFFF"),
             InfoContrastText = new MudColor("rgba(37, 19, 109, 1)"),
+            Surface = Colors.Shades.White // pagination color
         };
 
         PaletteDark = new PaletteDark()
@@ -33,10 +34,11 @@ public class ConclaveTheme : MudTheme
             Warning = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool card
             Info = new MudColor("#35B5B5"),
             Success = new MudColor("#079F36"),
-            Error = new MudColor("#C37B21"),
+            Error = Colors.Red.Darken4,
             SecondaryContrastText = new MudColor("#41FBFB"),
             TertiaryContrastText = new MudColor("#41FBFB"),
-            InfoContrastText = new MudColor("#FFFFFF")
+            InfoContrastText = new MudColor("#FFFFFF"),
+            Surface = new MudColor("rgba(255, 255, 255, 0.5)")
         };
     }
 }

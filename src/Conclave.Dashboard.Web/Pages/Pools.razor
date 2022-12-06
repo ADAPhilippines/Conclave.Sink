@@ -20,8 +20,8 @@ Light / Dark mode
       }
     </div>
     <div class="mt-6 lg:mt-5 text-right mb-[70px] md:mb-0">
-      <MudPagination Rectangular="true" Variant="Variant.Filled" Color="Color.Info" BoundaryCount="1" MiddleCount="1"
-        Count="4" />
+      <MudPagination Rectangular="true" Variant="Variant.Filled" BoundaryCount="1" MiddleCount="1"
+        Count="4" Color="Color.Surface"/>
     </div>
   </div>
 
@@ -29,7 +29,7 @@ Light / Dark mode
     <div class="flex flex-col items-start justify-between md:flex-row mb-6">
       <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
       <div>
-        <MudTextField @bind-Value="Search" Label="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
+        <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
           AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
           Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" />
       </div>
