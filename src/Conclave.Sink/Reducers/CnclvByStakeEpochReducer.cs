@@ -114,8 +114,8 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                                 await _dbContext.CnclvByStakeEpoch.AddAsync(new()
                                 {
                                     StakeAddress = stakeAddress,
-                                    Balance = conclaveOutputAsset.Amount ?? 0,
-                                    Epoch = prevEpochBalance + epoch
+                                    Balance = prevEpochBalance + conclaveOutputAsset.Amount ?? 0,
+                                    Epoch =  epoch
                                 });
                             }
                             await _dbContext.SaveChangesAsync();
