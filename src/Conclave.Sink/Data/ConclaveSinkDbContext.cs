@@ -49,9 +49,9 @@ public class ConclaveSinkDbContext : DbContext
             .HasForeignKey(txInput => new { txInput.TxOutputHash, txInput.TxOutputIndex });
 
         modelBuilder.Entity<PoolRegistration>()
-            .HasOne(pool => pool.Block)
-            .WithMany(block => block.PoolRegistrations)
-            .HasForeignKey(pool => pool.BlockHash)
+            .HasOne(pool => pool.Transaction)
+            .WithMany(transaction => transaction.PoolRegistrations)
+            .HasForeignKey(pool => pool.TxHash)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TxInput>()

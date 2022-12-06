@@ -41,10 +41,6 @@ public class PoolRegistrationReducer : OuraReducerBase
             poolRegistrationEvent.Context is not null &&
             poolRegistrationEvent.Context.BlockHash is not null)
         {
-            Block? block = await _dbContext.Blocks
-                .Where(b => b.BlockHash == poolRegistrationEvent.Context.BlockHash)
-                .FirstOrDefaultAsync();
-
             Transaction? transaction = await _dbContext.Transactions
                 .Where(t => t.Hash == poolRegistrationEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
@@ -70,7 +66,6 @@ public class PoolRegistrationReducer : OuraReducerBase
                     Relays = poolRegistrationEvent.PoolRegistration.Relays,
                     PoolMetadataJSON = poolMetadataJSON,
                     PoolMetadataString = poolMetadataString,
-                    Block = block,
                     PoolMetadataHash = metaDataHash,
                     TxHash = poolRegistrationEvent.Context.TxHash,
                     Transaction = transaction

@@ -17,8 +17,6 @@ public class PoolRegistration
     public JsonDocument? PoolMetadataJSON { get; init; }
     public string? PoolMetadataString { get; init; } = string.Empty;
     public string? PoolMetadataHash { get; init; }
-    public Block? Block { get; init; } = new();
-    public string? BlockHash { get; init; } = string.Empty;
     public string? TxHash { get; init; } = string.Empty;
     public Transaction? Transaction { get; init; } = new();
 }
