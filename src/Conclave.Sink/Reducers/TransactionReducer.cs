@@ -42,32 +42,23 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             transactionEvent.Context.TxHash is not null &&
             transactionEvent.Transaction is not null)
         {
-            Transaction? transaction = await _dbContext.Transaction
-                .Where(t => t.Hash == transactionEvent.Context.TxHash)
-                .FirstOrDefaultAsync();
 
-            if (transaction is not null) return;
-
-            Block? block = await _dbContext.Block
+            Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
-            if (block is null) return;
+            if (block is null) throw new NullReferenceException("Block does not exist!");
 
-            if (transactionEvent.Transaction.Withdrawals is not null)
-            {
-                foreach (Withdrawal withdrawal in transactionEvent.Transaction.Withdrawals)
-                {
-                    withdrawal.RewardAccount = Bech32.Encode(withdrawal.RewardAccount.HexToByteArray(),
-                        AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType));
-                }
-            }
-
-            await _dbContext.Transaction.AddAsync(new()
+            await _dbContext.Transactions.AddAsync(new()
             {
                 Hash = transactionEvent.Context.TxHash,
                 Fee = transactionEvent.Transaction.Fee,
-                Withdrawals = transactionEvent.Transaction.Withdrawals,
+                Withdrawals = transactionEvent.Transaction.Withdrawals is not null ?
+                    transactionEvent.Transaction.Withdrawals.Select(ouraWithdrawal => new Withdrawal
+                    {
+                        StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
+                        Amount = ouraWithdrawal.Coin ?? 0UL
+                    }) : null,
                 Block = block
             });
 

@@ -17,6 +17,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly ConclaveSinkSettings _settings;
+
     public WithdrawalByStakeEpochReducer(ILogger<WithdrawalByStakeEpochReducer> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
         IOptions<ConclaveSinkSettings> settings,
@@ -27,6 +28,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
         _settings = settings.Value;
         _cardanoService = cardanoService;
     }
+
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
@@ -38,14 +40,14 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
             transactionEvent.Context.TxHash is not null &&
             transactionEvent.Context.Slot is not null)
         {
-            IEnumerable<Withdrawal> withdrawals = transactionEvent.Transaction.Withdrawals;
+            IEnumerable<OuraWithdrawal> withdrawals = transactionEvent.Transaction.Withdrawals;
 
             if (withdrawals.Any())
             {
                 ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)transactionEvent.Context.Slot);
-                foreach (Withdrawal withdrawal in withdrawals)
+                foreach (OuraWithdrawal withdrawal in withdrawals)
                 {
-                    if (withdrawal.Coin <= 0) continue;
+                    if (withdrawal.Coin is null || withdrawal.Coin <= 0) continue;
 
                     WithdrawalByStakeEpoch? withdrawalByStakeEpoch = await _dbContext.WithdrawalByStakeEpoch
                         .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
@@ -53,7 +55,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
 
                     if (withdrawalByStakeEpoch is not null)
                     {
-                        withdrawalByStakeEpoch.Amount += withdrawal.Coin;
+                        withdrawalByStakeEpoch.Amount += (ulong)withdrawal.Coin;
                     }
                     else
                     {
@@ -69,7 +71,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
                         await _dbContext.WithdrawalByStakeEpoch.AddAsync(new()
                         {
                             StakeAddress = stakeAddress,
-                            Amount = withdrawal.Coin + previousWithdrawal,
+                            Amount = (ulong)withdrawal.Coin + previousWithdrawal,
                             Epoch = epoch
                         });
                     }
@@ -84,7 +86,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        IEnumerable<Transaction>? transactions = await _dbContext.Transaction
+        IEnumerable<Transaction>? transactions = await _dbContext.Transactions
             .Include(t => t.Block)
             .Where(t => t.Block.BlockHash == rollbackBlock.BlockHash && t.Withdrawals != null)
             .ToListAsync();
@@ -98,20 +100,20 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
             foreach (Withdrawal withdrawal in transaction.Withdrawals)
             {
                 WithdrawalByStakeEpoch? withdrawalByStakeEpoch = await _dbContext.WithdrawalByStakeEpoch
-                    .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
+                    .Where(w => w.StakeAddress == withdrawal.StakeAddress &&
                         w.Epoch == rollbackBlock.Epoch)
                     .FirstOrDefaultAsync();
 
                 if (withdrawalByStakeEpoch is null) return;
 
                 ulong previousWithdrawal = await _dbContext.WithdrawalByStakeEpoch
-                    .Where(w => w.StakeAddress == withdrawal.RewardAccount &&
+                    .Where(w => w.StakeAddress == withdrawal.StakeAddress &&
                         w.Epoch < rollbackBlock.Epoch)
                     .OrderByDescending(w => w.Epoch)
                     .Select(w => w.Amount)
                     .FirstOrDefaultAsync();
 
-                withdrawalByStakeEpoch.Amount -= withdrawal.Coin;
+                withdrawalByStakeEpoch.Amount -= withdrawal.Amount;
 
                 if (withdrawalByStakeEpoch.Amount <= 0 || withdrawalByStakeEpoch.Amount <= previousWithdrawal)
                     _dbContext.WithdrawalByStakeEpoch.Remove(withdrawalByStakeEpoch);

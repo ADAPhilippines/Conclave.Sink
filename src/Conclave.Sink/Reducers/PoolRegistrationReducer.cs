@@ -41,11 +41,11 @@ public class PoolRegistrationReducer : OuraReducerBase
             poolRegistrationEvent.Context is not null &&
             poolRegistrationEvent.Context.BlockHash is not null)
         {
-            Block? block = await _dbContext.Block
+            Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == poolRegistrationEvent.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
-            Transaction? transaction = await _dbContext.Transaction
+            Transaction? transaction = await _dbContext.Transactions
                 .Where(t => t.Hash == poolRegistrationEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
 
@@ -57,7 +57,7 @@ public class PoolRegistrationReducer : OuraReducerBase
             {
                 JsonDocument? poolMetadataJSON = poolMetadataString is null ? null : JsonDocument.Parse(poolMetadataString);
 
-                await _dbContext.PoolRegistration.AddAsync(new()
+                await _dbContext.PoolRegistrations.AddAsync(new()
                 {
                     PoolId = poolRegistrationEvent.PoolRegistration.Operator,
                     PoolIdBech32 = _cardanoService.PoolHashToBech32(poolRegistrationEvent.PoolRegistration.Operator),

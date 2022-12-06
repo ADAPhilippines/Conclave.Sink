@@ -29,37 +29,43 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
          txOutputEvent.TxOutput.Amount is not null &&
          txOutputEvent.TxOutput.Address is not null)
         {
-            Block? block = await _dbContext.Block.Where(block => block.BlockHash == txOutputEvent.Context.BlockHash).FirstOrDefaultAsync();
-            if (block is not null)
+            Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txOutputEvent.Context.TxHash).FirstOrDefaultAsync();
+
+            if (tx is not null)
             {
-                await _dbContext.TxOutput.AddAsync(new()
+                TxOutput newTxOutput = new()
                 {
-                    TxHash = txOutputEvent.Context.TxHash,
-                    Index = (ulong)txOutputEvent.Context.OutputIdx,
                     Amount = (ulong)txOutputEvent.TxOutput.Amount,
                     Address = txOutputEvent.TxOutput.Address,
-                    Block = block
-                });
+                    Index = (ulong)txOutputEvent.Context.OutputIdx
+                };
+
+                if (txOutputEvent.TxOutput.Assets is not null && txOutputEvent.TxOutput.Assets.Count() > 0)
+                {
+                    newTxOutput = newTxOutput with
+                    {
+                        Assets = txOutputEvent.TxOutput.Assets.Select(ouraAsset =>
+                        {
+                            return new Asset
+                            {
+                                PolicyId = ouraAsset.Policy ?? string.Empty,
+                                Name = ouraAsset.Asset ?? string.Empty,
+                                Amount = ouraAsset.Amount ?? 0,
+                            };
+                        }),
+                        Transaction = tx
+                    };
+                }
+                else
+                {
+                    newTxOutput = newTxOutput with { Transaction = tx };
+                }
+
+                await _dbContext.TxOutputs.AddAsync(newTxOutput);
                 await _dbContext.SaveChangesAsync();
             }
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        IEnumerable<TxOutput>? rollbackTxOutputs = await _dbContext.TxOutput
-            .Where(txOutput => txOutput.Block == rollbackBlock)
-            .ToListAsync();
-
-        if (rollbackTxOutputs is not null)
-        {
-            rollbackTxOutputs.ToList().ForEach(txOutput =>
-            {
-                _dbContext.TxOutput.Remove(txOutput);
-            });
-        }
-
-        await _dbContext.SaveChangesAsync();
-    }
+    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }

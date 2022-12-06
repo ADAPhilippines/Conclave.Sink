@@ -8,8 +8,5 @@ public class Block
     public string VrfKeyhash { get; set; } = string.Empty;
     public ulong Slot { get; set; }
     public ulong Epoch { get; set; }
-    public IEnumerable<TxInput> Inputs { get; set; } = new List<TxInput>();
-    public IEnumerable<TxOutput> Outputs { get; set; } = new List<TxOutput>();
-    public IEnumerable<PoolRegistration> PoolRegistrations { get; set; } = new List<PoolRegistration>();
-    public IEnumerable<PoolRetirement> PoolRetirements { get; set; } = new List<PoolRetirement>();
+    public IEnumerable<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

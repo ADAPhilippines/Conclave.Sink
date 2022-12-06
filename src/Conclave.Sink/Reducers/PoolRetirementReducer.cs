@@ -35,18 +35,18 @@ public class PoolRetirementReducer : OuraReducerBase
             poolRetirementEvent.PoolRetirement.Epoch is not null &&
             poolRetirementEvent.Context.TxHash is not null)
         {
-            Block? block = await _dbContext.Block
+            Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == poolRetirementEvent.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
-            Transaction? transaction = await _dbContext.Transaction
+            Transaction? transaction = await _dbContext.Transactions
                 .Where(t => t.Hash == poolRetirementEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
 
             if (block is not null &&
                 transaction is not null)
             {
-                await _dbContext.PoolRetirement.AddAsync(new()
+                await _dbContext.PoolRetirements.AddAsync(new()
                 {
                     Pool = poolRetirementEvent.PoolRetirement.Pool,
                     EffectiveEpoch = (ulong)poolRetirementEvent.PoolRetirement.Epoch,

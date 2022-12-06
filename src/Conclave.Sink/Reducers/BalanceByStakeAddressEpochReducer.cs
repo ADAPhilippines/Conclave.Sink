@@ -37,7 +37,9 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     txInputEvent.Context is not null &&
                     txInputEvent.Context.Slot is not null)
                 {
-                    TxOutput? input = await _dbContext.TxOutput.Include(i => i.Block)
+                    TxOutput? input = await _dbContext.TxOutputs
+                        .Include(txOut => txOut.Transaction)
+                        .ThenInclude(transaction => transaction.Block)
                         .Where(txOut => (txOut.TxHash == txInputEvent.TxInput.TxHash) && (txOut.Index == txInputEvent.TxInput.Index))
                         .FirstOrDefaultAsync();
 
@@ -143,13 +145,15 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        IEnumerable<TxInput> consumed = await _dbContext.TxInput
+        IEnumerable<TxInput> consumed = await _dbContext.TxInputs
+            .Include(txInput => txInput.Transaction)
+            .ThenInclude(transaction => transaction.Block)
             .Include(txInput => txInput.TxOutput)
-            .Where(txInput => txInput.Block == rollbackBlock)
+            .Where(txInput => txInput.Transaction.Block == rollbackBlock)
             .ToListAsync();
 
-        IEnumerable<TxOutput> produced = await _dbContext.TxOutput
-            .Where(txOutput => txOutput.Block == rollbackBlock)
+        IEnumerable<TxOutput> produced = await _dbContext.TxOutputs
+            .Where(txOutput => txOutput.Transaction.Block == rollbackBlock)
             .ToListAsync();
 
         IEnumerable<Task> consumeTasks = consumed.ToList().Select(txInput => Task.Run(async () =>

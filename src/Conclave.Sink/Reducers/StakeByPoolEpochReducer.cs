@@ -38,7 +38,7 @@ public class StakeByPoolEpochReducer : OuraReducerBase
             stakeDelegationEvent.Context.TxIdx is not null &&
             stakeDelegationEvent.Context.TxHash is not null)
         {
-            Block? block = await _dbContext.Block.Where(b => b.BlockHash == stakeDelegationEvent.Context.BlockHash).FirstOrDefaultAsync();
+            Block? block = await _dbContext.Blocks.Where(b => b.BlockHash == stakeDelegationEvent.Context.BlockHash).FirstOrDefaultAsync();
 
             if (block is null) return;
 
