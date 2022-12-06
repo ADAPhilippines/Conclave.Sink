@@ -8,7 +8,7 @@ public class ConclaveSinkDbContext : DbContext
 {
     public DbSet<AddressByStake> AddressByStake => Set<AddressByStake>();
     public DbSet<BalanceByAddress> BalanceByAddress => Set<BalanceByAddress>();
-    public DbSet<BalanceByStakeAddressEpoch> BalanceByStakeAddressEpoch => Set<BalanceByStakeAddressEpoch>();
+    public DbSet<BalanceByStakeAddressEpoch> BalanceByStakeAddressEpoches => Set<BalanceByStakeAddressEpoch>();
     public DbSet<PoolRegistration> PoolRegistrations => Set<PoolRegistration>();
     public DbSet<PoolRetirement> PoolRetirements => Set<PoolRetirement>();
     public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
@@ -47,12 +47,6 @@ public class ConclaveSinkDbContext : DbContext
             .HasOne<TxOutput>(txInput => txInput.TxOutput)
             .WithMany(txOutput => txOutput.Inputs)
             .HasForeignKey(txInput => new { txInput.TxOutputHash, txInput.TxOutputIndex });
-
-        modelBuilder.Entity<PoolRegistration>()
-            .HasOne(pool => pool.Transaction)
-            .WithMany(transaction => transaction.PoolRegistrations)
-            .HasForeignKey(pool => pool.TxHash)
-            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TxInput>()
             .HasOne<Transaction>(txInput => txInput.Transaction)

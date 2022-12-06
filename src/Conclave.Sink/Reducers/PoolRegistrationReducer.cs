@@ -12,8 +12,9 @@ namespace Conclave.Sink.Reducers;
 [OuraReducer(OuraVariant.PoolRegistration)]
 public class PoolRegistrationReducer : OuraReducerBase
 {
-    private const int GET_METADATA_DELAY = 200;
-    private const int MAX_RETRY_COUNT = 5;
+    private const int METADATA_REQUEST_RETRY_DELAY = 200;
+    private const int METADATA_MAX_REQUEST_RETRY_COUNT = 5;
+    private const int METADATA_REQUEST_TIMEOUT = 1000;
     private readonly ILogger<PoolRegistrationReducer> _logger;
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
@@ -39,30 +40,30 @@ public class PoolRegistrationReducer : OuraReducerBase
         if (poolRegistrationEvent is not null &&
             poolRegistrationEvent.PoolRegistration is not null &&
             poolRegistrationEvent.Context is not null &&
-            poolRegistrationEvent.Context.BlockHash is not null)
+            poolRegistrationEvent.Context.BlockHash is not null &&
+            poolRegistrationEvent.Context.TxHash is not null)
         {
             Transaction? transaction = await _dbContext.Transactions
                 .Where(t => t.Hash == poolRegistrationEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
 
             string? poolMetadataString = await GetJsonStringFromURLAsync(poolRegistrationEvent.PoolRegistration.PoolMetadata);
-            string? metaDataHash = poolMetadataString is null ? null : HashUtility.Blake2b256(poolMetadataString.ToBytes()).ToStringHex();
-            List<string> poolOwnersbech32 = poolRegistrationEvent.PoolRegistration.PoolOwners.Select(po => _cardanoService.RewardAddressHashToBech32(po)).ToList();
+            string? metaDataHash = poolMetadataString is not null ? HashUtility.Blake2b256(poolMetadataString.ToBytes()).ToStringHex() : null;
 
-            if (metaDataHash == poolRegistrationEvent.PoolRegistration.PoolMetadataHash)
+            if (metaDataHash == poolRegistrationEvent.PoolRegistration.PoolMetadataHash &&
+                transaction is not null)
             {
-                JsonDocument? poolMetadataJSON = poolMetadataString is null ? null : JsonDocument.Parse(poolMetadataString);
+                JsonDocument? poolMetadataJSON = poolMetadataString is not null ? JsonDocument.Parse(poolMetadataString) : null;
 
                 await _dbContext.PoolRegistrations.AddAsync(new()
                 {
-                    PoolId = poolRegistrationEvent.PoolRegistration.Operator,
-                    PoolIdBech32 = _cardanoService.PoolHashToBech32(poolRegistrationEvent.PoolRegistration.Operator),
-                    VRFKeyHash = poolRegistrationEvent.PoolRegistration.VRFKeyHash,
+                    PoolId = _cardanoService.PoolHashToBech32(poolRegistrationEvent.PoolRegistration.Operator),
+                    VrfKeyHash = poolRegistrationEvent.PoolRegistration.VRFKeyHash,
                     Pledge = poolRegistrationEvent.PoolRegistration.Pledge,
                     Cost = poolRegistrationEvent.PoolRegistration.Cost,
                     Margin = poolRegistrationEvent.PoolRegistration.Margin,
                     RewardAccount = _cardanoService.RewardAddressHashToBech32(poolRegistrationEvent.PoolRegistration.RewardAccount),
-                    PoolOwners = poolOwnersbech32,
+                    PoolOwners = poolRegistrationEvent.PoolRegistration.PoolOwners.Select(po => _cardanoService.RewardAddressHashToBech32(po)).ToList(),
                     Relays = poolRegistrationEvent.PoolRegistration.Relays,
                     PoolMetadataJSON = poolMetadataJSON,
                     PoolMetadataString = poolMetadataString,
@@ -80,9 +81,10 @@ public class PoolRegistrationReducer : OuraReducerBase
     public async Task<string?> GetJsonStringFromURLAsync(string? metaDataURL)
     {
         using HttpClient client = _httpClientFactory.CreateClient();
+        client.Timeout = TimeSpan.FromMilliseconds(METADATA_REQUEST_TIMEOUT);
         int retries = 0;
 
-        while (retries <= MAX_RETRY_COUNT)
+        while (retries <= METADATA_MAX_REQUEST_RETRY_COUNT)
         {
             try
             {
@@ -90,7 +92,7 @@ public class PoolRegistrationReducer : OuraReducerBase
             }
             catch
             {
-                await Task.Delay(GET_METADATA_DELAY);
+                await Task.Delay(METADATA_REQUEST_RETRY_DELAY);
                 retries++;
             }
         }
@@ -98,8 +100,5 @@ public class PoolRegistrationReducer : OuraReducerBase
         return null;
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        await Task.CompletedTask;
-    }
+    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }

@@ -6,8 +6,7 @@ namespace Conclave.Sink.Models;
 public class PoolRegistration
 {
     public string PoolId { get; init; } = string.Empty;
-    public string PoolIdBech32 { get; init; } = string.Empty;
-    public string VRFKeyHash { get; init; } = string.Empty;
+    public string VrfKeyHash { get; init; } = string.Empty;
     public ulong Pledge { get; init; }
     public ulong Cost { get; init; }
     public decimal Margin { get; init; }
@@ -17,6 +16,6 @@ public class PoolRegistration
     public JsonDocument? PoolMetadataJSON { get; init; }
     public string? PoolMetadataString { get; init; } = string.Empty;
     public string? PoolMetadataHash { get; init; }
-    public string? TxHash { get; init; } = string.Empty;
-    public Transaction? Transaction { get; init; } = new();
+    public string TxHash { get; init; } = string.Empty;
+    public Transaction Transaction { get; init; } = new();
 }

@@ -43,7 +43,7 @@ public class PoolRetirementReducer : OuraReducerBase
             {
                 await _dbContext.PoolRetirements.AddAsync(new()
                 {
-                    Pool = poolRetirementEvent.PoolRetirement.Pool,
+                    Pool = _cardanoService.PoolHashToBech32(poolRetirementEvent.PoolRetirement.Pool),
                     EffectiveEpoch = (ulong)poolRetirementEvent.PoolRetirement.Epoch,
                     TxHash = poolRetirementEvent.Context.TxHash,
                     Transaction = transaction
@@ -54,8 +54,5 @@ public class PoolRetirementReducer : OuraReducerBase
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        await Task.CompletedTask;
-    }
+    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }
