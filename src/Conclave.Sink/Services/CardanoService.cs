@@ -1,5 +1,7 @@
 using CardanoSharp.Wallet.Encoding;
 using CardanoSharp.Wallet.Extensions;
+using CardanoSharp.Wallet.Extensions.Models;
+using CardanoSharp.Wallet.Models.Addresses;
 using Conclave.Sink.Models;
 using Microsoft.Extensions.Options;
 
@@ -16,4 +18,15 @@ public class CardanoService
     public ulong CalculateEpochBySlot(ulong slot) => slot / _settings.EpochLength;
 
     public string PoolHashToBech32(string poolId) => Bech32.Encode(poolId.HexToByteArray(), "pool");
+
+    public string? TryGetStakeAddress(string paymentAddress)
+    {
+        try
+        {
+            Address addr = new Address(paymentAddress);
+            return addr.GetStakeAddress().ToString();
+        }
+        catch { }
+        return null;
+    }
 }
