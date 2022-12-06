@@ -56,7 +56,7 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                             if (stakeAddress is not null)
                             {
                                 ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInputEvent.Context.Slot);
-                                CnclvByStakeEpoch? entry = await _dbContext.CnclvByStake
+                                CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch
                                     .Where((cbs) => cbs.StakeAddress == stakeAddress && cbs.Epoch == epoch)
                                     .FirstOrDefaultAsync();
 
@@ -65,7 +65,7 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                                     entry.Balance -= conclaveOutputAsset.Amount;
                                     if (entry.Balance <= 0)
                                     {
-                                        _dbContext.CnclvByStake.Remove(entry);
+                                        _dbContext.CnclvByStakeEpoch.Remove(entry);
                                     }
                                     await _dbContext.SaveChangesAsync();
                                 }
@@ -95,7 +95,7 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                         {
                             ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutputEvent.Context.Slot);
 
-                            CnclvByStakeEpoch? entry = await _dbContext.CnclvByStake
+                            CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch
                                 .Where(s => s.StakeAddress == stakeAddress && s.Epoch == epoch)
                                 .FirstOrDefaultAsync();
 
@@ -105,13 +105,13 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                             }
                             else
                             {
-                                ulong prevEpochBalance = await _dbContext.CnclvByStake
+                                ulong prevEpochBalance = await _dbContext.CnclvByStakeEpoch
                                     .Where(w => w.StakeAddress == stakeAddress && w.Epoch < epoch)
                                     .OrderByDescending(w => w.Epoch)
                                     .Select(w => w.Balance)
                                     .FirstOrDefaultAsync();
 
-                                await _dbContext.CnclvByStake.AddAsync(new()
+                                await _dbContext.CnclvByStakeEpoch.AddAsync(new()
                                 {
                                     StakeAddress = stakeAddress,
                                     Balance = conclaveOutputAsset.Amount ?? 0,
@@ -152,7 +152,7 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
         {
             if (txInput.TxOutput is not null)
             {
-                CnclvByStakeEpoch? entry = await _dbContext.CnclvByStake
+                CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch
                     .Where((s) => s.StakeAddress == txInput.TxOutput.Address && s.Epoch == epoch)
                     .FirstOrDefaultAsync();
 
@@ -168,7 +168,7 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
         // process produced
         IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
         {
-            CnclvByStakeEpoch? entry = await _dbContext.CnclvByStake
+            CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch
                 .Where((s) => s.StakeAddress == txOutput.Address && s.Epoch == epoch)
                 .FirstOrDefaultAsync();
 
@@ -177,7 +177,7 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                 entry.Balance -= txOutput.Amount;
                 if (entry.Balance <= 0)
                 {
-                    _dbContext.CnclvByStake.Remove(entry);
+                    _dbContext.CnclvByStakeEpoch.Remove(entry);
                 }
             }
         }));

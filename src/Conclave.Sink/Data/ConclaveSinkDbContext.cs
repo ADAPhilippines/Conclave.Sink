@@ -11,7 +11,7 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<BalanceByStakeEpoch> BalanceByStakeEpoch => Set<BalanceByStakeEpoch>();
     public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
     public DbSet<StakeByPoolEpoch> StakeByPoolEpoch => Set<StakeByPoolEpoch>();
-    public DbSet<CnclvByStakeEpoch> CnclvByStake => Set<CnclvByStakeEpoch>();
+    public DbSet<CnclvByStakeEpoch> CnclvByStakeEpoch => Set<CnclvByStakeEpoch>();
 
     #region Core Models
     public DbSet<TxInput> TxInputs => Set<TxInput>();

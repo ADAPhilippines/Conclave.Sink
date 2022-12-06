@@ -14,8 +14,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    [Migration("20221206151701_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20221206172931_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,17 +121,20 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("Blocks");
                 });
 
-            modelBuilder.Entity("Conclave.Sink.Models.CnclvByStake", b =>
+            modelBuilder.Entity("Conclave.Sink.Models.CnclvByStakeEpoch", b =>
                 {
                     b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<decimal>("Balance")
                         .HasColumnType("numeric(20,0)");
 
-                    b.HasKey("StakeAddress");
+                    b.HasKey("StakeAddress", "Epoch");
 
-                    b.ToTable("CnclvByStake");
+                    b.ToTable("CnclvByStakeEpoch");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.PoolRegistration", b =>

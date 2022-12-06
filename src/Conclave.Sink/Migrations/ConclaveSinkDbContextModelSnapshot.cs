@@ -118,17 +118,20 @@ namespace Conclave.Sink.Migrations
                     b.ToTable("Blocks");
                 });
 
-            modelBuilder.Entity("Conclave.Sink.Models.CnclvByStake", b =>
+            modelBuilder.Entity("Conclave.Sink.Models.CnclvByStakeEpoch", b =>
                 {
                     b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<decimal>("Balance")
                         .HasColumnType("numeric(20,0)");
 
-                    b.HasKey("StakeAddress");
+                    b.HasKey("StakeAddress", "Epoch");
 
-                    b.ToTable("CnclvByStake");
+                    b.ToTable("CnclvByStakeEpoch");
                 });
 
             modelBuilder.Entity("Conclave.Sink.Models.PoolRegistration", b =>

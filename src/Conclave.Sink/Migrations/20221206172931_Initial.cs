@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Conclave.Sink.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -67,15 +67,16 @@ namespace Conclave.Sink.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CnclvByStake",
+                name: "CnclvByStakeEpoch",
                 columns: table => new
                 {
                     StakeAddress = table.Column<string>(type: "text", nullable: false),
+                    Epoch = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Balance = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CnclvByStake", x => x.StakeAddress);
+                    table.PrimaryKey("PK_CnclvByStakeEpoch", x => new { x.StakeAddress, x.Epoch });
                 });
 
             migrationBuilder.CreateTable(
@@ -294,7 +295,7 @@ namespace Conclave.Sink.Migrations
                 name: "BalanceByStakeEpoch");
 
             migrationBuilder.DropTable(
-                name: "CnclvByStake");
+                name: "CnclvByStakeEpoch");
 
             migrationBuilder.DropTable(
                 name: "PoolRegistrations");
