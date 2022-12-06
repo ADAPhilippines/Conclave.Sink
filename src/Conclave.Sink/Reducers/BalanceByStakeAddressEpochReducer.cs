@@ -10,12 +10,12 @@ namespace Conclave.Sink.Reducers;
 [OuraReducer(OuraVariant.TxInput, OuraVariant.TxOutput)]
 public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 {
-    private readonly ILogger<BalanceByStakeAddressEpoch> _logger;
+    private readonly ILogger<BalanceByStakeEpoch> _logger;
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
 
     public BalanceByStakeAddressEpochReducer(
-        ILogger<BalanceByStakeAddressEpoch> logger,
+        ILogger<BalanceByStakeEpoch> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
         CardanoService cardanoService)
     {
@@ -50,7 +50,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
                         if (stakeAddress is null) return;
 
-                        BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoches
+                        BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
                             .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
                             .FirstOrDefaultAsync();
 
@@ -63,7 +63,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                             ulong lastEpochBalance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
                             ulong balance = lastEpochBalance - input.Amount;
 
-                            await _dbContext.BalanceByStakeAddressEpoches.AddAsync(new()
+                            await _dbContext.BalanceByStakeEpoch.AddAsync(new()
                             {
                                 StakeAddress = stakeAddress.ToString(),
                                 Balance = balance,
@@ -91,7 +91,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
                     if (stakeAddress is null) return;
 
-                    BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoches
+                    BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
                         .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
                         .FirstOrDefaultAsync();
 
@@ -104,7 +104,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                         ulong previousBalance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
                         ulong balance = previousBalance + amount;
 
-                        await _dbContext.BalanceByStakeAddressEpoches.AddAsync(new()
+                        await _dbContext.BalanceByStakeEpoch.AddAsync(new()
                         {
                             StakeAddress = stakeAddress.ToString(),
                             Balance = balance,
@@ -132,7 +132,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
     public async Task<ulong> GetLastEpochBalanceByStakeAddressAsync(string stakeAddress, ulong? epoch)
     {
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        return await _dbContext.BalanceByStakeAddressEpoches
+        return await _dbContext.BalanceByStakeEpoch
             .Where((bbae) => (bbae.StakeAddress == stakeAddress && bbae.Epoch < epoch))
             .OrderByDescending(s => s.Epoch)
             .Select(s => s.Balance)
@@ -160,7 +160,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
             if (stakeAddress is not null)
             {
-                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoches
+                BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
                     .Where((bbsae) => (bbsae.StakeAddress == stakeAddress.ToString()) && (bbsae.Epoch == rollbackBlock.Epoch))
                     .FirstOrDefaultAsync();
 
@@ -179,7 +179,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
             if (stakeAddress is not null)
             {
-                BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoches
+                BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
                     .Where((bba) => (bba.StakeAddress == stakeAddress.ToString()) && (bba.Epoch == rollbackBlock.Epoch))
                     .FirstOrDefaultAsync();
 
