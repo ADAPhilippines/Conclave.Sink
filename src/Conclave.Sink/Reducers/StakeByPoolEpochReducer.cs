@@ -28,7 +28,6 @@ public class StakeByPoolEpochReducer : OuraReducerBase
     }
     public async Task ReduceAsync(OuraStakeDelegationEvent stakeDelegationEvent)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
         if (stakeDelegationEvent is not null &&
             stakeDelegationEvent.Context is not null &&
@@ -38,6 +37,8 @@ public class StakeByPoolEpochReducer : OuraReducerBase
             stakeDelegationEvent.Context.TxIdx is not null &&
             stakeDelegationEvent.Context.TxHash is not null)
         {
+            using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
             Block? block = await _dbContext.Blocks.Where(b => b.BlockHash == stakeDelegationEvent.Context.BlockHash).FirstOrDefaultAsync();
 
             if (block is null) return;
@@ -74,8 +75,6 @@ public class StakeByPoolEpochReducer : OuraReducerBase
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        await Task.CompletedTask;
-    }
+    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+
 }

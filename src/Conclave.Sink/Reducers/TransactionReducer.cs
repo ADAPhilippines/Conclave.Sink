@@ -35,13 +35,13 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
     {
-        ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-
         if (transactionEvent is not null &&
             transactionEvent.Context is not null &&
             transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Transaction is not null)
+            transactionEvent.Transaction is not null &&
+            transactionEvent.Transaction.Fee is not null)
         {
+            ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
@@ -52,13 +52,12 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             await _dbContext.Transactions.AddAsync(new()
             {
                 Hash = transactionEvent.Context.TxHash,
-                Fee = transactionEvent.Transaction.Fee,
-                Withdrawals = transactionEvent.Transaction.Withdrawals is not null ?
-                    transactionEvent.Transaction.Withdrawals.Select(ouraWithdrawal => new Withdrawal
-                    {
-                        StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
-                        Amount = ouraWithdrawal.Coin ?? 0UL
-                    }) : null,
+                Fee = (ulong)transactionEvent.Transaction.Fee,
+                Withdrawals = transactionEvent.Transaction.Withdrawals?.Select(ouraWithdrawal => new Withdrawal
+                {
+                    StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
+                    Amount = ouraWithdrawal.Coin ?? 0UL
+                }),
                 Block = block
             });
 
@@ -66,8 +65,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        await Task.CompletedTask;
-    }
+    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+
 }
