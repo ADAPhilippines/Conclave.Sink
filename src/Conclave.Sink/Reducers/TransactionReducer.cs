@@ -53,12 +53,11 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             {
                 Hash = transactionEvent.Context.TxHash,
                 Fee = transactionEvent.Transaction.Fee,
-                Withdrawals = transactionEvent.Transaction.Withdrawals is not null ?
-                    transactionEvent.Transaction.Withdrawals.Select(ouraWithdrawal => new Withdrawal
-                    {
-                        StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
-                        Amount = ouraWithdrawal.Coin ?? 0UL
-                    }) : null,
+                Withdrawals = transactionEvent.Transaction.Withdrawals?.Select(ouraWithdrawal => new Withdrawal
+                {
+                    StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
+                    Amount = ouraWithdrawal.Coin ?? 0UL
+                }),
                 Block = block
             });
 
@@ -66,8 +65,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        await Task.CompletedTask;
-    }
+    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+
 }
