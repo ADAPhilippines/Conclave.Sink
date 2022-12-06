@@ -110,6 +110,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                             Epoch = epoch
                         });
                     }
+                    
                     await _dbContext.SaveChangesAsync();
                 }
             }),

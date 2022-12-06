@@ -39,7 +39,6 @@ public class PoolRegistrationReducer : OuraReducerBase
         if (poolRegistrationEvent is not null &&
             poolRegistrationEvent.PoolRegistration is not null &&
             poolRegistrationEvent.Context is not null &&
-            poolRegistrationEvent.Context.Slot is not null &&
             poolRegistrationEvent.Context.BlockHash is not null)
         {
             Block? block = await _dbContext.Block
