@@ -1,5 +1,7 @@
 using CardanoSharp.Wallet.Encoding;
+using CardanoSharp.Wallet.Enums;
 using CardanoSharp.Wallet.Extensions;
+using CardanoSharp.Wallet.Utilities;
 using CardanoSharp.Wallet.Extensions.Models;
 using CardanoSharp.Wallet.Models.Addresses;
 using Conclave.Sink.Models;
@@ -19,6 +21,17 @@ public class CardanoService
 
     public string PoolHashToBech32(string poolId) => Bech32.Encode(poolId.HexToByteArray(), "pool");
 
+    public string RewardAddressHashToBech32(string stakeAddress)
+    {
+        byte[] stakeAddressbyteArray = stakeAddress.HexToByteArray();
+        if (stakeAddressbyteArray.Count() > 28)
+        {
+            stakeAddressbyteArray = stakeAddressbyteArray.Skip(1).ToArray();
+        }
+
+        return AddressUtility.GetRewardAddress(stakeAddressbyteArray, NetworkType.Preview).ToString();
+   }
+   
     public string? TryGetStakeAddress(string paymentAddress)
     {
         try

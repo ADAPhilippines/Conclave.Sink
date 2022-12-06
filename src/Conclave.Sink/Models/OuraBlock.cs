@@ -4,7 +4,8 @@ namespace Conclave.Sink.Models;
 
 public class OuraBlock
 {
+
     [JsonPropertyName("vrf_vkey")]
-    public string? VrfVkey { get; set; }
-    public string? Era { get; set; }
+    public string VrfVkey { get; set; } = string.Empty;
+    public string Era { get; set; } = string.Empty;
 }

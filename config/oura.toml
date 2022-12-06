@@ -21,6 +21,7 @@ argument = [
     "RollBack",
     "StakeDelegation",
     "PoolRegistration",
+    "PoolRetirement"
 ]
 
 [sink]

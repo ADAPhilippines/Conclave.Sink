@@ -10,4 +10,6 @@ public record Transaction
     public Block Block { get; init; } = new();
     public IEnumerable<TxInput> Inputs { get; set; } = new List<TxInput>();
     public IEnumerable<TxOutput> Outputs { get; set; } = new List<TxOutput>();
+    public IEnumerable<PoolRegistration> PoolRegistrations { get; set; } = new List<PoolRegistration>();
+    public IEnumerable<PoolRetirement> PoolRetirements { get; set; } = new List<PoolRetirement>();
 }

@@ -8,7 +8,9 @@ public class ConclaveSinkDbContext : DbContext
 {
     public DbSet<AddressByStake> AddressByStake => Set<AddressByStake>();
     public DbSet<BalanceByAddress> BalanceByAddress => Set<BalanceByAddress>();
-    public DbSet<BalanceByStakeAddressEpoch> BalanceByStakeAddressEpoch => Set<BalanceByStakeAddressEpoch>();
+    public DbSet<BalanceByStakeAddressEpoch> BalanceByStakeAddressEpoches => Set<BalanceByStakeAddressEpoch>();
+    public DbSet<PoolRegistration> PoolRegistrations => Set<PoolRegistration>();
+    public DbSet<PoolRetirement> PoolRetirements => Set<PoolRetirement>();
     public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
     public DbSet<StakeByPoolEpoch> StakeByPoolEpoch => Set<StakeByPoolEpoch>();
     public DbSet<CnclvByStake> CnclvByStake => Set<CnclvByStake>();
@@ -17,7 +19,6 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<TxInput> TxInputs => Set<TxInput>();
     public DbSet<TxOutput> TxOutputs => Set<TxOutput>();
     public DbSet<Block> Blocks => Set<Block>();
-    public DbSet<PoolDetails> Pools => Set<PoolDetails>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Asset> Assets => Set<Asset>();
     #endregion
@@ -34,7 +35,9 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<Asset>().HasKey(asset => new { asset.PolicyId, asset.Name, asset.TxOutputHash, asset.TxOutputIndex });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<BalanceByStakeAddressEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
-        modelBuilder.Entity<PoolDetails>().HasKey(s => new { s.Operator, s.TxHash });
+        modelBuilder.Entity<PoolRegistration>().HasKey(prg => new { prg.PoolId, prg.TxHash });
+        modelBuilder.Entity<PoolRegistration>().Property(prg => prg.PoolMetadataJSON).HasColumnType("jsonb");
+        modelBuilder.Entity<PoolRetirement>().HasKey(prt => new { prt.Pool, prt.TxHash });
         modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
         modelBuilder.Entity<StakeByPoolEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
