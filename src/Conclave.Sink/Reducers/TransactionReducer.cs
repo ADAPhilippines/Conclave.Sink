@@ -40,7 +40,8 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
         if (transactionEvent is not null &&
             transactionEvent.Context is not null &&
             transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Transaction is not null)
+            transactionEvent.Transaction is not null &&
+            transactionEvent.Transaction.Fee is not null)
         {
 
             Block? block = await _dbContext.Blocks
@@ -52,7 +53,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             await _dbContext.Transactions.AddAsync(new()
             {
                 Hash = transactionEvent.Context.TxHash,
-                Fee = transactionEvent.Transaction.Fee,
+                Fee = (ulong)transactionEvent.Transaction.Fee,
                 Withdrawals = transactionEvent.Transaction.Withdrawals?.Select(ouraWithdrawal => new Withdrawal
                 {
                     StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),

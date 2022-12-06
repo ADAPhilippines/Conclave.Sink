@@ -31,8 +31,6 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
 
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-
         if (transactionEvent.Transaction is not null &&
             transactionEvent.Transaction.Withdrawals is not null &&
             transactionEvent.Context is not null &&
@@ -40,6 +38,8 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
             transactionEvent.Context.TxHash is not null &&
             transactionEvent.Context.Slot is not null)
         {
+            using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
             IEnumerable<OuraWithdrawal> withdrawals = transactionEvent.Transaction.Withdrawals;
 
             if (withdrawals.Any())
@@ -88,7 +88,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
 
         IEnumerable<Transaction>? transactions = await _dbContext.Transactions
             .Include(t => t.Block)
-            .Where(t => t.Block.BlockHash == rollbackBlock.BlockHash && t.Withdrawals != null)
+            .Where(t => t.Block == rollbackBlock && t.Withdrawals != null)
             .ToListAsync();
 
         if (transactions is null) return;
