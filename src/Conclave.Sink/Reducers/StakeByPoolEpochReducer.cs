@@ -10,13 +10,13 @@ using Microsoft.Extensions.Options;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.StakeDelegation)]
-public class DelegatorByEpochReducer : OuraReducerBase
+public class StakeByPoolEpochReducer : OuraReducerBase
 {
-    private readonly ILogger<DelegatorByEpochReducer> _logger;
+    private readonly ILogger<StakeByPoolEpochReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly ConclaveSinkSettings _settings;
-    public DelegatorByEpochReducer(ILogger<DelegatorByEpochReducer> logger,
+    public StakeByPoolEpochReducer(ILogger<StakeByPoolEpochReducer> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
         IOptions<ConclaveSinkSettings> settings,
         CardanoService cardanoService)
@@ -49,7 +49,7 @@ public class DelegatorByEpochReducer : OuraReducerBase
             string stakeAddress = AddressUtility.GetRewardAddress(stakeKeyHash.HexToByteArray(), _settings.NetworkType).ToString();
             string poolId = _cardanoService.PoolHashToBech32(stakeDelegationEvent.StakeDelegation.PoolHash);
 
-            DelegatorByEpoch? entry = await _dbContext.DelegatorByEpoch.Include(dbe => dbe.Block)
+            StakeByPoolEpoch? entry = await _dbContext.StakeByPoolEpoch.Include(dbe => dbe.Block)
                 .Where((dbe) => dbe.StakeAddress == stakeAddress &&
                     dbe.TxHash == stakeDelegationEvent.Context.TxHash &&
                     dbe.PoolId == poolId &&
@@ -61,7 +61,7 @@ public class DelegatorByEpochReducer : OuraReducerBase
                 entry.Block.BlockHash == stakeDelegationEvent.Context.BlockHash) return;
 
 
-            await _dbContext.DelegatorByEpoch.AddAsync(new()
+            await _dbContext.StakeByPoolEpoch.AddAsync(new()
             {
                 StakeAddress = stakeAddress,
                 PoolId = poolId,
@@ -76,11 +76,6 @@ public class DelegatorByEpochReducer : OuraReducerBase
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        IEnumerable<DelegatorByEpoch>? delegatorByEpoch = _dbContext.DelegatorByEpoch.Include(dbe => dbe.Block)
-            .Where(dbe => dbe.Block!.BlockHash == rollbackBlock.BlockHash);
-        if (delegatorByEpoch is null) return;
-        _dbContext.DelegatorByEpoch.RemoveRange(delegatorByEpoch);
-        await _dbContext.SaveChangesAsync();
+        await Task.CompletedTask;
     }
 }

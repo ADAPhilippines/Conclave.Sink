@@ -1,3 +1,5 @@
+using CardanoSharp.Wallet.Extensions;
+using CardanoSharp.Wallet.Utilities;
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
 using Conclave.Sink.Services;
@@ -6,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Block)]
-public class BlockReducer : OuraReducerBase
+public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<BlockReducer> _logger;
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
@@ -31,7 +33,8 @@ public class BlockReducer : OuraReducerBase
         if (blockEvent.Context is not null &&
             blockEvent.Context.BlockNumber is not null &&
             blockEvent.Context.Slot is not null &&
-            blockEvent.Context.BlockHash is not null)
+            blockEvent.Context.BlockHash is not null &&
+            blockEvent.Block is not null)
         {
             await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
 
@@ -40,8 +43,10 @@ public class BlockReducer : OuraReducerBase
             await _dbContext.Block.AddAsync(new()
             {
                 BlockNumber = (ulong)blockEvent.Context.BlockNumber,
+                VrfKeyhash = HashUtility.Blake2b256(blockEvent.Block.VrfVkey.HexToByteArray()).ToStringHex(),
                 Slot = (ulong)blockEvent.Context.Slot,
                 BlockHash = blockEvent.Context.BlockHash,
+                Era = blockEvent.Block.Era,
                 Epoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot)
             });
             await _dbContext.SaveChangesAsync();
@@ -76,25 +81,19 @@ public class BlockReducer : OuraReducerBase
             {
                 _logger.LogInformation($"Rolling back Block No: {rollbackBlock.BlockNumber}, Block Hash: {rollbackBlock.BlockHash}");
 
-                IEnumerable<IOuraReducer> nonCoreReducers = reducers
+                await Task.WhenAll(reducers
                     .Where
                     (
-                        reducer => reducer is not BlockReducer &&
-                            reducer is not TxOutputReducer &&
-                            reducer is not TxInputReducer
-                    );
-
-                foreach (IOuraReducer rollbackTask in nonCoreReducers) await rollbackTask.HandleRollbackAsync(rollbackBlock);
-
-                TxOutputReducer? txOutputReducer = reducers.Where(reducer => reducer is TxOutputReducer).ToList().FirstOrDefault() as TxOutputReducer;
-                TxInputReducer? txInputReducer = reducers.Where(reducer => reducer is TxInputReducer).ToList().FirstOrDefault() as TxInputReducer;
-                if (txOutputReducer is not null && txInputReducer is not null)
-                {
-                    await txOutputReducer.HandleRollbackAsync(rollbackBlock);
-                    await txInputReducer.HandleRollbackAsync(rollbackBlock);
-                }
+                        reducer => reducer is not IOuraCoreReducer
+                    )
+                    .Select((reducer) => Task.Run(async () =>
+                    {
+                        await reducer.HandleRollbackAsync(rollbackBlock);
+                    }))
+                );
                 await this.HandleRollbackAsync(rollbackBlock);
             }
+
         }
     }
 }

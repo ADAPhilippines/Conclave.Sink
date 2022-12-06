@@ -14,8 +14,10 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<BalanceByStakeAddressEpoch> BalanceByStakeAddressEpoch => Set<BalanceByStakeAddressEpoch>();
     public DbSet<PoolRegistration> PoolRegistration => Set<PoolRegistration>();
     public DbSet<PoolRetirement> PoolRetirement => Set<PoolRetirement>();
-    public DbSet<DelegatorByEpoch> DelegatorByEpoch => Set<DelegatorByEpoch>();
-    public DbSet<RewardAddressByPoolPerEpoch> RewardAddressByPoolPerEpoch => Set<RewardAddressByPoolPerEpoch>();
+    public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
+    public DbSet<StakeByPoolEpoch> StakeByPoolEpoch => Set<StakeByPoolEpoch>();
+    public DbSet<Transaction> Transaction => Set<Transaction>();
+
     public ConclaveSinkDbContext(DbContextOptions<ConclaveSinkDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,9 +31,12 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<BalanceByStakeAddressEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
         modelBuilder.Entity<PoolRegistration>().HasKey(s => new { s.Operator, s.TxHash });
         modelBuilder.Entity<PoolRegistration>().Property(a => a.PoolMetadata).HasColumnType("jsonb");
-        modelBuilder.Entity<DelegatorByEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
-        modelBuilder.Entity<RewardAddressByPoolPerEpoch>().HasKey(rabppe => new { rabppe.PoolId, rabppe.RewardAddress, rabppe.TxHash, rabppe.TxIndex });
         modelBuilder.Entity<PoolRetirement>().HasKey(prt => prt.Pool);
+        modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
+        modelBuilder.Entity<StakeByPoolEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
+        modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
+        modelBuilder.Entity<Transaction>().Property(b => b.Withdrawals).HasColumnType("jsonb");
+
         // Relations
         modelBuilder.Entity<TxInput>()
             .HasOne<TxOutput>(txInput => txInput.TxOutput)

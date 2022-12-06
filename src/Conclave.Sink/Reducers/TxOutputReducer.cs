@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Conclave.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxOutput)]
-public class TxOutputReducer : OuraReducerBase
+public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TxOutputReducer> _logger;
     private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
