@@ -16,6 +16,18 @@ public class AppStateService : INotifyPropertyChanged
         }
     }
 
+    private bool _isDrawerOpen = false;
+    public bool IsDrawerOpen
+    {
+        get => _isDrawerOpen;
+        set
+        {
+            _isDrawerOpen = value;
+            OnPropertyChanged();
+        }
+    }
+
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? name = null)

@@ -8,9 +8,9 @@
 <MudSnackbarProvider />
 
 <div class="h-screen w-full bg-[#131529] grid place-content-center">
-    <Header OnBurgerMenuClicked="ToggleDrawer" WalletAddress="@_walletAddress2" />
+    <Header WalletAddress="@_walletAddress2" />
         
-    <MenuDrawer IsDrawerOpen="_isDrawerOpen" WalletAddress="@_walletAddress" />
+    <MenuDrawer WalletAddress="@_walletAddress" />
 
     <div class="hidden lg:block absolute top-0 left-0 bottom-0">
         <Sidebar />

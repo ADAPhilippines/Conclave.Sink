@@ -1,3 +1,8 @@
+@using Conclave.Dashboard.Web.Services;
+@using System.ComponentModel
+
+@inject AppStateService AppStateService
+
 <header class="absolute top-0 left-0 right-0 z-[2000]">
     <div class="flex justify-between items-center py-[21px] lg:py-[17px] px-[18px] lg:px-[38px]">
 
@@ -12,7 +17,7 @@
             </div>
         </MudLink>
 
-        <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1>
+        @* <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1> *@
        
         <div class="flex items-center gap-6">
             <div class="lg:hidden">
@@ -21,14 +26,32 @@
                 </MudToggleIconButton>
             </div>
 
-            <div class="w-[25px] relative lg:hidden">
+            @* <div class="w-[25px] relative lg:hidden">
                 <input type="checkbox" onchange="@OnBurgerMenuClicked" class="burger-checkbox absolute top-[-10px] w-full h-[22px] cursor-pointer z-[2000] opacity-0">
                 <div class="burger-menu relative w-full">
                     <span class="top absolute bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
                     <span class="middle h-0.5 w-full bg-white absolute duration-200 ease-linear rounded"></span>
                     <span class="bottom absolute top-[8px] h-0.5 w-full bg-white duration-200 rounded"></span>
                 </div>
-            </div>
+            </div> *@
+
+            
+            <button class="w-[25px] relative lg:hidden" onclick="@ToggleDrawer">
+                <div class="burger-menu relative w-full @(AppStateService.IsDrawerOpen == false ? "" : "open")">
+                    <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
+                    <span class="middle h-0.5 w-full left-0 bg-white absolute duration-200 ease-linear rounded"></span>
+                    <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-white duration-200 rounded"></span>
+                </div>
+            </button>
+
+            @* <MudButton Class="!w-[25px] !relative lg:hidden" OnClick="ToggleDrawer">
+                 <div class="burger-menu relative w-full @(AppStateService.IsDrawerOpen == false ? "" : "open")">
+                    <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
+                    <span class="middle h-0.5 w-full left-0 bg-white absolute duration-200 ease-linear rounded"></span>
+                    <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-white duration-200 rounded"></span>
+                </div>
+            </MudButton> *@
+            
 
             <div class="hidden lg:flex items-center gap-[17px]">
                 <ThemeSwitch />
@@ -56,3 +79,20 @@
         </div>
     </div>
 </header>
+
+
+@code {
+
+    private void ToggleDrawer()
+    {
+        AppStateService.IsDrawerOpen = !AppStateService.IsDrawerOpen;
+        AppStateService.PropertyChanged += OnAppStatePropertyChanged; 
+        Console.WriteLine(AppStateService.IsDrawerOpen);
+    }
+
+    private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+    
+}

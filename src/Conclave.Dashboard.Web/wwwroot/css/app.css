@@ -138,21 +138,21 @@ a, .btn-link {
     padding: 4px !important;
 }
 
-.burger-checkbox:checked ~ .burger-menu .top {
+.open .top {
     transform: rotate(-45deg);
     width: 23px;
     transform-origin: right;
     top: -9px;
 }
 
-.burger-checkbox:checked ~ .burger-menu .bottom {
+.open .bottom {
     transform: rotate(45deg);
     width: 23px;
     transform-origin: right;
     top: 8px;
 }
 
-.burger-checkbox:checked ~ .burger-menu .middle {
+.open .middle {
     transform: translate(20px);
     opacity: 0;
 }

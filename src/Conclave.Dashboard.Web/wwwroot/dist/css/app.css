@@ -563,6 +563,10 @@ video {
   position: relative;
 }
 
+.\!relative {
+  position: relative !important;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -685,6 +689,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.\!w-\[25px\] {
+  width: 25px !important;
 }
 
 .\!min-w-fit {
@@ -840,6 +848,11 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-\[\#131529\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(19 21 41 / var(--tw-bg-opacity));
+}
+
 .\!bg-\[\#20163B\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(32 22 59 / var(--tw-bg-opacity)) !important;
@@ -848,11 +861,6 @@ video {
 .\!bg-\[\#131529\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(19 21 41 / var(--tw-bg-opacity)) !important;
-}
-
-.bg-\[\#131529\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(19 21 41 / var(--tw-bg-opacity));
 }
 
 .\!p-0 {
@@ -918,12 +926,16 @@ video {
   padding-top: 119px;
 }
 
+.text-\[50px\] {
+  font-size: 50px;
+}
+
 .text-\[24px\] {
   font-size: 24px;
 }
 
-.text-\[50px\] {
-  font-size: 50px;
+.font-bold {
+  font-weight: 700;
 }
 
 .font-medium {
@@ -932,10 +944,6 @@ video {
 
 .font-normal {
   font-weight: 400;
-}
-
-.font-bold {
-  font-weight: 700;
 }
 
 .lowercase {
@@ -1124,21 +1132,21 @@ a, .btn-link {
   padding: 4px !important;
 }
 
-.burger-checkbox:checked ~ .burger-menu .top {
+.open .top {
   transform: rotate(-45deg);
   width: 23px;
   transform-origin: right;
   top: -9px;
 }
 
-.burger-checkbox:checked ~ .burger-menu .bottom {
+.open .bottom {
   transform: rotate(45deg);
   width: 23px;
   transform-origin: right;
   top: 8px;
 }
 
-.burger-checkbox:checked ~ .burger-menu .middle {
+.open .middle {
   transform: translate(20px);
   opacity: 0;
 }
