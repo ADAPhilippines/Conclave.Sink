@@ -38,7 +38,6 @@ public class OuraWebhookController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> ReceiveEventAsync([FromBody] JsonElement _eventJson)
     {
-        Console.WriteLine(JsonSerializer.Serialize(_eventJson));
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
         if (_event is not null && _event.Context is not null)
         {
