@@ -5,6 +5,7 @@
 html, body {
     font-family: 'Poppins', sans-serif !important;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 h1:focus {
@@ -159,4 +160,31 @@ a, .btn-link {
 .nav-menu a {
     padding-top: 17px !important;
     padding-bottom: 17px !important;
+}
+
+.active div,
+.mud-navmenu a:hover div {
+    color: white;
+    font-weight: 400;
+}
+
+.active::before,
+.mud-navmenu a:hover ::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7px;
+    height: 100%;
+    background-color: #41FBFB;
+}
+
+.mud-navmenu a:hover,
+.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+.active svg path
+.mud-navmenu a:hover svg path {
+    fill: white !important;
 }

@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using Conclave.Dashboard.Web.Services
+@inject NavigationManager NavigationManager
+@inject ConclaveIconsService ConclaveIcons
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -12,23 +15,23 @@
     <div class="hidden lg:block absolute top-0 left-0 bottom-0">
         <MudPaper Height="100%" Width="260px" Class="!bg-transparent relative" Elevation="0">
             <div class="nav-menu h-full w-full pt-[119px] outline outline-1 outline-[##ffffff1a] rounded-tr-[20px] rounded-br-[20px]">
-                <MudNavMenu class="h-full w-full" Bordered="true">
+                <MudNavMenu class="h-full w-full">
                     <MudNavLink Href="/staking">
                         <div class="flex items-center w-full gap-[17px]">
-                            <MudImage Src="images/staking.png" Width="20" />
-                            <div class="text-white">Staking Center</div>
+                            <MudIcon Icon="@ConclaveIcons.Staking" />
+                            <div class="text-[#9596AA]">Staking Center</div>
                         </div>
                     </MudNavLink>
                     <MudNavLink Href="/lottery">
                         <div class="flex items-center w-full gap-[17px]">
                             <MudImage Src="images/lottery.svg" Width="20" />
-                            <div class="text-white">Lottery</div>
+                            <div class="text-[#9596AA]">Lottery</div>
                         </div>
                     </MudNavLink>
                     <MudNavLink Href="/oracle">
                         <div class="flex items-center w-full gap-[17px]">
                             <MudImage Src="images/oracle.svg" Width="20" />
-                            <div class="text-white">Oracle</div>
+                            <div class="text-[#9596AA]">Oracle</div>
                         </div>
                     </MudNavLink>
                 </MudNavMenu>
@@ -48,7 +51,14 @@
                 </MudLink>
             </div>
         </MudPaper>
+        
     </div>
+
 
     <main>@Body</main>
 </div>
+
+@code {
+    [CascadingParameter]
+    RouteData? routeData { get; set; }
+}
