@@ -11,8 +11,8 @@ namespace Conclave.Sink.Reducers;
 public class PoolRetirementReducer : OuraReducerBase
 {
     private readonly ILogger<PoolRetirementReducer> _logger;
-    private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
-    private CardanoService _cardanoService;
+    private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
+    private readonly CardanoService _cardanoService;
     public PoolRetirementReducer(
         ILogger<PoolRetirementReducer> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,

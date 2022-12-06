@@ -44,10 +44,9 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     if (input is not null)
                     {
                         Address? stakeAddress = TryGetStakeAddress(new Address(input.Address));
+                        ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInputEvent.Context.Slot);
 
                         if (stakeAddress is null) return;
-
-                        ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInputEvent.Context.Slot);
 
                         BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
                             .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
@@ -60,7 +59,6 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                         else
                         {
                             BalanceByStakeAddressEpoch? lastEpochBalance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
-
                             ulong balance = lastEpochBalance is null ? input.Amount : (lastEpochBalance.Balance - input.Amount);
 
                             await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
@@ -86,10 +84,10 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     txOutputEvent.Context.Slot is not null)
                 {
                     Address? stakeAddress = TryGetStakeAddress(new Address(txOutputEvent.TxOutput.Address));
+                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutputEvent.Context.Slot);
+                    ulong amount = (ulong)txOutputEvent.TxOutput.Amount;
 
                     if (stakeAddress is null) return;
-
-                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutputEvent.Context.Slot);
 
                     BalanceByStakeAddressEpoch? entry = await _dbContext.BalanceByStakeAddressEpoch
                         .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
@@ -97,13 +95,13 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
 
                     if (entry is not null)
                     {
-                        entry.Balance += (ulong)txOutputEvent.TxOutput.Amount;
+                        entry.Balance += amount;
                     }
                     else
                     {
                         BalanceByStakeAddressEpoch? previousEntry = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
 
-                        ulong balance = previousEntry is null ? (ulong)txOutputEvent.TxOutput.Amount : (previousEntry.Balance + (ulong)txOutputEvent.TxOutput.Amount);
+                        ulong balance = previousEntry is null ? (ulong)txOutputEvent.TxOutput.Amount : (previousEntry.Balance + amount);
 
                         await _dbContext.BalanceByStakeAddressEpoch.AddAsync(new()
                         {

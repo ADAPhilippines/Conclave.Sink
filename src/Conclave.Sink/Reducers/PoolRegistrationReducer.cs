@@ -12,8 +12,8 @@ namespace Conclave.Sink.Reducers;
 [OuraReducer(OuraVariant.PoolRegistration)]
 public class PoolRegistrationReducer : OuraReducerBase
 {
-    private static int GET_METADATA_DELAY = 200;
-    private static int MAX_RETRY_COUNT = 5;
+    private const int GET_METADATA_DELAY = 200;
+    private const int MAX_RETRY_COUNT = 5;
     private readonly ILogger<PoolRegistrationReducer> _logger;
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
