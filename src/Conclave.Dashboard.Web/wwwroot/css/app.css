@@ -184,7 +184,7 @@ a, .btn-link {
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%) !important;
 }
 
-.active svg path
-.mud-navmenu a:hover svg path {
+a.mud-nav-link.active path,
+a.mud-nav-link:hover path {
     fill: white !important;
 }
