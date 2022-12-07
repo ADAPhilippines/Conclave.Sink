@@ -21,7 +21,10 @@ public class ConclaveTheme : MudTheme
             SecondaryContrastText = Colors.Shades.White,
             TertiaryContrastText = Colors.Shades.White,
             InfoContrastText = new MudColor("rgba(37, 19, 109, 1)"),
-            Surface = Colors.Shades.White, // pagination color
+            Surface = new MudColor("rgba(37, 19, 109, 0.1)"), // pagination color
+            LinesInputs = Colors.Indigo.Darken4,
+            LinesDefault = new MudColor("rgba(37, 19, 109, 0.1)"),
+            PrimaryContrastText = Colors.Indigo.Darken4
         };
 
         PaletteDark = new PaletteDark()
@@ -38,7 +41,12 @@ public class ConclaveTheme : MudTheme
             SecondaryContrastText = Colors.Shades.White,
             TertiaryContrastText = Colors.Shades.White,
             InfoContrastText = Colors.Shades.White,
-            Surface = new MudColor("rgba(255, 255, 255, 0.5)"),
+            // Surface = new MudColor("rgba(255, 255, 255, 0.5)"),
+            Surface = new MudColor("rgba(65, 251, 251, 0.1)"),
+            LinesInputs = Colors.Shades.White,
+            LinesDefault = Colors.Teal.Lighten1,
+            PrimaryContrastText = Colors.Teal.Lighten1
+
         };
     }
 }
