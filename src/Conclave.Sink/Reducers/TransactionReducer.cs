@@ -70,6 +70,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                     });
                 }
             }
+
             await _dbContext.SaveChangesAsync();
         }
     }
