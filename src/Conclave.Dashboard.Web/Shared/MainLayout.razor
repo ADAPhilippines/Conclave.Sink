@@ -1,7 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider IsDarkMode="IsDarkMode" Theme="Theme"/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-@Body
+<div class="h-screen w-full bg-[#131529] grid place-content-center">
+    <Header WalletAddress="@_walletAddress2" />
+        
+    <div class="lg:hidden">
+        <MenuDrawer WalletAddress="@_walletAddress" />
+    </div>
+
+    <div class="hidden lg:block absolute top-[20px] left-0 bottom-[20px]">
+        <Sidebar />
+    </div>
+
+    <main>@Body</main>
+</div>

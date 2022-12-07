@@ -5,13 +5,35 @@ namespace Conclave.Dashboard.Web.Services;
 
 public class AppStateService : INotifyPropertyChanged
 {
-    private bool _isDarkMode = false;
+    private bool _isDarkMode = true;
     public bool IsDarkMode
     {
         get => _isDarkMode;
         set
         {
             _isDarkMode = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool _isDrawerOpen = false;
+    public bool IsDrawerOpen
+    {
+        get => _isDrawerOpen;
+        set
+        {
+            _isDrawerOpen = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool _isConnected = false;
+    public bool IsConnected
+    {
+        get => _isConnected;
+        set
+        {
+            _isConnected = value;
             OnPropertyChanged();
         }
     }

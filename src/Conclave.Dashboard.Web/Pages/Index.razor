@@ -2,13 +2,15 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+@* ToggledChanged *@
 
-Welcome to your new app.
+@* <div class="@(_isDarkMode ? "bg-[#41fbfb1a]" : "!bg-[#3d1a6e1a]") min-w-fit rounded-full lg:hidden">
+    <MudToggleIconButton ToggledChanged="ToggleSwitch" Class="!bg-transparent !flex !items-center !justify-center w-[20px] h-[20px]" Size="Size.Small" ToggledSize="Size.Small">
+        <MudImage Src="@(_isDarkMode ? "images/moon.svg" : "images/sun.svg")" Alt="@(_isDarkMode ? "Moon icon" : "Sun icon")" />
+    </MudToggleIconButton>
+</div>
 
-<MudButton>Hello World</MudButton>
-
-<MudToggleIconButton @bind-Toggled="IsDarkMode" Icon="Icons.Material.Filled.AlarmOff" Color="Color.Success" Title="Off"
-    ToggledIcon="Icons.Material.Filled.AlarmOn" ToggledColor="Color.Success" ToggledTitle="On" />
-
-@IsDarkMode <br />
+@code {
+    private bool _isDarkMode = true;
+    private void ToggleSwitch() => _isDarkMode = !_isDarkMode;
+} *@

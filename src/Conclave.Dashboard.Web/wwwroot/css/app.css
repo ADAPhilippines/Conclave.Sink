@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', sans-serif !important;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 h1:focus {
@@ -101,3 +103,101 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+
+.address-btn-bg {
+    background: linear-gradient(174.21deg, #00FFFF -1.29%, rgba(65, 251, 251, 0.06) -1.28%, rgba(13, 4, 53, 0.1) 102.19%);
+}
+
+.dialog-bg {
+    background: linear-gradient(174.21deg, rgba(175, 28, 227, 0.7) -1.29%, rgba(65, 251, 251, 0.042) -1.28%, rgba(191, 12, 255, 0.07) 102.19%) !important;
+    border: 0.847619px solid rgba(255, 255, 255, 0.1) !important;
+    /* box-shadow: -11.8667px 24.581px 19.4952px rgba(0, 0, 0, 0.15) !important; */
+    backdrop-filter: blur(84.7619px) !important;
+    border-radius: 6.78095px !important;
+}
+
+.temp-border {
+    border: 1px solid #41FBFB !important;
+}
+
+.sidebar {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(174.21deg, #00FFFF -1.29%, rgba(65, 251, 251, 0.06) -1.28%, rgba(13, 4, 53, 0.1) 102.19%);
+    backdrop-filter: blur(18px);
+    border-radius: 0px 20px 20px 0px;
+}
+
+.switch-btn {
+    min-width: fit-content !important;
+    border-radius: 100px !important;
+    padding: 4px !important;
+}
+
+.open .top {
+    transform: rotate(-45deg);
+    width: 23px;
+    transform-origin: right;
+    top: -9px;
+}
+
+.open .bottom {
+    transform: rotate(45deg);
+    width: 23px;
+    transform-origin: right;
+    top: 8px;
+}
+
+.open .middle {
+    transform: translate(20px);
+    opacity: 0;
+}
+
+.nav-menu a {
+    padding-top: 17px !important;
+    padding-bottom: 17px !important;
+}
+
+.active div,
+.mud-navmenu a:hover div {
+    color: white;
+    font-weight: 400;
+}
+
+.active::before,
+.mud-navmenu a:hover ::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 7px;
+    height: 100%;
+    background-color: #41FBFB;
+}
+
+.mud-navmenu a:hover,
+.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+a.mud-nav-link.active path,
+a.mud-nav-link:hover path {
+    fill: white !important;
+}
+
+.toggle-switch {
+    transform: translateX(21px);
+    transform-origin: left;
+}
+
+.switch span.mud-button-label {
+    width: 47px;
+}
+
+svg.mud-icon-root.mud-svg-icon {
+    fill: #9596AA;
+}
