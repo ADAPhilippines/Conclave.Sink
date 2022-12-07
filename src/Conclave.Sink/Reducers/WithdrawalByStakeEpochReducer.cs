@@ -108,8 +108,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
                 if (withdrawalByStakeEpoch is null) return;
 
                 ulong previousWithdrawal = await _dbContext.WithdrawalByStakeEpoch
-                    .Where(w => w.StakeAddress == withdrawal.StakeAddress &&
-                        w.Epoch < rollbackBlock.Epoch)
+                    .Where(w => w.StakeAddress == withdrawal.StakeAddress && w.Epoch < rollbackBlock.Epoch)
                     .OrderByDescending(w => w.Epoch)
                     .Select(w => w.Amount)
                     .FirstOrDefaultAsync();

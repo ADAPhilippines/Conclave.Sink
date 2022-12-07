@@ -10,7 +10,7 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<BalanceByAddress> BalanceByAddress => Set<BalanceByAddress>();
     public DbSet<BalanceByStakeEpoch> BalanceByStakeEpoch => Set<BalanceByStakeEpoch>();
     public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
-    public DbSet<CnclvByStake> CnclvByStake => Set<CnclvByStake>();
+    public DbSet<CnclvByStakeEpoch> CnclvByStakeEpoch => Set<CnclvByStakeEpoch>();
 
     #region Core Models
     public DbSet<TxInput> TxInputs => Set<TxInput>();
@@ -42,8 +42,9 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
         modelBuilder.Entity<StakeDelegation>().HasKey(sd => new { sd.StakeAddress, sd.TxHash });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
-        modelBuilder.Entity<CnclvByStake>().HasKey(s => s.StakeAddress);
         modelBuilder.Entity<Withdrawal>().HasKey(w => new { w.TxHash, w.StakeAddress });
+        modelBuilder.Entity<Transaction>().Property(b => b.Withdrawals).HasColumnType("jsonb");
+        modelBuilder.Entity<CnclvByStakeEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
 
         // Relations
         modelBuilder.Entity<TxInput>()

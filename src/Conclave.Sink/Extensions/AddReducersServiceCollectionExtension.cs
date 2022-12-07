@@ -8,14 +8,14 @@ public static class AddReducersServiceCollectionExtension
 {
     public static IServiceCollection AddOuraReducers(this IServiceCollection service)
     {
-        Assembly? assembly = Assembly.GetAssembly(typeof(AddReducersServiceCollectionExtension));
+        Assembly? assembly = Assembly.GetAssembly(typeof(Program));
         if (assembly is not null)
         {
-            foreach (Type reducerType in assembly.GetTypes())
+            foreach (Type type in assembly.GetTypes())
             {
-                if (reducerType.GetCustomAttributes(typeof(OuraReducerAttribute), true).Length > 0)
+                if (type.GetCustomAttributes(typeof(OuraReducerAttribute), true).Length > 0)
                 {
-                    service.Add(new ServiceDescriptor(typeof(IOuraReducer), reducerType, ServiceLifetime.Scoped));
+                    service.Add(new ServiceDescriptor(typeof(IOuraReducer), type, ServiceLifetime.Scoped));
                 }
             }
         }
