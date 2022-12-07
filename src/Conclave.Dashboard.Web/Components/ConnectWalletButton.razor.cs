@@ -32,5 +32,5 @@ public partial class ConnectWalletButton : ConclaveComponentBase
         AppStateService.PropertyChanged += OnAppStatePropertyChanged;
     }
 
-    private void OnDropDownClicked() => _isDropDownVisible = !_isDropDownVisible;
+    private void ToggleDropDownMenu() => _isDropDownVisible = !_isDropDownVisible;
 }

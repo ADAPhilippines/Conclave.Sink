@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Conclave.Dashboard.Web.Components;
 
-public partial class ConnectedWalletDropDownMenu
+public partial class ConnectedWalletMenu
 {
     [Parameter]
     public string AdaBalance { get; set; } = string.Empty;

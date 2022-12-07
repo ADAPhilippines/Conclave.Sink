@@ -7,13 +7,13 @@
             <div class="flex items-center gap-2">
                 <MudImage Src="images/nami.svg" Alt="Nami logo" />
                 <span class="lowercase font-normal text-white">@WalletAddress</span>
-                <MudButton OnClick="OnDropDownClicked" Class="!min-w-fit !p-0">
+                <MudButton OnClick="ToggleDropDownMenu" Class="!min-w-fit !p-0">
                     <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" />
                 </MudButton>
             </div>
         </div>
         <div class="@(_isDropDownVisible ? "block" : "hidden") absolute bottom-[-243px] w-full">
-            <ConnectedWalletDropDownMenu OnDisconnectBtnClicked="DisconnectWallet" AdaBalance="1000" CnclvBalance="5000" />
+            <ConnectedWalletMenu OnDisconnectBtnClicked="DisconnectWallet" AdaBalance="1000" CnclvBalance="5000" />
         </div>
     </div>
 }
