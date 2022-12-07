@@ -15,6 +15,10 @@ public partial class Header : IDisposable
     [Parameter]
     public string WalletAddress { get; set; } = string.Empty;
 
+    private bool _isDropDownVisible { get; set; }
+
+    private bool _isConnected;
+
     public bool IsDrawerOpen
     {
         get => AppStateService?.IsDrawerOpen ?? false;
@@ -24,7 +28,13 @@ public partial class Header : IDisposable
         }
     }
 
-    private bool _isDropDownVisible { get; set; }
+    private void ConnectWallet()
+    {
+        _isConnected = true;
+        _isDropDownVisible = false;
+    }
+
+    private void DisconnectWallet() => _isConnected = false;
 
     private void OnDropDownClicked() => _isDropDownVisible = !_isDropDownVisible;
 
@@ -33,7 +43,6 @@ public partial class Header : IDisposable
         ArgumentNullException.ThrowIfNull(AppStateService);
         AppStateService.IsDrawerOpen = !AppStateService.IsDrawerOpen;
         AppStateService.PropertyChanged += OnAppStatePropertyChanged; 
-        Console.WriteLine(AppStateService.IsDrawerOpen);
     }
 
     private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)

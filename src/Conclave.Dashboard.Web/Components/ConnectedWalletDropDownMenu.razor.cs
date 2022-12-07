@@ -9,4 +9,7 @@ public partial class ConnectedWalletDropDownMenu
 
     [Parameter]
     public string CnclvBalance { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnDisconnectBtnClicked { get; set; }
 }
