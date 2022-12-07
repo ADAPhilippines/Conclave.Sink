@@ -1,6 +1,6 @@
 namespace Conclave.Dashboard.Web.Pages;
 
-public partial class LotteryPage : ConclaveBasePage
+public partial class LotteryPage : ConclavePageBase
 {
     
 }

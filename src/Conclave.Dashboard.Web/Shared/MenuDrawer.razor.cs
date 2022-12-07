@@ -1,14 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Conclave.Dashboard.Web.Services;
-using System.ComponentModel;
+using Conclave.Dashboard.Web.Components;
 
 namespace Conclave.Dashboard.Web.Shared;
 
-public partial class MenuDrawer
+public partial class MenuDrawer : ConclaveComponentBase
 {
-    [Inject]
-    public AppStateService? AppStateService { get; set; }
-
     [Parameter]
     public string WalletAddress { get; set; } = string.Empty;
 
@@ -26,10 +23,5 @@ public partial class MenuDrawer
         if (AppStateService is not null)
             AppStateService.PropertyChanged += OnAppStatePropertyChanged;
         base.OnInitialized();
-    }
-
-    private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        await InvokeAsync(StateHasChanged);
     }
 }

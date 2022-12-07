@@ -1,3 +1,5 @@
+@inherits ConclaveComponentBase
+
 <header class="absolute top-0 left-0 right-0 z-[2000]">
     <div class="flex justify-between items-center py-[21px] lg:py-[17px] px-[18px] lg:px-[38px]">
 
@@ -22,7 +24,7 @@
             </div>
             
             <button class="w-[25px] relative lg:hidden" onclick="@(() => ToggleDrawer())">
-                <div class="burger-menu relative w-full @(AppStateService?.IsDrawerOpen == false ? "" : "open")">
+                <div class="burger-menu relative w-full @(IsDrawerOpen == false ? "" : "open")">
                     <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
                     <span class="middle h-0.5 w-full left-0 bg-white absolute duration-200 ease-linear rounded"></span>
                     <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-white duration-200 rounded"></span>

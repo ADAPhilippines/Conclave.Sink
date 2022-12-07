@@ -1,23 +1,16 @@
-using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using Conclave.Dashboard.Web.Services;
+using Conclave.Dashboard.Web.Components;
 
 namespace Conclave.Dashboard.Web.Shared;
 
-public partial class Header : IDisposable
+public partial class Header : ConclaveComponentBase
 {
-    [Inject]
-    public AppStateService? AppStateService { get; set; }
-
     [Parameter]
     public EventCallback OnBurgerMenuClicked { get; set; }
 
     [Parameter]
     public string WalletAddress { get; set; } = string.Empty;
-
-    private bool _isDropDownVisible { get; set; }
-
-    private bool _isConnected;
 
     public bool IsDrawerOpen
     {
@@ -28,15 +21,15 @@ public partial class Header : IDisposable
         }
     }
 
+    private bool _isConnected { get; set; }
+
+    private bool _isDropDownVisible { get; set; }
+
     private void ConnectWallet()
     {
         _isConnected = true;
         _isDropDownVisible = false;
     }
-
-    private void DisconnectWallet() => _isConnected = false;
-
-    private void OnDropDownClicked() => _isDropDownVisible = !_isDropDownVisible;
 
     private void ToggleDrawer()
     {
@@ -45,14 +38,7 @@ public partial class Header : IDisposable
         AppStateService.PropertyChanged += OnAppStatePropertyChanged; 
     }
 
-    private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        await InvokeAsync(StateHasChanged);
-    }
+    private void DisconnectWallet() => _isConnected = false;
 
-    public void Dispose()
-    {
-        ArgumentNullException.ThrowIfNull(AppStateService);
-        AppStateService.PropertyChanged -= OnAppStatePropertyChanged; 
-    }
+    private void OnDropDownClicked() => _isDropDownVisible = !_isDropDownVisible;
 }

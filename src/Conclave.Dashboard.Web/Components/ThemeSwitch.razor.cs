@@ -8,5 +8,9 @@ public partial class ThemeSwitch
     [Inject]
     private ConclaveIconsService ConclaveIcons { get; set; } = new();
 
+    private bool _isDarkMode { get; set; }
+
     private bool IsDarkMode { get; set; }
+
+    private void ToggleSwitch() => _isDarkMode = !_isDarkMode;
 }

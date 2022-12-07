@@ -1,51 +1,55 @@
-<MudDrawer Class="!fixed !bg-[#20163B] !bg-[#131529] px-[18px]" Width="100%" Height="100%"
-    Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary" @bind-Open="@IsDrawerOpen">
-    <div class="w-full max-w-[350px] m-auto mt-28 md:mt-40">
-        <div>
-            <MudButton FullWidth="true" Class="peer !py-[9px] !px-[18px] !rounded-[38px] !border-[1px] !border-[#ffffff1a] !border-solid address-btn-bg">
-                <div class="flex items-center gap-4">
-                    <MudImage Src="images/nami.svg" Alt="Nami logo" />
-                    <span class="lowercase font-normal text-white">@WalletAddress</span>
-                </div>
-            </MudButton>
-        </div>
-        
-        <ConnectedWalletDropDownMenu AdaBalance="1000" CnclvBalance="5000" />
+@inherits ConclaveComponentBase
 
-        <MudNavMenu Rounded="true" Class="dialog-bg !mt-5">
-            <MudNavLink Href="/staking">
-                <div class="flex items-center w-full gap-[17px]">
-                    <MudImage Src="images/staking.png" Width="20" />
-                    <div class="text-white">Staking Center</div>
-                </div>
-            </MudNavLink>
-            <MudNavLink Match="NavLinkMatch.Prefix" Href="/lottery">
-                <div class="flex items-center w-full gap-[17px]">
-                    <MudImage Src="images/lottery.svg" Width="20" />
-                    <div class="text-white">Lottery</div>
-                </div>
-            </MudNavLink>
-            <MudNavLink Href="/oracle">
-                <div class="flex items-center w-full gap-[17px]">
-                    <MudImage Src="images/oracle.svg" Width="20" />
-                    <div class="text-white">Oracle</div>
-                </div>
-            </MudNavLink>
-        </MudNavMenu>
-        
-        <div class="w-full flex gap-3 items-center mt-10 justify-between py-2 px-4">
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/facebook.svg" Alt="Facebook logo" />
-            </MudLink>
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/twitter.svg" Alt="Twitter logo" />
-            </MudLink>
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/telegram.svg" Alt="Telegram logo" />
-            </MudLink>
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/discord.svg" Alt="Discord logo" />
-            </MudLink>
+<MudPaper Class="relative">
+    <MudDrawer Class="!max-w-[500px] !fixed !bg-[#20163B] !bg-[#131529] px-[18px]" Width="100%" Height="100%"
+        Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary" @bind-Open="@IsDrawerOpen">
+        <div class="w-full max-w-[350px] m-auto mt-28 md:mt-40">
+            <div>
+                <MudButton FullWidth="true" Class="peer !py-[9px] !px-[18px] !rounded-[38px] !border-[1px] !border-[#ffffff1a] !border-solid address-btn-bg">
+                    <div class="flex items-center gap-4">
+                        <MudImage Src="images/nami.svg" Alt="Nami logo" />
+                        <span class="lowercase font-normal text-white">@WalletAddress</span>
+                    </div>
+                </MudButton>
+            </div>
+    
+            <ConnectedWalletDropDownMenu AdaBalance="1000" CnclvBalance="5000" />
+    
+            <MudNavMenu Rounded="true" Class="dialog-bg !mt-5">
+                <MudNavLink Href="/staking">
+                    <div class="flex items-center w-full gap-[17px]">
+                        <MudImage Src="images/staking.svg" Width="20" />
+                        <div class="text-white">Staking Center</div>
+                    </div>
+                </MudNavLink>
+                <MudNavLink Match="NavLinkMatch.Prefix" Href="/lottery">
+                    <div class="flex items-center w-full gap-[17px]">
+                        <MudImage Src="images/lottery.svg" Width="20" />
+                        <div class="text-white">Lottery</div>
+                    </div>
+                </MudNavLink>
+                <MudNavLink Href="/oracle">
+                    <div class="flex items-center w-full gap-[17px]">
+                        <MudImage Src="images/oracle.svg" Width="20" />
+                        <div class="text-white">Oracle</div>
+                    </div>
+                </MudNavLink>
+            </MudNavMenu>
+    
+            <div class="w-full flex gap-3 items-center mt-10 justify-between py-2 px-4">
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/facebook.svg" Alt="Facebook logo" />
+                </MudLink>
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/twitter.svg" Alt="Twitter logo" />
+                </MudLink>
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/telegram.svg" Alt="Telegram logo" />
+                </MudLink>
+                <MudLink Href="/" Target="_blank">
+                    <MudImage Src="images/discord.svg" Alt="Discord logo" />
+                </MudLink>
+            </div>
         </div>
-    </div>
-</MudDrawer>
+    </MudDrawer>
+</MudPaper>

@@ -1,3 +1,6 @@
 namespace Conclave.Dashboard.Web.Pages;
 
-public partial class StakingCenterPage : ConclaveBasePage { }
+public partial class StakingCenterPage : ConclavePageBase
+{
+    
+}

@@ -1,3 +1,6 @@
 namespace Conclave.Dashboard.Web.Pages;
 
-public partial class OraclePage : ConclaveBasePage {}
+public partial class OraclePage : ConclavePageBase
+{
+    
+}
