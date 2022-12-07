@@ -2,10 +2,12 @@ using System.Text.Json;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
 using Conclave.Sink.Data;
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
+using Conclave.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
+using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Reducers;
 

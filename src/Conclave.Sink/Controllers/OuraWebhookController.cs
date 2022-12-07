@@ -1,12 +1,14 @@
 using System.Linq;
 using System.Text.Json;
 using Conclave.Sink.Data;
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
 using Conclave.Sink.Reducers;
 using Conclave.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Conclave.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
+using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Controllers;
 

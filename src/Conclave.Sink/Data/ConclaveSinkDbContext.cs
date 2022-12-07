@@ -1,5 +1,5 @@
 
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conclave.Sink.Data;
