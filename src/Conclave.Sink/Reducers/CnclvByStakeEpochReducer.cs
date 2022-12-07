@@ -42,9 +42,10 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                 {
                     TxOutput? input = await _dbContext.TxOutputs
                         .Include(txOut => txOut.Assets)
+                        .Where(txOut => txOut.Assets != null && txOut.Assets.Any(asset => asset.PolicyId == _settings.ConclaveTokenPolicy && asset.Name == _settings.ConclaveTokenAssetName))
                         .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index).FirstOrDefaultAsync();
 
-                    if (input is not null && input.Assets is not null)
+                    if (input is not null && input.Assets is not null && input.Assets.Any())
                     {
                         Asset? conclaveOutputAsset = input.Assets
                             .Where(asset => asset.PolicyId == _settings.ConclaveTokenPolicy && asset.Name == _settings.ConclaveTokenAssetName)
@@ -63,12 +64,25 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                                 if (entry is not null)
                                 {
                                     entry.Balance -= conclaveOutputAsset.Amount;
-                                    if (entry.Balance <= 0)
-                                    {
-                                        _dbContext.CnclvByStakeEpoch.Remove(entry);
-                                    }
-                                    await _dbContext.SaveChangesAsync();
                                 }
+                                else
+                                {
+                                    ulong prevEpochBalance = await _dbContext.CnclvByStakeEpoch
+                                        .Where(w => w.StakeAddress == stakeAddress && w.Epoch < epoch)
+                                        .OrderByDescending(w => w.Epoch)
+                                        .Select(w => w.Balance)
+                                        .FirstOrDefaultAsync();
+
+                                    ulong total = prevEpochBalance - conclaveOutputAsset.Amount;
+
+                                    await _dbContext.CnclvByStakeEpoch.AddAsync(new()
+                                    {
+                                        StakeAddress = stakeAddress,
+                                        Balance = total,
+                                        Epoch = epoch
+                                    });
+                                }
+                                await _dbContext.SaveChangesAsync();
                             }
                         }
                     }
@@ -115,7 +129,7 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
                                 {
                                     StakeAddress = stakeAddress,
                                     Balance = prevEpochBalance + conclaveOutputAsset.Amount ?? 0,
-                                    Epoch =  epoch
+                                    Epoch = epoch
                                 });
                             }
                             await _dbContext.SaveChangesAsync();
@@ -152,13 +166,20 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
         {
             if (txInput.TxOutput is not null)
             {
+                string? stakeAddress = _cardanoService.TryGetStakeAddress(txInput.TxOutput.Address);
+
                 CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch
-                    .Where((s) => s.StakeAddress == txInput.TxOutput.Address && s.Epoch == epoch)
+                    .Where((s) => s.StakeAddress == stakeAddress && s.Epoch == epoch)
                     .FirstOrDefaultAsync();
 
-                if (entry is not null)
+                if (entry is not null && txInput.TxOutput.Assets is not null)
                 {
-                    entry.Balance += txInput.TxOutput.Amount;
+                    Asset? conclaveOutputAsset = txInput.TxOutput.Assets
+                            .Where(asset => asset.PolicyId == _settings.ConclaveTokenPolicy && asset.Name == _settings.ConclaveTokenAssetName)
+                            .FirstOrDefault();
+
+                    if (conclaveOutputAsset is not null)
+                        entry.Balance += conclaveOutputAsset.Amount;
                 }
             }
         }));
@@ -168,16 +189,31 @@ public class CnclvByStakeEpochReducer : OuraReducerBase
         // process produced
         IEnumerable<Task> produceTasks = produced.ToList().Select(txOutput => Task.Run(async () =>
         {
+            string? stakeAddress = _cardanoService.TryGetStakeAddress(txOutput.Address);
             CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch
-                .Where((s) => s.StakeAddress == txOutput.Address && s.Epoch == epoch)
+                .Where((s) => s.StakeAddress == stakeAddress && s.Epoch == epoch)
                 .FirstOrDefaultAsync();
 
-            if (entry is not null)
+            if (entry is not null && txOutput.Assets is not null)
             {
-                entry.Balance -= txOutput.Amount;
-                if (entry.Balance <= 0)
+                ulong prevEpochBalance = await _dbContext.CnclvByStakeEpoch
+                    .Where(w => w.StakeAddress == stakeAddress && w.Epoch < epoch)
+                    .OrderByDescending(w => w.Epoch)
+                    .Select(w => w.Balance)
+                    .FirstOrDefaultAsync();
+
+                Asset? conclaveOutputAsset = txOutput.Assets
+                        .Where(asset => asset.PolicyId == _settings.ConclaveTokenPolicy && asset.Name == _settings.ConclaveTokenAssetName)
+                        .FirstOrDefault();
+
+                if (conclaveOutputAsset is not null)
                 {
-                    _dbContext.CnclvByStakeEpoch.Remove(entry);
+                    entry.Balance -= conclaveOutputAsset.Amount;
+
+                    if (entry.Balance <= 0 || entry.Balance <= prevEpochBalance)
+                    {
+                        _dbContext.CnclvByStakeEpoch.Remove(entry);
+                    }
                 }
             }
         }));

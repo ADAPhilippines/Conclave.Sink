@@ -45,25 +45,21 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
                 }
                 else
                 {
-                    Block? blockZero = await _dbContext.Blocks.Where(block => block.BlockNumber == 0).FirstOrDefaultAsync();
-                    if (blockZero is not null)
+                    await _dbContext.TxInputs.AddAsync(new()
                     {
-                        await _dbContext.TxInputs.AddAsync(new()
+                        TxHash = txInputEvent.Context.TxHash,
+                        Transaction = tx,
+                        // GENESIS TX HACK
+                        TxOutput = new TxOutput
                         {
-                            TxHash = txInputEvent.Context.TxHash,
-                            Transaction = tx,
-                            // GENESIS TX HACK
-                            TxOutput = new TxOutput
+                            Transaction = new Transaction
                             {
-                                Transaction = new Transaction
-                                {
-                                    Hash = $"GENESIS_{tx.Hash}",
-                                    Block = blockZero
-                                },
-                                Address = "GENESIS"
-                            }
-                        });
-                    }
+                                Hash = $"GENESIS_{tx.Hash}_{txInputEvent.Fingerprint}",
+                                Block = tx.Block
+                            },
+                            Address = "GENESIS"
+                        }
+                    });
                 }
                 await _dbContext.SaveChangesAsync();
             }
