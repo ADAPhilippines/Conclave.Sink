@@ -4,20 +4,17 @@ using System.Text.Json;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Conclave.Sink.Migrations
+namespace Conclave.Sink.Data.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    [Migration("20221207095738_Initial")]
-    partial class Initial
+    partial class ConclaveSinkDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

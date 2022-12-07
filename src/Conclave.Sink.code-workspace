@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "Conclave.Common"
+		},
+		{
+			"path": "Conclave.Sink.Data"
 		}
 	],
 	"settings": {}

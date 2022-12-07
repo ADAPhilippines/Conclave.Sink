@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "Conclave.Sink.Api"
+		},
+		{
+			"path": "Conclave.Common"
+		},
+		{
+			"path": "Conclave.Sink.Data"
+		}
+	],
+	"settings": {}
+}

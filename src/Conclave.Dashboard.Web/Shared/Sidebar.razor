@@ -1,0 +1,45 @@
+@using Conclave.Dashboard.Web.Services
+@inject ConclaveIconsService ConclaveIcons
+
+<div class="hidden lg:block fixed left-0 h-[calc(100vh-20px)] top-[10px]">
+    <MudPaper Height="100%" Width="260px"
+        Class="!bg-transparent relative pt-[80.5px] outline outline-1 outline-[##ffffff1a] rounded-tr-xl rounded-br-xl"
+        Elevation="4">
+        <div class="nav-menu h-full w-full pt-[0px] ">
+            <MudNavMenu class="h-full w-full">
+                <MudNavLink Href="/staking">
+                    <div class="flex items-center w-full gap-[17px]">
+                        <MudIcon Icon="@ConclaveIcons.Staking" />
+                        <div class="text-[#9596AA]">Staking Center</div>
+                    </div>
+                </MudNavLink>
+                <MudNavLink Href="/lottery">
+                    <div class="flex items-center w-full gap-[17px]">
+                        <MudIcon Icon="@ConclaveIcons.Lottery" />
+                        <div class="text-[#9596AA]">Lottery</div>
+                    </div>
+                </MudNavLink>
+                <MudNavLink Href="/oracle">
+                    <div class="flex items-center w-full gap-[17px]">
+                        <MudIcon Icon="@ConclaveIcons.Oracle" />
+                        <div class="text-[#9596AA]">Oracle</div>
+                    </div>
+                </MudNavLink>
+            </MudNavMenu>
+        </div>
+        <div class="w-full flex gap-4 items-center justify-center absolute left-0 right-0 bottom-[15px]">
+            <MudLink Href="/" Target="_blank">
+                <MudImage Src="images/facebook.svg" Alt="Facebook logo" />
+            </MudLink>
+            <MudLink Href="/" Target="_blank">
+                <MudImage Src="images/twitter.svg" Alt="Twitter logo" />
+            </MudLink>
+            <MudLink Href="/" Target="_blank">
+                <MudImage Src="images/telegram.svg" Alt="Telegram logo" />
+            </MudLink>
+            <MudLink Href="/" Target="_blank">
+                <MudImage Src="images/discord.svg" Alt="Discord logo" />
+            </MudLink>
+        </div>
+    </MudPaper>
+</div>
