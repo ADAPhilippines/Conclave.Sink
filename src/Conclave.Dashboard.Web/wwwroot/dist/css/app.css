@@ -603,6 +603,14 @@ video {
   bottom: 15px;
 }
 
+.top-\[20px\] {
+  top: 20px;
+}
+
+.bottom-\[20px\] {
+  bottom: 20px;
+}
+
 .z-\[2000\] {
   z-index: 2000;
 }
@@ -1319,5 +1327,10 @@ svg.mud-icon-root.mud-svg-icon {
   .lg\:px-\[38px\] {
     padding-left: 38px;
     padding-right: 38px;
+  }
+
+  .lg\:py-\[37px\] {
+    padding-top: 37px;
+    padding-bottom: 37px;
   }
 }
