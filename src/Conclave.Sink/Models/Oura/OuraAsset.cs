@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Conclave.Sink.Models.OuraEvents;
+namespace Conclave.Sink.Models.Oura;
 
 public class OuraAsset
 {

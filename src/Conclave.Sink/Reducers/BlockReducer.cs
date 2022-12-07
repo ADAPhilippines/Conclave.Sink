@@ -5,7 +5,9 @@ using Conclave.Sink.Data;
 using Conclave.Common.Models;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
+using Microsoft.Extensions.Options;
+using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Reducers;
 
@@ -16,17 +18,20 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
     private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ConclaveSinkSettings _settings;
 
     public BlockReducer(
         ILogger<BlockReducer> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
+        IOptions<ConclaveSinkSettings> settings,
         IServiceProvider serviceProvider)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
         _cardanoService = cardanoService;
         _serviceProvider = serviceProvider;
+        _settings = settings.Value;
     }
 
     public async Task ReduceAsync(OuraBlockEvent blockEvent)
@@ -41,8 +46,11 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
         {
             await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
 
-            // New Context for this insert
-            _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            Block? existingBlock = await _dbContext.Blocks.Where(block => block.BlockNumber == blockEvent.Context.BlockNumber).FirstOrDefaultAsync();
+
+            if (existingBlock is not null)
+                _dbContext.Blocks.Remove(existingBlock);
+
             await _dbContext.Blocks.AddAsync(new()
             {
                 BlockNumber = (ulong)blockEvent.Context.BlockNumber,
@@ -71,10 +79,10 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 
         // Check if current database tip clashes with the current tip oura is pushing
         // if so then we should rollback and insert the new tip oura is pushing
-        if (rollbackSlot <= currentTipSlot)
+        if (rollbackSlot < currentTipSlot)
         {
             List<Block> blocksToRollback = await _dbContext.Blocks
-                .Where(block => block.Slot >= rollbackSlot)
+                .Where(block => block.Slot > rollbackSlot)
                 .OrderByDescending(block => block.Slot)
                 .ToListAsync();
 
@@ -87,7 +95,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
                 await Task.WhenAll(reducers
                     .Where
                     (
-                        reducer => reducer is not IOuraCoreReducer
+                        reducer => reducer is not IOuraCoreReducer && _settings.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false)
                     )
                     .Select((reducer) => Task.Run(async () =>
                     {

@@ -6,7 +6,7 @@ using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
 
 namespace Conclave.Sink.Reducers;
 

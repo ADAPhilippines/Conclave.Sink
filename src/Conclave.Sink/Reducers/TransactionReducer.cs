@@ -7,7 +7,7 @@ using Conclave.Common.Models;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
 using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Reducers;
@@ -51,17 +51,27 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
 
-            await _dbContext.Transactions.AddAsync(new()
+            Transaction transaction = new()
             {
                 Hash = transactionEvent.Context.TxHash,
                 Fee = (ulong)transactionEvent.Transaction.Fee,
-                Withdrawals = transactionEvent.Transaction.Withdrawals?.Select(ouraWithdrawal => new Withdrawal
-                {
-                    StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
-                    Amount = ouraWithdrawal.Coin ?? 0UL
-                }),
                 Block = block
-            });
+            };
+
+            await _dbContext.Transactions.AddAsync(transaction);
+
+            if (transactionEvent.Transaction.Withdrawals is not null)
+            {
+                foreach (OuraWithdrawal ouraWithdrawal in transactionEvent.Transaction.Withdrawals)
+                {
+                    await _dbContext.Withdrawals.AddAsync(new()
+                    {
+                        Amount = ouraWithdrawal.Coin ?? 0,
+                        StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
+                        Transaction = transaction,
+                    });
+                }
+            }
 
             await _dbContext.SaveChangesAsync();
         }

@@ -1,4 +1,4 @@
-namespace Conclave.Sink.Models.OuraEvents;
+namespace Conclave.Sink.Models.Oura;
 
 public record OuraTxOutput
 {

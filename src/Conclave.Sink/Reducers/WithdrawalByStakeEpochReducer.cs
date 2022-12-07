@@ -7,7 +7,7 @@ using Conclave.Common.Models;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
 using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Reducers;
@@ -89,8 +89,9 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
         IEnumerable<Transaction>? transactions = await _dbContext.Transactions
+            .Include(t => t.Withdrawals)
             .Include(t => t.Block)
-            .Where(t => t.Block == rollbackBlock && t.Withdrawals != null)
+            .Where(t => t.Block == rollbackBlock && t.Withdrawals.Any())
             .ToListAsync();
 
         if (transactions is null) return;
@@ -109,8 +110,7 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
                 if (withdrawalByStakeEpoch is null) return;
 
                 ulong previousWithdrawal = await _dbContext.WithdrawalByStakeEpoch
-                    .Where(w => w.StakeAddress == withdrawal.StakeAddress &&
-                        w.Epoch < rollbackBlock.Epoch)
+                    .Where(w => w.StakeAddress == withdrawal.StakeAddress && w.Epoch < rollbackBlock.Epoch)
                     .OrderByDescending(w => w.Epoch)
                     .Select(w => w.Amount)
                     .FirstOrDefaultAsync();

@@ -1,5 +1,5 @@
 using Conclave.Common.Models;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
 
 namespace Conclave.Sink.Reducers;
 
