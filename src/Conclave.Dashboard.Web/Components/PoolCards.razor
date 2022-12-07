@@ -1,4 +1,4 @@
-<div class="w-full max-w-[335px] xs:w-[335px] hover:shadow-2xl @HighlightClass()">
+<div class="w-full max-w-[335px] xs:w-[335px] backdrop-blur-4xl hover:backdrop-blur-md">
   <MudCard 
     Class="@CardBorder"
     Style="border-radius: 1rem; background: transparent; backdrop-filter: blur(20px);">
@@ -25,7 +25,7 @@
         <MudText Typo="Typo.body2">Saturation</MudText>
         <MudText Typo="Typo.body2">A 17.14M (@PoolDetails.Saturation%)</MudText>
       </div>
-      <MudProgressLinear Color="Color.Primary" Rounded="true" Size="Size.Large" Min="0" Max="100" Value="PoolDetails.Saturation" Class="my-3" />
+      <MudProgressLinear Color="ProgressBar" Rounded="true" Size="Size.Large" Min="0" Max="100" Value="PoolDetails.Saturation" Class="my-3" />
       <div class="flex justify-between mb-4">
         <MudText Typo="Typo.body2">Pledge</MudText>
         <MudText Typo="Typo.body2">A @String.Format("{0:n0}", PoolDetails.Pledge)</MudText>

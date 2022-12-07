@@ -38,8 +38,10 @@ public partial class PoolCards
     return PoolDetails.IsStaked
     ? "border-solid border mud-border-error"
     : PoolDetails.IsConclave
-      ? "border-solid border mud-border-tertiary"
-      : "border-solid border mud-border-primary";
+      ? IsDarkMode
+        ? "border-solid border mud-border-primary"
+        : "border-solid border mud-border-tertiary"
+    : "border-solid border mud-border-primary";
   }
 
   private string HighlightClass()
