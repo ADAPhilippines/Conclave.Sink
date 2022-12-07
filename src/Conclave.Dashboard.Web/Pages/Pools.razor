@@ -3,10 +3,10 @@
 
 <PageTitle>Pools</PageTitle>
 
-<div class="max-w-[1102px]">
+<div class="w-full">
   <div class="my-4">
     <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">
+    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-5 mx-2">
       @foreach (var item in ConclavePoolsList)
       {
         <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />

@@ -16,7 +16,7 @@ public partial class ThemeSwitch : ConclaveComponentBase
         get => AppStateService?.IsDarkMode ?? true;
         set
         {
-            if (AppStateService is not null) AppStateService.IsDarkMode= value;
+            if (AppStateService is not null) AppStateService.IsDarkMode = value;
         }
     }
 

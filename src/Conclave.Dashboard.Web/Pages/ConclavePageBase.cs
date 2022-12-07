@@ -9,7 +9,6 @@ public class ConclavePageBase : ConclaveComponentBase
     {
         ArgumentNullException.ThrowIfNull(AppStateService);
         AppStateService.IsDrawerOpen = false;
-        AppStateService.PropertyChanged += OnAppStatePropertyChanged;
         base.OnInitialized();
     }
 }
