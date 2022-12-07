@@ -1,4 +1,4 @@
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
 
 namespace Conclave.Sink.Reducers;
 

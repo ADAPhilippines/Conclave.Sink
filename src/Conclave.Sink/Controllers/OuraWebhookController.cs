@@ -1,11 +1,12 @@
 using System.Linq;
 using System.Text.Json;
 using Conclave.Sink.Data;
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
 using Conclave.Sink.Reducers;
 using Conclave.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Conclave.Sink.Models.OuraEvents;
 
 namespace Conclave.Sink.Controllers;
 
@@ -72,7 +73,7 @@ public class OuraWebhookController : ControllerBase
                                 OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.PoolRegistration => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRegistrationEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.PoolRetirement => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRetirementEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.StakeDelegation => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraStakeDelegationEvent>(ConclaveJsonSerializerOptions)),
+                                // OuraVariant.StakeDelegation => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraStakeDelegationEvent>(ConclaveJsonSerializerOptions)),
                                 _ => Task.CompletedTask
                             };
                         }

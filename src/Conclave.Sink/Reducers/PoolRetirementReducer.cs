@@ -1,9 +1,10 @@
 using System.Net;
 using System.Text.Json;
 using Conclave.Sink.Data;
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
+using Conclave.Sink.Models.OuraEvents;
 
 namespace Conclave.Sink.Reducers;
 

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
+using Conclave.Sink.Models.OuraEvents;
 
 namespace Conclave.Sink.Extensions;
 

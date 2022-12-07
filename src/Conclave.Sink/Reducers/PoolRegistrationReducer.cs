@@ -1,11 +1,12 @@
 using System.Net;
 using System.Text.Json;
 using Conclave.Sink.Data;
-using Conclave.Sink.Models;
+using Conclave.Common.Models;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
+using Conclave.Sink.Models.OuraEvents;
 
 namespace Conclave.Sink.Reducers;
 
@@ -62,8 +63,8 @@ public class PoolRegistrationReducer : OuraReducerBase
                     Pledge = poolRegistrationEvent.PoolRegistration.Pledge,
                     Cost = poolRegistrationEvent.PoolRegistration.Cost,
                     Margin = poolRegistrationEvent.PoolRegistration.Margin,
-                    RewardAccount = _cardanoService.RewardAddressHashToBech32(poolRegistrationEvent.PoolRegistration.RewardAccount),
-                    PoolOwners = poolRegistrationEvent.PoolRegistration.PoolOwners.Select(po => _cardanoService.RewardAddressHashToBech32(po)).ToList(),
+                    RewardAccount = _cardanoService.StakeHashToBech32(poolRegistrationEvent.PoolRegistration.RewardAccount),
+                    PoolOwners = poolRegistrationEvent.PoolRegistration.PoolOwners.Select(po => _cardanoService.StakeHashToBech32(po)).ToList(),
                     Relays = poolRegistrationEvent.PoolRegistration.Relays,
                     PoolMetadataJSON = poolMetadataJSON,
                     PoolMetadataString = poolMetadataString,
