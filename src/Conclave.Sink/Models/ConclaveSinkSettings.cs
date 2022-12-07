@@ -8,4 +8,5 @@ public record ConclaveSinkSettings
     public NetworkType NetworkType { get; init; }
     public string ConclaveTokenPolicy { get; set; } = string.Empty;
     public string ConclaveTokenAssetName { get; set; } = string.Empty;
+    public IEnumerable<string> Reducers { get; set; } = new List<string>();
 }

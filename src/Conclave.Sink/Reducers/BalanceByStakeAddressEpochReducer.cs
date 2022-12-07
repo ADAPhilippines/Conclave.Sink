@@ -40,7 +40,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     TxOutput? input = await _dbContext.TxOutputs
                         .Include(txOut => txOut.Transaction)
                         .ThenInclude(transaction => transaction.Block)
-                        .Where(txOut => (txOut.TxHash == txInputEvent.TxInput.TxHash) && (txOut.Index == txInputEvent.TxInput.Index))
+                        .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index)
                         .FirstOrDefaultAsync();
 
                     if (input is not null)
@@ -51,7 +51,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                         if (stakeAddress is null) return;
 
                         BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
-                            .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
+                            .Where((bbae) => bbae.StakeAddress == stakeAddress.ToString() && bbae.Epoch == epoch)
                             .FirstOrDefaultAsync();
 
                         if (entry is not null)
@@ -60,19 +60,16 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                         }
                         else
                         {
-                            ulong lastEpochBalance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
-                            ulong balance = lastEpochBalance - input.Amount;
-
                             await _dbContext.BalanceByStakeEpoch.AddAsync(new()
                             {
                                 StakeAddress = stakeAddress.ToString(),
-                                Balance = balance,
+                                Balance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch) - input.Amount,
                                 Epoch = epoch
                             });
                         }
+                        // @TODO: JM
+                        await _dbContext.SaveChangesAsync();
                     }
-
-                    await _dbContext.SaveChangesAsync();
                 }
             }),
             OuraVariant.TxOutput => Task.Run(async () =>
@@ -92,7 +89,7 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     if (stakeAddress is null) return;
 
                     BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
-                        .Where((bbae) => (bbae.StakeAddress == stakeAddress.ToString()) && (bbae.Epoch == epoch))
+                        .Where((bbae) => bbae.StakeAddress == stakeAddress.ToString() && bbae.Epoch == epoch)
                         .FirstOrDefaultAsync();
 
                     if (entry is not null)
@@ -101,13 +98,10 @@ public class BalanceByStakeAddressEpochReducer : OuraReducerBase
                     }
                     else
                     {
-                        ulong previousBalance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch);
-                        ulong balance = previousBalance + amount;
-
                         await _dbContext.BalanceByStakeEpoch.AddAsync(new()
                         {
                             StakeAddress = stakeAddress.ToString(),
-                            Balance = balance,
+                            Balance = await GetLastEpochBalanceByStakeAddressAsync(stakeAddress.ToString(), epoch) + amount,
                             Epoch = epoch
                         });
                     }
