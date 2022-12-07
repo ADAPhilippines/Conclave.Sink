@@ -9,26 +9,39 @@ servers:
 
 components:
     parameters:
-        PageQuery:
-            name: page
+        OrderByQuery:
+            name: ascendingOrder
             in: query
-            description: Specific page to fetch
+            description: Determines the order of the result
+            schema:
+                type: boolean
+                default: true
+        ConclaveQuery:
+            name: isConclave
+            in: query
+            description: Get only conclave pools
+            schema:
+                type: boolean
+                default: false
+        LimitQuery:
+            name: limit
+            in: query
+            description: Count limit of the results
             schema:
                 type: integer
                 minimum: 1
-                default: 1
-        CountQuery:
-            name: count
-            in: query
-            description: Item count limit per page
-            schema:
-                type: integer
-                minimum: 1
+                maximum: 1000
                 default: 100
-        SearchKeyQuery:
-            name: searchKey
+        CursorQuery:
+            name: cursor
             in: query
-            description: Search key to use as filter
+            description: Determines which values to fetch next
+            schema:
+                type: string
+        FilterQuery:
+            name: filter
+            in: query
+            description: Specific key to filter
             schema:
                 type: string
         StakeAddressQuery:
@@ -69,6 +82,15 @@ components:
                 type: string
 
     schemas:
+        Cursor:
+            type: object
+            properties:
+                next:
+                    type: string
+                    example: 'next_af0248bbc'
+                prev:
+                    type: string
+                    example: 'prev_af0248bbc'
         Pool:
             type: object
             properties:
@@ -104,7 +126,6 @@ components:
                   blocks: 10
                   saturation: 50.5
                   pledge: 1000000000
-                  interest: 10
                 - name: ADA Philippines
                   ticker: ADAPH
                   description: '#1 Cardano Stake Pool in the Philippines'
@@ -142,7 +163,12 @@ components:
             content:
                 application/json:
                     schema:
-                        $ref: '#/components/schemas/Pools'
+                        type: object
+                        properties:
+                            results:
+                                $ref: '#/components/schemas/Pools'
+                            cursor:
+                                $ref: '#/components/schemas/Cursor'
 
         200SuccessStakes:
             description: Ok
@@ -167,38 +193,15 @@ paths:
         get:
             summary: Returns a list of pools with their metadata
             parameters:
-                - $ref: '#/components/parameters/PageQuery'
-                - $ref: '#/components/parameters/CountQuery'
-                - $ref: '#/components/parameters/SearchKeyQuery'
+                - $ref: '#/components/parameters/LimitQuery'
+                - $ref: '#/components/parameters/CursorQuery'
+                - $ref: '#/components/parameters/FilterQuery'
                 - $ref: '#/components/parameters/StakeAddressQuery'
+                - $ref: '#/components/parameters/ConclaveQuery'
+                - $ref: '#/components/parameters/OrderByQuery'
             responses:
                 '200':
                     $ref: '#/components/responses/200SuccessPools'
-                '400':
-                    $ref: '#/components/responses/400Error'
-    /pools/conclave:
-        get:
-            summary: Returns a list of conclave pools with their metadata
-            parameters:
-                - $ref: '#/components/parameters/PageQuery'
-                - $ref: '#/components/parameters/CountQuery'
-                - $ref: '#/components/parameters/SearchKeyQuery'
-                - $ref: '#/components/parameters/StakeAddressQuery'
-            responses:
-                '200':
-                    $ref: '#/components/responses/200SuccessPools'
-                '400':
-                    $ref: '#/components/responses/400Error'
-    /pools/{poolId}/stakes:
-        get:
-            summary: "Returns a list of pool's total stake history"
-            parameters:
-                - $ref: '#/components/parameters/PoolIdPath'
-                - $ref: '#/components/parameters/FromEpochQuery'
-                - $ref: '#/components/parameters/ToEpochQuery'
-            responses:
-                '200':
-                    $ref: '#/components/responses/200SuccessStakes'
                 '400':
                     $ref: '#/components/responses/400Error'
 
