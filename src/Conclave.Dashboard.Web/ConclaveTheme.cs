@@ -28,14 +28,14 @@ public class ConclaveTheme : MudTheme
         {
             Primary = Colors.Blue.Accent3, // normal pool card
             Secondary = new MudColor("rgba(41, 121, 255, 0.1)"), // normal pool button
-            SecondaryDarken ="#448AFF",
+            SecondaryDarken ="#5c99ff",
             Tertiary = new MudColor("rgba(65, 251, 251, 0.1)"), //conclave pool button
             TertiaryDarken = "#1b7272",
             Warning = new MudColor("rgba(169, 142, 50, 1)"), // conclave pool card
             Info = new MudColor("#35B5B5"),
             Success = new MudColor("#079F36"),
             Error = Colors.Red.Darken4,
-            SecondaryContrastText = Colors.Blue.Accent3,
+            SecondaryContrastText = Colors.Shades.White,
             TertiaryContrastText = new MudColor("#41FBFB"),
             InfoContrastText = new MudColor("#FFFFFF"),
             Surface = new MudColor("rgba(255, 255, 255, 0.5)")

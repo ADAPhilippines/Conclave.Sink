@@ -57,12 +57,23 @@
   {
     "Id": 6,
     "Ticker": "Peanut Pool",
-    "Description": "#1 Grandmama Dog",
+    "Description": "#1 Mama Dog",
     "Blocks": 8,
     "Interest": 22,
     "Saturation": 62,
     "Pledge": 100000,
     "IsConclave": true,
+    "IsStaked": false
+  },
+  {
+    "Id": 7,
+    "Ticker": "Jack Pool",
+    "Description": "#1 Mama Dog",
+    "Blocks": 8,
+    "Interest": 22,
+    "Saturation": 62,
+    "Pledge": 100000,
+    "IsConclave": false,
     "IsStaked": false
   }
 ]

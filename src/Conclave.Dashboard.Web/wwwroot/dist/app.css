@@ -799,7 +799,7 @@ a, .btn-link {
 }
 
 .hover\:bg-card-gradient:hover {
-  background-image: radial-gradient(rgba(68,138,255, 0.4), transparent);
+  background-image: radial-gradient(rgba(68,138,255, 0.2), transparent);
 }
 
 .hover\:shadow-2xl:hover {

@@ -34,10 +34,13 @@ public class PoolService
     return FilteredPools;
   }
 
-  public async Task<List<PoolsModel>> GetPaginatedPools(int page)
+  public async Task<List<PoolsModel>> GetPaginatedPools(int page, int count)
   {
     List<PoolsModel> ListOfPools = await _httpClient.GetFromJsonAsync<List<PoolsModel>>("data/pools.json") ?? new();
-    // List<PoolsModel> FilteredPools = ListOfPools.FindAll(x => x.Ticker.ToLower().Contains(filter.ToLower()) && x.IsConclave == false);
-    return ListOfPools;
+    int maxIndex = page * count;
+    int minIndex = page * count - count + 1;
+    List<PoolsModel> PaginatedPools = ListOfPools.FindAll(x => x.Id >= minIndex && x.Id <= maxIndex);
+
+    return PaginatedPools;
   }
 }

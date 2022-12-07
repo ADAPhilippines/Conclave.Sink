@@ -43,10 +43,10 @@ public partial class Pools
 
     PoolsList = await PoolService.GetPoolsListAsync();
     ConclavePoolsList = await PoolService.GetFilteredPoolsListAsync(true);
-    OtherPoolsList = await PoolService.GetFilteredPoolsListAsync(false);
+    OtherPoolsList = await PoolService.GetPaginatedPools(1, 3);
 
     ConclavePagination = Convert.ToInt32(Decimal.Ceiling((Decimal)ConclavePoolsList.Count / 3));
-    OtherPoolsPagination = Convert.ToInt32(Decimal.Ceiling((Decimal)OtherPoolsList.Count / 3));
+    OtherPoolsPagination = Convert.ToInt32(Decimal.Ceiling((Decimal)PoolsList.Count / 3));
 
     await base.OnInitializedAsync();
   }
@@ -62,5 +62,10 @@ public partial class Pools
     {
       OtherPoolsList = await PoolService.GetPoolsSearchedList(Search);
     }
+  }
+
+  private async Task OnPageChanged(int page)
+  {
+    OtherPoolsList = await PoolService.GetPaginatedPools(page, 3);
   }
 }
