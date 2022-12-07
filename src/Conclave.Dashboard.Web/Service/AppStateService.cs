@@ -27,6 +27,17 @@ public class AppStateService : INotifyPropertyChanged
         }
     }
 
+    private bool _isConnected = false;
+    public bool IsConnected
+    {
+        get => _isConnected;
+        set
+        {
+            _isConnected = value;
+            OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? name = null)
