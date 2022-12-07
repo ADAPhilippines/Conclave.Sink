@@ -41,7 +41,8 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             transactionEvent.Context is not null &&
             transactionEvent.Context.TxHash is not null &&
             transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Fee is not null)
+            transactionEvent.Transaction.Fee is not null && 
+            transactionEvent.Context.TxIdx is not null)
         {
             ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
@@ -55,7 +56,8 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             {
                 Hash = transactionEvent.Context.TxHash,
                 Fee = (ulong)transactionEvent.Transaction.Fee,
-                Block = block
+                Block = block,
+                Index = (ulong)transactionEvent.Context.TxIdx
             };
 
             await _dbContext.Transactions.AddAsync(transaction);

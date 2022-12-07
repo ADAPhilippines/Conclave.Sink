@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Conclave.Sink.Data.Migrations
 {
     [DbContext(typeof(ConclaveSinkDbContext))]
-    [Migration("20221207130615_Initial")]
+    [Migration("20221207184949_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -107,6 +107,9 @@ namespace Conclave.Sink.Data.Migrations
                     b.Property<string>("Era")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<IEnumerable<int>>("InvalidTransactions")
+                        .HasColumnType("jsonb");
 
                     b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
@@ -240,6 +243,9 @@ namespace Conclave.Sink.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("Fee")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Index")
                         .HasColumnType("numeric(20,0)");
 
                     b.HasKey("Hash");

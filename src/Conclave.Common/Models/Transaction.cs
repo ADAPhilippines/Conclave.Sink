@@ -3,6 +3,7 @@ namespace Conclave.Common.Models;
 public record Transaction
 {
     public string Hash { get; init; } = string.Empty;
+    public ulong Index { get; set; }
     public ulong Fee { get; init; }
     public Block Block { get; init; } = new();
     public IEnumerable<TxInput> Inputs { get; set; } = new List<TxInput>();

@@ -105,6 +105,9 @@ namespace Conclave.Sink.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<IEnumerable<int>>("InvalidTransactions")
+                        .HasColumnType("jsonb");
+
                     b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
 
@@ -237,6 +240,9 @@ namespace Conclave.Sink.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("Fee")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Index")
                         .HasColumnType("numeric(20,0)");
 
                     b.HasKey("Hash");

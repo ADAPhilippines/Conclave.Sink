@@ -58,7 +58,8 @@ namespace Conclave.Sink.Data.Migrations
                     BlockNumber = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     VrfKeyhash = table.Column<string>(type: "text", nullable: false),
                     Slot = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    Epoch = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                    Epoch = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    InvalidTransactions = table.Column<IEnumerable<int>>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,6 +97,7 @@ namespace Conclave.Sink.Data.Migrations
                 columns: table => new
                 {
                     Hash = table.Column<string>(type: "text", nullable: false),
+                    Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Fee = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     BlockHash = table.Column<string>(type: "text", nullable: false)
                 },
