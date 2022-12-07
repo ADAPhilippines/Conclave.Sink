@@ -1,4 +1,4 @@
-using Conclave.Dashboard.Web.Services;
+using Conclave.Dashboard.Web;
 
 namespace Conclave.Dashboard.Web.Shared;
 
