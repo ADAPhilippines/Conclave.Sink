@@ -43,7 +43,6 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<StakeDelegation>().HasKey(sd => new { sd.StakeAddress, sd.TxHash });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Withdrawal>().HasKey(w => new { w.TxHash, w.StakeAddress });
-        modelBuilder.Entity<Transaction>().Property(b => b.Withdrawals).HasColumnType("jsonb");
         modelBuilder.Entity<CnclvByStakeEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
 
         // Relations
