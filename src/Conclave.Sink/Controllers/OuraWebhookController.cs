@@ -73,7 +73,7 @@ public class OuraWebhookController : ControllerBase
                                 OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.PoolRegistration => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRegistrationEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.PoolRetirement => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRetirementEvent>(ConclaveJsonSerializerOptions)),
-                                // OuraVariant.StakeDelegation => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraStakeDelegationEvent>(ConclaveJsonSerializerOptions)),
+                                OuraVariant.StakeDelegation => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraStakeDelegationEvent>(ConclaveJsonSerializerOptions)),
                                 _ => Task.CompletedTask
                             };
                         }

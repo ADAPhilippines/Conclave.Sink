@@ -179,7 +179,7 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
 
                     entry.Balance -= txOutput.Amount;
 
-                    if (entry.Balance <= 0UL || entry.Balance <= prevEpochBalance)
+                    if (entry.Balance <= 0 || entry.Balance <= prevEpochBalance)
                     {
                         _dbContext.Remove(entry);
                     }
