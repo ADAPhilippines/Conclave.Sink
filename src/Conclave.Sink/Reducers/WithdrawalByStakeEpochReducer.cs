@@ -87,8 +87,9 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
         using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
         IEnumerable<Transaction>? transactions = await _dbContext.Transactions
+            .Include(t => t.Withdrawals)
             .Include(t => t.Block)
-            .Where(t => t.Block == rollbackBlock && t.Withdrawals != null)
+            .Where(t => t.Block == rollbackBlock && t.Withdrawals.Any())
             .ToListAsync();
 
         if (transactions is null) return;
