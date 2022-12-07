@@ -3,14 +3,27 @@ using Microsoft.AspNetCore.Components;
 
 namespace Conclave.Dashboard.Web.Components;
 
-public partial class ThemeSwitch
+public partial class ThemeSwitch : ConclaveComponentBase
 {
     [Inject]
     private ConclaveIconsService ConclaveIcons { get; set; } = new();
 
-    private bool _isDarkMode { get; set; }
+    [CascadingParameter]
+    public bool IsDrawerOpen { get; set; }
 
-    private bool IsDarkMode { get; set; }
+    public bool IsDarkMode
+    {
+        get => AppStateService?.IsDarkMode ?? true;
+        set
+        {
+            if (AppStateService is not null) AppStateService.IsDarkMode= value;
+        }
+    }
 
-    private void ToggleSwitch() => _isDarkMode = !_isDarkMode;
+    private void ToggleSwitch()
+    {
+        ArgumentNullException.ThrowIfNull(AppStateService);
+        IsDarkMode = !IsDarkMode;
+        AppStateService.PropertyChanged += OnAppStatePropertyChanged;
+    }
 }

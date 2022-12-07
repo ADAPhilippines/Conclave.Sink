@@ -34,7 +34,7 @@ public partial class Header : ConclaveComponentBase
     private void ToggleDrawer()
     {
         ArgumentNullException.ThrowIfNull(AppStateService);
-        AppStateService.IsDrawerOpen = !AppStateService.IsDrawerOpen;
+        IsDrawerOpen = !IsDrawerOpen;
         AppStateService.PropertyChanged += OnAppStatePropertyChanged; 
     }
 

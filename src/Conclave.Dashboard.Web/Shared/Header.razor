@@ -16,12 +16,10 @@
 
         @* <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1> *@
        
-        <div class="flex items-center gap-6">
-            <div class="@(IsDrawerOpen ? "block" : "hidden")  !lg:hidden">
-                <MudToggleIconButton Color="Color.Secondary">
-                    <MudImage Src="images/moon.svg" Alt="Moon icon" />
-                </MudToggleIconButton>
-            </div>
+        <div class="flex items-center gap-6 lg:gap-[17px]">
+            <CascadingValue Value="IsDrawerOpen">
+                <ThemeSwitch />
+            </CascadingValue>
             
             <button class="w-[25px] relative lg:hidden" onclick="@(() => ToggleDrawer())">
                 <div class="burger-menu relative w-full @(IsDrawerOpen == false ? "" : "open")">
@@ -29,11 +27,9 @@
                     <span class="middle h-0.5 w-full left-0 bg-white absolute duration-200 ease-linear rounded"></span>
                     <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-white duration-200 rounded"></span>
                 </div>
-            </button>            
+            </button>
 
-            <div class="hidden lg:flex items-center gap-[17px]">
-                <ThemeSwitch />
-                
+            <div class="hidden lg:block" >
                 @if (_isConnected)
                 {
                     <div class="relative">
@@ -46,7 +42,6 @@
                                 </MudButton>
                             </div>
                         </div>
-
                         <div class="@(_isDropDownVisible ? "block" : "hidden") absolute bottom-[-243px] w-full">
                             <ConnectedWalletDropDownMenu OnDisconnectBtnClicked="DisconnectWallet" AdaBalance="1000" CnclvBalance="5000" />
                         </div>
@@ -60,8 +55,7 @@
                         </MudButton>
                     </MudPaper>
                 }
-                
-            </div>
+            </div>   
         </div>
     </div>
 </header>

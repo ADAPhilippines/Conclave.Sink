@@ -5,7 +5,7 @@ namespace Conclave.Dashboard.Web.Services;
 
 public class AppStateService : INotifyPropertyChanged
 {
-    private bool _isDarkMode = false;
+    private bool _isDarkMode = true;
     public bool IsDarkMode
     {
         get => _isDarkMode;
