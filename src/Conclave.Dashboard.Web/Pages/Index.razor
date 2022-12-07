@@ -1,16 +1,4 @@
 ﻿@page "/"
+@using Conclave.Dashboard.Web.Components
 
 <PageTitle>Index</PageTitle>
-
-@* ToggledChanged *@
-
-@* <div class="@(_isDarkMode ? "bg-[#41fbfb1a]" : "!bg-[#3d1a6e1a]") min-w-fit rounded-full lg:hidden">
-    <MudToggleIconButton ToggledChanged="ToggleSwitch" Class="!bg-transparent !flex !items-center !justify-center w-[20px] h-[20px]" Size="Size.Small" ToggledSize="Size.Small">
-        <MudImage Src="@(_isDarkMode ? "images/moon.svg" : "images/sun.svg")" Alt="@(_isDarkMode ? "Moon icon" : "Sun icon")" />
-    </MudToggleIconButton>
-</div>
-
-@code {
-    private bool _isDarkMode = true;
-    private void ToggleSwitch() => _isDarkMode = !_isDarkMode;
-} *@

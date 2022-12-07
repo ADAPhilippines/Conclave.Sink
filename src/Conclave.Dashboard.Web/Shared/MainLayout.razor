@@ -1,10 +1,11 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider Theme="Theme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
+@* bg-[#131529]  *@
 
-<div class="h-screen w-full bg-[#131529] grid place-content-center">
+<div class="h-screen w-full grid place-content-center">
     <Header WalletAddress="@_walletAddress2" />
         
     <div class="lg:hidden">
@@ -15,5 +16,7 @@
         <Sidebar />
     </div>
 
-    <main>@Body</main>
+    <main class="">
+        @Body
+    </main>
 </div>
