@@ -1,26 +1,15 @@
 using System.Text.Json.Serialization;
 using Conclave.Sink.Extensions;
 
-namespace Conclave.Sink.Models.OuraEvents;
+namespace Conclave.Sink.Models.Oura;
 
-
-public enum OuraVariant
-{
-    Unknown,
-    RollBack,
-    Block,
-    Transaction,
-    TxInput,
-    TxOutput,
-    StakeDelegation,
-    PoolRegistration,
-    PoolRetirement
-}
-
-public interface IOuraEvent
+public record OuraEvent : IOuraEvent
 {
     public OuraContext? Context { get; init; }
     public string? Fingerprint { get; init; }
+
+    [JsonConverter(typeof(OuraVariantJsonConverter))]
     public OuraVariant? Variant { get; init; }
+
     public ulong? Timestamp { get; init; }
 }

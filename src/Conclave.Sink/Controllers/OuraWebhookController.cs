@@ -6,7 +6,7 @@ using Conclave.Sink.Reducers;
 using Conclave.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
 using Conclave.Sink.Models;
 

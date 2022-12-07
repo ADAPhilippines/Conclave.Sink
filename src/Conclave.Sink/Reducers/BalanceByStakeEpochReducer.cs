@@ -2,7 +2,7 @@ using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 using Conclave.Sink.Services;
 using Conclave.Common.Models;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
 
 namespace Conclave.Sink.Reducers;
 

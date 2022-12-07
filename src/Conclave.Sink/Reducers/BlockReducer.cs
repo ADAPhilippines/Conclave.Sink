@@ -5,7 +5,7 @@ using Conclave.Sink.Data;
 using Conclave.Common.Models;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
-using Conclave.Sink.Models.OuraEvents;
+using Conclave.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
 using Conclave.Sink.Models;
 
