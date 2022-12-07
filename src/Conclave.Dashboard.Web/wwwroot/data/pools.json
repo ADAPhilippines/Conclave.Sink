@@ -5,7 +5,7 @@
     "Description": "#1 Orange Cat",
     "Blocks": 8,
     "Interest": 22,
-    "Saturation": 62,
+    "Saturation": 12,
     "Pledge": 100000,
     "IsConclave": false,
     "IsStaked": false
@@ -38,7 +38,7 @@
     "Description": "#1 Mama Cat",
     "Blocks": 8,
     "Interest": 22,
-    "Saturation": 62,
+    "Saturation": 32,
     "Pledge": 100000,
     "IsConclave": true,
     "IsStaked": true

@@ -27,14 +27,14 @@ public class PoolService
     return FilteredPools;
   }
 
-  public async Task<List<PoolsModel>> GetPoolsSearchedList(string filter)
+  public async Task<List<PoolsModel>> GetPoolsSearchedListAsync(string filter)
   {
     List<PoolsModel> ListOfPools = await _httpClient.GetFromJsonAsync<List<PoolsModel>>("data/pools.json") ?? new();
     List<PoolsModel> FilteredPools = ListOfPools.FindAll(x => x.Ticker.ToLower().Contains(filter.ToLower()) && x.IsConclave == false);
     return FilteredPools;
   }
 
-  public async Task<List<PoolsModel>> GetPaginatedPools(int page, int count)
+  public async Task<List<PoolsModel>> GetPaginatedPoolsAsync(int page, int count)
   {
     List<PoolsModel> ListOfPools = await _httpClient.GetFromJsonAsync<List<PoolsModel>>("data/pools.json") ?? new();
     int maxIndex = page * count;
