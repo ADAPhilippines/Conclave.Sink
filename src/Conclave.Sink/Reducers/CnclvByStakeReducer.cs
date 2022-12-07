@@ -1,4 +1,3 @@
-using CardanoSharp.Wallet.Models.Addresses;
 using Conclave.Sink.Data;
 using Conclave.Common.Models;
 using Conclave.Sink.Services;
@@ -54,7 +53,7 @@ public class CnclvByStakeReducer : OuraReducerBase
                             string? stakeAddress = _cardanoService.TryGetStakeAddress(input.Address);
                             if (stakeAddress is not null)
                             {
-                                CnclvByStakeEpoch? entry = await _dbContext.CnclvByStake
+                                CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch
                                     .Where((cbs) => cbs.StakeAddress == stakeAddress)
                                     .FirstOrDefaultAsync();
 
@@ -86,14 +85,14 @@ public class CnclvByStakeReducer : OuraReducerBase
 
                         if (conclaveOutputAsset is not null)
                         {
-                            CnclvByStakeEpoch? entry = await _dbContext.CnclvByStake.Where(s => s.StakeAddress == stakeAddress).FirstOrDefaultAsync();
+                            CnclvByStakeEpoch? entry = await _dbContext.CnclvByStakeEpoch.Where(s => s.StakeAddress == stakeAddress).FirstOrDefaultAsync();
                             if (entry is not null)
                             {
                                 entry.Balance += conclaveOutputAsset.Amount ?? 0;
                             }
                             else
                             {
-                                await _dbContext.CnclvByStake.AddAsync(new()
+                                await _dbContext.CnclvByStakeEpoch.AddAsync(new()
                                 {
                                     StakeAddress = stakeAddress,
                                     Balance = conclaveOutputAsset.Amount ?? 0

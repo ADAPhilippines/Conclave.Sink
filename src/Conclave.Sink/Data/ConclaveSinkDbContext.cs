@@ -10,8 +10,7 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<BalanceByAddress> BalanceByAddress => Set<BalanceByAddress>();
     public DbSet<BalanceByStakeEpoch> BalanceByStakeEpoch => Set<BalanceByStakeEpoch>();
     public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
-    public DbSet<StakeByPoolEpoch> StakeByPoolEpoch => Set<StakeByPoolEpoch>();
-    public DbSet<CnclvByStakeEpoch> CnclvByStake => Set<CnclvByStakeEpoch>();
+    public DbSet<CnclvByStakeEpoch> CnclvByStakeEpoch => Set<CnclvByStakeEpoch>();
 
     #region Core Models
     public DbSet<TxInput> TxInputs => Set<TxInput>();
@@ -21,6 +20,8 @@ public class ConclaveSinkDbContext : DbContext
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<PoolRegistration> PoolRegistrations => Set<PoolRegistration>();
     public DbSet<PoolRetirement> PoolRetirements => Set<PoolRetirement>();
+    public DbSet<Withdrawal> Withdrawals => Set<Withdrawal>();
+    public DbSet<StakeDelegation> StakeDelegations => Set<StakeDelegation>();
     #endregion
 
     public ConclaveSinkDbContext(DbContextOptions<ConclaveSinkDbContext> options) : base(options) { }
@@ -39,10 +40,11 @@ public class ConclaveSinkDbContext : DbContext
         modelBuilder.Entity<PoolRegistration>().Property(prg => prg.PoolMetadataJSON).HasColumnType("jsonb");
         modelBuilder.Entity<PoolRetirement>().HasKey(prt => new { prt.Pool, prt.TxHash });
         modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
-        modelBuilder.Entity<StakeByPoolEpoch>().HasKey(de => new { de.StakeAddress, de.PoolId, de.TxHash, de.TxIndex });
+        modelBuilder.Entity<StakeDelegation>().HasKey(sd => new { sd.StakeAddress, sd.TxHash });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
+        modelBuilder.Entity<Withdrawal>().HasKey(w => new { w.TxHash, w.StakeAddress });
         modelBuilder.Entity<Transaction>().Property(b => b.Withdrawals).HasColumnType("jsonb");
-        modelBuilder.Entity<CnclvByStakeEpoch>().HasKey(s => s.StakeAddress);
+        modelBuilder.Entity<CnclvByStakeEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
 
         // Relations
         modelBuilder.Entity<TxInput>()
@@ -64,6 +66,16 @@ public class ConclaveSinkDbContext : DbContext
             .HasOne<TxOutput>(asset => asset.TxOutput)
             .WithMany(txOutput => txOutput.Assets)
             .HasForeignKey(asset => new { asset.TxOutputHash, asset.TxOutputIndex });
+
+        modelBuilder.Entity<Withdrawal>()
+            .HasOne<Transaction>(withdrawal => withdrawal.Transaction)
+            .WithMany(tx => tx.Withdrawals)
+            .HasForeignKey(withdrawal => withdrawal.TxHash);
+
+        modelBuilder.Entity<StakeDelegation>()
+            .HasOne<Transaction>(stakeDelegation => stakeDelegation.Transaction)
+            .WithMany(tx => tx.StakeDelegations)
+            .HasForeignKey(stakeDelegation => stakeDelegation.TxHash);
 
         base.OnModelCreating(modelBuilder);
     }

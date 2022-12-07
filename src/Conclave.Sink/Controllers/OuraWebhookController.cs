@@ -7,6 +7,8 @@ using Conclave.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Conclave.Sink.Models.OuraEvents;
+using Microsoft.Extensions.Options;
+using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Controllers;
 
@@ -22,18 +24,20 @@ public class OuraWebhookController : ControllerBase
     };
     private readonly CardanoService _cardanoService;
     private readonly IEnumerable<IOuraReducer> _reducers;
-
+    private readonly IOptions<ConclaveSinkSettings> _settings;
     public OuraWebhookController(
         ILogger<OuraWebhookController> logger,
         IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
-        IEnumerable<IOuraReducer> reducers
+        IEnumerable<IOuraReducer> reducers,
+        IOptions<ConclaveSinkSettings> settings
     )
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
         _cardanoService = cardanoService;
         _reducers = reducers;
+        _settings = settings;
     }
 
     [HttpPost]
@@ -53,7 +57,7 @@ public class OuraWebhookController : ControllerBase
 
                     if (blockReducer is not null)
                         await blockReducer.RollbackBySlotAsync((ulong)rollbackEvent.RollBack.BlockSlot);
-                }   
+                }
             }
             else
             {
@@ -63,7 +67,12 @@ public class OuraWebhookController : ControllerBase
                     ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
                     return reducerVariants.ToList().Select((reducerVariant) =>
                     {
-                        if (reducerVariant == _event.Variant)
+                        if (reducerVariant == _event.Variant &&
+                            (
+                                _settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) ||
+                                reducer is IOuraCoreReducer
+                            )
+                        )
                         {
                             return reducerVariant switch
                             {

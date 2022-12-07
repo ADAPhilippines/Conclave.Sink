@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace Conclave.Sink.Models.OuraEvents;
+namespace Conclave.Sink.Models;
 
-public class StakeDelegation
+public class OuraStakeDelegation
 {
     [JsonPropertyName("pool_hash")]
     public string PoolHash { get; set; } = string.Empty;
