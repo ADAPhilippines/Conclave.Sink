@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Conclave.Sink.Migrations
+namespace Conclave.Sink.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

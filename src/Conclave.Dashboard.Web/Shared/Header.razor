@@ -1,0 +1,37 @@
+@inherits ConclaveComponentBase
+
+<header class="fixed top-0 left-0 right-0 z-[2000]">
+    <div class="flex justify-between items-center py-[21px] lg:pt-[27px] lg:pb-[0px] px-[18px] lg:pr-[38px] lg:pl-[19px]">
+
+        <MudLink Href="/staking">
+            <div class="flex items-center gap-[9px] lg:gap-[12px]">
+                <div class="w-[35px] lg:w-[44px]">
+                    <MudImage Width="100" Src="images/conclave-logo.svg" Alt="Conclave logo" />
+                </div>
+                <div class="w-[82px] lg:w-[103px]">
+                    <MudImage Width="100" Src="images/conclave-text.svg" Alt="Conclave text" />
+                </div>
+            </div>
+        </MudLink>
+
+        @* <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1> *@
+       
+        <div class="flex items-center gap-6 lg:gap-[17px]">
+            <CascadingValue Value="IsDrawerOpen">
+                <ThemeSwitch />
+            </CascadingValue>
+            
+            <button class="w-[25px] h-[25px] relative lg:hidden" onclick="@(() => ToggleDrawer())">
+                <div class="burger-menu relative w-full @(IsDrawerOpen == false ? "" : "open")">
+                    <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
+                    <span class="middle h-0.5 w-full left-0 bg-white absolute duration-200 ease-linear rounded"></span>
+                    <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-white duration-200 rounded"></span>
+                </div>
+            </button>
+
+            <div class="hidden lg:block" >
+                <ConnectWalletButton />
+            </div>   
+        </div>
+    </div>
+</header>

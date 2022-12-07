@@ -1,4 +1,3 @@
-
 using Conclave.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
