@@ -563,8 +563,8 @@ video {
   position: relative;
 }
 
-.left-\[2\.63px\] {
-  left: 2.63px;
+.left-\[2\.1px\] {
+  left: 2.1px;
 }
 
 .top-\[1\.8px\] {
@@ -601,10 +601,6 @@ video {
 
 .bottom-\[15px\] {
   bottom: 15px;
-}
-
-.left-\[2\.1px\] {
-  left: 2.1px;
 }
 
 .z-\[2000\] {
@@ -1215,6 +1211,10 @@ a.mud-nav-link:hover path {
 
 .switch span.mud-button-label {
   width: 47px;
+}
+
+svg.mud-icon-root.mud-svg-icon {
+  fill: #9596AA;
 }
 
 .first\:\!w-\[47px\]:first-child {

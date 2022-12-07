@@ -197,3 +197,7 @@ a.mud-nav-link:hover path {
 .switch span.mud-button-label {
     width: 47px;
 }
+
+svg.mud-icon-root.mud-svg-icon {
+    fill: #9596AA;
+}
