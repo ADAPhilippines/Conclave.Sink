@@ -1,3 +1,4 @@
+using Blockfrost.Api.Extensions;
 using Conclave.Sink.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<ConclaveSinkDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"));
 });
 builder.Services.AddControllers();
+builder.Services.AddBlockfrost("preview", "previewsvCJrhJ5kAN2sUqbeY7okLvKcHftwoEu");
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
