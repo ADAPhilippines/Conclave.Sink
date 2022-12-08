@@ -10,5 +10,5 @@ public class OuraBlock
     public string Era { get; set; } = string.Empty;
 
     [JsonPropertyName("invalid_transactions")]
-    public IEnumerable<int>? InvalidTransactions { get; set; }
+    public IEnumerable<ulong>? InvalidTransactions { get; set; }
 }

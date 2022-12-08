@@ -9,5 +9,5 @@ public class Block
     public ulong Slot { get; set; }
     public ulong Epoch { get; set; }
     public IEnumerable<Transaction> Transactions { get; set; } = new List<Transaction>();
-    public IEnumerable<int>? InvalidTransactions { get; set; }
+    public IEnumerable<ulong>? InvalidTransactions { get; set; }
 }
