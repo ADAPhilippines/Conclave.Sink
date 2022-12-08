@@ -26,4 +26,8 @@ public partial class MainLayout
     }
 
     private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e) => await InvokeAsync(StateHasChanged);
+
+    private string BackgroundClass => IsDarkMode ? "block" : "hidden";
+
+    private string LightModeBackgroundClass => IsDarkMode ? "bg-black": "bg-[url(/images/LightVersion.png)]";
 }

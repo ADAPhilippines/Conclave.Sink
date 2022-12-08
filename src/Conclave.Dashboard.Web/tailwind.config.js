@@ -6,6 +6,10 @@ module.exports = {
             backgroundImage: {
                 'addressButtonBg': "linear-gradient(174.21deg, #00FFFF -1.29%, rgba(65, 251, 251, 0.06) -1.28%, rgba(13, 4, 53, 0.1) 102.19%)",
                 'card-gradient': "radial-gradient(rgba(68,138,255, 0.2), transparent)"
+            },
+            colors: {
+                'primary': '#AF1CE2',
+                'secondary': '#41FBFB',
             }
         },
         screens: {
