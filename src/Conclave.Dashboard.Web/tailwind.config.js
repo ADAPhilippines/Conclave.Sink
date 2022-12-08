@@ -10,6 +10,8 @@ module.exports = {
             colors: {
                 'primary': '#AF1CE2',
                 'secondary': '#41FBFB',
+                'subtext': 'var(--mud-palette-text-secondary)',
+                'lines': 'var(--mud-palette-lines-default)'
             }
         },
         screens: {

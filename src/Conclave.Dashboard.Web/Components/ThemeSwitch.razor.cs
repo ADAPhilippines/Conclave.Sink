@@ -26,4 +26,6 @@ public partial class ThemeSwitch : ConclaveComponentBase
         IsDarkMode = !IsDarkMode;
         AppStateService.PropertyChanged += OnAppStatePropertyChanged;
     }
+
+    // private string ButtonBorder =>  IsDarkMode ? "border-[#41fbfb]" : "border-[#3d1a6e] bg-white"
 }

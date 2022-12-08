@@ -24,7 +24,10 @@ public class ConclaveTheme : MudTheme
             Surface = new MudColor("rgba(37, 19, 109, 0.1)"), // pagination color
             LinesInputs = Colors.Indigo.Darken4,
             LinesDefault = new MudColor("rgba(37, 19, 109, 0.1)"),
-            PrimaryContrastText = Colors.Indigo.Darken4
+            PrimaryContrastText = Colors.Indigo.Darken4,
+            TextPrimary = Colors.Grey.Darken4,
+            TextSecondary = Colors.Grey.Darken1,
+            Background = Colors.Shades.White
         };
 
         PaletteDark = new PaletteDark()
@@ -39,14 +42,18 @@ public class ConclaveTheme : MudTheme
             Success = Colors.Green.Darken2,
             Error = Colors.Red.Darken4,
             SecondaryContrastText = Colors.Shades.White,
-            TertiaryContrastText = Colors.Shades.White,
+            TertiaryContrastText = Colors.Shades.Black,
             InfoContrastText = Colors.Shades.White,
             // Surface = new MudColor("rgba(255, 255, 255, 0.5)"),
             Surface = new MudColor("rgba(65, 251, 251, 0.1)"),
             LinesInputs = Colors.Shades.White,
             LinesDefault = Colors.Teal.Lighten1,
-            PrimaryContrastText = Colors.Teal.Lighten1
+            PrimaryContrastText = Colors.Teal.Lighten1,
 
+
+            TextPrimary = Colors.Shades.White,
+            TextSecondary = Colors.Grey.Darken2,
+            Background = Colors.Grey.Darken4
         };
     }
 }

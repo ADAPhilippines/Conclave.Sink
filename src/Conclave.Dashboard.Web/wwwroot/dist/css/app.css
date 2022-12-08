@@ -670,10 +670,6 @@ video {
   margin-left: 100px;
 }
 
-.ml-\[260px\] {
-  margin-left: 260px;
-}
-
 .mt-28 {
   margin-top: 7rem;
 }
@@ -754,6 +750,10 @@ video {
   width: 100%;
 }
 
+.w-\[355px\] {
+  width: 355px;
+}
+
 .w-\[20px\] {
   width: 20px;
 }
@@ -782,13 +782,13 @@ video {
   width: 35vh;
 }
 
-.w-\[calc\(100vw-260px\)\] {
-  width: calc(100vw - 260px);
-}
-
 .\!min-w-fit {
   min-width: -moz-fit-content !important;
   min-width: fit-content !important;
+}
+
+.min-w-\[33\%\] {
+  min-width: 33%;
 }
 
 .min-w-fit {
@@ -798,6 +798,10 @@ video {
 
 .\!min-w-\[47px\] {
   min-width: 47px !important;
+}
+
+.max-w-\[355px\] {
+  max-width: 355px;
 }
 
 .\!max-w-\[500px\] {
@@ -975,8 +979,17 @@ video {
   border-color: rgb(61 26 110 / var(--tw-border-opacity));
 }
 
+.border-secondary {
+  --tw-border-opacity: 1;
+  border-color: rgb(65 251 251 / var(--tw-border-opacity));
+}
+
 .\!border-\[\#ffffff1a\] {
   border-color: #ffffff1a !important;
+}
+
+.border-lines {
+  border-color: var(--mud-palette-lines-default);
 }
 
 .\!bg-transparent {
@@ -1019,9 +1032,8 @@ video {
   background-color: rgb(65 251 251 / var(--tw-bg-opacity));
 }
 
-.bg-black {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+.bg-inherit {
+  background-color: inherit;
 }
 
 .bg-\[url\(\/images\/LightVersion\.png\)\] {
@@ -1147,9 +1159,8 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 
-.text-\[\#9596AA\] {
-  --tw-text-opacity: 1;
-  color: rgb(149 150 170 / var(--tw-text-opacity));
+.text-subtext {
+  color: var(--mud-palette-text-secondary);
 }
 
 .\!opacity-50 {
@@ -1397,7 +1408,7 @@ a.mud-nav-link:hover path {
 }
 
 svg.mud-icon-root.mud-svg-icon {
-  fill: #9596AA;
+  //fill: #9596AA;
 }
 
 .mud-card-header 
@@ -1459,10 +1470,6 @@ svg.mud-icon-root.mud-svg-icon {
   .xs\:mr-4 {
     margin-right: 1rem;
   }
-
-  .xs\:w-\[355px\] {
-    width: 355px;
-  }
 }
 
 @media (min-width: 768px) {
@@ -1492,6 +1499,10 @@ svg.mud-icon-root.mud-svg-icon {
     margin-top: 1.25rem;
   }
 
+  .lg\:ml-\[260px\] {
+    margin-left: 260px;
+  }
+
   .lg\:\!block {
     display: block !important;
   }
@@ -1514,6 +1525,10 @@ svg.mud-icon-root.mud-svg-icon {
 
   .lg\:w-\[103px\] {
     width: 103px;
+  }
+
+  .lg\:w-\[calc\(100vw-260px\)\] {
+    width: calc(100vw - 260px);
   }
 
   .lg\:items-end {

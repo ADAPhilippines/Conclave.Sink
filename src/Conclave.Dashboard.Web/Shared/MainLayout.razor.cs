@@ -29,5 +29,5 @@ public partial class MainLayout
 
     private string BackgroundClass => IsDarkMode ? "block" : "hidden";
 
-    private string LightModeBackgroundClass => IsDarkMode ? "bg-black": "bg-[url(/images/LightVersion.png)]";
+    private string LightModeBackgroundClass => IsDarkMode ? "bg-inherit": "bg-[url(/images/LightVersion.png)]";
 }
