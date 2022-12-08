@@ -58,7 +58,8 @@ namespace Conclave.Sink.Data.Migrations
                     BlockNumber = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     VrfKeyhash = table.Column<string>(type: "text", nullable: false),
                     Slot = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    Epoch = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                    Epoch = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    InvalidTransactions = table.Column<IEnumerable<ulong>>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,6 +97,7 @@ namespace Conclave.Sink.Data.Migrations
                 columns: table => new
                 {
                     Hash = table.Column<string>(type: "text", nullable: false),
+                    Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Fee = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     BlockHash = table.Column<string>(type: "text", nullable: false)
                 },
@@ -107,6 +109,26 @@ namespace Conclave.Sink.Data.Migrations
                         column: x => x.BlockHash,
                         principalTable: "Blocks",
                         principalColumn: "BlockHash",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CollateralTxOutputs",
+                columns: table => new
+                {
+                    TxHash = table.Column<string>(type: "text", nullable: false),
+                    Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollateralTxOutputs", x => new { x.TxHash, x.Index });
+                    table.ForeignKey(
+                        name: "FK_CollateralTxOutputs_Transactions_TxHash",
+                        column: x => x.TxHash,
+                        principalTable: "Transactions",
+                        principalColumn: "Hash",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -225,13 +247,45 @@ namespace Conclave.Sink.Data.Migrations
                     TxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     PolicyId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    CollateralTxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
+                    CollateralTxOutputTxHash = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Assets", x => new { x.PolicyId, x.Name, x.TxOutputHash, x.TxOutputIndex });
                     table.ForeignKey(
+                        name: "FK_Assets_CollateralTxOutputs_CollateralTxOutputTxHash_Collate~",
+                        columns: x => new { x.CollateralTxOutputTxHash, x.CollateralTxOutputIndex },
+                        principalTable: "CollateralTxOutputs",
+                        principalColumns: new[] { "TxHash", "Index" });
+                    table.ForeignKey(
                         name: "FK_Assets_TxOutputs_TxOutputHash_TxOutputIndex",
+                        columns: x => new { x.TxOutputHash, x.TxOutputIndex },
+                        principalTable: "TxOutputs",
+                        principalColumns: new[] { "TxHash", "Index" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CollateralTxInputs",
+                columns: table => new
+                {
+                    TxHash = table.Column<string>(type: "text", nullable: false),
+                    TxOutputHash = table.Column<string>(type: "text", nullable: false),
+                    TxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollateralTxInputs", x => new { x.TxHash, x.TxOutputHash, x.TxOutputIndex });
+                    table.ForeignKey(
+                        name: "FK_CollateralTxInputs_Transactions_TxHash",
+                        column: x => x.TxHash,
+                        principalTable: "Transactions",
+                        principalColumn: "Hash",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CollateralTxInputs_TxOutputs_TxOutputHash_TxOutputIndex",
                         columns: x => new { x.TxOutputHash, x.TxOutputIndex },
                         principalTable: "TxOutputs",
                         principalColumns: new[] { "TxHash", "Index" },
@@ -244,11 +298,18 @@ namespace Conclave.Sink.Data.Migrations
                 {
                     TxHash = table.Column<string>(type: "text", nullable: false),
                     TxOutputHash = table.Column<string>(type: "text", nullable: false),
-                    TxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                    TxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    CollateralTxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
+                    CollateralTxOutputTxHash = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TxInputs", x => new { x.TxHash, x.TxOutputHash, x.TxOutputIndex });
+                    table.ForeignKey(
+                        name: "FK_TxInputs_CollateralTxOutputs_CollateralTxOutputTxHash_Colla~",
+                        columns: x => new { x.CollateralTxOutputTxHash, x.CollateralTxOutputIndex },
+                        principalTable: "CollateralTxOutputs",
+                        principalColumns: new[] { "TxHash", "Index" });
                     table.ForeignKey(
                         name: "FK_TxInputs_Transactions_TxHash",
                         column: x => x.TxHash,
@@ -264,9 +325,25 @@ namespace Conclave.Sink.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Assets_CollateralTxOutputTxHash_CollateralTxOutputIndex",
+                table: "Assets",
+                columns: new[] { "CollateralTxOutputTxHash", "CollateralTxOutputIndex" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Assets_TxOutputHash_TxOutputIndex",
                 table: "Assets",
                 columns: new[] { "TxOutputHash", "TxOutputIndex" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CollateralTxInputs_TxOutputHash_TxOutputIndex",
+                table: "CollateralTxInputs",
+                columns: new[] { "TxOutputHash", "TxOutputIndex" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CollateralTxOutputs_TxHash",
+                table: "CollateralTxOutputs",
+                column: "TxHash",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PoolRegistrations_TransactionHash",
@@ -287,6 +364,11 @@ namespace Conclave.Sink.Data.Migrations
                 name: "IX_Transactions_BlockHash",
                 table: "Transactions",
                 column: "BlockHash");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TxInputs_CollateralTxOutputTxHash_CollateralTxOutputIndex",
+                table: "TxInputs",
+                columns: new[] { "CollateralTxOutputTxHash", "CollateralTxOutputIndex" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_TxInputs_TxOutputHash_TxOutputIndex",
@@ -313,6 +395,9 @@ namespace Conclave.Sink.Data.Migrations
                 name: "CnclvByStakeEpoch");
 
             migrationBuilder.DropTable(
+                name: "CollateralTxInputs");
+
+            migrationBuilder.DropTable(
                 name: "PoolRegistrations");
 
             migrationBuilder.DropTable(
@@ -329,6 +414,9 @@ namespace Conclave.Sink.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Withdrawals");
+
+            migrationBuilder.DropTable(
+                name: "CollateralTxOutputs");
 
             migrationBuilder.DropTable(
                 name: "TxOutputs");

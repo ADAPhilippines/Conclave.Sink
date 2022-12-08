@@ -1,10 +1,3 @@
 namespace Conclave.Common.Models;
 
-public record TxInput
-{
-    public string TxHash { get; init; } = string.Empty;
-    public Transaction Transaction { get; set; } = new();
-    public string TxOutputHash { get; init; } = string.Empty;
-    public ulong TxOutputIndex { get; init; }
-    public TxOutput TxOutput { get; init; } = new TxOutput();
-}
+public record TxInput : TxInputBase { }
