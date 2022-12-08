@@ -174,7 +174,7 @@ a, .btn-link {
     left: 0;
     width: 7px;
     height: 100%;
-    background-color: #41FBFB;
+    background-color: var(--mud-palette-info);
 }
 
 .mud-navmenu a:hover,
