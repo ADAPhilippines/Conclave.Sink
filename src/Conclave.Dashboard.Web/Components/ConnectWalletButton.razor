@@ -1,25 +1,27 @@
 @inherits ConclaveComponentBase
 
-@if (IsConnected)
-{
-    <div class="relative">
-        <div class="py-[12.5px] px-[24px] rounded-[50px] border-[1px] border-[#ffffff1a] border-solid">
-            <div class="flex items-center gap-2">
-                <MudImage Src="images/nami.svg" Alt="Nami logo" />
-                <span class="lowercase font-normal text-white">@WalletAddress</span>
-                <MudButton OnClick="ToggleDropDownMenu" Class="!min-w-fit !p-0">
-                    <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" />
-                </MudButton>
+<div class="hidden lg:block">
+    @if (IsConnected)
+    {
+        <div class="relative">
+            <div class="py-[12.5px] px-[24px] rounded-[50px] border-[1px] border-[#ffffff1a] mud-border-info border-solid">
+                <div class="flex items-center gap-2">
+                    <MudImage Src="images/nami.svg" Alt="Nami logo" />
+                    <span class="lowercase font-normal mud-tertiary-contrast-text">@WalletAddress</span>
+                    <MudButton OnClick="ToggleDropDownMenu" Class="!min-w-fit !p-0" Style="border: none">
+                        <MudIcon Icon="@Icons.Filled.KeyboardArrowDown" />
+                    </MudButton>
+                </div>
+            </div>
+            <div class="@(_isDropDownVisible ? "block" : "hidden") absolute bottom-[-243px] w-full">
+                <ConnectedWalletMenu OnDisconnectBtnClicked="DisconnectWallet" AdaBalance="1000" CnclvBalance="5000" />
             </div>
         </div>
-        <div class="@(_isDropDownVisible ? "block" : "hidden") absolute bottom-[-243px] w-full">
-            <ConnectedWalletMenu OnDisconnectBtnClicked="DisconnectWallet" AdaBalance="1000" CnclvBalance="5000" />
-        </div>
-    </div>
-}
-else
-{
-    <MudButton OnClick="ConnectWallet" Class="!h-[53px] !w-[212.3px] !bg-transparent !rounded-[50px] !border-[1px] !border-[#41fbfb] !border-solid !text-white !py-[12.5px] !px-[24px]">
-        Connect Wallet
-    </MudButton>
-}
+    }
+    else
+    {
+        <MudButton OnClick="ConnectWallet" Class="!h-[51px] !w-[210.3px] !bg-transparent !rounded-[50px] !border-[2px] mud-border-info !border-solid mud-text-info !py-[12.5px] !px-[24px]">
+            Connect Wallet
+        </MudButton>
+    }
+</div>

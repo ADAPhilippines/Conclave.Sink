@@ -16,7 +16,9 @@
     </div>
 
 
-    <Header WalletAddress="@_walletAddress2" />
+    <CascadingValue Value="IsDarkMode">
+        <Header WalletAddress="@_walletAddress2" />
+    </CascadingValue>
 
     <div class="lg:hidden">
         <MenuDrawer WalletAddress="@_walletAddress" />

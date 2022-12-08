@@ -29,6 +29,8 @@ public class ConclaveTheme : MudTheme
             TextSecondary = Colors.Grey.Darken1,
             Background = Colors.Shades.White,
             Info = Colors.Indigo.Darken4,
+            InfoDarken = Colors.Indigo.Darken4,
+            DarkContrastText = Colors.Indigo.Darken4,
         };
 
         PaletteDark = new PaletteDark()
@@ -55,7 +57,8 @@ public class ConclaveTheme : MudTheme
             TextSecondary = Colors.Grey.Darken2,
             Background = Colors.Grey.Darken4,     
             Info = Colors.Teal.Lighten1,
-
+            InfoDarken = Colors.Shades.White,
+            DarkContrastText = Colors.Shades.White,
         };
     }
 }

@@ -10,7 +10,7 @@ public partial class ThemeSwitch : ConclaveComponentBase
 
     [CascadingParameter]
     public bool IsDrawerOpen { get; set; }
-
+    
     public bool IsDarkMode
     {
         get => AppStateService?.IsDarkMode ?? true;
