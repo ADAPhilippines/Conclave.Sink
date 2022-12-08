@@ -188,7 +188,7 @@ a.mud-nav-link:hover path {
 }
 
 .toggle-switch {
-    transform: translateX(21px);
+    transform: translateX(22px);
     transform-origin: left;
 }
 
@@ -209,7 +209,6 @@ svg.mud-icon-root.mud-svg-icon {
 {
     border: 1px solid rgba(0, 0, 0, 0.1);
     color: var(--mud-palette-lines-inputs);
-    //background-color: red;
 }
 
 .mud-button-root.mud-icon-button.mud-ripple.mud-ripple-icon
