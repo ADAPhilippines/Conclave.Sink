@@ -1,13 +1,13 @@
 using CardanoSharp.Wallet.Enums;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
-using Conclave.Sink.Data;
 using Conclave.Common.Models;
+using Conclave.Sink.Data;
+using Conclave.Sink.Models;
+using Conclave.Sink.Models.Oura;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Conclave.Sink.Models.Oura;
-using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Reducers;
 
@@ -42,10 +42,14 @@ public class StakeDelegationReducer : OuraReducerBase
             using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Transaction? transaction = await _dbContext.Transactions
+                .Include(t => t.Block)
                 .Where(t => t.Hash == stakeDelegationEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
 
             if (transaction is null) throw new NullReferenceException("Transaction does not exist!");
+
+            if (transaction.Block.InvalidTransactions is not null &&
+                transaction.Block.InvalidTransactions.Contains(transaction.Index)) return;
 
             string stakeKeyHash = string.IsNullOrEmpty(stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash) ?
                 stakeDelegationEvent.StakeDelegation.Credential.Scripthash :
