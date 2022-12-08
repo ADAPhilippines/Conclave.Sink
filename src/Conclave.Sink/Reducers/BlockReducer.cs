@@ -42,6 +42,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
             blockEvent.Context.Slot is not null &&
             blockEvent.Context.BlockHash is not null &&
             blockEvent.Block is not null &&
+            blockEvent.Block.VrfVkey is not null &&
             blockEvent.Block.Era is not null)
         {
             await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);

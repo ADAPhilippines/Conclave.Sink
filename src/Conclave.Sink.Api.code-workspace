@@ -4,10 +4,13 @@
 			"path": "Conclave.Sink.Api"
 		},
 		{
+			"path": "Conclave.Data"
+		},
+		{
 			"path": "Conclave.Common"
 		},
 		{
-			"path": "Conclave.Sink.Data"
+			"path": "Conclave.Sink"
 		}
 	],
 	"settings": {}

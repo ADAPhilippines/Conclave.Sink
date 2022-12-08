@@ -38,6 +38,12 @@ components:
             description: Determines which values to fetch next
             schema:
                 type: string
+        OffsetQuery:
+            name: offset
+            in: query
+            description: Zero-based offset from the first item to be returned
+            schema:
+              type: integer
         FilterQuery:
             name: filter
             in: query
@@ -91,6 +97,9 @@ components:
                 prev:
                     type: string
                     example: 'prev_af0248bbc'
+        Offset:
+            type: number
+            example: 0
         Pool:
             type: object
             properties:
@@ -126,13 +135,16 @@ components:
                   blocks: 10
                   saturation: 50.5
                   pledge: 1000000000
+                  APY: 10
+                  margin: 0.5
                 - name: ADA Philippines
                   ticker: ADAPH
                   description: '#1 Cardano Stake Pool in the Philippines'
                   blocks: 10
                   saturation: 50.5
                   pledge: 1000000000
-                  interest: 10
+                  APY: 8
+                  margin: 0.2
         BalanceByEpoch:
             type: object
             properties:
@@ -167,8 +179,6 @@ components:
                         properties:
                             results:
                                 $ref: '#/components/schemas/Pools'
-                            cursor:
-                                $ref: '#/components/schemas/Cursor'
 
         200SuccessStakes:
             description: Ok
@@ -186,19 +196,19 @@ components:
                         properties:
                             message:
                                 type: string
-                                example: Invalid request
+                                example: Error getting request
 
 paths:
     /pools:
         get:
             summary: Returns a list of pools with their metadata
             parameters:
-                - $ref: '#/components/parameters/LimitQuery'
-                - $ref: '#/components/parameters/CursorQuery'
-                - $ref: '#/components/parameters/FilterQuery'
                 - $ref: '#/components/parameters/StakeAddressQuery'
                 - $ref: '#/components/parameters/ConclaveQuery'
+                - $ref: '#/components/parameters/FilterQuery'
                 - $ref: '#/components/parameters/OrderByQuery'
+                - $ref: '#/components/parameters/LimitQuery'
+                - $ref: '#/components/parameters/OffsetQuery'
             responses:
                 '200':
                     $ref: '#/components/responses/200SuccessPools'
