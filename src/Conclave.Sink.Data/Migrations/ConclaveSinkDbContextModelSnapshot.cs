@@ -54,7 +54,15 @@ namespace Conclave.Sink.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric(20,0)");
 
+                    b.Property<decimal?>("CollateralTxOutputIndex")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("CollateralTxOutputTxHash")
+                        .HasColumnType("text");
+
                     b.HasKey("PolicyId", "Name", "TxOutputHash", "TxOutputIndex");
+
+                    b.HasIndex("CollateralTxOutputTxHash", "CollateralTxOutputIndex");
 
                     b.HasIndex("TxOutputHash", "TxOutputIndex");
 
@@ -105,6 +113,9 @@ namespace Conclave.Sink.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<IEnumerable<ulong>>("InvalidTransactions")
+                        .HasColumnType("jsonb");
+
                     b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
 
@@ -131,6 +142,47 @@ namespace Conclave.Sink.Data.Migrations
                     b.HasKey("StakeAddress", "Epoch");
 
                     b.ToTable("CnclvByStakeEpoch");
+                });
+
+            modelBuilder.Entity("Conclave.Common.Models.CollateralTxInput", b =>
+                {
+                    b.Property<string>("TxHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TxOutputHash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TxOutputIndex")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("TxHash", "TxOutputHash", "TxOutputIndex");
+
+                    b.HasIndex("TxOutputHash", "TxOutputIndex");
+
+                    b.ToTable("CollateralTxInputs");
+                });
+
+            modelBuilder.Entity("Conclave.Common.Models.CollateralTxOutput", b =>
+                {
+                    b.Property<string>("TxHash")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Index")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("TxHash", "Index");
+
+                    b.HasIndex("TxHash")
+                        .IsUnique();
+
+                    b.ToTable("CollateralTxOutputs");
                 });
 
             modelBuilder.Entity("Conclave.Common.Models.PoolRegistration", b =>
@@ -239,6 +291,9 @@ namespace Conclave.Sink.Data.Migrations
                     b.Property<decimal>("Fee")
                         .HasColumnType("numeric(20,0)");
 
+                    b.Property<decimal>("Index")
+                        .HasColumnType("numeric(20,0)");
+
                     b.HasKey("Hash");
 
                     b.HasIndex("BlockHash");
@@ -257,7 +312,15 @@ namespace Conclave.Sink.Data.Migrations
                     b.Property<decimal>("TxOutputIndex")
                         .HasColumnType("numeric(20,0)");
 
+                    b.Property<decimal?>("CollateralTxOutputIndex")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("CollateralTxOutputTxHash")
+                        .HasColumnType("text");
+
                     b.HasKey("TxHash", "TxOutputHash", "TxOutputIndex");
+
+                    b.HasIndex("CollateralTxOutputTxHash", "CollateralTxOutputIndex");
 
                     b.HasIndex("TxOutputHash", "TxOutputIndex");
 
@@ -318,6 +381,10 @@ namespace Conclave.Sink.Data.Migrations
 
             modelBuilder.Entity("Conclave.Common.Models.Asset", b =>
                 {
+                    b.HasOne("Conclave.Common.Models.CollateralTxOutput", null)
+                        .WithMany("Assets")
+                        .HasForeignKey("CollateralTxOutputTxHash", "CollateralTxOutputIndex");
+
                     b.HasOne("Conclave.Common.Models.TxOutput", "TxOutput")
                         .WithMany("Assets")
                         .HasForeignKey("TxOutputHash", "TxOutputIndex")
@@ -325,6 +392,36 @@ namespace Conclave.Sink.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("TxOutput");
+                });
+
+            modelBuilder.Entity("Conclave.Common.Models.CollateralTxInput", b =>
+                {
+                    b.HasOne("Conclave.Common.Models.Transaction", "Transaction")
+                        .WithMany("CollateralInputs")
+                        .HasForeignKey("TxHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Conclave.Common.Models.TxOutput", "TxOutput")
+                        .WithMany("CollateralInputs")
+                        .HasForeignKey("TxOutputHash", "TxOutputIndex")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transaction");
+
+                    b.Navigation("TxOutput");
+                });
+
+            modelBuilder.Entity("Conclave.Common.Models.CollateralTxOutput", b =>
+                {
+                    b.HasOne("Conclave.Common.Models.Transaction", "Transaction")
+                        .WithOne("CollateralOutput")
+                        .HasForeignKey("Conclave.Common.Models.CollateralTxOutput", "TxHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("Conclave.Common.Models.PoolRegistration", b =>
@@ -379,6 +476,10 @@ namespace Conclave.Sink.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Conclave.Common.Models.CollateralTxOutput", null)
+                        .WithMany("Inputs")
+                        .HasForeignKey("CollateralTxOutputTxHash", "CollateralTxOutputIndex");
+
                     b.HasOne("Conclave.Common.Models.TxOutput", "TxOutput")
                         .WithMany("Inputs")
                         .HasForeignKey("TxOutputHash", "TxOutputIndex")
@@ -417,8 +518,19 @@ namespace Conclave.Sink.Data.Migrations
                     b.Navigation("Transactions");
                 });
 
+            modelBuilder.Entity("Conclave.Common.Models.CollateralTxOutput", b =>
+                {
+                    b.Navigation("Assets");
+
+                    b.Navigation("Inputs");
+                });
+
             modelBuilder.Entity("Conclave.Common.Models.Transaction", b =>
                 {
+                    b.Navigation("CollateralInputs");
+
+                    b.Navigation("CollateralOutput");
+
                     b.Navigation("Inputs");
 
                     b.Navigation("Outputs");
@@ -435,6 +547,8 @@ namespace Conclave.Sink.Data.Migrations
             modelBuilder.Entity("Conclave.Common.Models.TxOutput", b =>
                 {
                     b.Navigation("Assets");
+
+                    b.Navigation("CollateralInputs");
 
                     b.Navigation("Inputs");
                 });

@@ -44,6 +44,7 @@ public class OuraWebhookController : ControllerBase
     public async Task<IActionResult> ReceiveEventAsync([FromBody] JsonElement _eventJson)
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
+
         if (_event is not null && _event.Context is not null)
         {
             if (_event.Variant == OuraVariant.RollBack)

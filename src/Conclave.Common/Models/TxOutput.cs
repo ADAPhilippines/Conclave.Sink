@@ -1,12 +1,6 @@
 namespace Conclave.Common.Models;
 
-public record TxOutput
+public record TxOutput : TxOutputBase
 {
-    public string TxHash { get; init; } = string.Empty;
-    public Transaction Transaction { get; init; } = new();
-    public ulong Index { get; init; }
-    public ulong Amount { get; init; }
-    public string Address { get; init; } = string.Empty;
-    public IEnumerable<TxInput> Inputs { get; init; } = new List<TxInput>();
-    public IEnumerable<Asset>? Assets { get; set; }
+    public IEnumerable<CollateralTxInput> CollateralInputs { get; init; } = new List<CollateralTxInput>();
 }

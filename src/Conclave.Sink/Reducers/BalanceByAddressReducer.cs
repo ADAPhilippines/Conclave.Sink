@@ -52,6 +52,7 @@ public class BalanceByAddressReducer : OuraReducerBase
             OuraVariant.TxOutput => Task.Run(async () =>
             {
                 OuraTxOutputEvent? txOutputEvent = ouraEvent as OuraTxOutputEvent;
+
                 if (txOutputEvent is not null &&
                     txOutputEvent.TxOutput is not null &&
                     txOutputEvent.TxOutput.Amount is not null)
