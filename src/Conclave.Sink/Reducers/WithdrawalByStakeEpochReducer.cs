@@ -113,12 +113,14 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
 
             foreach (Withdrawal withdrawal in transaction.Withdrawals)
             {
+                if (withdrawal.Amount <= 0) continue;
+
                 WithdrawalByStakeEpoch? withdrawalByStakeEpoch = await _dbContext.WithdrawalByStakeEpoch
                     .Where(w => w.StakeAddress == withdrawal.StakeAddress &&
                         w.Epoch == rollbackBlock.Epoch)
                     .FirstOrDefaultAsync();
 
-                if (withdrawalByStakeEpoch is null) return;
+                if (withdrawalByStakeEpoch is null) throw new NullReferenceException("WithdrawalByStakeEpoch does not exist!");
 
                 ulong previousWithdrawal = await _dbContext.WithdrawalByStakeEpoch
                     .Where(w => w.StakeAddress == withdrawal.StakeAddress && w.Epoch < rollbackBlock.Epoch)
