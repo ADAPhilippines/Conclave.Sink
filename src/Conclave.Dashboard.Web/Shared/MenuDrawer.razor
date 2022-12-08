@@ -1,9 +1,9 @@
 @inherits ConclaveComponentBase
 
-<MudPaper Class="relative">
-    <MudDrawer Class="!max-w-[500px] !fixed px-[18px]" Width="100%" Height="100%"
-        Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary" @bind-Open="@IsDrawerOpen">
-        <div class="w-full max-w-[350px] m-auto mt-28 md:mt-40">
+<MudPaper Class="relative " Elevation="1">
+    <MudDrawer Class="!max-w-fit !fixed px-[18px]" Width="100%" Height="100%"
+        Anchor="Anchor.End" Variant="DrawerVariant.Temporary" @bind-Open="@IsDrawerOpen">
+        <div class="w-full max-w-[320px] mx-auto mt-[90px]">
             <div>
                 <MudButton FullWidth="true" Class="peer !py-[9px] !px-[18px] !rounded-[38px] !border-[1px] !border-[#ffffff1a] !border-solid address-btn-bg">
                     <div class="flex items-center gap-4">
