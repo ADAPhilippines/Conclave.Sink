@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com
+! tailwindcss v3.1.8 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -30,7 +30,6 @@
 2. Prevent adjustments of font size after orientation changes in iOS.
 3. Use a more readable tab size.
 4. Use the user's configured `sans` font-family by default.
-5. Use the user's configured `sans` font-feature-settings by default.
 */
 
 html {
@@ -45,8 +44,6 @@ html {
   /* 3 */
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
-  font-feature-settings: normal;
-  /* 5 */
 }
 
 /*
@@ -413,13 +410,54 @@ video {
   height: auto;
 }
 
-/* Make elements with the HTML hidden attribute stay hidden by default */
-
-[hidden] {
-  display: none;
+*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
 }
 
-*, ::before, ::after {
+::-webkit-backdrop {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -593,6 +631,10 @@ video {
   z-index: 2000;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -668,10 +710,6 @@ video {
 
 .mt-\[90px\] {
   margin-top: 90px;
-}
-
-.\!mt-5 {
-  margin-top: 1.25rem !important;
 }
 
 .mt-10 {
@@ -750,10 +788,6 @@ video {
   width: 7px;
 }
 
-.w-\[355px\] {
-  width: 355px;
-}
-
 .\!w-\[47px\] {
   width: 47px !important;
 }
@@ -778,7 +812,14 @@ video {
   width: 35vh;
 }
 
+.w-fit {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .\!min-w-fit {
+  min-width: -webkit-fit-content !important;
   min-width: -moz-fit-content !important;
   min-width: fit-content !important;
 }
@@ -789,11 +830,6 @@ video {
 
 .max-w-\[355px\] {
   max-width: 355px;
-}
-
-.\!max-w-fit {
-  max-width: -moz-fit-content !important;
-  max-width: fit-content !important;
 }
 
 .max-w-\[320px\] {
@@ -1163,10 +1199,6 @@ video {
   outline-width: 1px;
 }
 
-.outline-\[\#\#ffffff1a\] {
-  outline-color: ##ffffff1a;
-}
-
 .blur {
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -1339,6 +1371,7 @@ a, .btn-link {
 }
 
 .switch-btn {
+  min-width: -webkit-fit-content !important;
   min-width: -moz-fit-content !important;
   min-width: fit-content !important;
   border-radius: 100px !important;
@@ -1428,7 +1461,6 @@ a, .btn-link {
   transform-origin: left;
 }
 
-q
 .switch span.mud-button-label {
   width: 47px;
 }
@@ -1499,13 +1531,14 @@ q
   }
 }
 
-
 @media (min-width: 500px) {
   .xm\:\!max-w-fit {
     max-width: -webkit-fit-content !important;
     max-width: -moz-fit-content !important;
     max-width: fit-content !important;
-    
+  }
+}
+
 @media (min-width: 600px) {
   .smtab\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
