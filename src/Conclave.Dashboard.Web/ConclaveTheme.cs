@@ -27,6 +27,7 @@ public class ConclaveTheme : MudTheme
 
             TextPrimary = Colors.Grey.Darken4,
             TextSecondary = Colors.Grey.Darken1,
+            TextDisabled = Colors.Grey.Lighten1,
             Background = Colors.Shades.White,
             Info = Colors.Indigo.Darken4,
             InfoDarken = Colors.Indigo.Darken4,
@@ -55,6 +56,7 @@ public class ConclaveTheme : MudTheme
 
             TextPrimary = Colors.Shades.White,
             TextSecondary = Colors.Grey.Darken2,
+            TextDisabled = Colors.Grey.Lighten1,
             Background = Colors.Grey.Darken4,     
             Info = Colors.Teal.Lighten1,
             InfoDarken = Colors.Shades.White,

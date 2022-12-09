@@ -174,7 +174,7 @@ a, .btn-link {
 
 .toggle-switch {
     transform: translateX(22px);
-    transform-origin: left;
+    transform-origin: right;
 }
 
 .switch span.mud-button-label {

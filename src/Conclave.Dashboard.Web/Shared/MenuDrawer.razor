@@ -3,9 +3,12 @@
 <MudPaper Class="relative lg:hidden" Elevation="1">
     <MudDrawer Style="position: fixed;" Class="xm:!max-w-fit px-[18px]" Width="100%" Height="100%"
         Anchor="Anchor.End" Variant="DrawerVariant.Temporary" @bind-Open="@IsDrawerOpen">
+
+        <div class="font-medium text-[20px] text-info-darken absolute top-[32px] hidden xm:block">Staking Center</div>
+
         <div class="w-full max-w-[320px] mx-auto mt-[90px]">
             <div>
-                <MudButton FullWidth="true" Class="peer !py-[9px] !px-[18px] !rounded-[38px] !border-[1px] !border-[#ffffff1a] !border-solid address-btn-bg">
+                <MudButton FullWidth="true" Class="peer !py-[9px] !px-[18px] !rounded-[38px] !border-[1px] !border-disabled !border-solid address-btn-bg">
                     <div class="flex items-center gap-4">
                         <MudImage Src="images/nami.svg" Alt="Nami logo" />
                         <span class="lowercase font-normal text-info-darken">@WalletAddress</span>
@@ -16,21 +19,23 @@
             <CascadingValue Value="IsDarkMode">
                 <ConnectedWalletMenu AdaBalance="1000" CnclvBalance="5000" />
             </CascadingValue>
-    
-            <NavMenu />
-
-            <div class="w-full flex gap-3 items-center mt-10 justify-between py-2 px-4">
-                <MudLink Href="/" Target="_blank">
-                    <MudImage Src="images/facebook.svg" Alt="Facebook logo" />
+            
+            <MudPaper Class="mt-8 !bg-transparent" Width="100" Elevation="4">
+                <NavMenu />
+            </MudPaper>
+            
+            <div class="w-full flex items-center justify-center gap-8 mt-8">
+                <MudLink Href="#" Target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Class="text-subtext transition-all duration-[5000ms] hover:text-info-darken" />
                 </MudLink>
-                <MudLink Href="/" Target="_blank">
-                    <MudImage Src="images/twitter.svg" Alt="Twitter logo" />
+                <MudLink Href="#" Target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Twitter" Class="text-subtext transition-all duration-300 hover:text-info-darken" />
                 </MudLink>
-                <MudLink Href="/" Target="_blank">
-                    <MudImage Src="images/telegram.svg" Alt="Telegram logo" />
+                <MudLink Href="#" Target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Telegram" Class="text-subtext transition-all duration-300 hover:text-info-darken" />
                 </MudLink>
-                <MudLink Href="/" Target="_blank">
-                    <MudImage Src="images/discord.svg" Alt="Discord logo" />
+                <MudLink Href="#" Target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Discord" Class="text-subtext transition-all duration-300 hover:text-info-darken" />
                 </MudLink>
             </div>
         </div>

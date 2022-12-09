@@ -1,4 +1,4 @@
-<MudPaper Class="dialog-bg !text-white py-[10px] px-[18px] mt-5" Width="100">
+<MudPaper Class="!text-white !bg-transparent py-[10px] px-[18px] mt-5 backdrop-blur-[10px]" Width="100" Elevation="4">
     <h4 class="text-info-darken">Pending rewards</h4>
     <div class="flex flex-col gap-3 mt-3">
         <div class="flex items-center gap-[12px]">
@@ -11,10 +11,10 @@
         </div>
     </div>
     <div class="flex flex-col gap-3 mt-3">
-        <MudButton Class="!text-white !rounded-[43px] !normal-case !border !border-solid !border-[#ffffff4d] !bg-transparent !opacity-50">
+        <MudButton Disabled="true" Class="!text-disabled !rounded-[43px] !normal-case !border !border-solid !border-disabled !bg-transparent">
             Withdraw
         </MudButton>
-        <MudButton OnClick="OnDisconnectBtnClicked" Class="!text-white !rounded-[43px] !normal-case !border !border-solid !border-[#ffffff4d] !bg-[#893240]">
+        <MudButton OnClick="OnDisconnectBtnClicked" Class="!text-white !rounded-[43px] !normal-case !border !border-solid !border-[#ffffff4d] !bg-error">
             Disconnect
         </MudButton>
     </div>

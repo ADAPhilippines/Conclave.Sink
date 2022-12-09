@@ -627,6 +627,14 @@ video {
   bottom: 22px;
 }
 
+.top-\[30px\] {
+  top: 30px;
+}
+
+.top-\[32px\] {
+  top: 32px;
+}
+
 .z-\[2000\] {
   z-index: 2000;
 }
@@ -700,10 +708,6 @@ video {
   margin-bottom: 0.5rem;
 }
 
-.mt-\[150px\] {
-  margin-top: 150px;
-}
-
 .mr-auto {
   margin-right: auto;
 }
@@ -716,8 +720,32 @@ video {
   margin-top: 90px;
 }
 
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .mt-10 {
   margin-top: 2.5rem;
+}
+
+.mt-\[21px\] {
+  margin-top: 21px;
+}
+
+.mt-\[50px\] {
+  margin-top: 50px;
+}
+
+.mt-\[30px\] {
+  margin-top: 30px;
+}
+
+.mt-\[35px\] {
+  margin-top: 35px;
+}
+
+.mt-\[32px\] {
+  margin-top: 32px;
 }
 
 .block {
@@ -888,10 +916,6 @@ video {
   gap: 0.25rem;
 }
 
-.gap-\[20px\] {
-  gap: 20px;
-}
-
 .gap-\[9px\] {
   gap: 9px;
 }
@@ -902,6 +926,10 @@ video {
 
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-8 {
+  gap: 2rem;
 }
 
 .gap-5 {
@@ -984,6 +1012,10 @@ video {
   border-color: #ffffff1a;
 }
 
+.\!border-disabled {
+  border-color: var(--mud-palette-text-disabled) !important;
+}
+
 .\!border-\[\#ffffff4d\] {
   border-color: #ffffff4d !important;
 }
@@ -1003,17 +1035,12 @@ video {
   border-color: rgb(65 251 251 / var(--tw-border-opacity));
 }
 
-.\!border-\[\#ffffff1a\] {
-  border-color: #ffffff1a !important;
-}
-
 .\!bg-transparent {
   background-color: transparent !important;
 }
 
-.\!bg-\[\#893240\] {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(137 50 64 / var(--tw-bg-opacity)) !important;
+.\!bg-error {
+  background-color: var(--mud-palette-error) !important;
 }
 
 .\!bg-\[\#41fbfb1a\] {
@@ -1157,6 +1184,10 @@ video {
   font-size: 24px;
 }
 
+.text-\[20px\] {
+  font-size: 20px;
+}
+
 .font-normal {
   font-weight: 400;
 }
@@ -1186,6 +1217,10 @@ video {
   color: var(--mud-palette-info-darken);
 }
 
+.\!text-disabled {
+  color: var(--mud-palette-text-disabled) !important;
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1193,10 +1228,6 @@ video {
 
 .text-subtext {
   color: var(--mud-palette-text-secondary);
-}
-
-.\!opacity-50 {
-  opacity: 0.5 !important;
 }
 
 .opacity-0 {
@@ -1221,12 +1252,23 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.blur-\[10px\] {
+  --tw-blur: blur(10px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .backdrop-blur-3xl {
   --tw-backdrop-blur: blur(64px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.backdrop-blur-\[10px\] {
+  --tw-backdrop-blur: blur(10px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
@@ -1439,7 +1481,7 @@ a, .btn-link {
 
 .toggle-switch {
   transform: translateX(22px);
-  transform-origin: left;
+  transform-origin: right;
 }
 
 .switch span.mud-button-label {
@@ -1515,6 +1557,10 @@ a, .btn-link {
 }
 
 @media (min-width: 500px) {
+  .xm\:block {
+    display: block;
+  }
+
   .xm\:\!max-w-fit {
     max-width: -webkit-fit-content !important;
     max-width: -moz-fit-content !important;
