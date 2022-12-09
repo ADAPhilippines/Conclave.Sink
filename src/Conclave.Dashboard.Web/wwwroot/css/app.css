@@ -225,7 +225,7 @@ a, .btn-link {
 #nav-link-bg:hover ~ *,
 .active #nav-link-bg:hover path,
 .active #nav-link-bg:hover ~ * {
-    color: var(--mud-palette-info-darken) !important;
+    color: var(--mud-palette-tertiary) !important;
 }
 
 .mud-card-header 

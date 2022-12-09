@@ -44,7 +44,7 @@ public class ConclaveTheme : MudTheme
             Success = Colors.Green.Darken2,
             Error = Colors.Red.Darken4,
             SecondaryContrastText = Colors.Shades.White,
-            TertiaryContrastText = Colors.Shades.Black,
+            TertiaryContrastText = Colors.Shades.White,
             InfoContrastText = Colors.Shades.White,
             // Surface = new MudColor("rgba(255, 255, 255, 0.5)"),
             Surface = new MudColor("rgba(65, 251, 251, 0.1)"),

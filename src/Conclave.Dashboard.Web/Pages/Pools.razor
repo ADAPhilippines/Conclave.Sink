@@ -4,38 +4,40 @@
 <PageTitle>Pools</PageTitle>
 
 <div class="w-full">
-  <div class="my-4">
-    <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
-    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-1 mx-2">
+  <PoolCardList>
+    <Title>
+      <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
+    </Title>
+    <ChildContent>
       @foreach (var item in ConclavePoolsList)
       {
         <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
       }
-    </div>
-    <div class="mt-6 lg:mt-5 text-right mb-[70px] md:mb-0">
+    </ChildContent>
+     <Pagination>
       <MudPagination Rectangular="true" Variant="Variant.Text" BoundaryCount="1" MiddleCount="1"
-        Count="ConclavePagination" Color="Color.Surface" DisableElevation="true" />
-    </div>
-  </div>
+        Count="ConclavePagination" Color="Color.Surface" DisableElevation="true" SelectedChanged="(page) => OnPageChanged(page, true)" />
+    </Pagination>
+  </PoolCardList>
 
-  <div class="my-4">
-    <div class="flex flex-col items-start justify-between md:flex-row mb-6">
+  <PoolCardList>
+    <Title>
       <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
-      <div class="flex">
-        <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
-          AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
-          Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" OnKeyUp="OnKeyPressed" />
-      </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">
+    </Title>
+    <SearchBox>
+      <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
+        AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
+        Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" OnKeyUp="OnKeyPressed" />
+    </SearchBox>
+    <ChildContent>
       @foreach (var item in OtherPoolsList)
       {
         <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
       }
-    </div>
-    <div class="mt-6 lg:mt-5 text-right">
-      <MudPagination Rectangular="true" Variant="Variant.Text" Color="Color.Surface" BoundaryCount="1" MiddleCount="1"
-        Count="OtherPoolsPagination" SelectedChanged="OnPageChanged" DisableElevation="true" />
-    </div>
-  </div>
+    </ChildContent>
+    <Pagination>
+      <MudPagination Rectangular="true" Variant="Variant.Text" BoundaryCount="1" MiddleCount="1"
+        Count="OtherPoolsPagination" Color="Color.Surface" DisableElevation="true" SelectedChanged="(page) => OnPageChanged(page, false)" />
+    </Pagination>
+  </PoolCardList>
 </div>

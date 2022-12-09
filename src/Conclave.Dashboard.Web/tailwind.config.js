@@ -20,8 +20,11 @@ module.exports = {
             "xs": "375px",
             "sm": "414px",
             "xm": "500px",
+            "smtab": "600px",
             "md": "768px",
+            "tab": "900px",
             "lg": "1024px",
+            "laptop": "1220px",
             "xl": "1440px",
             "xxl": "1700px",
             "2xl": "1920px"

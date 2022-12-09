@@ -64,8 +64,15 @@ public partial class Pools
     }
   }
 
-  private async Task OnPageChanged(int page)
+  private async Task OnPageChanged(int page, bool isConclave)
   {
-    OtherPoolsList = await PoolService.GetPaginatedPoolsAsync(page, 3);
+    if (isConclave)
+    {
+      ConclavePoolsList = await PoolService.GetPaginatedPoolsAsync(page, 3);
+    }
+    else
+    {
+      OtherPoolsList = await PoolService.GetPaginatedPoolsAsync(page, 3);
+    }
   }
 }
