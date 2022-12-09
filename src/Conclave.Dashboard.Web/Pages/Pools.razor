@@ -4,9 +4,9 @@
 <PageTitle>Pools</PageTitle>
 
 <div class="w-full">
-  <div class="my-4">
+  <div class="mx-2">
     <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
-    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-1 mx-2">
+    <div class="grid place-content-center grid-cols-1 smtab:grid-cols-2 tab:grid-cols-3 lg:grid-cols-2 laptop:grid-cols-3 gap-1 border-2">
       @foreach (var item in ConclavePoolsList)
       {
         <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />

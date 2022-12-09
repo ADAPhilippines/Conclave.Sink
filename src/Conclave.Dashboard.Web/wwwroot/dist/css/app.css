@@ -597,6 +597,11 @@ video {
   z-index: 2000;
 }
 
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -612,19 +617,14 @@ video {
   margin-bottom: 0.75rem;
 }
 
-.my-4 {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .mt-5 {
@@ -743,10 +743,6 @@ video {
   width: 100%;
 }
 
-.w-\[355px\] {
-  width: 355px;
-}
-
 .\!w-\[47px\] {
   width: 47px !important;
 }
@@ -776,10 +772,6 @@ video {
   min-width: fit-content !important;
 }
 
-.min-w-\[33\%\] {
-  min-width: 33%;
-}
-
 .\!min-w-\[47px\] {
   min-width: 47px !important;
 }
@@ -803,6 +795,14 @@ video {
 
 .flex-col {
   flex-direction: column;
+}
+
+.place-content-center {
+  place-content: center;
+}
+
+.place-content-stretch {
+  place-content: stretch;
 }
 
 .items-start {
@@ -1150,11 +1150,6 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.blur-\[100px\] {
-  --tw-blur: blur(100px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
@@ -1439,13 +1434,15 @@ svg.mud-icon-root.mud-svg-icon {
   }
 }
 
+@media (min-width: 600px) {
+  .smtab\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 768px) {
   .md\:mb-0 {
     margin-bottom: 0px;
-  }
-
-  .md\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .md\:grid-cols-2 {
@@ -1454,6 +1451,12 @@ svg.mud-icon-root.mud-svg-icon {
 
   .md\:flex-row {
     flex-direction: row;
+  }
+}
+
+@media (min-width: 900px) {
+  .tab\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1486,6 +1489,10 @@ svg.mud-icon-root.mud-svg-icon {
     width: calc(100vw - 260px);
   }
 
+  .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .lg\:items-end {
     align-items: flex-end;
   }
@@ -1512,6 +1519,12 @@ svg.mud-icon-root.mud-svg-icon {
 
   .lg\:pl-\[19px\] {
     padding-left: 19px;
+  }
+}
+
+@media (min-width: 1220px) {
+  .laptop\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
