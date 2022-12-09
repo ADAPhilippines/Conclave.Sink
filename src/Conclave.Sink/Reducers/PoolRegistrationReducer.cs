@@ -53,6 +53,11 @@ public class PoolRegistrationReducer : OuraReducerBase
                 transaction.Block.InvalidTransactions.Contains(transaction.Index))
                 return;
 
+            if (transaction is not null &&
+                transaction.Block.InvalidTransactions is not null &&
+                transaction.Block.InvalidTransactions.Contains(transaction.Index))
+                return;
+                
             string? poolMetadataString = await GetJsonStringFromURLAsync(poolRegistrationEvent.PoolRegistration.PoolMetadata);
             string? metaDataHash = poolMetadataString is not null ? HashUtility.Blake2b256(poolMetadataString.ToBytes()).ToStringHex() : null;
 

@@ -39,6 +39,7 @@ public class PoolRetirementReducer : OuraReducerBase
             Transaction? transaction = await _dbContext.Transactions
                 .Where(t => t.Hash == poolRetirementEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
+                
             if (transaction is not null &&
                 transaction.Block.InvalidTransactions is not null &&
                 transaction.Block.InvalidTransactions.Contains(transaction.Index))
