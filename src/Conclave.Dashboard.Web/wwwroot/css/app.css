@@ -155,13 +155,23 @@ a, .btn-link {
     opacity: 0;
 }
 
-.nav-menu a {
-    padding-top: 17px !important;
-    padding-bottom: 17px !important;
+#sidebar a {
+    padding: 0;
+    background: none;
+    /* color: red !important; */
 }
 
-.active div,
-.mud-navmenu a:hover div {
+#sidebar .mud-nav-link-text {
+    margin: 0;
+}
+
+/* .nav-menu a {
+    padding-top: 17px !important;
+    padding-bottom: 17px !important;
+} */
+
+/* .active,
+.mud-navmenu a:hover {
     color: white;
     font-weight: 400;
 }
@@ -177,14 +187,33 @@ a, .btn-link {
     background-color: var(--mud-palette-info);
 }
 
-.mud-navmenu a:hover,
-.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%) !important;
+.mud-navmenu a {
+    transition: all 3s;
+} */
+
+#sidebar svg {
+    color: var(--mud-palette-text-secondary) !important;
 }
 
-a.mud-nav-link.active path,
-a.mud-nav-link:hover path {
-    fill: white !important;
+#sidebar .active svg,
+#sidebar .active *,
+#sidebar #nav-link-bg:hover svg {
+    color: var(--mud-palette-info-darken) !important;
+}
+
+/* #sidebar .active svg,
+#sidebar .active #nav-link-bg ~ *,
+#sidebar .active #nav-link-bg:hover ~ *  {
+    color: var(--mud-palette-info-darken) !important;
+} */
+
+.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    background: none !important;
+}
+
+
+.active #nav-link-bg {
+    opacity: 1;
 }
 
 .toggle-switch {
@@ -196,8 +225,10 @@ a.mud-nav-link:hover path {
     width: 47px;
 }
 
-svg.mud-icon-root.mud-svg-icon {
-    //fill: #9596AA;
+#nav-link-bg:hover ~ *,
+.active #nav-link-bg:hover path,
+.active #nav-link-bg:hover ~ * {
+    color: var(--mud-palette-tertiary) !important;
 }
 
 .mud-card-header 

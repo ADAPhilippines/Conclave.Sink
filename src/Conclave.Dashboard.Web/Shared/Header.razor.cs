@@ -6,6 +6,12 @@ namespace Conclave.Dashboard.Web.Shared;
 
 public partial class Header : ConclaveComponentBase
 {
+    [Inject]
+    private ConclaveIconsService ConclaveIcons { get; set; } = new();
+
+    [CascadingParameter]
+    public bool IsDarkMode { get; set; }
+
     [Parameter]
     public EventCallback OnBurgerMenuClicked { get; set; }
 
@@ -17,7 +23,7 @@ public partial class Header : ConclaveComponentBase
         get => AppStateService?.IsDrawerOpen ?? false;
         set
         {
-            if (AppStateService is not null) AppStateService.IsDrawerOpen= value;
+            if (AppStateService is not null) AppStateService.IsDrawerOpen = value;
         }
     }
 
