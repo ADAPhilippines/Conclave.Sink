@@ -6,24 +6,11 @@
         <MudLink Href="/staking">
             <div class="flex items-center gap-[9px] lg:gap-[12px]">
                 <div class="w-[35px] lg:w-[44px] h-[48px]">
-                    @if (IsDarkMode)
-                    {
-                        <MudImage Width="100" Src="images/conclave-logo-white.svg" Alt="Conclave logo" />
-                    }
-                    else
-                    {
-                        <MudImage Width="100" Src="images/conclave-logo-dark.svg" Alt="Conclave logo" />
-                    }
+                    <MudImage Width="100" Src="@ConclaveLogo" Alt="Conclave logo" />
+                    
                 </div>
                 <div class="w-[82px] lg:w-[103px]">
-                    @if (IsDarkMode)
-                    {
-                        <MudImage Width="100" Src="images/conclave-text-white.svg" Alt="Conclave text" />
-                    }
-                    else
-                    {
-                        <MudImage Width="100" Src="images/conclave-text-dark.svg" Alt="Conclave text" />
-                    }
+                    <MudImage Width="100" Src="@ConclaveText" Alt="Conclave text" />
                 </div>
             </div>
         </MudLink>
