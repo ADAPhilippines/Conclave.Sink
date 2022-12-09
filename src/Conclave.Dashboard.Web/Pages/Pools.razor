@@ -4,38 +4,32 @@
 <PageTitle>Pools</PageTitle>
 
 <div class="w-full">
-  <div class="mx-2">
-    <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
-    <div class="grid place-content-center grid-cols-1 smtab:grid-cols-2 tab:grid-cols-3 lg:grid-cols-2 laptop:grid-cols-3 gap-1 border-2">
-      @foreach (var item in ConclavePoolsList)
-      {
-        <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
-      }
-    </div>
-    <div class="mt-6 lg:mt-5 text-right mb-[70px] md:mb-0">
-      <MudPagination Rectangular="true" Variant="Variant.Text" BoundaryCount="1" MiddleCount="1"
-        Count="ConclavePagination" Color="Color.Surface" DisableElevation="true" />
-    </div>
-  </div>
-
-  <div class="my-4">
-    <div class="flex flex-col items-start justify-between md:flex-row mb-6">
+  <PoolCardList PageCount="ConclavePagination">
+    <Title>
       <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
-      <div class="flex">
-        <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
-          AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
-          Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" OnKeyUp="OnKeyPressed" />
-      </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mx-2">
-      @foreach (var item in OtherPoolsList)
+    </Title>
+    <ChildContent>
+     @foreach (var item in ConclavePoolsList)
+      {
+      <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
+      } 
+    </ChildContent>
+  </PoolCardList>
+
+  <PoolCardList PageCount="OtherPoolsPagination">
+    <Title>
+      <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
+    </Title>
+    <SearchBox>
+      <MudTextField @bind-Value="Search" Variant="Variant.Outlined" Adornment="Adornment.Start"
+        AdornmentIcon="@Icons.Filled.Search" AdornmentColor="Color.Secondary" Class="rounded-xl"
+        Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" OnKeyUp="OnKeyPressed" />
+    </SearchBox>
+    <ChildContent>
+     @foreach (var item in OtherPoolsList)
       {
         <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
-      }
-    </div>
-    <div class="mt-6 lg:mt-5 text-right">
-      <MudPagination Rectangular="true" Variant="Variant.Text" Color="Color.Surface" BoundaryCount="1" MiddleCount="1"
-        Count="OtherPoolsPagination" SelectedChanged="OnPageChanged" DisableElevation="true" />
-    </div>
-  </div>
+      } 
+    </ChildContent>
+  </PoolCardList>
 </div>
