@@ -13,6 +13,9 @@ module.exports = {
                 'secondary': '#41FBFB',
                 'subtext': 'var(--mud-palette-text-secondary)',
                 'lines': 'var(--mud-palette-lines-default)',
+            },
+            width: {
+                '3': '1113px',
             }
         },
         screens: {

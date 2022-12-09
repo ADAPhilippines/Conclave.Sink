@@ -3,10 +3,11 @@
 
 <PageTitle>Pools</PageTitle>
 
-<div class="w-full">
+<div class="w-full ">
+  <div>
   <PoolCardList>
     <Title>
-      <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
+      <h1 class="text-base mb-4">Conclave Pools (Bonus Reward)</h1>
     </Title>
     <ChildContent>
       @foreach (var item in ConclavePoolsList)
@@ -40,4 +41,5 @@
         Count="OtherPoolsPagination" Color="Color.Surface" DisableElevation="true" SelectedChanged="(page) => OnPageChanged(page, false)" />
     </Pagination>
   </PoolCardList>
+  </div>
 </div>
