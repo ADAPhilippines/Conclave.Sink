@@ -15,15 +15,12 @@
         <div class=" absolute left-[50vw] bottom-[50vh] w-[35vh] h-[35vh] rounded-full blur-[350px] bg-secondary border-2"></div>
     </div>
 
-
     <CascadingValue Value="IsDarkMode">
         <Header WalletAddress="@_walletAddress2" />
     </CascadingValue>
 
-    <div class="lg:hidden">
-        <MenuDrawer WalletAddress="@_walletAddress" />
-    </div>
-
+    <MenuDrawer WalletAddress="@_walletAddress" />
+   
     <Sidebar />
 
     <main class="pt-[80.5px] lg:w-[calc(100vw-260px)] lg:ml-[260px]  grid place-content-stretch">

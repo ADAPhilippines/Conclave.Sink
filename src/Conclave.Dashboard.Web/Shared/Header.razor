@@ -28,7 +28,7 @@
             </div>
         </MudLink>
 
-        @* <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1> *@
+        <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1>
        
         <div class="flex items-center gap-6 lg:gap-[17px]">
             <CascadingValue Value="IsDrawerOpen">
@@ -37,9 +37,9 @@
             
             <button class="w-[25px] h-[25px] relative lg:hidden" onclick="@(() => ToggleDrawer())">
                 <div class="burger-menu relative w-full @(IsDrawerOpen == false ? "" : "open")">
-                    <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
-                    <span class="middle h-0.5 w-full left-0 bg-white absolute duration-200 ease-linear rounded"></span>
-                    <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-white duration-200 rounded"></span>
+                    <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-info-darken duration-200 ease-linear rounded"></span>
+                    <span class="middle h-0.5 w-full left-0 bg-info-darken absolute duration-200 ease-linear rounded"></span>
+                    <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-info-darken duration-200 rounded"></span>
                 </div>
             </button>
 

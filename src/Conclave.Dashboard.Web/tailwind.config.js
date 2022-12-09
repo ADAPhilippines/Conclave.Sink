@@ -13,11 +13,13 @@ module.exports = {
                 'secondary': '#41FBFB',
                 'subtext': 'var(--mud-palette-text-secondary)',
                 'lines': 'var(--mud-palette-lines-default)',
+                'info-darken': 'var(--mud-palette-info-darken)'
             }
         },
         screens: {
             "xs": "375px",
             "sm": "414px",
+            "xm": "500px",
             "smtab": "600px",
             "md": "768px",
             "tab": "900px",
