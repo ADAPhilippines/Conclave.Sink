@@ -56,7 +56,7 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
                         if (entry is not null)
                         {
                             entry.Balance -= input.Amount;
-                            
+
                             if (entry.Balance <= 0UL)
                             {
                                 _dbContext.BalanceByStakeEpoch.Remove(entry);

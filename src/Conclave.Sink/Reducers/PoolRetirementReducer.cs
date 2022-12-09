@@ -37,10 +37,11 @@ public class PoolRetirementReducer : OuraReducerBase
             poolRetirementEvent.Context.TxHash is not null)
         {
             Transaction? transaction = await _dbContext.Transactions
+                .Include(t => t.Block)
                 .Where(t => t.Hash == poolRetirementEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
 
-            if (transaction is not null)
+            if (transaction is not null && !transaction.Block.InvalidTransactions.Contains(transaction.Index))
             {
                 await _dbContext.PoolRetirements.AddAsync(new()
                 {

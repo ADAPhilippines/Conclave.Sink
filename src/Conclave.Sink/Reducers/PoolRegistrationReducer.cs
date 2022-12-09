@@ -45,13 +45,15 @@ public class PoolRegistrationReducer : OuraReducerBase
             poolRegistrationEvent.Context.TxHash is not null)
         {
             Transaction? transaction = await _dbContext.Transactions
+                .Include(t => t.Block)
                 .Where(t => t.Hash == poolRegistrationEvent.Context.TxHash)
                 .FirstOrDefaultAsync();
-
+            
             string? poolMetadataString = await GetJsonStringFromURLAsync(poolRegistrationEvent.PoolRegistration.PoolMetadata);
             string? metaDataHash = poolMetadataString is not null ? HashUtility.Blake2b256(poolMetadataString.ToBytes()).ToStringHex() : null;
 
             if (metaDataHash == poolRegistrationEvent.PoolRegistration.PoolMetadataHash &&
+                !transaction.Block.InvalidTransactions.Contains(transaction.Index) &&
                 transaction is not null)
             {
                 JsonDocument? poolMetadataJSON = poolMetadataString is not null ? JsonDocument.Parse(poolMetadataString) : null;
@@ -77,7 +79,6 @@ public class PoolRegistrationReducer : OuraReducerBase
             }
         }
     }
-
 
     public async Task<string?> GetJsonStringFromURLAsync(string? metaDataURL)
     {
