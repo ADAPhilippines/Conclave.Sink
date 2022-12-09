@@ -185,24 +185,6 @@ public class AccountService
         return (ulong)(totalReward * percentage);
     }
 
-    public ulong GetTotalConclaveBaseStakes(ulong epoch)
-    {
-        IEnumerable<string>? pools = _conclaveSettings.Members
-            .Where(m => m.Since <= epoch && m.Until >= epoch)
-            .Select(m => m.PoolId);
-
-        if (pools is null) return 0;
-
-        ulong total;
-
-        // for (string pool in pools)
-        // {
-
-        // }
-
-        return 0;
-
-    }
 
     public async Task<ConclaveStake> GetTotalPoolStakes(string poolId, ulong epoch)
     {
