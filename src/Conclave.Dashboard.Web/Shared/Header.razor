@@ -17,7 +17,9 @@
 
         <h1 class="hidden lg:block font-medium text-[24px] mr-auto ml-[100px] text-info-darken">Staking</h1>
        
-        <div class="flex items-center gap-6 lg:gap-[17px]">
+        <div class="flex relative items-center gap-6 lg:gap-[17px]">
+            <div class="absolute left-[-15px] right-[-15px] top-[-10px] bottom-[-10px] rounded-2xl backdrop-blur-[10px]"></div>
+
             <CascadingValue Value="IsDrawerOpen">
                 <ThemeSwitch />
             </CascadingValue>
@@ -29,7 +31,6 @@
                     <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-info-darken duration-200 rounded"></span>
                 </div>
             </button>
-
             <ConnectWalletButton />
         </div>
     </div>
