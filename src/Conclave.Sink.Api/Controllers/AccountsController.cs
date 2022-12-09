@@ -1,3 +1,4 @@
+using Conclave.Common.Models;
 using Conclave.Common.Models.Responses;
 using Conclave.Sink.Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,32 @@ public class AccountsController : ControllerBase
             Message = "ok",
             IsSuccess = true,
             Result = stakes
+        });
+    }
+
+    [HttpGet("pool/{poolId}/totalStake/{epoch}")]
+    public async Task<ActionResult<ConclaveStake>> GetTotalStakes(string poolId, ulong epoch)
+    {
+        var totalStake = await _accountService.GetTotalPoolStakes(poolId, epoch);
+
+        return Ok(new
+        {
+            Message = "ok",
+            IsSuccess = true,
+            Result = totalStake
+        });
+    }
+
+    [HttpGet("pool/conclave/totalStake/{epoch}")]
+    public async Task<ActionResult<ConclaveStake>> GetTotalStakes(ulong epoch)
+    {
+        var totalStake = await _accountService.GetTotalConclaveStakes(epoch);
+
+        return Ok(new
+        {
+            Message = "ok",
+            IsSuccess = true,
+            Result = totalStake
         });
     }
 }
