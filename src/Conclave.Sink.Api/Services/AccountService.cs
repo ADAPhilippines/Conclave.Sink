@@ -11,12 +11,14 @@ public class AccountService
     private readonly IAccountService _accountService;
     private readonly ConclaveSinkDbContext _dbContext;
     private readonly ConclaveSettings _conclaveSettings;
+    private readonly ILogger<AccountService> _logger;
 
-    public AccountService(IAccountService accountService, ConclaveSinkDbContext dbContext, IOptions<ConclaveSettings> conclaveSettings)
+    public AccountService(IAccountService accountService, ConclaveSinkDbContext dbContext, IOptions<ConclaveSettings> conclaveSettings, ILogger<AccountService> logger)
     {
         _accountService = accountService;
         _dbContext = dbContext;
         _conclaveSettings = conclaveSettings.Value;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<AccountEpochReward>> GetBaseEpochRewardsAsync(string stakeAddress, ulong end)
@@ -26,20 +28,28 @@ public class AccountService
         List<AccountEpochReward> rewards = new();
         while (true)
         {
-            var rewardsPage = await _accountService.RewardsAsync(stakeAddress, page, 100, ESortOrder.Asc);
-
-            if (rewardsPage is null) break;
-
-            rewards.AddRange(rewardsPage.Select(rp => new AccountEpochReward
+            try
             {
-                Epoch = (ulong)rp.Epoch,
-                Amount = ulong.Parse(rp.Amount)
-            }));
+                var rewardsPage = await _accountService.RewardsAsync(stakeAddress, page, 100, ESortOrder.Asc);
 
-            if (rewardsPage.Count < 100 || rewards.LastOrDefault() is null ||
-                rewards.LastOrDefault()?.Epoch > end) break;
+                if (rewardsPage is null) break;
 
-            page++;
+                rewards.AddRange(rewardsPage.Select(rp => new AccountEpochReward
+                {
+                    Epoch = (ulong)rp.Epoch,
+                    Amount = ulong.Parse(rp.Amount)
+                }));
+
+                if (rewardsPage.Count < 100 || rewards.LastOrDefault() is null ||
+                    rewards.LastOrDefault()?.Epoch > end) break;
+
+                page++;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error getting rewards for stake address {stakeAddress}", stakeAddress);
+                break;
+            }
         }
 
         return rewards ?? new List<AccountEpochReward>();
@@ -196,16 +206,18 @@ public class AccountService
 
     public async Task<ConclaveStake> GetTotalPoolStakes(string poolId, ulong epoch)
     {
-        IEnumerable<string> poolDelegations = await _dbContext.StakeDelegations
+        var delegations = await _dbContext.StakeDelegations
             .Include(sd => sd.Transaction).ThenInclude(t => t.Block)
             .Where(sd => sd.Transaction.Block.Epoch <= epoch)
             .GroupBy(sd => sd.StakeAddress)
             .Select(sd => sd.OrderByDescending(sd => sd.Transaction.Block.Slot).First())
-            .Where(sd => sd.PoolId == poolId)
-            .Select(sd => sd.StakeAddress)
             .ToListAsync();
 
-        List<ConclaveStake>? balances = await _dbContext.CnclvByStakeEpoch
+        var poolDelegations = delegations
+            .Where(d => d.PoolId == poolId)
+            .Select(d => d.StakeAddress);
+
+        var balances = await _dbContext.CnclvByStakeEpoch
             .Join(_dbContext.BalanceByStakeEpoch
                 .Where(b => b.Epoch <= epoch && poolDelegations.Contains(b.StakeAddress)),
                     c => c.Epoch,
@@ -213,22 +225,58 @@ public class AccountService
                     (c, b) => new { c.Epoch, Lovelace = b.Balance, Conclave = c.Balance, b.StakeAddress })
             .GroupBy(j => j.StakeAddress)
             .Select(j => j.OrderByDescending(j => j.Epoch).First())
+            .ToListAsync();
+
+        // ulong totalWithdrawals = _dbContext.WithdrawalByStakeEpoch
+        //     .Where(w => poolDelegations.Contains(w.StakeAddress) && w.Epoch <= epoch)
+        //     .GroupBy(w => w.StakeAddress)
+        //     .Select(w => w.OrderByDescending(w => w.Epoch).First())
+        //     .Select(w => w.Amount)
+        //     .Aggregate(0ul, (sum, w) => sum + w);
+
+        ulong pendingRewards = 0;
+
+        foreach (string stakeAddress in poolDelegations)
+        {
+            IEnumerable<AccountEpochReward> rewards = await GetBaseEpochPendingRewardsAsync(stakeAddress, epoch, epoch);
+            pendingRewards += rewards.Aggregate(0ul, (sum, r) => sum + r.Amount);
+        }
+
+        var totalBalances = balances
             .Select(j => new ConclaveStake
             {
                 Lovelace = j.Lovelace,
                 Conclave = j.Conclave,
-            })
-            .ToListAsync();
+            });
 
-        if (balances is null) return new ConclaveStake { };
+        if (totalBalances is null) return new ConclaveStake { };
 
-        ulong totalLovelace = balances.Aggregate(0ul, (sum, b) => sum + b.Lovelace);
-        ulong totalConclave = balances.Aggregate(0ul, (sum, b) => sum + b.Conclave);
+        ulong totalLovelace = totalBalances.Aggregate(0ul, (sum, b) => sum + b.Lovelace);
+        ulong totalConclave = totalBalances.Aggregate(0ul, (sum, b) => sum + b.Conclave);
 
         return new ConclaveStake
         {
-            Lovelace = totalLovelace,
+            Lovelace = totalLovelace + pendingRewards,
             Conclave = totalConclave,
         };
+    }
+
+    public async Task<ConclaveStake> GetTotalConclaveStakes(ulong epoch)
+    {
+        Console.WriteLine(_conclaveSettings.ToString());
+        IEnumerable<string> pools = _conclaveSettings.Members
+            .Where(m => m.Since <= epoch && m.Until >= epoch)
+            .Select(m => m.PoolId);
+
+        ConclaveStake totalStakes = new();
+
+        foreach (string pool in pools)
+        {
+            ConclaveStake poolStakes = await GetTotalPoolStakes(pool, epoch);
+            totalStakes.Conclave += poolStakes.Conclave;
+            totalStakes.Lovelace += poolStakes.Lovelace;
+        }
+
+        return totalStakes;
     }
 }
