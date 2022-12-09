@@ -191,26 +191,23 @@ a, .btn-link {
     transition: all 3s;
 } */
 
-#sidebar svg {
+/* #sidebar svg {
     color: var(--mud-palette-text-secondary) !important;
-}
-
-#sidebar .active svg,
-#sidebar .active *,
-#sidebar #nav-link-bg:hover svg {
-    color: var(--mud-palette-info-darken) !important;
-}
+} */
 
 /* #sidebar .active svg,
-#sidebar .active #nav-link-bg ~ *,
-#sidebar .active #nav-link-bg:hover ~ *  {
+#sidebar .active *,
+#sidebar #nav-link-bg:hover + svg > svg {
     color: var(--mud-palette-info-darken) !important;
 } */
 
-.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
-    background: none !important;
+#sidebar .active #nav-link-bg ~ * {
+    color: var(--mud-palette-info-darken) !important;
 }
 
+.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    background: none !important; /* override default background styles on mud-nav-links */
+}
 
 .active #nav-link-bg {
     opacity: 1;

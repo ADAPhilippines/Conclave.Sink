@@ -6,32 +6,32 @@
         Class="!bg-transparent relative pt-[80.5px] outline outline-1 outline-[##ffffff1a] rounded-tr-xl rounded-br-xl"
         Elevation="4">
         <div class="nav-menu h-full w-full pt-[0px] ">
-            <MudNavMenu class="h-full w-full" id="sidebar">
+            <MudNavMenu class="h-full w-full group" id="sidebar">
                 <MudNavLink Href="/staking">
-                    <div class="relative flex gap-[17px] py-[17px] pl-[29px]">
+                    <div class="relative flex gap-[17px] py-[17px] pl-[29px] group">
                         <div id="nav-link-bg" class="absolute top-0 left-0 right-0 bottom-0 bg-nav-link-gradient duration-300 opacity-0 hover:opacity-100">
                             <div class="absolute left-0 top-0 bottom-0 w-[7px] mud-info"></div>
                         </div>
-                        <MudIcon Icon="@ConclaveIcons.Staking" Class="mud-secondary-text" />
-                        <div class="text-subtext">Staking Center</div>
+                        <MudIcon Icon="@ConclaveIcons.Staking" Class="text-subtext group-hover:info-darken" />
+                        <div class="text-subtext group-hover:info-darken font-normal">Staking Center</div>
                     </div>
                 </MudNavLink>
                 <MudNavLink Href="/lottery">
-                    <div class="relative flex gap-[17px] py-[17px] pl-[29px]">
+                    <div class="relative flex gap-[17px] py-[17px] pl-[29px] group">
                         <div id="nav-link-bg" class="absolute top-0 left-0 right-0 bottom-0 bg-nav-link-gradient duration-300 opacity-0 hover:opacity-100">
                             <div class="absolute left-0 top-0 bottom-0 w-[7px] mud-info"></div>
                         </div>
-                        <MudIcon Icon="@ConclaveIcons.Lottery" Class="mud-secondary-text" />
-                        <div class="text-subtext">Lottery</div>
+                        <MudIcon Icon="@ConclaveIcons.Lottery" Class="text-subtext group-hover:info-darken" />
+                        <div class="text-subtext group-hover:info-darken font-normal">Lottery</div>
                     </div>
                 </MudNavLink>
                 <MudNavLink Href="/oracle">
-                    <div class="relative flex gap-[17px] py-[17px] pl-[29px]">
+                    <div class="relative flex gap-[17px] py-[17px] pl-[29px] group">
                         <div id="nav-link-bg" class="absolute top-0 left-0 right-0 bottom-0 bg-nav-link-gradient duration-300 opacity-0 hover:opacity-100">
                             <div class="absolute left-0 top-0 bottom-0 w-[7px] mud-info"></div>
                         </div>
-                        <MudIcon Icon="@ConclaveIcons.Oracle" Class="mud-text-secondary" />
-                        <div class="text-subtext">Oracle</div>
+                        <MudIcon Icon="@ConclaveIcons.Oracle" Class="text-subtext group-hover:info-darken" />
+                        <div class="text-subtext group-hover:info-darken font-normal">Oracle</div>
                     </div>
                 </MudNavLink>
             </MudNavMenu>
