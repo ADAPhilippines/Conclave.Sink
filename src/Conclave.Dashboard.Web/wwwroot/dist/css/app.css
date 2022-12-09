@@ -623,8 +623,8 @@ video {
   top: 10px;
 }
 
-.bottom-\[15px\] {
-  bottom: 15px;
+.bottom-\[22px\] {
+  bottom: 22px;
 }
 
 .z-\[2000\] {
@@ -698,6 +698,10 @@ video {
 
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+
+.mt-\[150px\] {
+  margin-top: 150px;
 }
 
 .mr-auto {
@@ -796,6 +800,12 @@ video {
   width: 16.5px;
 }
 
+.w-fit {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-\[35px\] {
   width: 35px;
 }
@@ -810,12 +820,6 @@ video {
 
 .w-\[35vh\] {
   width: 35vh;
-}
-
-.w-fit {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
 }
 
 .\!min-w-fit {
@@ -884,6 +888,10 @@ video {
   gap: 0.25rem;
 }
 
+.gap-\[20px\] {
+  gap: 20px;
+}
+
 .gap-\[9px\] {
   gap: 9px;
 }
@@ -894,6 +902,10 @@ video {
 
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-5 {
+  gap: 1.25rem;
 }
 
 .rounded-\[50px\] {
@@ -1174,13 +1186,13 @@ video {
   color: var(--mud-palette-info-darken);
 }
 
-.text-subtext {
-  color: var(--mud-palette-text-secondary);
-}
-
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-subtext {
+  color: var(--mud-palette-text-secondary);
 }
 
 .\!opacity-50 {
@@ -1224,6 +1236,12 @@ video {
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .duration-300 {
   transition-duration: 300ms;
 }
@@ -1234,6 +1252,10 @@ video {
 
 .duration-200 {
   transition-duration: 200ms;
+}
+
+.duration-\[5000ms\] {
+  transition-duration: 5000ms;
 }
 
 .ease-linear {
@@ -1400,51 +1422,10 @@ a, .btn-link {
 #nav-menu a {
   padding: 0;
   background: none;
-  /* color: red !important; */
 }
 
 #nav-menu .mud-nav-link-text {
   margin: 0;
-}
-
-/* .nav-menu a {
-    padding-top: 17px !important;
-    padding-bottom: 17px !important;
-} */
-
-/* .active,
-.mud-navmenu a:hover {
-    color: white;
-    font-weight: 400;
-}
-
-.active::before,
-.mud-navmenu a:hover ::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 7px;
-    height: 100%;
-    background-color: var(--mud-palette-info);
-}
-
-.mud-navmenu a {
-    transition: all 3s;
-} */
-
-/* #sidebar svg {
-    color: var(--mud-palette-text-secondary) !important;
-} */
-
-/* #sidebar .active svg,
-#sidebar .active *,
-#sidebar #nav-link-bg:hover + svg > svg {
-    color: var(--mud-palette-info-darken) !important;
-} */
-
-#nav-menu .active #nav-link-bg ~ * {
-  color: var(--mud-palette-info-darken) !important;
 }
 
 #nav-menu .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
@@ -1463,12 +1444,6 @@ a, .btn-link {
 
 .switch span.mud-button-label {
   width: 47px;
-}
-
-#nav-link-bg:hover ~ *,
-.active #nav-link-bg:hover path,
-.active #nav-link-bg:hover ~ * {
-  color: var(--mud-palette-tertiary) !important;
 }
 
 .mud-card-header 
@@ -1505,6 +1480,10 @@ a, .btn-link {
   background-image: radial-gradient(rgba(68,138,255, 0.2), transparent);
 }
 
+.hover\:text-info-darken:hover {
+  color: var(--mud-palette-info-darken);
+}
+
 .hover\:opacity-100:hover {
   opacity: 1;
 }
@@ -1513,6 +1492,10 @@ a, .btn-link {
   --tw-backdrop-blur: blur(12px);
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
           backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.group:hover .group-hover\:text-info-darken {
+  color: var(--mud-palette-info-darken);
 }
 
 @media (min-width: 375px) {

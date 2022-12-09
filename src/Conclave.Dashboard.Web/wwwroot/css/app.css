@@ -158,51 +158,10 @@ a, .btn-link {
 #nav-menu a {
     padding: 0;
     background: none;
-    /* color: red !important; */
 }
 
 #nav-menu .mud-nav-link-text {
     margin: 0;
-}
-
-/* .nav-menu a {
-    padding-top: 17px !important;
-    padding-bottom: 17px !important;
-} */
-
-/* .active,
-.mud-navmenu a:hover {
-    color: white;
-    font-weight: 400;
-}
-
-.active::before,
-.mud-navmenu a:hover ::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 7px;
-    height: 100%;
-    background-color: var(--mud-palette-info);
-}
-
-.mud-navmenu a {
-    transition: all 3s;
-} */
-
-/* #sidebar svg {
-    color: var(--mud-palette-text-secondary) !important;
-} */
-
-/* #sidebar .active svg,
-#sidebar .active *,
-#sidebar #nav-link-bg:hover + svg > svg {
-    color: var(--mud-palette-info-darken) !important;
-} */
-
-#nav-menu .active #nav-link-bg ~ * {
-    color: var(--mud-palette-info-darken) !important;
 }
 
 #nav-menu .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
@@ -220,12 +179,6 @@ a, .btn-link {
 
 .switch span.mud-button-label {
     width: 47px;
-}
-
-#nav-link-bg:hover ~ *,
-.active #nav-link-bg:hover path,
-.active #nav-link-bg:hover ~ * {
-    color: var(--mud-palette-tertiary) !important;
 }
 
 .mud-card-header 
