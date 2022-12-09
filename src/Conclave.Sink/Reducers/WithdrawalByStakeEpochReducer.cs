@@ -2,13 +2,13 @@ using CardanoSharp.Wallet.Encoding;
 using CardanoSharp.Wallet.Enums;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
-using Conclave.Sink.Data;
 using Conclave.Common.Models;
+using Conclave.Sink.Data;
+using Conclave.Sink.Models;
+using Conclave.Sink.Models.Oura;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Conclave.Sink.Models.Oura;
-using Conclave.Sink.Models;
 
 namespace Conclave.Sink.Reducers;
 
@@ -38,7 +38,8 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
             transactionEvent.Context is not null &&
             transactionEvent.Context.BlockHash is not null &&
             transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Context.Slot is not null)
+            transactionEvent.Context.Slot is not null &&
+            transactionEvent.Context.TxIdx is not null)
         {
             using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
@@ -46,6 +47,15 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
 
             if (withdrawals.Any())
             {
+                Block? block = await _dbContext.Blocks
+                    .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
+                    .FirstOrDefaultAsync();
+
+                if (block is null) throw new NullReferenceException("Block does not exist!");
+
+                if (block.InvalidTransactions is not null &&
+                    block.InvalidTransactions.Contains((ulong)transactionEvent.Context.TxIdx)) return;
+
                 ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)transactionEvent.Context.Slot);
                 foreach (OuraWithdrawal withdrawal in withdrawals)
                 {
@@ -98,16 +108,19 @@ public class WithdrawalByStakeEpochReducer : OuraReducerBase
 
         foreach (Transaction transaction in transactions)
         {
-            if (transaction.Withdrawals is null) continue;
+            if ((transaction.Block.InvalidTransactions is not null && transaction.Block.InvalidTransactions.Contains(transaction.Index)) ||
+                transaction.Withdrawals is null) continue;
 
             foreach (Withdrawal withdrawal in transaction.Withdrawals)
             {
+                if (withdrawal.Amount <= 0) continue;
+
                 WithdrawalByStakeEpoch? withdrawalByStakeEpoch = await _dbContext.WithdrawalByStakeEpoch
                     .Where(w => w.StakeAddress == withdrawal.StakeAddress &&
                         w.Epoch == rollbackBlock.Epoch)
                     .FirstOrDefaultAsync();
 
-                if (withdrawalByStakeEpoch is null) return;
+                if (withdrawalByStakeEpoch is null) throw new NullReferenceException("WithdrawalByStakeEpoch does not exist!");
 
                 ulong previousWithdrawal = await _dbContext.WithdrawalByStakeEpoch
                     .Where(w => w.StakeAddress == withdrawal.StakeAddress && w.Epoch < rollbackBlock.Epoch)
