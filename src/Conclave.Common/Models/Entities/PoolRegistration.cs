@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Conclave.Common.Models;
+namespace Conclave.Common.Models.Entities;
 
 public class PoolRegistration
 {

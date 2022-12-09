@@ -1,8 +1,8 @@
 using System.Text.Json;
+using Conclave.Common.Models.Entities;
 using Conclave.Sink.Data;
-using Conclave.Common.Models;
-using Microsoft.EntityFrameworkCore;
 using Conclave.Sink.Models.Oura;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conclave.Sink.Reducers;
 

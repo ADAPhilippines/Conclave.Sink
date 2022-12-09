@@ -2,14 +2,14 @@ using CardanoSharp.Wallet.Encoding;
 using CardanoSharp.Wallet.Enums;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
+using Conclave.Common.Models.Entities;
 using Conclave.Sink.Data;
-using Conclave.Common.Models;
+using Conclave.Sink.Models;
+using Conclave.Sink.Models.Oura;
 using Conclave.Sink.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Conclave.Sink.Models.Oura;
-using Conclave.Sink.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Options;
 
 namespace Conclave.Sink.Reducers;
 

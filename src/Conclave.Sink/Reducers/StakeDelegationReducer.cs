@@ -1,7 +1,7 @@
 using CardanoSharp.Wallet.Enums;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
-using Conclave.Common.Models;
+using Conclave.Common.Models.Entities;
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
 using Conclave.Sink.Models.Oura;

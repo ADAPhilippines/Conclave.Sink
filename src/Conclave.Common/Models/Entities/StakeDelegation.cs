@@ -1,9 +1,9 @@
-namespace Conclave.Common.Models;
+namespace Conclave.Common.Models.Entities;
 
-public record Withdrawal
+public class StakeDelegation
 {
     public string StakeAddress { get; init; } = string.Empty;
-    public ulong Amount { get; init; }
+    public string PoolId { get; init; } = string.Empty;
     public string TxHash { get; init; } = string.Empty;
     public Transaction Transaction { get; init; } = new();
 }

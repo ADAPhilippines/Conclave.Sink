@@ -1,8 +1,8 @@
+using Conclave.Common.Models.Entities;
 using Conclave.Sink.Data;
-using Conclave.Common.Models;
+using Conclave.Sink.Models.Oura;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Conclave.Sink.Models.Oura;
 
 namespace Conclave.Sink.Reducers;
 

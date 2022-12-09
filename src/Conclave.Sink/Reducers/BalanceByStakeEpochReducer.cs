@@ -1,8 +1,8 @@
+using Conclave.Common.Models.Entities;
 using Conclave.Sink.Data;
-using Microsoft.EntityFrameworkCore;
-using Conclave.Sink.Services;
-using Conclave.Common.Models;
 using Conclave.Sink.Models.Oura;
+using Conclave.Sink.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conclave.Sink.Reducers;
 
@@ -56,7 +56,7 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
                         if (entry is not null)
                         {
                             entry.Balance -= input.Amount;
-                            
+
                             if (entry.Balance <= 0UL)
                             {
                                 _dbContext.BalanceByStakeEpoch.Remove(entry);

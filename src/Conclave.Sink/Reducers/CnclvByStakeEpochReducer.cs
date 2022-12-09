@@ -1,5 +1,5 @@
 using CardanoSharp.Wallet.Models.Addresses;
-using Conclave.Common.Models;
+using Conclave.Common.Models.Entities;
 using Conclave.Sink.Data;
 using Conclave.Sink.Models;
 using Conclave.Sink.Models.Oura;
