@@ -155,13 +155,13 @@ a, .btn-link {
     opacity: 0;
 }
 
-#sidebar a {
+#nav-menu a {
     padding: 0;
     background: none;
     /* color: red !important; */
 }
 
-#sidebar .mud-nav-link-text {
+#nav-menu .mud-nav-link-text {
     margin: 0;
 }
 
@@ -201,11 +201,11 @@ a, .btn-link {
     color: var(--mud-palette-info-darken) !important;
 } */
 
-#sidebar .active #nav-link-bg ~ * {
+#nav-menu .active #nav-link-bg ~ * {
     color: var(--mud-palette-info-darken) !important;
 }
 
-.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+#nav-menu .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
     background: none !important; /* override default background styles on mud-nav-links */
 }
 
