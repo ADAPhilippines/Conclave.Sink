@@ -4,19 +4,23 @@
 <PageTitle>Pools</PageTitle>
 
 <div class="w-full">
-  <PoolCardList PageCount="ConclavePagination">
+  <PoolCardList>
     <Title>
       <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
     </Title>
     <ChildContent>
-     @foreach (var item in ConclavePoolsList)
+      @foreach (var item in ConclavePoolsList)
       {
-      <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
-      } 
+        <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
+      }
     </ChildContent>
+     <Pagination>
+      <MudPagination Rectangular="true" Variant="Variant.Text" BoundaryCount="1" MiddleCount="1"
+        Count="ConclavePagination" Color="Color.Surface" DisableElevation="true" SelectedChanged="(page) => OnPageChanged(page, true)" />
+    </Pagination>
   </PoolCardList>
 
-  <PoolCardList PageCount="OtherPoolsPagination">
+  <PoolCardList>
     <Title>
       <h1 class="text-base mb-4">Other Pools (Bonus Reward)</h1>
     </Title>
@@ -26,10 +30,14 @@
         Placeholder="Search by Pool ID, Ticker Symbol" Style="width: 303px" OnKeyUp="OnKeyPressed" />
     </SearchBox>
     <ChildContent>
-     @foreach (var item in OtherPoolsList)
+      @foreach (var item in OtherPoolsList)
       {
         <PoolCards PoolDetails="item" IsDarkMode="IsDarkMode" />
-      } 
+      }
     </ChildContent>
+    <Pagination>
+      <MudPagination Rectangular="true" Variant="Variant.Text" BoundaryCount="1" MiddleCount="1"
+        Count="OtherPoolsPagination" Color="Color.Surface" DisableElevation="true" SelectedChanged="(page) => OnPageChanged(page, false)" />
+    </Pagination>
   </PoolCardList>
 </div>

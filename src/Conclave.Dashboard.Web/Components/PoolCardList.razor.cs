@@ -14,5 +14,6 @@ public partial class PoolCardList
   public RenderFragment? ChildContent { get; set; }
 
   [Parameter]
-  public int PageCount { get; set; }
+  public RenderFragment? Pagination { get; set; }
+
 }
