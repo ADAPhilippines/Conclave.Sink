@@ -271,8 +271,9 @@ public class AccountService
 
         for (ulong i = _conclaveSettings.DistributionStart; i <= epoch; i++)
         {
+
             IEnumerable<string> pools = _conclaveSettings.Members
-                .Where(m => m.Since >= i && m.Until <= i)
+                .Where(m => m.Since <= i && m.Until >= i)
                 .Select(m => m.PoolId);
 
             ConclaveStake totalStakes = await GetTotalConclaveStakes(_conclaveSettings.DistributionStart);
@@ -280,6 +281,8 @@ public class AccountService
             foreach (string pool in pools)
             {
                 IEnumerable<string> delegators = await GetPoolDelegatorsByEpochAsync(pool, i);
+
+                if (delegators is null) continue;
                 IEnumerable<string>? poolOwners = await _dbContext.PoolRegistrations
                     .Include(p => p.Transaction).ThenInclude(t => t.Block)
                     .Where(p => p.PoolId == pool && p.Transaction.Block.Epoch <= i)
@@ -299,9 +302,11 @@ public class AccountService
                         .Where(r => r.StakeAddress == delegator && r.Epoch < i)
                         .Aggregate(0ul, (sum, r) => sum + r.Lovelace);
 
-                    delegatorStake.Conclave += delegatorStake.Conclave + conclaveEpochStakeRewards
+                    delegatorStake.Conclave += conclaveEpochStakeRewards
                             .Where(r => r.StakeAddress == delegator && r.Epoch < i)
                             .Aggregate(0ul, (sum, r) => sum + r.Conclave);
+
+                    if (delegatorStake.Lovelace <= 0) continue;
 
                     ulong delegatorCnclvReward = CalculateReward(totalStakes.Lovelace, delegatorStake.Lovelace, delegatorShare);
 
@@ -323,7 +328,7 @@ public class AccountService
                     }
                 }
 
-                if (poolOwners is null) continue;
+                if (poolOwners is null || totalPoolOwnerStakes <= 0) continue;
 
                 foreach (string poolOwner in poolOwners)
                 {
@@ -337,7 +342,6 @@ public class AccountService
                     delegatorStake.Conclave += delegatorStake.Conclave + conclaveEpochStakeRewards
                         .Where(r => r.StakeAddress == poolOwner && r.Epoch < i)
                         .Aggregate(0ul, (sum, r) => sum + r.Conclave);
-
 
                     ulong poolOwnerCnclvReward = CalculateReward(totalPoolOwnerStakes, delegatorStake.Lovelace, poolOwnerShare);
 
