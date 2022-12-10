@@ -1,8 +1,8 @@
 namespace Conclave.Common.Models;
 
-public record AccountEpochStake
+public class ConclaveEpochStakeRewards
 {
-    public string PoolId { get; init; } = string.Empty;
+    public string StakeAddress { get; init; } = string.Empty;
     public ulong Epoch { get; init; }
     public ulong Lovelace { get; set; }
     public ulong Conclave { get; set; }
