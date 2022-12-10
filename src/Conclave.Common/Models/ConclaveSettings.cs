@@ -6,4 +6,7 @@ public record ConclaveSettings
     public ulong Supply { get; init; }
     public ulong Duration { get; init; }
     public ulong DistributionStart { get; init; }
+    public int DelegatorShare { get; init; }
+    public int OperatorShare { get; init; }
+    public int PartnerShare { get; init; }
 }
