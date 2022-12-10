@@ -62,4 +62,17 @@ public class AccountsController : ControllerBase
             Result = totalStake
         });
     }
+
+    [HttpGet("{stakeAddress}/rewards")]
+    public async Task<ActionResult<IEnumerable<ConclaveEpochStakeRewards>>> GetRewardHistoryAsync(string stakeAddress, [FromQuery] ulong from, [FromQuery] ulong to)
+    {
+
+        if (from > to) return BadRequest();
+
+        var rewards = await _accountService.GetConclaveEpochStakeRewards(to);
+
+
+        return Ok(rewards.Where(r => r.StakeAddress == stakeAddress && r.Epoch >= from && r.Epoch <= to));
+
+    }
 }
