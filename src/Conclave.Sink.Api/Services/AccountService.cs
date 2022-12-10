@@ -188,16 +188,8 @@ public class AccountService
 
     public async Task<ConclaveStake> GetTotalPoolStakes(string poolId, ulong epoch)
     {
-        var delegations = await _dbContext.StakeDelegations
-            .Include(sd => sd.Transaction).ThenInclude(t => t.Block)
-            .Where(sd => sd.Transaction.Block.Epoch <= epoch)
-            .GroupBy(sd => sd.StakeAddress)
-            .Select(sd => sd.OrderByDescending(sd => sd.Transaction.Block.Slot).First())
-            .ToListAsync();
 
-        var poolDelegations = delegations
-            .Where(d => d.PoolId == poolId)
-            .Select(d => d.StakeAddress);
+        IEnumerable<string> poolDelegations = await GetPoolDelegatorsByEpochAsync(poolId, epoch);
 
         var balances = await _dbContext.CnclvByStakeEpoch
             .Join(_dbContext.BalanceByStakeEpoch
@@ -208,13 +200,6 @@ public class AccountService
             .GroupBy(j => j.StakeAddress)
             .Select(j => j.OrderByDescending(j => j.Epoch).First())
             .ToListAsync();
-
-        // ulong totalWithdrawals = _dbContext.WithdrawalByStakeEpoch
-        //     .Where(w => poolDelegations.Contains(w.StakeAddress) && w.Epoch <= epoch)
-        //     .GroupBy(w => w.StakeAddress)
-        //     .Select(w => w.OrderByDescending(w => w.Epoch).First())
-        //     .Select(w => w.Amount)
-        //     .Aggregate(0ul, (sum, w) => sum + w);
 
         ulong pendingRewards = 0;
 
@@ -243,6 +228,20 @@ public class AccountService
         };
     }
 
+    public async Task<IEnumerable<string>> GetPoolDelegatorsByEpochAsync(string poolId, ulong epoch)
+    {
+        IEnumerable<StakeDelegation>? delegations = await _dbContext.StakeDelegations
+            .Include(sd => sd.Transaction).ThenInclude(t => t.Block)
+            .Where(sd => sd.Transaction.Block.Epoch <= epoch)
+            .GroupBy(sd => sd.StakeAddress)
+            .Select(sd => sd.OrderByDescending(sd => sd.Transaction.Block.Slot).First())
+            .ToListAsync();
+
+        return delegations
+            .Where(d => d.PoolId == poolId)
+            .Select(d => d.StakeAddress);
+    }
+
     public async Task<ConclaveStake> GetTotalConclaveStakes(ulong epoch)
     {
         Console.WriteLine(_conclaveSettings.ToString());
@@ -260,5 +259,96 @@ public class AccountService
         }
 
         return totalStakes;
+    }
+
+    public async Task<IEnumerable<ConclaveEpochStakeRewards>> GetConclaveEpochStakeRewards(ulong epoch)
+    {
+        ulong totalCnclvReward = _conclaveSettings.Supply / _conclaveSettings.Duration * 1_000_000;
+        ulong delegatorShare = (ulong)(totalCnclvReward * (_conclaveSettings.DelegatorShare / 100.0));
+        ulong operatorShare = (ulong)(totalCnclvReward * (_conclaveSettings.OperatorShare / 100.0));
+
+        List<ConclaveEpochStakeRewards> conclaveEpochStakeRewards = new();
+
+        for (ulong i = _conclaveSettings.DistributionStart; i <= epoch; i++)
+        {
+            IEnumerable<string> pools = _conclaveSettings.Members
+                .Where(m => m.Since >= i && m.Until <= i)
+                .Select(m => m.PoolId);
+
+            ConclaveStake totalStakes = await GetTotalConclaveStakes(_conclaveSettings.DistributionStart);
+
+            foreach (string pool in pools)
+            {
+                IEnumerable<string> delegators = await GetPoolDelegatorsByEpochAsync(pool, i);
+                IEnumerable<string>? poolOwners = await _dbContext.PoolRegistrations
+                    .Include(p => p.Transaction).ThenInclude(t => t.Block)
+                    .Where(p => p.PoolId == pool && p.Transaction.Block.Epoch <= i)
+                    .OrderByDescending(p => p.Transaction.Block.Slot)
+                    .Select(p => p.PoolOwners)
+                    .FirstOrDefaultAsync();
+
+                ulong poolOwnerShare = operatorShare / (ulong)pools.Count();
+                ulong totalPoolOwnerStakes = 0;
+
+                foreach (string delegator in delegators)
+                {
+                    AccountEpochStake? delegatorStake = (await GetBaseEpochStakes(delegator, i, i)).FirstOrDefault();
+                    if (delegatorStake is null || delegatorStake.Lovelace <= 0) continue;
+
+                    delegatorStake.Lovelace += conclaveEpochStakeRewards
+                        .Where(r => r.StakeAddress == delegator && r.Epoch < i)
+                        .Aggregate(0ul, (sum, r) => sum + r.Lovelace);
+
+                    delegatorStake.Conclave += delegatorStake.Conclave + conclaveEpochStakeRewards
+                            .Where(r => r.StakeAddress == delegator && r.Epoch < i)
+                            .Aggregate(0ul, (sum, r) => sum + r.Conclave);
+
+                    ulong delegatorCnclvReward = CalculateReward(totalStakes.Lovelace, delegatorStake.Lovelace, delegatorShare);
+
+                    if (delegatorCnclvReward <= 0) continue;
+
+                    conclaveEpochStakeRewards.Add(new ConclaveEpochStakeRewards
+                    {
+                        Epoch = i,
+                        StakeAddress = delegator,
+                        Lovelace = 0,
+                        Conclave = delegatorCnclvReward,
+                    });
+
+                    if (poolOwners is null) continue;
+
+                    if (poolOwners.Contains(delegator))
+                    {
+                        totalPoolOwnerStakes += delegatorStake.Lovelace;
+                    }
+                }
+
+                if (poolOwners is null) continue;
+
+                foreach (string poolOwner in poolOwners)
+                {
+                    AccountEpochStake? delegatorStake = (await GetBaseEpochStakes(poolOwner, i, i)).FirstOrDefault();
+                    if (delegatorStake is null || delegatorStake.Lovelace <= 0) continue;
+
+                    delegatorStake.Lovelace += conclaveEpochStakeRewards
+                        .Where(r => r.StakeAddress == poolOwner && r.Epoch < i)
+                        .Aggregate(0ul, (sum, r) => sum + r.Lovelace);
+
+                    delegatorStake.Conclave += delegatorStake.Conclave + conclaveEpochStakeRewards
+                        .Where(r => r.StakeAddress == poolOwner && r.Epoch < i)
+                        .Aggregate(0ul, (sum, r) => sum + r.Conclave);
+
+
+                    ulong poolOwnerCnclvReward = CalculateReward(totalPoolOwnerStakes, delegatorStake.Lovelace, poolOwnerShare);
+
+                    ConclaveEpochStakeRewards? poolOwnerReward = conclaveEpochStakeRewards
+                        .FirstOrDefault(r => r.StakeAddress == poolOwner && r.Epoch == i);
+
+                    if (poolOwnerReward is null) continue;
+                    poolOwnerReward.Conclave += poolOwnerCnclvReward;
+                }
+            }
+        }
+        return conclaveEpochStakeRewards;
     }
 }
