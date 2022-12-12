@@ -16,6 +16,11 @@ module.exports = {
                 'info-darken': 'var(--mud-palette-info-darken)',
                 'disabled': 'var(--mud-palette-text-disabled)',
                 'error': 'var(--mud-palette-error)'
+            },
+            maxWidth: {
+                '4': '1444px',
+                '3': '1081px',
+                '2': '718px'
             }
         },
         screens: {
