@@ -1,16 +1,15 @@
-<div class="mx-2">
-  <div class="flex flex-col items-center justify-between md:flex-row mb-6">
+<div class="smtab:max-w-2 tab:max-w-3 lg:max-w-2 laptop:max-w-3 mx-auto">
+  <div class="flex flex-col items-center justify-between md:flex-row my-6 ml-3">
     @Title
-    <div class="flex">
+    <div class="flex mr-3">
       @SearchBox
     </div>
   </div>
   @* grid place-content-center grid-cols-1 smtab:grid-cols-2 tab:grid-cols-3 lg:grid-cols-2 laptop:grid-cols-3 gap-2 gap-y-4 *@
-  <div
-    class="grid grid-cols-3 gap-0 border">
+  <div class="grid grid-cols-1 gap-2 smtab:grid-cols-2 tab:grid-cols-3 lg:grid-cols-2 laptop:grid-cols-3">
     @ChildContent
   </div>
-  <div class="mt-6 lg:mt-5 text-right mb-[70px] md:mb-0">
+  <div class="mt-6 lg:mt-5 text-right mb-[70px] md:mb-0 mr-2">
     @Pagination
   </div>
 </div>

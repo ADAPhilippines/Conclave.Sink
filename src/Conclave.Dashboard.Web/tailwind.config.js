@@ -14,8 +14,10 @@ module.exports = {
                 'subtext': 'var(--mud-palette-text-secondary)',
                 'lines': 'var(--mud-palette-lines-default)',
             },
-            width: {
-                '3': '1113px',
+            maxWidth: {
+                '4': '1444px',
+                '3': '1081px',
+                '2': '718px',
             }
         },
         screens: {
