@@ -6,6 +6,9 @@ namespace Conclave.Dashboard.Web.Shared;
 
 public partial class MenuDrawer : ConclaveComponentBase
 {
+    [Inject]
+    private ConclaveIconsService ConclaveIcons { get; set; } = new();
+
     [Parameter]
     public string WalletAddress { get; set; } = string.Empty;
 
@@ -15,6 +18,15 @@ public partial class MenuDrawer : ConclaveComponentBase
         set
         {
             if (AppStateService is not null) AppStateService.IsDrawerOpen= value;
+        }
+    }
+
+    public bool IsDarkMode
+    {
+        get => AppStateService?.IsDarkMode ?? false;
+        set
+        {
+            if (AppStateService is not null) AppStateService.IsDarkMode= value;
         }
     }
 

@@ -6,43 +6,31 @@
         <MudLink Href="/staking">
             <div class="flex items-center gap-[9px] lg:gap-[12px]">
                 <div class="w-[35px] lg:w-[44px] h-[48px]">
-                    @if (IsDarkMode)
-                    {
-                        <MudImage Width="100" Src="images/conclave-logo-white.svg" Alt="Conclave logo" />
-                    }
-                    else
-                    {
-                        <MudImage Width="100" Src="images/conclave-logo-dark.svg" Alt="Conclave logo" />
-                    }
+                    <MudImage Width="100" Src="@ConclaveLogo" Alt="Conclave logo" />
+                    
                 </div>
                 <div class="w-[82px] lg:w-[103px]">
-                    @if (IsDarkMode)
-                    {
-                        <MudImage Width="100" Src="images/conclave-text-white.svg" Alt="Conclave text" />
-                    }
-                    else
-                    {
-                        <MudImage Width="100" Src="images/conclave-text-dark.svg" Alt="Conclave text" />
-                    }
+                    <MudImage Width="100" Src="@ConclaveText" Alt="Conclave text" />
                 </div>
             </div>
         </MudLink>
 
-        @* <h1 class="hidden lg:block text-white font-medium text-[24px] mr-auto ml-[100px]">Staking</h1> *@
+        <h1 class="hidden lg:block font-medium text-[24px] mr-auto ml-[100px] text-info-darken">Staking</h1>
        
-        <div class="flex items-center gap-6 lg:gap-[17px]">
+        <div class="flex relative items-center gap-6 lg:gap-[17px]">
+            <div class="absolute left-[-15px] right-[-15px] top-[-10px] bottom-[-10px] rounded-2xl backdrop-blur-[10px]"></div>
+
             <CascadingValue Value="IsDrawerOpen">
                 <ThemeSwitch />
             </CascadingValue>
             
             <button class="w-[25px] h-[25px] relative lg:hidden" onclick="@(() => ToggleDrawer())">
                 <div class="burger-menu relative w-full @(IsDrawerOpen == false ? "" : "open")">
-                    <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-white duration-200 ease-linear rounded"></span>
-                    <span class="middle h-0.5 w-full left-0 bg-white absolute duration-200 ease-linear rounded"></span>
-                    <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-white duration-200 rounded"></span>
+                    <span class="top absolute left-0 bottom-[6px] h-0.5 w-full bg-info-darken duration-200 ease-linear rounded"></span>
+                    <span class="middle h-0.5 w-full left-0 bg-info-darken absolute duration-200 ease-linear rounded"></span>
+                    <span class="bottom absolute top-[8px] left-0 h-0.5 w-full bg-info-darken duration-200 rounded"></span>
                 </div>
             </button>
-
             <ConnectWalletButton />
         </div>
     </div>

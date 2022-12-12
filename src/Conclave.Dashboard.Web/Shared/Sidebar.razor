@@ -1,53 +1,28 @@
 @using Conclave.Dashboard.Web.Services
+@using Conclave.Dashboard.Web.Components
 @inject ConclaveIconsService ConclaveIcons
 
-<div class="hidden lg:block fixed left-0 h-[calc(100vh-20px)] top-[10px] backdrop-blur-3xl">
+<div class="hidden lg:block fixed left-0 h-[calc(100vh-20px)] top-[10px] backdrop-blur-3xl z-[100]">
     <MudPaper Height="100%" Width="260px"
-        Class="!bg-transparent relative pt-[80.5px] outline outline-1 outline-[##ffffff1a] rounded-tr-xl rounded-br-xl"
+        Class="!bg-transparent relative pt-[80.5px] rounded-tr-xl rounded-br-xl"
         Elevation="4">
-        <div class="nav-menu h-full w-full pt-[0px] ">
-            <MudNavMenu class="h-full w-full" id="sidebar">
-                <MudNavLink Href="/staking">
-                    <div class="relative flex gap-[17px] py-[17px] pl-[29px]">
-                        <div id="nav-link-bg" class="absolute top-0 left-0 right-0 bottom-0 bg-nav-link-gradient duration-300 opacity-0 hover:opacity-100">
-                            <div class="absolute left-0 top-0 bottom-0 w-[7px] mud-info"></div>
-                        </div>
-                        <MudIcon Icon="@ConclaveIcons.Staking" Class="mud-secondary-text" />
-                        <div class="text-subtext">Staking Center</div>
-                    </div>
-                </MudNavLink>
-                <MudNavLink Href="/lottery">
-                    <div class="relative flex gap-[17px] py-[17px] pl-[29px]">
-                        <div id="nav-link-bg" class="absolute top-0 left-0 right-0 bottom-0 bg-nav-link-gradient duration-300 opacity-0 hover:opacity-100">
-                            <div class="absolute left-0 top-0 bottom-0 w-[7px] mud-info"></div>
-                        </div>
-                        <MudIcon Icon="@ConclaveIcons.Lottery" Class="mud-secondary-text" />
-                        <div class="text-subtext">Lottery</div>
-                    </div>
-                </MudNavLink>
-                <MudNavLink Href="/oracle">
-                    <div class="relative flex gap-[17px] py-[17px] pl-[29px]">
-                        <div id="nav-link-bg" class="absolute top-0 left-0 right-0 bottom-0 bg-nav-link-gradient duration-300 opacity-0 hover:opacity-100">
-                            <div class="absolute left-0 top-0 bottom-0 w-[7px] mud-info"></div>
-                        </div>
-                        <MudIcon Icon="@ConclaveIcons.Oracle" Class="mud-text-secondary" />
-                        <div class="text-subtext">Oracle</div>
-                    </div>
-                </MudNavLink>
-            </MudNavMenu>
+
+        <div class="h-full w-full pt-[0px]">
+            <NavMenu />
         </div>
-        <div class="w-full flex gap-4 items-center justify-center absolute left-0 right-0 bottom-[15px]">
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/facebook.svg" Alt="Facebook logo" />
+
+         <div class="w-full flex gap-5 items-center justify-center absolute left-0 right-0 bottom-[22px]">
+            <MudLink Href="#" Target="_blank">
+                <MudIcon Icon="@Icons.Custom.Brands.Facebook" Class="text-subtext transition-all duration-[5000ms] hover:text-info-darken" />
             </MudLink>
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/twitter.svg" Alt="Twitter logo" />
+            <MudLink Href="#" Target="_blank">
+                <MudIcon Icon="@Icons.Custom.Brands.Twitter" Class="text-subtext transition-all duration-300 hover:text-info-darken" />
             </MudLink>
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/telegram.svg" Alt="Telegram logo" />
+            <MudLink Href="#" Target="_blank">
+                <MudIcon Icon="@Icons.Custom.Brands.Telegram" Class="text-subtext transition-all duration-300 hover:text-info-darken" />
             </MudLink>
-            <MudLink Href="/" Target="_blank">
-                <MudImage Src="images/discord.svg" Alt="Discord logo" />
+            <MudLink Href="#" Target="_blank">
+                <MudIcon Icon="@Icons.Custom.Brands.Discord" Class="text-subtext transition-all duration-300 hover:text-info-darken" />
             </MudLink>
         </div>
     </MudPaper>

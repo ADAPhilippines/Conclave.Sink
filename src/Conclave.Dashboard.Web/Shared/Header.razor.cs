@@ -27,6 +27,20 @@ public partial class Header : ConclaveComponentBase
         }
     }
 
+    private string ConclaveLogo
+    {
+        get => IsDarkMode ?
+            "images/conclave-logo-white.svg" : 
+            "images/conclave-logo-dark.svg";
+    }
+
+    private string ConclaveText
+    {
+        get => IsDarkMode ?
+            "images/conclave-text-white.svg" : 
+            "images/conclave-text-dark.svg";
+    }
+
     private bool _isConnected { get; set; }
 
     private bool _isDropDownVisible { get; set; }

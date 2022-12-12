@@ -13,16 +13,20 @@ module.exports = {
                 'secondary': '#41FBFB',
                 'subtext': 'var(--mud-palette-text-secondary)',
                 'lines': 'var(--mud-palette-lines-default)',
+                'info-darken': 'var(--mud-palette-info-darken)',
+                'disabled': 'var(--mud-palette-text-disabled)',
+                'error': 'var(--mud-palette-error)'
             },
             maxWidth: {
                 '4': '1444px',
                 '3': '1081px',
-                '2': '718px',
+                '2': '718px'
             }
         },
         screens: {
             "xs": "375px",
             "sm": "414px",
+            "xm": "500px",
             "smtab": "600px",
             "md": "768px",
             "tab": "900px",
