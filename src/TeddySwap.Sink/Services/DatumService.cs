@@ -1,14 +1,18 @@
+using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
 using TeddySwap.Common.Models;
+using TeddySwap.Sink.Models;
 
 namespace TeddySwap.Sink.Services;
 
 public class DatumService
 {
     private readonly CborService _cborService;
-    public DatumService(CborService cborService)
+    private readonly TeddySwapSinkSettings _settings;
+    public DatumService(CborService cborService, IOptions<TeddySwapSinkSettings> settings)
     {
         _cborService = cborService;
+        _settings = settings.Value;
     }
 
     public PoolDatum CborToPoolDatum(CBORObject cbor)
@@ -55,6 +59,26 @@ public class DatumService
         assetClass.Name = ((string)_cborService.DecodeValueByCborType(cbor[1])).ToLower();
 
         return assetClass;
+    }
+
+    public OrderType GetOrderType(string validatorAddr)
+    {
+        if (validatorAddr == _settings.DepositAddress)
+        {
+            return OrderType.Deposit;
+        }
+        else if (validatorAddr == _settings.RedeemAddress)
+        {
+            return OrderType.Redeem;
+        }
+        else if (validatorAddr == _settings.SwapAddress)
+        {
+            return OrderType.Swap;
+        }
+        else
+        {
+            return OrderType.Unknown;
+        }
     }
 
     public bool IsValidAsset(CBORObject cbor)
