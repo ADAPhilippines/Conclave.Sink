@@ -1,0 +1,75 @@
+﻿@page "/leaderboard"
+
+<PageTitle>TeddySwap | Cardano | Dashboard</PageTitle>
+
+<div class="flex gap-4">
+    <DashboardMenu />
+    <MudTabs Elevation="4" Rounded="true" ApplyEffectsToContainer="true" Class="w-full" SliderColor="Color.Secondary">
+        <MudTabPanel Text="Global">
+            <MudTable Items="DummyLeaderboard" Hover="true" Class="w-full">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">ITN Leaderboard</MudText>
+                    <MudSpacer />
+                    <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
+                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                        Value="string.Empty">
+                    </MudTextField>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Rank</MudTh>
+                    <MudTh>Testnet Address</MudTh>
+                    <MudTh>Mainnet Address</MudTh>
+                    <MudTh>Points</MudTh>
+                    <MudTh>Bonus</MudTh>
+                    <MudTh>Total Rewards</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Nr">@context.Rank</MudTd>
+                    <MudTd DataLabel="Sign">@context.TestnetAddress.Substring(0,6) ...
+                        @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)</MudTd>
+                    <MudTd DataLabel="Name">@context.MainnetAddress.Substring(0,6) ...
+                        @context.MainnetAddress.Substring(@context.MainnetAddress.Length - 6)</MudTd>
+                    <MudTd DataLabel="Position">@context.Points</MudTd>
+                    <MudTd DataLabel="Molar mass">@context.Bonus%</MudTd>
+                    <MudTd DataLabel="Molar mass">@context.Rewards.ToString("N2") $TEDY</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </MudTabPanel>
+        <MudTabPanel Text="Batchers">
+            <MudTable Items="DummyLeaderboard" Hover="true" Class="w-full">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">ITN Badgers</MudText>
+                    <MudSpacer />
+                    <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
+                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                        Value="string.Empty">
+                    </MudTextField>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Rank</MudTh>
+                    <MudTh>Testnet Address</MudTh>
+                    <MudTh>Mainnet Address</MudTh>
+                    <MudTh>Points</MudTh>
+                    <MudTh>Bonus</MudTh>
+                    <MudTh>Total Rewards</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Nr">@context.Rank</MudTd>
+                    <MudTd DataLabel="Sign">@context.TestnetAddress.Substring(0,6) ...
+                        @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)</MudTd>
+                    <MudTd DataLabel="Name">@context.MainnetAddress.Substring(0,6) ...
+                        @context.MainnetAddress.Substring(@context.MainnetAddress.Length - 6)</MudTd>
+                    <MudTd DataLabel="Position">@context.Points</MudTd>
+                    <MudTd DataLabel="Molar mass">@context.Bonus%</MudTd>
+                    <MudTd DataLabel="Molar mass">@context.Rewards.ToString("N2") $TEDY</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </MudTabPanel>
+    </MudTabs>
+</div>

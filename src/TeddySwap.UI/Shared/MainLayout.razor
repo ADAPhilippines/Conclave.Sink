@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider IsDarkMode="true" Theme="Theme" />
+<MudSnackbarProvider />
+@* <MudDialogProvider/> *@
+<PageTitle>TeddySwap.UI</PageTitle>
+
+<header>
+    <MudAppBar Color="Color.Tertiary" Fixed="false">
+        <img src="/images/teddy-logo.svg" alt="teddy-logo" class="h-[30px] mr-6" />
+        <div class="pt-[4px] gap-6 flex">
+            <NavLink href="/leaderboard" class="font-bold text-[16px]">Dashboard</NavLink>
+        </div>
+        <MudSpacer />
+        <MudButton Variant="Variant.Outlined">Connect Wallet</MudButton>
+    </MudAppBar>
+</header>
+
+<main class="container mx-auto py-10">
+    @Body
+</main>
