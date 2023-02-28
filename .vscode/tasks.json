@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Conclave.Sink/Conclave.Sink.csproj",
+                "${workspaceFolder}/src/TeddySwap.Sink/TeddySwap.Sink.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/Conclave.Sink/Conclave.Sink.csproj",
+                "${workspaceFolder}/src/TeddySwap.Sink/TeddySwap.Sink.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/src/Conclave.Sink/Conclave.Sink.csproj"
+                "${workspaceFolder}/src/TeddySwap.Sink/TeddySwap.Sink.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

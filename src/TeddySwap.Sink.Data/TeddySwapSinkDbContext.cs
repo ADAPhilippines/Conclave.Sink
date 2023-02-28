@@ -63,10 +63,10 @@ public class TeddySwapSinkDbContext : DbContext
             .WithMany(tx => tx.Outputs)
             .HasForeignKey(txOutput => txOutput.TxHash);
 
-        modelBuilder.Entity<Order>()
-            .HasOne<Transaction>(order => order.Transaction)
-            .WithMany(tx => tx.Orders)
-            .HasForeignKey(order => order.TxHash);
+        // modelBuilder.Entity<Order>()
+        //     .HasOne<Transaction>(order => order.Transaction)
+        //     .WithMany(tx => tx.Orders)
+        //     .HasForeignKey(order => order.TxHash);
 
         modelBuilder.Entity<CollateralTxOutput>()
             .HasOne<Transaction>(txOutput => txOutput.Transaction)

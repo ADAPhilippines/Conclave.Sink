@@ -6,7 +6,6 @@ public record Order
 {
     public string TxHash { get; init; } = string.Empty;
     public ulong Index { get; init; }
-    public Transaction Transaction { get; init; } = new();
     public OrderType OrderType { get; init; }
     public string datum { get; init; } = string.Empty;
     public string RewardAddress { get; init; } = string.Empty;

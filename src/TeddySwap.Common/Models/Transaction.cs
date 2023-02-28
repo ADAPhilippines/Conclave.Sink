@@ -9,6 +9,5 @@ public record Transaction
     public IEnumerable<TxInput> Inputs { get; init; } = new List<TxInput>();
     public IEnumerable<CollateralTxInput> CollateralInputs { get; init; } = new List<CollateralTxInput>();
     public IEnumerable<TxOutput> Outputs { get; init; } = new List<TxOutput>();
-    public IEnumerable<Order> Orders { get; init; } = new List<Order>();
     public CollateralTxOutput? CollateralOutput { get; init; }
 }

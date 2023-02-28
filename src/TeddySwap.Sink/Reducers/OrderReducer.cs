@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Conclave.Sink.Reducers;
 
-[OuraReducer(OuraVariant.Transaction)]
 public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TransactionReducer> _logger;
@@ -53,79 +52,31 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
 
-            Transaction transaction = new()
+            Transaction? transaction = await _dbContext.Transactions
+                .Include(t => t.Inputs)
+                .ThenInclude(i => i.TxOutput)
+                .Include(t => t.Outputs)
+                .Where(t => t.Hash == transactionEvent.Context.TxHash)
+                .FirstOrDefaultAsync();
+
+            if (transaction is null) throw new NullReferenceException("Transaction does not exist!");
+
+            List<TxOutput>? inputs = transaction.Inputs.Select(i => i.TxOutput).ToList();
+            List<TxOutput>? outputs = transaction.Outputs.ToList();
+
+            List<string> validators = new()
             {
-                Hash = transactionEvent.Context.TxHash,
-                Fee = (ulong)transactionEvent.Transaction.Fee,
-                Index = (ulong)transactionEvent.Context.TxIdx,
-                Block = block
+                _settings.DepositAddress,
+                _settings.SwapAddress,
+                _settings.RedeemAddress
             };
 
+            // Find Validator Utxos
+            TxOutput? poolInput = inputs.Where(i => i.Address == _settings.PoolAddress).FirstOrDefault();
+            TxOutput? orderInput = inputs.Where(i => validators.Contains(i.Address)).FirstOrDefault();
 
-            EntityEntry<Transaction> transactionEntry = await _dbContext.Transactions.AddAsync(transaction);
-
-            // Record collateral input if available
-            if (transactionEvent.Transaction.CollateralInputs is not null)
-            {
-                List<CollateralTxInput> collateralInputs = new List<CollateralTxInput>();
-                foreach (OuraTxInput ouraTxInput in transactionEvent.Transaction.CollateralInputs)
-                {
-                    TxOutput? txInputOutput = await _dbContext.TxOutputs
-                        .Where(txOutput => txOutput.TxHash == ouraTxInput.TxHash && txOutput.Index == ouraTxInput.Index)
-                        .FirstOrDefaultAsync();
-
-                    if (txInputOutput is not null)
-                    {
-                        collateralInputs.Add(new()
-                        {
-                            TxOutput = txInputOutput,
-                            Transaction = transactionEntry.Entity
-                        });
-                    }
-                    else
-                    {
-                        collateralInputs.Add(new()
-                        {
-                            Transaction = transactionEntry.Entity,
-                            // GENESIS TX HACK
-                            TxOutput = new TxOutput
-                            {
-                                Transaction = new Transaction
-                                {
-                                    Hash = $"GENESIS_{transaction.Hash}_{transactionEvent.Fingerprint}",
-                                    Block = transaction.Block
-                                },
-                                Address = "GENESIS"
-                            }
-                        });
-                    }
-                }
-                await _dbContext.CollateralTxInputs.AddRangeAsync(collateralInputs);
-            }
-
-
-            // If Transaction is invalid record, collateral output
-            if (block.InvalidTransactions is not null &&
-                transactionEvent.Transaction.CollateralOutput is not null &&
-                transactionEvent.Transaction.CollateralOutput.Address is not null &&
-                transactionEvent.Transaction.CollateralOutput.Amount is not null &&
-                transactionEvent.Transaction.CollateralOutput.Assets is not null &&
-                block.InvalidTransactions.ToList().Contains(transaction.Index))
-            {
-                CollateralTxOutput collateralOutput = new()
-                {
-                    Transaction = transaction,
-                    Index = 0,
-                    Address = transactionEvent.Transaction.CollateralOutput.Address,
-                    Amount = (ulong)transactionEvent.Transaction.CollateralOutput.Amount,
-                    Assets = transactionEvent.Transaction.CollateralOutput.Assets
-                                 .Select(asset => new Asset { PolicyId = asset.Policy, Name = asset.Asset, Amount = asset.Amount ?? 0 })
-                };
-
-                await _dbContext.CollateralTxOutputs.AddAsync(collateralOutput);
-            }
-
-            await _dbContext.SaveChangesAsync();
+            // Return if not a TeddySwap transaction
+            if (poolInput is null || orderInput is null) return;
         }
     }
 
