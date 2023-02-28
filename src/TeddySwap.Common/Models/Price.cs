@@ -4,7 +4,7 @@ namespace TeddySwap.Common.Models;
 
 public record Price
 {
-    public string Hash { get; init; } = string.Empty;
+    public string TxHash { get; init; } = string.Empty;
     public ulong Index { get; init; }
     public Order Order { get; init; } = new();
     public decimal PriceX { get; init; }

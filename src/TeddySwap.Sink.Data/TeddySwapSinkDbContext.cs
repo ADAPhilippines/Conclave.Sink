@@ -32,8 +32,8 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<CollateralTxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Asset>().HasKey(asset => new { asset.PolicyId, asset.Name, asset.TxOutputHash, asset.TxOutputIndex });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
-        modelBuilder.Entity<Order>().HasKey(order => new { order.Hash, order.Index });
-        modelBuilder.Entity<Price>().HasKey(price => new { price.Hash, price.Index });
+        modelBuilder.Entity<Order>().HasKey(order => new { order.TxHash, order.Index });
+        modelBuilder.Entity<Price>().HasKey(price => new { price.TxHash, price.Index });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
 
@@ -62,6 +62,11 @@ public class TeddySwapSinkDbContext : DbContext
             .HasOne<Transaction>(txOutput => txOutput.Transaction)
             .WithMany(tx => tx.Outputs)
             .HasForeignKey(txOutput => txOutput.TxHash);
+
+        modelBuilder.Entity<Order>()
+            .HasOne<Transaction>(order => order.Transaction)
+            .WithMany(tx => tx.Orders)
+            .HasForeignKey(order => order.TxHash);
 
         modelBuilder.Entity<CollateralTxOutput>()
             .HasOne<Transaction>(txOutput => txOutput.Transaction)
