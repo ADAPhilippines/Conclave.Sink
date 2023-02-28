@@ -23,6 +23,9 @@ builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options =>
 });
 builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
+builder.Services.AddSingleton<ByteArrayService>();
+builder.Services.AddSingleton<CborService>();
+builder.Services.AddSingleton<DatumService>();
 builder.Services.AddOuraReducers();
 
 var app = builder.Build();
