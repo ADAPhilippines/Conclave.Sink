@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using TeddySwap.Sink.Models.Oura;
 using TeddySwap.Sink.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PeterO.Cbor2;
 
 namespace Conclave.Sink.Reducers;
 
@@ -144,6 +145,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                             Transaction = transaction,
                             TxOutputHash = input.TxHash,
                             TxOutputIndex = input.Index,
+                            InlineDatum = txOutput.InlineDatum,
                             TxOutput = txOutput
                         });
                     }
@@ -182,7 +184,8 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                             {
                                 Amount = (ulong)output.Amount,
                                 Address = output.Address,
-                                Index = (ulong)i
+                                Index = (ulong)i,
+                                InlineDatum = CBORObject.(output.InlineDatum)
                             };
 
                             newTxOutput = newTxOutput with { Transaction = transaction, TxHash = transaction.Hash };
