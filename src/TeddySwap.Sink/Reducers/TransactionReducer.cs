@@ -17,14 +17,14 @@ namespace Conclave.Sink.Reducers;
 public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TransactionReducer> _logger;
-    private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly IServiceProvider _serviceProvider;
     private readonly ConclaveSinkSettings _settings;
 
     public TransactionReducer(
         ILogger<TransactionReducer> logger,
-        IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
         IServiceProvider serviceProvider,
         IOptions<ConclaveSinkSettings> settings)
@@ -45,7 +45,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             transactionEvent.Transaction.Fee is not null &&
             transactionEvent.Context.TxIdx is not null)
         {
-            ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
@@ -123,19 +123,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 };
 
                 await _dbContext.CollateralTxOutputs.AddAsync(collateralOutput);
-            }
-
-            if (transactionEvent.Transaction.Withdrawals is not null)
-            {
-                foreach (OuraWithdrawal ouraWithdrawal in transactionEvent.Transaction.Withdrawals)
-                {
-                    await _dbContext.Withdrawals.AddAsync(new()
-                    {
-                        Amount = ouraWithdrawal.Coin ?? 0,
-                        StakeAddress = Bech32.Encode(ouraWithdrawal.RewardAccount.HexToByteArray(), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
-                        Transaction = transactionEntry.Entity,
-                    });
-                }
             }
 
             await _dbContext.SaveChangesAsync();

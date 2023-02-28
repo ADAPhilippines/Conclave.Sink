@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextFactory<ConclaveSinkDbContext>(options =>
+builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options =>
 {
     options.EnableSensitiveDataLogging(true);
     options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"));

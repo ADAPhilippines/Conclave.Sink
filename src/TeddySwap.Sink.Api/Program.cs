@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ConclaveSinkDbContext>(options =>
+builder.Services.AddDbContext<TeddySwapSinkDbContext>(options =>
 {
     options.EnableSensitiveDataLogging(true);
     options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"));

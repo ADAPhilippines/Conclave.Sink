@@ -10,10 +10,10 @@ namespace Conclave.Sink.Reducers;
 public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TxOutputReducer> _logger;
-    private IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
+    private IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
     public TxOutputReducer(
         ILogger<TxOutputReducer> logger,
-        IDbContextFactory<ConclaveSinkDbContext> dbContextFactory)
+        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
@@ -21,7 +21,7 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraTxOutputEvent txOutputEvent)
     {
-        using ConclaveSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         if (txOutputEvent is not null &&
         txOutputEvent.Context is not null &&
          txOutputEvent.TxOutput is not null &&

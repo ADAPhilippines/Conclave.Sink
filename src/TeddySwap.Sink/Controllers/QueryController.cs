@@ -8,11 +8,11 @@ namespace Conclave.Sink.Controllers;
 public class QueryController : ControllerBase
 {
     private readonly ILogger<QueryController> _logger;
-    private readonly ConclaveSinkDbContext _dbContext;
+    private readonly TeddySwapSinkDbContext _dbContext;
 
     public QueryController(
         ILogger<QueryController> logger,
-        ConclaveSinkDbContext dbContext
+        TeddySwapSinkDbContext dbContext
     )
     {
         _logger = logger;

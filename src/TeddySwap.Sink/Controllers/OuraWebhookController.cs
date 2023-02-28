@@ -17,7 +17,7 @@ namespace Conclave.Sink.Controllers;
 public class OuraWebhookController : ControllerBase
 {
     private readonly ILogger<OuraWebhookController> _logger;
-    private readonly IDbContextFactory<ConclaveSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
     private readonly JsonSerializerOptions ConclaveJsonSerializerOptions = new JsonSerializerOptions()
     {
         PropertyNameCaseInsensitive = true
@@ -27,7 +27,7 @@ public class OuraWebhookController : ControllerBase
     private readonly IOptions<ConclaveSinkSettings> _settings;
     public OuraWebhookController(
         ILogger<OuraWebhookController> logger,
-        IDbContextFactory<ConclaveSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
         IEnumerable<IOuraReducer> reducers,
         IOptions<ConclaveSinkSettings> settings
@@ -81,9 +81,6 @@ public class OuraWebhookController : ControllerBase
                                 OuraVariant.Transaction => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTransactionEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.TxInput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.PoolRegistration => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRegistrationEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.PoolRetirement => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraPoolRetirementEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.StakeDelegation => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraStakeDelegationEvent>(ConclaveJsonSerializerOptions)),
                                 _ => Task.CompletedTask
                             };
                         }
