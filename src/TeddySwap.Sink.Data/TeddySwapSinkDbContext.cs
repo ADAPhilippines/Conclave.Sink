@@ -16,6 +16,11 @@ public class TeddySwapSinkDbContext : DbContext
     public DbSet<Asset> Assets => Set<Asset>();
     #endregion
 
+    #region TeddySwap Models
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<Price> Prices => Set<Price>();
+    #endregion
+
     public TeddySwapSinkDbContext(DbContextOptions<TeddySwapSinkDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,8 +32,11 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<CollateralTxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Asset>().HasKey(asset => new { asset.PolicyId, asset.Name, asset.TxOutputHash, asset.TxOutputIndex });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
+        modelBuilder.Entity<Order>().HasKey(order => new { order.Hash, order.Index });
+        modelBuilder.Entity<Price>().HasKey(price => new { price.Hash, price.Index });
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
+
         // Relations
         modelBuilder.Entity<TxInput>()
             .HasOne<TxOutput>(txInput => txInput.TxOutput)
