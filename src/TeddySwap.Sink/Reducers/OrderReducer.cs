@@ -19,20 +19,17 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly IServiceProvider _serviceProvider;
-    private readonly TeddySwapSinkSettings _settings;
 
     public OrderReducer(
         ILogger<TransactionReducer> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
-        IServiceProvider serviceProvider,
-        IOptions<TeddySwapSinkSettings> settings)
+        IServiceProvider serviceProvider)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
         _cardanoService = cardanoService;
         _serviceProvider = serviceProvider;
-        _settings = settings.Value;
     }
 
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
@@ -61,22 +58,6 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
             if (transaction is null) throw new NullReferenceException("Transaction does not exist!");
 
-            List<TxOutput>? inputs = transaction.Inputs.Select(i => i.TxOutput).ToList();
-            List<TxOutput>? outputs = transaction.Outputs.ToList();
-
-            List<string> validators = new()
-            {
-                _settings.DepositAddress,
-                _settings.SwapAddress,
-                _settings.RedeemAddress
-            };
-
-            // Find Validator Utxos
-            TxOutput? poolInput = inputs.Where(i => i.Address == _settings.PoolAddress).FirstOrDefault();
-            TxOutput? orderInput = inputs.Where(i => validators.Contains(i.Address)).FirstOrDefault();
-
-            // Return if not a TeddySwap transaction
-            if (poolInput is null || orderInput is null) return;
         }
     }
 
