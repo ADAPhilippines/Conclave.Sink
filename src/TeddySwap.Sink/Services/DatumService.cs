@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Models;
+using System.Numerics;
 
 namespace TeddySwap.Sink.Services;
 
@@ -50,6 +51,47 @@ public class DatumService
         depositDatum.CollateralAda = (uint)_cborService.DecodeValueByCborType(cbor[7]);
 
         return depositDatum;
+    }
+
+    public RedeemDatum CborToRedeemDatum(CBORObject cbor)
+    {
+        if (cbor.Count != 7)
+        {
+            throw new InvalidDataException("Not a valid pool cbor");
+        }
+
+        RedeemDatum redeemDatum = new();
+        redeemDatum.Nft = CborToAssetClass(cbor[0]);
+        redeemDatum.ReserveX = CborToAssetClass(cbor[1]);
+        redeemDatum.ReserveY = CborToAssetClass(cbor[2]);
+        redeemDatum.Lq = CborToAssetClass(cbor[3]);
+        redeemDatum.ExFee = (uint)_cborService.DecodeValueByCborType(cbor[4]);
+        redeemDatum.RewardPkh = ((string)_cborService.DecodeValueByCborType(cbor[5])).ToLower();
+        redeemDatum.StakePkh = ((string)_cborService.DecodeValueByCborType(cbor[6][0])).ToLower();
+
+        return redeemDatum;
+    }
+
+    public SwapDatum CborToSwapDatum(CBORObject cbor)
+    {
+        if (cbor.Count != 9)
+        {
+            throw new InvalidDataException("Not a valid pool cbor");
+        }
+
+        SwapDatum swapDatum = new();
+        swapDatum.Base = CborToAssetClass(cbor[0]);
+        swapDatum.Quote = CborToAssetClass(cbor[1]);
+        swapDatum.Nft = CborToAssetClass(cbor[2]);
+        swapDatum.Fee = (uint)_cborService.DecodeValueByCborType(cbor[3]);
+        swapDatum.ExFeePerTokenNum = BigInteger.Parse(_cborService.DecodeValueByCborType(cbor[4]).ToString() ?? "0");
+        swapDatum.ExFeePerTokenDen = BigInteger.Parse(_cborService.DecodeValueByCborType(cbor[5]).ToString() ?? "0");
+        swapDatum.RewardPkh = ((string)_cborService.DecodeValueByCborType(cbor[6])).ToLower();
+        swapDatum.StakePkh = ((string)_cborService.DecodeValueByCborType(cbor[7][0])).ToLower();
+        swapDatum.BaseAmount = BigInteger.Parse(_cborService.DecodeValueByCborType(cbor[8]).ToString() ?? "0");
+        swapDatum.MinQuoteAmount = BigInteger.Parse(_cborService.DecodeValueByCborType(cbor[9]).ToString() ?? "0");
+
+        return swapDatum;
     }
 
     public AssetClass CborToAssetClass(CBORObject cbor)
