@@ -19,9 +19,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options =>
 {
     options.EnableSensitiveDataLogging(true);
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
 });
-builder.Services.Configure<ConclaveSinkSettings>(options => builder.Configuration.GetSection("ConclaveSinkSettings").Bind(options));
+builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddOuraReducers();
 

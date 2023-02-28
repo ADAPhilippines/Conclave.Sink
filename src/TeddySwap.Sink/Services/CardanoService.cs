@@ -12,8 +12,8 @@ namespace TeddySwap.Sink.Services;
 
 public class CardanoService
 {
-    private readonly ConclaveSinkSettings _settings;
-    public CardanoService(IOptions<ConclaveSinkSettings> settings)
+    private readonly TeddySwapSinkSettings _settings;
+    public CardanoService(IOptions<TeddySwapSinkSettings> settings)
     {
         _settings = settings.Value;
     }

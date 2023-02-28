@@ -20,14 +20,14 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly IServiceProvider _serviceProvider;
-    private readonly ConclaveSinkSettings _settings;
+    private readonly TeddySwapSinkSettings _settings;
 
     public TransactionReducer(
         ILogger<TransactionReducer> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
         IServiceProvider serviceProvider,
-        IOptions<ConclaveSinkSettings> settings)
+        IOptions<TeddySwapSinkSettings> settings)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;

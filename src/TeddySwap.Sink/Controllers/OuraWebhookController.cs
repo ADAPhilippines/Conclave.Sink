@@ -24,13 +24,13 @@ public class OuraWebhookController : ControllerBase
     };
     private readonly CardanoService _cardanoService;
     private readonly IEnumerable<IOuraReducer> _reducers;
-    private readonly IOptions<ConclaveSinkSettings> _settings;
+    private readonly IOptions<TeddySwapSinkSettings> _settings;
     public OuraWebhookController(
         ILogger<OuraWebhookController> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
         IEnumerable<IOuraReducer> reducers,
-        IOptions<ConclaveSinkSettings> settings
+        IOptions<TeddySwapSinkSettings> settings
     )
     {
         _logger = logger;
@@ -79,8 +79,8 @@ public class OuraWebhookController : ControllerBase
                             {
                                 OuraVariant.Block => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.Transaction => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTransactionEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.TxInput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
+                                // OuraVariant.TxInput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions)),
+                                // OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
                                 _ => Task.CompletedTask
                             };
                         }

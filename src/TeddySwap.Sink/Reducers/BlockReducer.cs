@@ -18,13 +18,13 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly IServiceProvider _serviceProvider;
-    private readonly ConclaveSinkSettings _settings;
+    private readonly TeddySwapSinkSettings _settings;
 
     public BlockReducer(
         ILogger<BlockReducer> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
         CardanoService cardanoService,
-        IOptions<ConclaveSinkSettings> settings,
+        IOptions<TeddySwapSinkSettings> settings,
         IServiceProvider serviceProvider)
     {
         _logger = logger;
