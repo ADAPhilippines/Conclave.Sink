@@ -1,6 +1,6 @@
 namespace TeddySwap.Common.Models.Response;
 
-public class LeaderbordHistoryResponse : ResponseBase
+public class LeaderboardHistoryResponse : ResponseBase
 {
-    List<LeaderboardResponse> LeaderboardHistory { get; init; } = new();
+    public List<LeaderboardResponse> LeaderboardHistory { get; init; } = new();
 }

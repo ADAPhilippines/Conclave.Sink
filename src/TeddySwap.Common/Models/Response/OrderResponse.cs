@@ -2,5 +2,5 @@ namespace TeddySwap.Common.Models.Response;
 
 public class OrderResponse
 {
-    OrderType OrderType { get; init; }
+    public OrderType OrderType { get; init; }
 }

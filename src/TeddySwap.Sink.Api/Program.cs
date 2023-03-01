@@ -1,5 +1,6 @@
-using TeddySwap.Sink.Data;
 using Microsoft.EntityFrameworkCore;
+using TeddySwap.Sink.Api.Services;
+using TeddySwap.Sink.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<TeddySwapSinkDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
 });
 builder.Services.AddControllers();
+builder.Services.AddScoped<LeaderboardService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

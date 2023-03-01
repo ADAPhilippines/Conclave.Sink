@@ -2,5 +2,5 @@ namespace TeddySwap.Common.Models.Response;
 
 public class ResponseBase
 {
-    public int total { get; init; }
+    public int Total { get; init; }
 }

@@ -2,11 +2,11 @@ namespace TeddySwap.Common.Models.Response;
 
 public class LeaderboardResponse
 {
-    string Address { get; init; } = string.Empty;
-    int Rank { get; set; }
-    int Total { get; init; }
-    int Deposit { get; init; }
-    int Redeem { get; init; }
-    int Swap { get; init; }
-    int Batch { get; init; }
+    public string Address { get; init; } = string.Empty;
+    public int Rank { get; set; }
+    public int Total { get; init; }
+    public int Deposit { get; init; }
+    public int Redeem { get; init; }
+    public int Swap { get; init; }
+    public int Batch { get; init; }
 }

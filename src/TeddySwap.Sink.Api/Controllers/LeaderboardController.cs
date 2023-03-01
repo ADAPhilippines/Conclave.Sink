@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using TeddySwap.Common.Models.Request;
+using TeddySwap.Common.Models.Response;
+using TeddySwap.Sink.Api.Services;
 
 namespace TeddySwap.Sink.Api.Controllers;
 
@@ -7,20 +10,21 @@ namespace TeddySwap.Sink.Api.Controllers;
 public class LeaderboardController : ControllerBase
 {
     private readonly ILogger<LeaderboardController> _logger;
+    private readonly LeaderboardService _leaderboardService;
 
-    public LeaderboardController(ILogger<LeaderboardController> logger)
+    public LeaderboardController(
+        ILogger<LeaderboardController> logger,
+        LeaderboardService leaderboardService)
     {
         _logger = logger;
-        _accountService = accountService;
+        _leaderboardService = leaderboardService;
     }
 
-    [HttpGet("{stakeAddress}/stakes")]
-    public async Task<ActionResult<AccountEpochStakesResponse>> GetStakeBalanceHistoryByEpochAsync()
+    [HttpGet]
+    public async Task<ActionResult<LeaderboardHistoryResponse>> GetAll()
     {
-
-
-        return Ok();
+        var res = await _leaderboardService.FetchAllAsync(null);
+        return Ok(res);
     }
-
 
 }
