@@ -14,8 +14,8 @@ using TeddySwap.Sink.Data;
 namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapSinkDbContext))]
-    [Migration("20230301011755_UpdateTxOutputDatumJson1")]
-    partial class UpdateTxOutputDatumJson1
+    [Migration("20230301071510_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,6 +163,13 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<BigInteger>("Liquidity")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("OrderBase")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("OrderDatum")
+                        .HasColumnType("bytea");
+
                     b.Property<BigInteger>("OrderLq")
                         .HasColumnType("numeric");
 
@@ -174,6 +181,9 @@ namespace TeddySwap.Sink.Data.Migrations
 
                     b.Property<BigInteger>("OrderY")
                         .HasColumnType("numeric");
+
+                    b.Property<byte[]>("PoolDatum")
+                        .HasColumnType("bytea");
 
                     b.Property<string>("PoolNft")
                         .IsRequired()
@@ -191,10 +201,6 @@ namespace TeddySwap.Sink.Data.Migrations
 
                     b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
-
-                    b.Property<string>("datum")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("TxHash", "Index");
 

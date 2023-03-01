@@ -11,6 +11,7 @@ using TeddySwap.Sink.Models.Oura;
 using TeddySwap.Sink.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PeterO.Cbor2;
+using System.Numerics;
 
 namespace TeddySwap.Sink.Reducers;
 
@@ -65,11 +66,29 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
                 if (order is not null)
                 {
                     await _dbContext.Orders.AddAsync(order);
+
+                    if (order.OrderType == OrderType.Swap)
+                    {
+
+                        await _dbContext.Prices.AddAsync(new Price()
+                        {
+                            TxHash = order.TxHash,
+                            Index = order.Index,
+                            Order = order,
+                            PriceX = BigIntegerDivToDecimal(order.ReservesX, order.ReservesY),
+                            PriceY = BigIntegerDivToDecimal(order.ReservesY, order.ReservesX),
+                        });
+                    }
                 }
             }
 
             await _dbContext.SaveChangesAsync();
         }
+    }
+
+    decimal BigIntegerDivToDecimal(BigInteger x, BigInteger y)
+    {
+        return (decimal)x / (decimal)y;
     }
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }

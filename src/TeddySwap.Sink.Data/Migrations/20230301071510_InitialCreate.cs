@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeddySwap.Sink.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateTxOutputDatumJson1 : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,13 +36,15 @@ namespace TeddySwap.Sink.Data.Migrations
                     TxHash = table.Column<string>(type: "text", nullable: false),
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     OrderType = table.Column<int>(type: "integer", nullable: false),
-                    datum = table.Column<string>(type: "text", nullable: false),
+                    PoolDatum = table.Column<byte[]>(type: "bytea", nullable: true),
+                    OrderDatum = table.Column<byte[]>(type: "bytea", nullable: true),
                     RewardAddress = table.Column<string>(type: "text", nullable: false),
                     BatcherAddress = table.Column<string>(type: "text", nullable: false),
                     AssetX = table.Column<string>(type: "text", nullable: false),
                     AssetY = table.Column<string>(type: "text", nullable: false),
                     AssetLq = table.Column<string>(type: "text", nullable: false),
                     PoolNft = table.Column<string>(type: "text", nullable: false),
+                    OrderBase = table.Column<string>(type: "text", nullable: false),
                     ReservesX = table.Column<BigInteger>(type: "numeric", nullable: false),
                     ReservesY = table.Column<BigInteger>(type: "numeric", nullable: false),
                     Liquidity = table.Column<BigInteger>(type: "numeric", nullable: false),
