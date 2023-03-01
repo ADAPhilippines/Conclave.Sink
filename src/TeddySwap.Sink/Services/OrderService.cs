@@ -35,6 +35,7 @@ public class OrderService
     public async Task<Order?> ProcessOrderAsync(OuraTransactionEvent transactionEvent)
     {
         TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        Order? order = null;
 
         if (transactionEvent.Transaction is not null &&
             transactionEvent.Transaction.Inputs is not null &&
@@ -57,32 +58,25 @@ public class OrderService
             // Return if not a TeddySwap transaction
             if (poolInput is null || orderInput is null) return null;
 
+            order = processOrder(poolInput, orderInput, transactionEvent);
+        }
+
+
+        return order;
+    }
+
+    public Order? processOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
+    {
+
+        if (transactionEvent.Context is not null &&
+            transactionEvent.Context.TxHash is not null &&
+            transactionEvent.Context.TxIdx is not null &&
+            transactionEvent.Transaction is not null &&
+            transactionEvent.Transaction.Outputs is not null)
+        {
+
             OrderType orderType = _datumService.GetOrderType(orderInput.Address);
-
-            Order? order = orderType switch
-            {
-                OrderType.Deposit => processDepositOrder(poolInput, orderInput, transactionEvent),
-                OrderType.Redeem => null,
-                OrderType.Swap => null,
-                _ => null,
-            };
-        }
-
-
-        return new Order();
-    }
-
-    public Order? processDepositOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
-    {
-
-        if (transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Context.TxIdx is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Outputs is not null)
-        {
             List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
-            DepositDatum? orderDatum = _datumService.CborToDepositDatum(CBORObject.DecodeFromBytes(orderInput.InlineDatum));
             PoolDatum? poolDatum = _datumService.CborToPoolDatum(CBORObject.DecodeFromBytes(poolInput.InlineDatum));
             OuraTxOutput? poolOutput = outputs[0];
             OuraTxOutput? rewardOutput = outputs[1];
@@ -92,162 +86,78 @@ public class OrderService
             string assetY = poolDatum.ReserveY.PolicyId + poolDatum.ReserveY.Name;
             string assetLq = poolDatum.Lq.PolicyId + poolDatum.Lq.Name;
             string poolNft = poolDatum.Nft.PolicyId + poolDatum.Nft.Name;
+            string orderBase = "";
+            bool isAssetXBase = false;
 
             BigInteger reservesX = FindAsset(outputs[0], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
             BigInteger reservesY = FindAsset(outputs[0], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
             BigInteger liquidity = FindAsset(outputs[0], poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
-            BigInteger orderX = FindAsset(orderInput, poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
-            BigInteger orderY = FindAsset(orderInput, poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
-            BigInteger orderLq = FindAsset(outputs[1], poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
 
-            if (orderDatum is null ||
-                poolDatum is null ||
-                rewardOutput is null ||
-                rewardOutput.Address is null ||
-                batcherOutput.Address is null ||
-                transactionEvent.Context.Slot is null) return null;
+            BigInteger orderX; // deposited X tokens
+            BigInteger orderY;  // deposited Y tokens
+            BigInteger orderLq; // received LQ tokens
 
-            return new()
+            switch (orderType)
             {
-                TxHash = transactionEvent.Context.TxHash,
-                Index = (ulong)transactionEvent.Context.TxIdx,
-                OrderType = OrderType.Deposit,
-                RewardAddress = rewardOutput.Address,
-                BatcherAddress = batcherOutput.Address,
-                PoolDatum = poolInput.InlineDatum,
-                OrderDatum = orderInput.InlineDatum,
-                AssetX = assetX,
-                AssetY = assetY,
-                AssetLq = assetLq,
-                PoolNft = poolNft,
-                OrderBase = "",
-                ReservesX = reservesX,
-                ReservesY = reservesY,
-                Liquidity = liquidity,
-                Slot = (ulong)transactionEvent.Context.Slot
-            };
+                case OrderType.Deposit:
 
-        }
+                    orderX = FindAsset(orderInput, poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name); // deposited X tokens
+                    orderY = FindAsset(orderInput, poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name); // deposited Y tokens
+                    orderLq = FindAsset(outputs[1], poolDatum.Lq.PolicyId, poolDatum.Lq.Name); // received LQ tokens
+                    break;
+                case OrderType.Redeem:
 
-        return null;
-    }
+                    orderX = FindAsset(outputs[1], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name); // received X tokens
+                    orderY = FindAsset(outputs[1], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name); // received Y tokens
+                    orderLq = FindAsset(orderInput, poolDatum.Lq.PolicyId, poolDatum.Lq.Name); // deposited LQ tokens
 
-    public Order? processRedeemOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
-    {
+                    break;
+                case OrderType.Swap:
+                    SwapDatum? swapDatum = _datumService.CborToSwapDatum(CBORObject.DecodeFromBytes(orderInput.InlineDatum));
+                    if (swapDatum is not null)
+                    {
+                        orderBase = swapDatum.Base.PolicyId + swapDatum.Base.Name;
+                        isAssetXBase = assetX == orderBase;
+                        orderX = isAssetXBase ?
+                            FindAsset(orderInput, poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name) :
+                            FindAsset(outputs[1], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
+                        orderY = isAssetXBase ?
+                            FindAsset(outputs[1], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name) :
+                            FindAsset(orderInput, poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
+                        orderLq = 0;
+                    }
+                    break;
+                case OrderType.Unknown:
+                    _logger.LogInformation("Invalid order!");
+                    break;
+            }
 
-        if (transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Context.TxIdx is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Outputs is not null)
-        {
-            List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
-            RedeemDatum? orderDatum = _datumService.CborToRedeemDatum(CBORObject.DecodeFromBytes(orderInput.InlineDatum));
-            PoolDatum? poolDatum = _datumService.CborToPoolDatum(CBORObject.DecodeFromBytes(poolInput.InlineDatum));
-            OuraTxOutput? poolOutput = outputs[0];
-            OuraTxOutput? rewardOutput = outputs[1];
-            OuraTxOutput? batcherOutput = outputs[2];
-
-            string assetX = poolDatum.ReserveX.PolicyId + poolDatum.ReserveX.Name;
-            string assetY = poolDatum.ReserveY.PolicyId + poolDatum.ReserveY.Name;
-            string assetLq = poolDatum.Lq.PolicyId + poolDatum.Lq.Name;
-            string poolNft = poolDatum.Nft.PolicyId + poolDatum.Nft.Name;
-
-            BigInteger reservesX = FindAsset(outputs[0], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
-            BigInteger reservesY = FindAsset(outputs[0], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
-            BigInteger liquidity = FindAsset(outputs[0], poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
-            BigInteger orderX = FindAsset(outputs[1], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
-            BigInteger orderY = FindAsset(outputs[1], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
-            BigInteger orderLq = FindAsset(orderInput, poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
-
-            if (orderDatum is null ||
-                poolDatum is null ||
-                rewardOutput is null ||
-                rewardOutput.Address is null ||
-                batcherOutput.Address is null ||
-                transactionEvent.Context.Slot is null) return null;
-
-            return new()
+            if (poolDatum is not null &&
+                rewardOutput is not null &&
+                rewardOutput.Address is not null &&
+                batcherOutput.Address is not null &&
+                transactionEvent.Context.Slot is not null)
             {
-                TxHash = transactionEvent.Context.TxHash,
-                Index = (ulong)transactionEvent.Context.TxIdx,
-                OrderType = OrderType.Deposit,
-                RewardAddress = rewardOutput.Address,
-                BatcherAddress = batcherOutput.Address,
-                PoolDatum = poolInput.InlineDatum,
-                OrderDatum = orderInput.InlineDatum,
-                AssetX = assetX,
-                AssetY = assetY,
-                AssetLq = assetLq,
-                PoolNft = poolNft,
-                OrderBase = "",
-                ReservesX = reservesX,
-                ReservesY = reservesY,
-                Liquidity = liquidity,
-                Slot = (ulong)transactionEvent.Context.Slot
-            };
-
-        }
-
-        return null;
-    }
-
-    public Order? processSwapOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
-    {
-
-        if (transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Context.TxIdx is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Outputs is not null)
-        {
-            List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
-            SwapDatum? orderDatum = _datumService.CborToSwapDatum(CBORObject.DecodeFromBytes(orderInput.InlineDatum));
-            PoolDatum? poolDatum = _datumService.CborToPoolDatum(CBORObject.DecodeFromBytes(poolInput.InlineDatum));
-            OuraTxOutput? poolOutput = outputs[0];
-            OuraTxOutput? rewardOutput = outputs[1];
-            OuraTxOutput? batcherOutput = outputs[2];
-
-            string assetX = poolDatum.ReserveX.PolicyId + poolDatum.ReserveX.Name;
-            string assetY = poolDatum.ReserveY.PolicyId + poolDatum.ReserveY.Name;
-            string assetLq = poolDatum.Lq.PolicyId + poolDatum.Lq.Name;
-            string poolNft = poolDatum.Nft.PolicyId + poolDatum.Nft.Name;
-            string orderBase = orderDatum.Base.PolicyId + orderDatum.Base.Name;
-
-            BigInteger reservesX = FindAsset(outputs[0], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
-            BigInteger reservesY = FindAsset(outputs[0], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
-            BigInteger liquidity = FindAsset(outputs[0], poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
-            BigInteger orderX = FindAsset(orderInput, poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
-            BigInteger orderY = FindAsset(outputs[1], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
-            BigInteger orderLq = FindAsset(orderInput, poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
-
-            if (orderDatum is null ||
-                poolDatum is null ||
-                rewardOutput is null ||
-                rewardOutput.Address is null ||
-                batcherOutput.Address is null ||
-                transactionEvent.Context.Slot is null) return null;
-
-            return new()
-            {
-                TxHash = transactionEvent.Context.TxHash,
-                Index = (ulong)transactionEvent.Context.TxIdx,
-                OrderType = OrderType.Deposit,
-                RewardAddress = rewardOutput.Address,
-                BatcherAddress = batcherOutput.Address,
-                PoolDatum = poolInput.InlineDatum,
-                OrderDatum = orderInput.InlineDatum,
-                AssetX = assetX,
-                AssetY = assetY,
-                AssetLq = assetLq,
-                PoolNft = poolNft,
-                OrderBase = "",
-                ReservesX = reservesX,
-                ReservesY = reservesY,
-                Liquidity = liquidity,
-                Slot = (ulong)transactionEvent.Context.Slot
-            };
-
+                return new()
+                {
+                    TxHash = transactionEvent.Context.TxHash,
+                    Index = (ulong)transactionEvent.Context.TxIdx,
+                    OrderType = OrderType.Deposit,
+                    RewardAddress = rewardOutput.Address,
+                    BatcherAddress = batcherOutput.Address,
+                    PoolDatum = poolInput.InlineDatum,
+                    OrderDatum = orderInput.InlineDatum,
+                    AssetX = assetX,
+                    AssetY = assetY,
+                    AssetLq = assetLq,
+                    PoolNft = poolNft,
+                    OrderBase = orderBase,
+                    ReservesX = reservesX,
+                    ReservesY = reservesY,
+                    Liquidity = liquidity,
+                    Slot = (ulong)transactionEvent.Context.Slot
+                };
+            }
         }
 
         return null;

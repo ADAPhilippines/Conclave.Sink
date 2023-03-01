@@ -19,25 +19,15 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TransactionReducer> _logger;
     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
-    private readonly CardanoService _cardanoService;
-    private readonly OrderService _orderService;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly TeddySwapSinkSettings _settings;
+
 
     public TransactionReducer(
         ILogger<TransactionReducer> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
-        CardanoService cardanoService,
-        OrderService orderService,
-        IServiceProvider serviceProvider,
         IOptions<TeddySwapSinkSettings> settings)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
-        _cardanoService = cardanoService;
-        _orderService = orderService;
-        _serviceProvider = serviceProvider;
-        _settings = settings.Value;
     }
 
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
@@ -112,13 +102,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             }
 
             await _dbContext.SaveChangesAsync();
-
-            // Call Order Reducer
-            if (block.InvalidTransactions is not null &&
-                !block.InvalidTransactions.ToList().Contains(transaction.Index))
-            {
-                await _orderService.ProcessOrderAsync(transactionEvent);
-            }
         }
     }
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
