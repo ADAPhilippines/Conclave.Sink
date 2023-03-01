@@ -12,6 +12,7 @@ using TeddySwap.Sink.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PeterO.Cbor2;
 using System.Numerics;
+using System.Text;
 
 namespace TeddySwap.Sink.Reducers;
 
@@ -75,8 +76,8 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
                             TxHash = order.TxHash,
                             Index = order.Index,
                             Order = order,
-                            PriceX = BigIntegerDivToDecimal(order.ReservesX, order.ReservesY),
-                            PriceY = BigIntegerDivToDecimal(order.ReservesY, order.ReservesX),
+                            PriceX = BigIntegerDivToDecimal(order.ReservesX, order.ReservesY, 6),
+                            PriceY = BigIntegerDivToDecimal(order.ReservesY, order.ReservesX, 6),
                         });
                     }
                 }
@@ -86,9 +87,32 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
         }
     }
 
-    decimal BigIntegerDivToDecimal(BigInteger x, BigInteger y)
+    decimal BigIntegerDivToDecimal(BigInteger x, BigInteger y, int precision)
     {
-        return (decimal)x / (decimal)y;
+
+        var divResult = BigInteger.DivRem(x, y);
+
+        StringBuilder result = new StringBuilder();
+        result.Append(divResult.Quotient.ToString());
+
+        if (divResult.Remainder != 0)
+        {
+            result.Append(".");
+
+            for (int i = 0; i < precision; i++)
+            {
+                divResult.Remainder *= 10;
+                var nextDivResult = BigInteger.DivRem(divResult.Remainder, y);
+                result.Append(nextDivResult.Quotient.ToString());
+
+                if (nextDivResult.Remainder == 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        return decimal.Parse(result.ToString());
     }
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }
