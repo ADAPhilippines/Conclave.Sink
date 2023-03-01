@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TeddySwapSinkDbContext>(options =>
 {
     options.EnableSensitiveDataLogging(true);
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ConclaveSink"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
 });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
