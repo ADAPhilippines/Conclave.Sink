@@ -1,9 +1,8 @@
+using System.Numerics;
 using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Models;
-using System.Numerics;
-using System.Text.Json;
 
 namespace TeddySwap.Sink.Services;
 

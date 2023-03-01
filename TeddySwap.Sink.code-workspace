@@ -13,5 +13,12 @@
 			"path": "src/TeddySwap.Sink.Api"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"omnisharp.analyzeOpenDocumentsOnly": false,
+		"omnisharp.enableImportCompletion": true,
+		"omnisharp.enableRoslynAnalyzers": true,
+		"omnisharp.organizeImportsOnFormat": true,
+		"omnisharp.sdkIncludePrereleases": false,
+		"omnisharp.useModernNet": true
+	}
 }
