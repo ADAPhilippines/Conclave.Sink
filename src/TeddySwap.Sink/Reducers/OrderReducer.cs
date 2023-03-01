@@ -114,5 +114,37 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
         return decimal.Parse(result.ToString());
     }
-    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        Block? block = await _dbContext.Blocks
+            .Include(b => b.Transactions)
+            .FirstOrDefaultAsync();
+
+        if (block is null) return;
+
+        foreach (Transaction transaction in block.Transactions)
+        {
+            if (transaction is null) continue;
+            Order? order = await _dbContext.Orders
+                .Where(o => o.TxHash == transaction.Hash &&
+                    o.Index == transaction.Index)
+                .FirstOrDefaultAsync();
+
+            if (order is null) continue;
+
+            _dbContext.Orders.Remove(order);
+
+            Price? price = await _dbContext.Prices
+                .Where(p => p.TxHash == transaction.Hash &&
+                    p.Index == transaction.Index)
+                .FirstOrDefaultAsync();
+
+            if (price is null) continue;
+
+            _dbContext.Prices.Remove(price);
+        }
+
+        await _dbContext.SaveChangesAsync();
+    }
 }

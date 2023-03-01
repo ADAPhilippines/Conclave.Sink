@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "src/TeddySwap.Sink"
+		},
+		{
+			"path": "src/TeddySwap.Common"
+		},
+		{
+			"path": "src/TeddySwap.Sink.Data"
+		},
+		{
+			"path": "src/TeddySwap.Sink.Api"
+		}
+	],
+	"settings": {}
+}

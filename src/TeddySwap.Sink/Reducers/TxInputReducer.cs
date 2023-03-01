@@ -44,24 +44,6 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
                         TxOutput = txOutput
                     });
                 }
-                // else
-                // {
-                //     await _dbContext.TxInputs.AddAsync(new()
-                //     {
-                //         TxHash = txInputEvent.Context.TxHash,
-                //         Transaction = tx,
-                //         // GENESIS TX HACK
-                //         TxOutput = new TxOutput
-                //         {
-                //             Transaction = new Transaction
-                //             {
-                //                 Hash = $"GENESIS_{tx.Hash}_{txInputEvent.Fingerprint}",
-                //                 Block = tx.Block
-                //             },
-                //             Address = "GENESIS"
-                //         }
-                //     });
-                // }
                 await _dbContext.SaveChangesAsync();
             }
         }
