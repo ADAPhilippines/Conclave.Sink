@@ -1,7 +1,5 @@
 using System.Reflection;
-using TeddySwap.Sink.Data;
 using TeddySwap.Common.Models;
-using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Models.Oura;
 
 namespace TeddySwap.Sink.Reducers;
