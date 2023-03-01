@@ -57,11 +57,18 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
 
-            if (block.InvalidTransactions is not null &&
+            if (block.InvalidTransactions is null ||
                 !block.InvalidTransactions.ToList().Contains((ulong)transactionEvent.Context.TxIdx))
             {
-                var order = _orderService.ProcessOrderAsync(transactionEvent);
+                Order? order = await _orderService.ProcessOrderAsync(transactionEvent);
+
+                if (order is not null)
+                {
+                    await _dbContext.Orders.AddAsync(order);
+                }
             }
+
+            await _dbContext.SaveChangesAsync();
         }
     }
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
