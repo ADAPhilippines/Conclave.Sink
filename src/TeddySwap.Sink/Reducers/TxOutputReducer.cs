@@ -3,8 +3,10 @@ using TeddySwap.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TeddySwap.Sink.Models.Oura;
+using System.Text.Json;
+using PeterO.Cbor2;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxOutput)]
 public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
@@ -39,7 +41,8 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
                 {
                     Amount = (ulong)txOutputEvent.TxOutput.Amount,
                     Address = txOutputEvent.TxOutput.Address,
-                    Index = (ulong)txOutputEvent.Context.OutputIdx
+                    Index = (ulong)txOutputEvent.Context.OutputIdx,
+                    InlineDatum = JsonSerializer.SerializeToUtf8Bytes(txOutputEvent.TxOutput.InlineDatum)
                 };
 
                 newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };

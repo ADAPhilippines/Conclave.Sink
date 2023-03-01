@@ -9,7 +9,7 @@ using TeddySwap.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
 using TeddySwap.Sink.Models;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Block)]
 public class BlockReducer : OuraReducerBase, IOuraCoreReducer

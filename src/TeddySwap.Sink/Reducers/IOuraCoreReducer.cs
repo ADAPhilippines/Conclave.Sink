@@ -1,5 +1,5 @@
 using TeddySwap.Common.Models;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 public interface IOuraCoreReducer { }

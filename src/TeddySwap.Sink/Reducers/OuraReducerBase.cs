@@ -4,7 +4,7 @@ using TeddySwap.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Models.Oura;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 public class OuraReducerBase : IOuraReducer
 {

@@ -7,13 +7,15 @@ public record Order
     public string TxHash { get; init; } = string.Empty;
     public ulong Index { get; init; }
     public OrderType OrderType { get; init; }
-    public string datum { get; init; } = string.Empty;
+    public byte[]? PoolDatum { get; init; }
+    public byte[]? OrderDatum { get; init; }
     public string RewardAddress { get; init; } = string.Empty;
     public string BatcherAddress { get; init; } = string.Empty;
     public string AssetX { get; init; } = string.Empty;
     public string AssetY { get; init; } = string.Empty;
     public string AssetLq { get; init; } = string.Empty;
     public string PoolNft { get; init; } = string.Empty;
+    public string OrderBase { get; init; } = string.Empty;
     public BigInteger ReservesX { get; init; }
     public BigInteger ReservesY { get; init; }
     public BigInteger Liquidity { get; init; }

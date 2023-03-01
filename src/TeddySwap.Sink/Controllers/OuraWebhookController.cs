@@ -2,7 +2,7 @@ using System.Linq;
 using System.Text.Json;
 using TeddySwap.Sink.Data;
 using TeddySwap.Common.Models;
-using Conclave.Sink.Reducers;
+using TeddySwap.Sink.Reducers;
 using TeddySwap.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ using TeddySwap.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
 using TeddySwap.Sink.Models;
 
-namespace Conclave.Sink.Controllers;
+namespace TeddySwap.Sink.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -80,6 +80,8 @@ public class OuraWebhookController : ControllerBase
                             {
                                 OuraVariant.Block => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions)),
                                 OuraVariant.Transaction => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTransactionEvent>(ConclaveJsonSerializerOptions)),
+                                // OuraVariant.TxInput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxInputEvent>(ConclaveJsonSerializerOptions)),
+                                OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
                                 _ => Task.CompletedTask
                             };
                         }

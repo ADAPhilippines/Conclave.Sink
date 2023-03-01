@@ -1,7 +1,5 @@
-using System.Text.Json;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Extensions;
-using TeddySwap.Common.Models;
 using TeddySwap.Sink.Services;
 using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Models;
@@ -26,6 +24,7 @@ builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddSingleton<ByteArrayService>();
 builder.Services.AddSingleton<CborService>();
 builder.Services.AddSingleton<DatumService>();
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
 
 var app = builder.Build();

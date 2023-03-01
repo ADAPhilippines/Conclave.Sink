@@ -4,7 +4,7 @@ using TeddySwap.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Models.Oura;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxInput)]
 public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
@@ -44,24 +44,24 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
                         TxOutput = txOutput
                     });
                 }
-                else
-                {
-                    await _dbContext.TxInputs.AddAsync(new()
-                    {
-                        TxHash = txInputEvent.Context.TxHash,
-                        Transaction = tx,
-                        // GENESIS TX HACK
-                        TxOutput = new TxOutput
-                        {
-                            Transaction = new Transaction
-                            {
-                                Hash = $"GENESIS_{tx.Hash}_{txInputEvent.Fingerprint}",
-                                Block = tx.Block
-                            },
-                            Address = "GENESIS"
-                        }
-                    });
-                }
+                // else
+                // {
+                //     await _dbContext.TxInputs.AddAsync(new()
+                //     {
+                //         TxHash = txInputEvent.Context.TxHash,
+                //         Transaction = tx,
+                //         // GENESIS TX HACK
+                //         TxOutput = new TxOutput
+                //         {
+                //             Transaction = new Transaction
+                //             {
+                //                 Hash = $"GENESIS_{tx.Hash}_{txInputEvent.Fingerprint}",
+                //                 Block = tx.Block
+                //             },
+                //             Address = "GENESIS"
+                //         }
+                //     });
+                // }
                 await _dbContext.SaveChangesAsync();
             }
         }
