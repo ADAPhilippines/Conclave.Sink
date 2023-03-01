@@ -20,57 +20,46 @@ public class LeaderboardService
 
     public async Task<LeaderboardHistoryResponse> FetchAllAsync(LeaderboardRequest? request)
     {
-        var result = await _dbContext.Orders
-            .GroupBy(
-            o => new { o.RewardAddress, o.BatcherAddress },
-            o => o,
-            (key, orders) => new
-            {
-                key.RewardAddress,
-                key.BatcherAddress,
-                SwapCount = orders.Count(o => o.OrderType == OrderType.Swap),
-                DepositCount = orders.Count(o => o.OrderType == OrderType.Deposit),
-                RedeemCount = orders.Count(o => o.OrderType == OrderType.Redeem),
-                TotalCount = orders.Count()
-            }
-        )
-        .ToListAsync();
 
-        List<LeaderboardResponse> response = result
-            .GroupBy(
-                o => o.RewardAddress,
-                o => o,
-                (key, orders) => new
-                {
-                    key,
-                    BatcherCount = orders.Select(o => o.BatcherAddress).Distinct().Count(),
-                    SwapCount = orders.Sum(o => o.SwapCount),
-                    DepositCount = orders.Sum(o => o.DepositCount),
-                    RedeemCount = orders.Sum(o => o.RedeemCount),
-                    TotalCount = orders.Sum(o => o.TotalCount)
-                }
-            )
-            .OrderByDescending(o => o.TotalCount)
-            .Select((o, i) => new
+        var rewardQuery = await _dbContext.Orders
+            .GroupBy(o => o.RewardAddress)
+            .Select(g => new LeaderboardResponse
             {
-                o.key,
-                o.BatcherCount,
-                o.SwapCount,
-                o.DepositCount,
-                o.RedeemCount,
-                o.TotalCount,
-                Rank = i + 1
+                Address = g.Key,
+                Total = g.Count(o => o.OrderType != OrderType.Unknown),
+                Deposit = g.Count(o => o.OrderType == OrderType.Deposit),
+                Redeem = g.Count(o => o.OrderType == OrderType.Redeem),
+                Swap = g.Count(o => o.OrderType == OrderType.Swap),
+                Batch = 0
             })
-            .ToList()
-            .Select(o => new LeaderboardResponse
+            .ToListAsync();
+
+        var batchQuery = await _dbContext.Orders
+            .GroupBy(o => o.BatcherAddress)
+            .Select(g => new LeaderboardResponse
             {
-                Address = o.key,
-                Swap = o.SwapCount,
-                Deposit = o.DepositCount,
-                Redeem = o.RedeemCount,
-                Total = o.TotalCount,
-                Batch = o.BatcherCount,
-                Rank = o.Rank
+                Address = g.Key,
+                Total = 0,
+                Deposit = 0,
+                Redeem = 0,
+                Swap = 0,
+                Batch = g.Count()
+            })
+            .ToListAsync();
+
+        var response = rewardQuery
+            .Concat(batchQuery)
+            .GroupBy(r => r.Address)
+            .OrderByDescending(g => g.Sum(r => r.Total + r.Batch))
+            .Select((g, rank) => new LeaderboardResponse
+            {
+                Address = g.Key,
+                Rank = rank + 1,
+                Total = g.Sum(r => r.Total + r.Batch),
+                Deposit = g.Sum(r => r.Deposit),
+                Redeem = g.Sum(r => r.Redeem),
+                Swap = g.Sum(r => r.Swap),
+                Batch = g.Sum(r => r.Batch)
             })
             .ToList();
 
