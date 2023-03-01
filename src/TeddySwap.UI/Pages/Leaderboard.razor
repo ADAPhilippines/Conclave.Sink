@@ -8,12 +8,14 @@
         <MudTabPanel Text="Global">
             <MudTable Items="DummyLeaderboard" Hover="true" Class="w-full">
                 <ToolBarContent>
-                    <MudText Typo="Typo.h6">ITN Leaderboard</MudText>
-                    <MudSpacer />
-                    <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
-                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
-                        Value="string.Empty">
-                    </MudTextField>
+                    <div class="!flex md:!flex-row !flex-col w-full md:mx-4">
+                        <MudText Typo="Typo.h6" Class="!hidden md:!block">ITN Leaderboard | Global</MudText>
+                        <MudSpacer />
+                        <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
+                            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                            Value="string.Empty">
+                        </MudTextField>
+                    </div>
                 </ToolBarContent>
                 <HeaderContent>
                     <MudTh>Rank</MudTh>
@@ -24,14 +26,14 @@
                     <MudTh>Total Rewards</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="Nr">@context.Rank</MudTd>
-                    <MudTd DataLabel="Sign">@context.TestnetAddress.Substring(0,6) ...
+                    <MudTd DataLabel="Rank">@context.Rank</MudTd>
+                    <MudTd DataLabel="Testnet Address">@context.TestnetAddress.Substring(0,6) ...
                         @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)</MudTd>
-                    <MudTd DataLabel="Name">@context.MainnetAddress.Substring(0,6) ...
+                    <MudTd DataLabel="Mainnet Address">@context.MainnetAddress.Substring(0,6) ...
                         @context.MainnetAddress.Substring(@context.MainnetAddress.Length - 6)</MudTd>
-                    <MudTd DataLabel="Position">@context.Points</MudTd>
-                    <MudTd DataLabel="Molar mass">@context.Bonus%</MudTd>
-                    <MudTd DataLabel="Molar mass">@context.Rewards.ToString("N2") $TEDY</MudTd>
+                    <MudTd DataLabel="Points">@context.Points</MudTd>
+                    <MudTd DataLabel="Bonus">@context.Bonus%</MudTd>
+                    <MudTd DataLabel="Total Rewards">@context.Rewards.ToString("N2") $TEDY</MudTd>
                 </RowTemplate>
                 <PagerContent>
                     <MudTablePager />
@@ -41,12 +43,14 @@
         <MudTabPanel Text="Batchers">
             <MudTable Items="DummyLeaderboard" Hover="true" Class="w-full">
                 <ToolBarContent>
-                    <MudText Typo="Typo.h6">ITN Badgers</MudText>
-                    <MudSpacer />
-                    <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
-                        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
-                        Value="string.Empty">
-                    </MudTextField>
+                    <div class="!flex md:!flex-row !flex-col w-full md:mx-4">
+                        <MudText Typo="Typo.h6" Class="!hidden md:!block">ITN Leaderboard | Batchers</MudText>
+                        <MudSpacer />
+                        <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
+                            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+                            Value="string.Empty">
+                        </MudTextField>
+                    </div>
                 </ToolBarContent>
                 <HeaderContent>
                     <MudTh>Rank</MudTh>
@@ -57,14 +61,14 @@
                     <MudTh>Total Rewards</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="Nr">@context.Rank</MudTd>
-                    <MudTd DataLabel="Sign">@context.TestnetAddress.Substring(0,6) ...
+                    <MudTd DataLabel="Rank">@context.Rank</MudTd>
+                    <MudTd DataLabel="Testnet Address">@context.TestnetAddress.Substring(0,6) ...
                         @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)</MudTd>
-                    <MudTd DataLabel="Name">@context.MainnetAddress.Substring(0,6) ...
+                    <MudTd DataLabel="Mainnet Address">@context.MainnetAddress.Substring(0,6) ...
                         @context.MainnetAddress.Substring(@context.MainnetAddress.Length - 6)</MudTd>
-                    <MudTd DataLabel="Position">@context.Points</MudTd>
-                    <MudTd DataLabel="Molar mass">@context.Bonus%</MudTd>
-                    <MudTd DataLabel="Molar mass">@context.Rewards.ToString("N2") $TEDY</MudTd>
+                    <MudTd DataLabel="Points">@context.Points</MudTd>
+                    <MudTd DataLabel="Bonus">@context.Bonus%</MudTd>
+                    <MudTd DataLabel="Total Rewards">@context.Rewards.ToString("N2") $TEDY</MudTd>
                 </RowTemplate>
                 <PagerContent>
                     <MudTablePager />

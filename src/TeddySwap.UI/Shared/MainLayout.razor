@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider IsDarkMode="true" Theme="Theme" />
+<MudThemeProvider IsDarkMode="true" Theme="Theme" DefaultScrollbar="true" />
 <MudSnackbarProvider />
 @* <MudDialogProvider/> *@
 <PageTitle>TeddySwap.UI</PageTitle>
@@ -8,12 +8,34 @@
 <header>
     <MudAppBar Color="Color.Tertiary" Fixed="false">
         <img src="/images/teddy-logo.svg" alt="teddy-logo" class="h-[30px] mr-6" />
-        <div class="pt-[4px] gap-6 flex">
+        <div class="pt-[4px] gap-6 flex hidden lg:block">
             <NavLink href="/leaderboard" class="font-bold text-[16px]">Dashboard</NavLink>
         </div>
         <MudSpacer />
-        <MudButton Variant="Variant.Outlined">Connect Wallet</MudButton>
+        <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
+            Class="!normal-case !text-[16px] !font-bold !px-4 hidden lg:block">Connect Wallet</MudButton>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="ToggleDrawer" />
     </MudAppBar>
+
+    <MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
+        <MudDrawerHeader>
+            <img src="/favicon.svg" alt="teddy-logo" class="h-[30px] my-[12px]" />
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavGroup Title="Dashboard" Expanded="true">
+                <MudNavLink Href="/leaderboard">Leaderboard</MudNavLink>
+                <MudNavLink Href="/staking">Staking</MudNavLink>
+                <MudNavLink Href="/rewards">Rewards</MudNavLink>
+                <MudNavLink Href="/claim">Claim / Verify Wallet</MudNavLink>
+            </MudNavGroup>
+        </MudNavMenu>
+        <div class="flex justify-center mt-4">
+            <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
+                Class="!normal-case !text-[16px] !font-bold !px-4">Connect Wallet</MudButton>
+        </div>
+    </MudDrawer>
 </header>
 
 <main class="container mx-auto py-10">
