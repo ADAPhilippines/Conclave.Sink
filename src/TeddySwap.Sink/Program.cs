@@ -1,8 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Extensions;
-using TeddySwap.Sink.Services;
-using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Models;
+using TeddySwap.Sink.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

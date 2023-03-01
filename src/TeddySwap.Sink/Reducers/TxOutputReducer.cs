@@ -1,10 +1,10 @@
-using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using TeddySwap.Sink.Models.Oura;
-using System.Text.Json;
 using PeterO.Cbor2;
+using TeddySwap.Common.Models;
+using TeddySwap.Sink.Data;
+using TeddySwap.Sink.Models.Oura;
 
 namespace TeddySwap.Sink.Reducers;
 

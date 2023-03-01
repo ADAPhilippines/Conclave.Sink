@@ -1,13 +1,13 @@
 using System.Text.Json;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
-using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models;
-using TeddySwap.Sink.Services;
 using Microsoft.EntityFrameworkCore;
-using TeddySwap.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
+using TeddySwap.Common.Models;
+using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
+using TeddySwap.Sink.Models.Oura;
+using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Reducers;
 

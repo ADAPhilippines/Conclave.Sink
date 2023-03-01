@@ -1,7 +1,7 @@
 using System.Text.Json;
-using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models;
 using Microsoft.EntityFrameworkCore;
+using TeddySwap.Common.Models;
+using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models.Oura;
 
 namespace TeddySwap.Sink.Reducers;

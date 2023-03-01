@@ -1,7 +1,7 @@
 namespace TeddySwap.Sink.Api.Services;
 
-using TeddySwap.Sink.Data;
 using TeddySwap.Common.Models.Response;
+using TeddySwap.Sink.Data;
 
 public class LeaderboardService
 {

@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
@@ -6,7 +7,6 @@ using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Models.Oura;
-using System.Text.Json;
 
 namespace TeddySwap.Sink.Services;
 
