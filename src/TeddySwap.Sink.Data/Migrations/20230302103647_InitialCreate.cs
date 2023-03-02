@@ -13,6 +13,20 @@ namespace TeddySwap.Sink.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AddressVerifications",
+                columns: table => new
+                {
+                    TestnetAddress = table.Column<string>(type: "text", nullable: false),
+                    MainnetAddress = table.Column<string>(type: "text", nullable: false),
+                    TestnetSignedData = table.Column<string>(type: "text", nullable: false),
+                    MainnetSignedData = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AddressVerifications", x => x.TestnetAddress);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Blocks",
                 columns: table => new
                 {
@@ -39,7 +53,7 @@ namespace TeddySwap.Sink.Data.Migrations
                     OrderType = table.Column<int>(type: "integer", nullable: false),
                     PoolDatum = table.Column<byte[]>(type: "bytea", nullable: true),
                     OrderDatum = table.Column<byte[]>(type: "bytea", nullable: true),
-                    RewardAddress = table.Column<string>(type: "text", nullable: false),
+                    UserAddress = table.Column<string>(type: "text", nullable: false),
                     BatcherAddress = table.Column<string>(type: "text", nullable: false),
                     AssetX = table.Column<string>(type: "text", nullable: false),
                     AssetY = table.Column<string>(type: "text", nullable: false),
@@ -72,14 +86,14 @@ namespace TeddySwap.Sink.Data.Migrations
                     Hash = table.Column<string>(type: "text", nullable: false),
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Fee = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    BlockHash = table.Column<string>(type: "text", nullable: false)
+                    Blockhash = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Hash);
                     table.ForeignKey(
-                        name: "FK_Transactions_Blocks_BlockHash",
-                        column: x => x.BlockHash,
+                        name: "FK_Transactions_Blocks_Blockhash",
+                        column: x => x.Blockhash,
                         principalTable: "Blocks",
                         principalColumn: "BlockHash",
                         onDelete: ReferentialAction.Cascade);
@@ -261,9 +275,9 @@ namespace TeddySwap.Sink.Data.Migrations
                 column: "Blockhash");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_BlockHash",
+                name: "IX_Transactions_Blockhash",
                 table: "Transactions",
-                column: "BlockHash");
+                column: "Blockhash");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TxInputs_CollateralTxOutputTxHash_CollateralTxOutputIndex",
@@ -279,6 +293,9 @@ namespace TeddySwap.Sink.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AddressVerifications");
+
             migrationBuilder.DropTable(
                 name: "Assets");
 

@@ -14,8 +14,8 @@ using TeddySwap.Sink.Data;
 namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapSinkDbContext))]
-    [Migration("20230302064632_UpdateToUserAddress")]
-    partial class UpdateToUserAddress
+    [Migration("20230302103647_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

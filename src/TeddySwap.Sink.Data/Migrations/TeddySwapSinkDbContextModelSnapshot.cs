@@ -217,12 +217,12 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<BigInteger>("ReservesY")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("RewardAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<decimal>("Slot")
                         .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("UserAddress")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("TxHash", "Index");
 
