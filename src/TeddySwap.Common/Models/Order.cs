@@ -12,7 +12,7 @@ public record Order
     public Price? Price { get; init; }
     public byte[]? PoolDatum { get; init; }
     public byte[]? OrderDatum { get; init; }
-    public string RewardAddress { get; init; } = string.Empty;
+    public string UserAddress { get; init; } = string.Empty;
     public string BatcherAddress { get; init; } = string.Empty;
     public string AssetX { get; init; } = string.Empty;
     public string AssetY { get; init; } = string.Empty;

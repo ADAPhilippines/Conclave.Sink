@@ -19,6 +19,7 @@ public class TeddySwapSinkDbContext : DbContext
     #region TeddySwap Models
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<Price> Prices => Set<Price>();
+    public DbSet<AddressVerification> AddressVerifications => Set<AddressVerification>();
     #endregion
 
     public TeddySwapSinkDbContext(DbContextOptions<TeddySwapSinkDbContext> options) : base(options) { }
@@ -34,6 +35,7 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<Order>().HasKey(order => new { order.TxHash, order.Index });
         modelBuilder.Entity<Price>().HasKey(price => new { price.TxHash, price.Index });
+        modelBuilder.Entity<AddressVerification>().HasKey(a => a.TestnetAddress);
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
 
@@ -42,6 +44,18 @@ public class TeddySwapSinkDbContext : DbContext
             .HasMany(b => b.Orders)
             .WithOne(o => o.Block)
             .HasForeignKey(o => o.Blockhash)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Block>()
+            .HasMany(b => b.Transactions)
+            .WithOne(t => t.Block)
+            .HasForeignKey(o => o.Blockhash)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Transaction>()
+            .HasOne(t => t.Block)
+            .WithMany(b => b.Transactions)
+            .HasForeignKey(b => b.Blockhash)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TxInput>()
@@ -53,7 +67,6 @@ public class TeddySwapSinkDbContext : DbContext
             .HasOne<Transaction>(txInput => txInput.Transaction)
             .WithMany(tx => tx.Inputs)
             .HasForeignKey(txInput => txInput.TxHash);
-
 
         modelBuilder.Entity<Order>()
             .HasOne<Block>(o => o.Block)

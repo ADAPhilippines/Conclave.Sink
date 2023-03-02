@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using TeddySwap.Common.Models;
 using TeddySwap.Common.Models.Request;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Models;
@@ -27,7 +28,7 @@ public class LeaderboardService
     {
 
         var rewardQuery = await _dbContext.Orders
-            .GroupBy(o => o.RewardAddress)
+            .GroupBy(o => o.UserAddress)
             .Select(g => new LeaderboardResponse
             {
                 TestnetAddress = g.Key,
@@ -88,6 +89,15 @@ public class LeaderboardService
             })
             .ToList();
 
+        foreach (LeaderboardResponse response in pagedEntries)
+        {
+            AddressVerification? addressVerification = await _dbContext.AddressVerifications
+                .Where(av => av.TestnetAddress == response.TestnetAddress)
+                .FirstOrDefaultAsync();
+
+            response.MainnetAddress = addressVerification is null ? "" : addressVerification.MainnetAddress;
+        }
+
         int totalAmount = allEntries.Sum(r => r.Total);
         int totalCount = allEntries.Count;
 
@@ -112,7 +122,7 @@ public class LeaderboardService
     public async Task<PaginatedLeaderboardResponse> GetUserLeaderboardAsync(int offset, int limit)
     {
         var rewardQuery = await _dbContext.Orders
-            .GroupBy(o => o.RewardAddress)
+            .GroupBy(o => o.UserAddress)
             .Select(g => new
             {
                 Address = g.Key,
@@ -127,7 +137,7 @@ public class LeaderboardService
         int totalCount = rewardQuery.Count;
         decimal overallTotalAmount = rewardQuery.Sum(r => r.Total);
 
-        var response = rewardQuery
+        var pagedEntries = rewardQuery
             .OrderByDescending(r => r.Total)
             .Select((r, i) => new LeaderboardResponse
             {
@@ -145,11 +155,20 @@ public class LeaderboardService
             .Take(limit)
             .ToList();
 
+        foreach (LeaderboardResponse response in pagedEntries)
+        {
+            AddressVerification? addressVerification = await _dbContext.AddressVerifications
+                .Where(av => av.TestnetAddress == response.TestnetAddress)
+                .FirstOrDefaultAsync();
+
+            response.MainnetAddress = addressVerification is null ? "" : addressVerification.MainnetAddress;
+        }
+
         return new PaginatedLeaderboardResponse()
         {
             TotalAmount = (int)overallTotalAmount,
             TotalCount = totalCount,
-            Result = response
+            Result = pagedEntries
         };
     }
 
@@ -177,7 +196,7 @@ public class LeaderboardService
 
         decimal overallTotal = batchQuery.Sum(b => b.TotalCount);
 
-        var response = batchQuery
+        var allEntries = batchQuery
             .OrderByDescending(b => b.TotalCount)
             .ThenBy(b => b.Address)
             .Select((b, rank) => new LeaderboardResponse
@@ -195,7 +214,16 @@ public class LeaderboardService
             .ToList();
 
         int totalCount = batchQuery.Count;
-        var pagedEntries = response.Skip(offset).Take(limit).ToList();
+        var pagedEntries = allEntries.Skip(offset).Take(limit).ToList();
+
+        foreach (LeaderboardResponse response in pagedEntries)
+        {
+            AddressVerification? addressVerification = await _dbContext.AddressVerifications
+                .Where(av => av.TestnetAddress == response.TestnetAddress)
+                .FirstOrDefaultAsync();
+
+            response.MainnetAddress = addressVerification is null ? "" : addressVerification.MainnetAddress;
+        }
 
         return new PaginatedLeaderboardResponse()
         {

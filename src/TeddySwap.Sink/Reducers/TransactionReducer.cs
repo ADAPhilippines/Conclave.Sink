@@ -46,7 +46,8 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 Hash = transactionEvent.Context.TxHash,
                 Fee = (ulong)transactionEvent.Transaction.Fee,
                 Index = (ulong)transactionEvent.Context.TxIdx,
-                Block = block
+                Block = block,
+                Blockhash = block.BlockHash
             };
 
 
