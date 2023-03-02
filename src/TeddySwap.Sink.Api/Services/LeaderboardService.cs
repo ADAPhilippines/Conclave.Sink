@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using TeddySwap.Common.Models.Request;
 using TeddySwap.Common.Models.Response;
+using TeddySwap.Sink.Api.Models;
 using TeddySwap.Sink.Data;
 
 namespace TeddySwap.Sink.Api.Services;
@@ -9,19 +11,20 @@ public class LeaderboardService
 {
     private readonly ILogger<LeaderboardService> _logger;
     private readonly TeddySwapSinkDbContext _dbContext;
+    private readonly TeddySwapITNRewardSettings _settings;
 
     public LeaderboardService(
         ILogger<LeaderboardService> logger,
-        TeddySwapSinkDbContext dbContext)
+        TeddySwapSinkDbContext dbContext,
+        IOptions<TeddySwapITNRewardSettings> settings)
     {
         _logger = logger;
         _dbContext = dbContext;
+        _settings = settings.Value;
     }
 
     public async Task<PaginatedLeaderboardResponse> GetLeaderboardAsync(int offset, int limit)
     {
-
-        const int TOTAL_REWARD = 3_000_000;
 
         var rewardQuery = await _dbContext.Orders
             .GroupBy(o => o.RewardAddress)
@@ -81,7 +84,7 @@ public class LeaderboardService
                 Swap = r.Swap,
                 Batch = r.Batch,
                 BaseRewardPercentage = r.Total / overallTotalAmount,
-                BaseReward = r.Total / overallTotalAmount * TOTAL_REWARD
+                BaseReward = r.Total / overallTotalAmount * _settings.TotalReward
             })
             .ToList();
 
@@ -108,8 +111,6 @@ public class LeaderboardService
 
     public async Task<PaginatedLeaderboardResponse> GetUserLeaderboardAsync(int offset, int limit)
     {
-        const int TOTAL_REWARD = 2_000_000;
-
         var rewardQuery = await _dbContext.Orders
             .GroupBy(o => o.RewardAddress)
             .Select(g => new
@@ -138,7 +139,7 @@ public class LeaderboardService
                 Batch = 0,
                 Rank = i + 1,
                 BaseRewardPercentage = r.Total / overallTotalAmount,
-                BaseReward = r.Total / overallTotalAmount * TOTAL_REWARD
+                BaseReward = r.Total / overallTotalAmount * _settings.UserReward
             })
             .Skip(offset)
             .Take(limit)
@@ -164,9 +165,6 @@ public class LeaderboardService
 
     public async Task<PaginatedLeaderboardResponse> GetBatcherLeaderboardAsync(int offset, int limit)
     {
-
-        const int TOTAL_REWARD = 1_000_000;
-
         var batchQuery = await _dbContext.Orders
           .GroupBy(o => o.BatcherAddress)
           .Select(g => new
@@ -192,7 +190,7 @@ public class LeaderboardService
                 Swap = 0,
                 Batch = b.BatchCount,
                 BaseRewardPercentage = b.TotalCount / overallTotal,
-                BaseReward = b.TotalCount / overallTotal * TOTAL_REWARD
+                BaseReward = b.TotalCount / overallTotal * _settings.BatcherReward
             })
             .ToList();
 
