@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "src/TeddySwap.Sink"
+		},
+		{
+			"path": "src/TeddySwap.Common"
+		},
+		{
+			"path": "src/TeddySwap.Sink.Data"
+		}
+	],
+	"settings": {
+		"omnisharp.analyzeOpenDocumentsOnly": false,
+		"omnisharp.enableImportCompletion": true,
+		"omnisharp.enableRoslynAnalyzers": true,
+		"omnisharp.organizeImportsOnFormat": true,
+		"omnisharp.sdkIncludePrereleases": false,
+		"omnisharp.useModernNet": true
+	}
+}

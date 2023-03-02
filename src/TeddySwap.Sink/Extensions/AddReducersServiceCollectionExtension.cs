@@ -1,6 +1,6 @@
 
 using System.Reflection;
-using Conclave.Sink.Reducers;
+using TeddySwap.Sink.Reducers;
 
 namespace TeddySwap.Sink.Extensions;
 

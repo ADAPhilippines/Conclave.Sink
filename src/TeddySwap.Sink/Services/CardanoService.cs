@@ -1,11 +1,11 @@
 using CardanoSharp.Wallet.Encoding;
 using CardanoSharp.Wallet.Enums;
 using CardanoSharp.Wallet.Extensions;
-using CardanoSharp.Wallet.Utilities;
 using CardanoSharp.Wallet.Extensions.Models;
 using CardanoSharp.Wallet.Models.Addresses;
-using TeddySwap.Common.Models;
+using CardanoSharp.Wallet.Utilities;
 using Microsoft.Extensions.Options;
+using TeddySwap.Common.Models;
 using TeddySwap.Sink.Models;
 
 namespace TeddySwap.Sink.Services;

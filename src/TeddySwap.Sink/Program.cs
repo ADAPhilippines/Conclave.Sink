@@ -1,10 +1,8 @@
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Extensions;
-using TeddySwap.Common.Models;
-using TeddySwap.Sink.Services;
-using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Models;
+using TeddySwap.Sink.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +21,10 @@ builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options =>
 });
 builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
+builder.Services.AddSingleton<ByteArrayService>();
+builder.Services.AddSingleton<CborService>();
+builder.Services.AddSingleton<DatumService>();
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
 
 var app = builder.Build();

@@ -1,4 +1,7 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -10,9 +13,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Conclave.Sink/bin/Debug/net7.0/Conclave.Sink.dll",
+            "program": "${workspaceFolder}/src/TeddySwap.Sink/bin/Debug/net7.0/TeddySwap.Sink.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Conclave.Sink",
+            "cwd": "${workspaceFolder}/src/TeddySwap.Sink",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

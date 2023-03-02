@@ -1,39 +1,27 @@
-using CardanoSharp.Wallet.Encoding;
-using CardanoSharp.Wallet.Enums;
-using CardanoSharp.Wallet.Extensions;
-using CardanoSharp.Wallet.Utilities;
-using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models;
-using TeddySwap.Sink.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using TeddySwap.Sink.Models.Oura;
-using TeddySwap.Sink.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Options;
+using TeddySwap.Common.Models;
+using TeddySwap.Sink.Data;
+using TeddySwap.Sink.Models;
+using TeddySwap.Sink.Models.Oura;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Transaction)]
 public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TransactionReducer> _logger;
     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
-    private readonly CardanoService _cardanoService;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly TeddySwapSinkSettings _settings;
+
 
     public TransactionReducer(
         ILogger<TransactionReducer> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
-        CardanoService cardanoService,
-        IServiceProvider serviceProvider,
         IOptions<TeddySwapSinkSettings> settings)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
-        _cardanoService = cardanoService;
-        _serviceProvider = serviceProvider;
-        _settings = settings.Value;
     }
 
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
@@ -58,7 +46,8 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 Hash = transactionEvent.Context.TxHash,
                 Fee = (ulong)transactionEvent.Transaction.Fee,
                 Index = (ulong)transactionEvent.Context.TxIdx,
-                Block = block
+                Block = block,
+                Blockhash = block.BlockHash
             };
 
 
@@ -80,23 +69,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                         {
                             TxOutput = txInputOutput,
                             Transaction = transactionEntry.Entity
-                        });
-                    }
-                    else
-                    {
-                        collateralInputs.Add(new()
-                        {
-                            Transaction = transactionEntry.Entity,
-                            // GENESIS TX HACK
-                            TxOutput = new TxOutput
-                            {
-                                Transaction = new Transaction
-                                {
-                                    Hash = $"GENESIS_{transaction.Hash}_{transactionEvent.Fingerprint}",
-                                    Block = transaction.Block
-                                },
-                                Address = "GENESIS"
-                            }
                         });
                     }
                 }
@@ -121,14 +93,11 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                     Assets = transactionEvent.Transaction.CollateralOutput.Assets
                                  .Select(asset => new Asset { PolicyId = asset.Policy, Name = asset.Asset, Amount = asset.Amount ?? 0 })
                 };
-
                 await _dbContext.CollateralTxOutputs.AddAsync(collateralOutput);
             }
-
+            
             await _dbContext.SaveChangesAsync();
         }
     }
-
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
-
 }
