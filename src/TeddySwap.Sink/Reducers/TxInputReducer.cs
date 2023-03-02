@@ -1,10 +1,10 @@
 using System.Text.Json;
-using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models;
 using Microsoft.EntityFrameworkCore;
+using TeddySwap.Common.Models;
+using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models.Oura;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxInput)]
 public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
@@ -42,24 +42,6 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
                         TxOutputHash = txInputEvent.TxInput.TxHash,
                         TxOutputIndex = txInputEvent.TxInput.Index,
                         TxOutput = txOutput
-                    });
-                }
-                else
-                {
-                    await _dbContext.TxInputs.AddAsync(new()
-                    {
-                        TxHash = txInputEvent.Context.TxHash,
-                        Transaction = tx,
-                        // GENESIS TX HACK
-                        TxOutput = new TxOutput
-                        {
-                            Transaction = new Transaction
-                            {
-                                Hash = $"GENESIS_{tx.Hash}_{txInputEvent.Fingerprint}",
-                                Block = tx.Block
-                            },
-                            Address = "GENESIS"
-                        }
                     });
                 }
                 await _dbContext.SaveChangesAsync();

@@ -2,7 +2,7 @@
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Models.Oura;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 public class OuraReducerAttribute : System.Attribute
 {

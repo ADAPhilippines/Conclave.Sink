@@ -12,9 +12,7 @@ public enum OuraVariant
     Transaction,
     TxInput,
     TxOutput,
-    StakeDelegation,
-    PoolRegistration,
-    PoolRetirement
+    Order
 }
 
 public interface IOuraEvent

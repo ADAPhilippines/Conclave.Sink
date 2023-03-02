@@ -1,7 +1,7 @@
 using TeddySwap.Sink.Data;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Conclave.Sink.Controllers;
+namespace TeddySwap.Sink.Controllers;
 
 [ApiController]
 [Route("[controller]")]

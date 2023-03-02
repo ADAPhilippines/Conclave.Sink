@@ -1,10 +1,12 @@
-using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PeterO.Cbor2;
+using TeddySwap.Common.Models;
+using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models.Oura;
 
-namespace Conclave.Sink.Reducers;
+namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.TxOutput)]
 public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
@@ -32,14 +34,14 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
          txOutputEvent.TxOutput.Address is not null)
         {
             Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txOutputEvent.Context.TxHash).FirstOrDefaultAsync();
-
             if (tx is not null)
             {
                 TxOutput newTxOutput = new()
                 {
                     Amount = (ulong)txOutputEvent.TxOutput.Amount,
                     Address = txOutputEvent.TxOutput.Address,
-                    Index = (ulong)txOutputEvent.Context.OutputIdx
+                    Index = (ulong)txOutputEvent.Context.OutputIdx,
+                    InlineDatum = CBORObject.FromJSONBytes(JsonSerializer.SerializeToUtf8Bytes(txOutputEvent.TxOutput.InlineDatum)).EncodeToBytes()
                 };
 
                 newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };
