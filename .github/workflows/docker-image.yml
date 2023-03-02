@@ -53,6 +53,6 @@ jobs:
         with:
           file: "./teddyswap.sink.api.Dockerfile"
           push: true
-          tags: clarkteddyswap/teddy-sink:${{ github.sha }}
+          tags: clarkteddyswap/teddy-sink-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
