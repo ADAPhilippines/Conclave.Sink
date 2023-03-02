@@ -92,13 +92,11 @@ public class OrderService
                 rewardOutput is not null &&
                 batcherOutput is not null)
             {
-                string assetX = String.Concat(poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
-                string assetY = String.Concat(poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
-                string assetLq = String.Concat(poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
-                string poolNft = String.Concat(poolDatum.Nft.PolicyId + poolDatum.Nft.Name);
+                string assetX = string.Concat(poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
+                string assetY = string.Concat(poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
+                string assetLq = string.Concat(poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
+                string poolNft = string.Concat(poolDatum.Nft.PolicyId + poolDatum.Nft.Name);
                 string orderBase = "";
-                bool isAssetXBase = false;
-
                 BigInteger reservesX = FindAsset(outputs[0], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
                 BigInteger reservesY = FindAsset(outputs[0], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
                 BigInteger liquidity = FindAsset(outputs[0], poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
@@ -125,7 +123,7 @@ public class OrderService
                         if (swapDatum is not null)
                         {
                             orderBase = swapDatum.Base.PolicyId + swapDatum.Base.Name;
-                            isAssetXBase = assetX == orderBase;
+                            bool isAssetXBase = assetX == orderBase;
                             orderX = isAssetXBase ?
                                 FindAsset(orderInput, poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name) :
                                 FindAsset(outputs[1], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
@@ -151,7 +149,7 @@ public class OrderService
                         TxHash = transactionEvent.Context.TxHash,
                         Index = (ulong)transactionEvent.Context.TxIdx,
                         OrderType = orderType,
-                        RewardAddress = rewardOutput.Address,
+                        UserAddress = rewardOutput.Address,
                         BatcherAddress = batcherOutput.Address,
                         PoolDatum = poolInput.InlineDatum,
                         OrderDatum = orderInput.InlineDatum,
