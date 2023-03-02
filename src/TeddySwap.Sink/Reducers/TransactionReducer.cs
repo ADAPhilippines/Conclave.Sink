@@ -95,7 +95,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 };
                 await _dbContext.CollateralTxOutputs.AddAsync(collateralOutput);
             }
-
+            
             await _dbContext.SaveChangesAsync();
         }
     }

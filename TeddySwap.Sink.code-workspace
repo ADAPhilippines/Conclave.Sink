@@ -8,9 +8,6 @@
 		},
 		{
 			"path": "src/TeddySwap.Sink.Data"
-		},
-		{
-			"path": "src/TeddySwap.Sink.Api"
 		}
 	],
 	"settings": {
