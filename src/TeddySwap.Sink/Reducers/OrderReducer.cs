@@ -73,6 +73,7 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
                     if (order.OrderType == OrderType.Swap)
                     {
+                        Console.WriteLine(order);
 
                         await _dbContext.Prices.AddAsync(new Price()
                         {

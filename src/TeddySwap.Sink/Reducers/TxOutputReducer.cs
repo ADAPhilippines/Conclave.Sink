@@ -41,7 +41,7 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
                     Amount = (ulong)txOutputEvent.TxOutput.Amount,
                     Address = txOutputEvent.TxOutput.Address,
                     Index = (ulong)txOutputEvent.Context.OutputIdx,
-                    InlineDatum = CBORObject.FromJSONBytes(JsonSerializer.SerializeToUtf8Bytes(txOutputEvent.TxOutput.InlineDatum)).EncodeToBytes()
+                    DatumCbor = txOutputEvent.TxOutput.DatumCbor,
                 };
 
                 newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };
