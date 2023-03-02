@@ -40,6 +40,7 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
                     Address = txOutputEvent.TxOutput.Address,
                     Index = (ulong)txOutputEvent.Context.OutputIdx,
                     DatumCbor = txOutputEvent.TxOutput.DatumCbor,
+                    TxHash = txOutputEvent.Context.TxHash,
                 };
 
                 newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };
