@@ -13,8 +13,8 @@ using TeddySwap.Sink.Data;
 namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapSinkDbContext))]
-    [Migration("20230302122813_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230302140406_UpdateTransaction")]
+    partial class UpdateTransaction
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,16 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.HasIndex("TxOutputHash", "TxOutputIndex");
 
                     b.ToTable("Assets");
+                });
+
+            modelBuilder.Entity("TeddySwap.Common.Models.BlacklistedAddress", b =>
+                {
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.HasKey("Address");
+
+                    b.ToTable("BlacklistedAddresses");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.Block", b =>
@@ -202,6 +212,9 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<string>("Hash")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Index")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<string>("Blockhash")
                         .IsRequired()
                         .HasColumnType("text");
@@ -209,10 +222,7 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<decimal>("Fee")
                         .HasColumnType("numeric(20,0)");
 
-                    b.Property<decimal>("Index")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.HasKey("Hash");
+                    b.HasKey("Hash", "Index");
 
                     b.HasIndex("Blockhash");
 
@@ -237,7 +247,12 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<string>("DatumCbor")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("TxIndex")
+                        .HasColumnType("numeric(20,0)");
+
                     b.HasKey("TxHash", "Index");
+
+                    b.HasIndex("TxHash", "TxIndex");
 
                     b.ToTable("TxOutputs");
                 });
@@ -289,7 +304,7 @@ namespace TeddySwap.Sink.Data.Migrations
                 {
                     b.HasOne("TeddySwap.Common.Models.Transaction", "Transaction")
                         .WithMany("Outputs")
-                        .HasForeignKey("TxHash")
+                        .HasForeignKey("TxHash", "TxIndex")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

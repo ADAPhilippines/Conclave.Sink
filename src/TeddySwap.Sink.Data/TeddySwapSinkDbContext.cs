@@ -33,7 +33,7 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<Price>().HasKey(price => new { price.TxHash, price.Index });
         modelBuilder.Entity<BlacklistedAddress>().HasKey(ba => ba.Address);
         modelBuilder.Entity<AddressVerification>().HasKey(a => a.TestnetAddress);
-        modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
+        modelBuilder.Entity<Transaction>().HasKey(tx => new { tx.Hash, tx.Index });
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
 
         // Relations
@@ -46,13 +46,13 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<Block>()
             .HasMany(b => b.Transactions)
             .WithOne(t => t.Block)
-            .HasForeignKey(o => o.Blockhash)
+            .HasForeignKey(b => b.Blockhash)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Transaction>()
             .HasOne(t => t.Block)
             .WithMany(b => b.Transactions)
-            .HasForeignKey(b => b.Blockhash)
+            .HasForeignKey(t => t.Blockhash)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Order>()
@@ -67,11 +67,10 @@ public class TeddySwapSinkDbContext : DbContext
             .WithOne(o => o.Price)
             .HasForeignKey<Price>(p => new { p.TxHash, p.Index });
 
-
         modelBuilder.Entity<TxOutput>()
             .HasOne<Transaction>(txOutput => txOutput.Transaction)
             .WithMany(tx => tx.Outputs)
-            .HasForeignKey(txOutput => txOutput.TxHash);
+            .HasForeignKey(txOutput => new { txOutput.TxHash, txOutput.TxIndex });
 
         modelBuilder.Entity<Asset>()
             .HasOne<TxOutput>(asset => asset.TxOutput)

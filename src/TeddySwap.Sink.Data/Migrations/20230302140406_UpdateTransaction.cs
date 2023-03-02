@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeddySwap.Sink.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdateTransaction : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,17 @@ namespace TeddySwap.Sink.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AddressVerifications", x => x.TestnetAddress);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlacklistedAddresses",
+                columns: table => new
+                {
+                    Address = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlacklistedAddresses", x => x.Address);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,7 +101,7 @@ namespace TeddySwap.Sink.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transactions", x => x.Hash);
+                    table.PrimaryKey("PK_Transactions", x => new { x.Hash, x.Index });
                     table.ForeignKey(
                         name: "FK_Transactions_Blocks_Blockhash",
                         column: x => x.Blockhash,
@@ -125,6 +136,7 @@ namespace TeddySwap.Sink.Data.Migrations
                 {
                     TxHash = table.Column<string>(type: "text", nullable: false),
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    TxIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
                     DatumCbor = table.Column<string>(type: "text", nullable: true)
@@ -133,10 +145,10 @@ namespace TeddySwap.Sink.Data.Migrations
                 {
                     table.PrimaryKey("PK_TxOutputs", x => new { x.TxHash, x.Index });
                     table.ForeignKey(
-                        name: "FK_TxOutputs_Transactions_TxHash",
-                        column: x => x.TxHash,
+                        name: "FK_TxOutputs_Transactions_TxHash_TxIndex",
+                        columns: x => new { x.TxHash, x.TxIndex },
                         principalTable: "Transactions",
-                        principalColumn: "Hash",
+                        principalColumns: new[] { "Hash", "Index" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -175,6 +187,11 @@ namespace TeddySwap.Sink.Data.Migrations
                 name: "IX_Transactions_Blockhash",
                 table: "Transactions",
                 column: "Blockhash");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TxOutputs_TxHash_TxIndex",
+                table: "TxOutputs",
+                columns: new[] { "TxHash", "TxIndex" });
         }
 
         /// <inheritdoc />
@@ -185,6 +202,9 @@ namespace TeddySwap.Sink.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Assets");
+
+            migrationBuilder.DropTable(
+                name: "BlacklistedAddresses");
 
             migrationBuilder.DropTable(
                 name: "Prices");
