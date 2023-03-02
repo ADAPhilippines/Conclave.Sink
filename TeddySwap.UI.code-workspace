@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "src/TeddySwap.UI"
+		},
+		{
+			"path": "src/TeddySwap.Common"
+		}
+	],
+	"settings": {}
+}

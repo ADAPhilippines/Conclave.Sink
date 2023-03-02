@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
+using TeddySwap.UI.Services;
+using TeddySwap.UI.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMudServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddHostedService<HeartBeatWorker>();
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<ConfigService>();
+builder.Services.AddSingleton<HeartBeatService>();
 
 var app = builder.Build();
 
