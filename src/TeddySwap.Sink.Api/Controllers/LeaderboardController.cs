@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using TeddySwap.Common.Models.Request;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Services;
+using Asp.Versioning;
 
 namespace TeddySwap.Sink.Api.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("leaderboard")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class LeaderboardController : ControllerBase
 {
     private readonly ILogger<LeaderboardController> _logger;
@@ -42,7 +44,7 @@ public class LeaderboardController : ControllerBase
         return Ok(res);
     }
 
-    [HttpGet("user")]
+    [HttpGet("users")]
     public async Task<ActionResult<PaginatedLeaderboardResponse>> GetUserLeaderboardAsync([FromQuery] PaginatedRequestBase request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
@@ -52,7 +54,7 @@ public class LeaderboardController : ControllerBase
         return Ok(res);
     }
 
-    [HttpGet("user/address/{address}")]
+    [HttpGet("users/address/{address}")]
     public async Task<ActionResult<LeaderboardResponse>> GetUserLeaderboardAddressAsync(string? address)
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
@@ -64,7 +66,7 @@ public class LeaderboardController : ControllerBase
         return Ok(res);
     }
 
-    [HttpGet("batcher")]
+    [HttpGet("badgers")]
     public async Task<ActionResult<PaginatedLeaderboardResponse>> GetBatcherLeaderboardAsync([FromQuery] PaginatedRequestBase request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
@@ -74,7 +76,7 @@ public class LeaderboardController : ControllerBase
         return Ok(res);
     }
 
-    [HttpGet("batcher/address/{address}")]
+    [HttpGet("badgers/address/{address}")]
     public async Task<ActionResult<LeaderboardResponse>> GetBatcherLeaderboardAddressAsync(string? address)
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
