@@ -4,12 +4,14 @@
 
 <div class="flex gap-4">
     <DashboardMenu />
-    <MudTabs Elevation="4" Rounded="true" ApplyEffectsToContainer="true" Class="w-full" SliderColor="Color.Secondary">
-        <MudTabPanel Text="Global">
-            <MudTable Items="DummyLeaderboard" Hover="true" Class="w-full">
+    <MudTabs Elevation="6" Rounded="true" ApplyEffectsToContainer="true" Class="w-full" SliderColor="Color.Secondary">
+        <MudTabPanel Text="Global" Icon="@Icons.Material.Filled.TravelExplore">
+            <MudTable Items="DummyLeaderboard" Hover="true" Class="w-full" Dense="true">
                 <ToolBarContent>
                     <div class="!flex md:!flex-row !flex-col w-full md:mx-4">
-                        <MudText Typo="Typo.h6" Class="!hidden md:!block">ITN Leaderboard | Global</MudText>
+                        <div class="grid content-end">
+                            <MudText Typo="Typo.h6" Class="!hidden md:!block">ITN Leaderboard | Global</MudText>
+                        </div>
                         <MudSpacer />
                         <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
                             AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
@@ -18,33 +20,83 @@
                     </div>
                 </ToolBarContent>
                 <HeaderContent>
-                    <MudTh>Rank</MudTh>
-                    <MudTh>Testnet Address</MudTh>
-                    <MudTh>Mainnet Address</MudTh>
-                    <MudTh>Points</MudTh>
-                    <MudTh>Bonus</MudTh>
-                    <MudTh>Total Rewards</MudTh>
+                    <MudTh Class="!font-bold">Rank</MudTh>
+                    <MudTh Class="!font-bold">Testnet Address</MudTh>
+                    <MudTh Class="!font-bold">Mainnet Address</MudTh>
+                    <MudTh Class="!font-bold">Points</MudTh>
+                    <MudTh Class="!font-bold">Bonus</MudTh>
+                    <MudTh Class="!font-bold">Total Rewards</MudTh>
+                    <MudTh></MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="Rank">@context.Rank</MudTd>
-                    <MudTd DataLabel="Testnet Address">@context.TestnetAddress.Substring(0,6) ...
-                        @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)</MudTd>
-                    <MudTd DataLabel="Mainnet Address">@context.MainnetAddress.Substring(0,6) ...
-                        @context.MainnetAddress.Substring(@context.MainnetAddress.Length - 6)</MudTd>
+                    <MudTd DataLabel="Rank" Class="font-bold">#@context.Rank</MudTd>
+                    <MudTd DataLabel="Testnet Address">
+                        <div>
+                            @context.TestnetAddress.Substring(0,6) ...
+                            @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)
+                            <MudIconButton Icon="@Icons.Material.Filled.Link" Target="_blank"
+                                Href=@("https://preview.cardanoscan.io/address/" + @context.TestnetAddress)>
+                            </MudIconButton>
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Mainnet Address">
+                        <div>
+                            @context.MainnetAddress.Substring(0,6) ...
+                            @context.MainnetAddress.Substring(@context.MainnetAddress.Length - 6)
+                            <MudIconButton Icon="@Icons.Material.Filled.Link" Target="_blank"
+                                Href=@("https://cardanoscan.io/address/" + @context.MainnetAddress)></MudIconButton>
+                        </div>
+                    </MudTd>
                     <MudTd DataLabel="Points">@context.Points</MudTd>
                     <MudTd DataLabel="Bonus">@context.Bonus%</MudTd>
-                    <MudTd DataLabel="Total Rewards">@context.Rewards.ToString("N2") $TEDY</MudTd>
+                    <MudTd DataLabel="Total Rewards">
+                        <MudText Color="Color.Success" Class="font-bold">
+                            @context.Rewards.ToString("N2") $TEDY
+                        </MudText>
+                    </MudTd>
+                    <MudTh>
+                        <MudIconButton Icon=@(context.IsExpandable ? @Icons.Material.Filled.KeyboardArrowUp :
+                            @Icons.Material.Filled.KeyboardArrowDown) OnClick="() => ToggleRowExpand(context)" />
+                    </MudTh>
                 </RowTemplate>
                 <PagerContent>
                     <MudTablePager />
                 </PagerContent>
+                <ChildRowContent>
+                    <MudTr>
+                        <td colspan="7" class="w-full">
+                            @if (context.IsExpandable)
+                            {
+                                <MudPaper Elevation="8" class="md:flex p-6 gap-6 w-full grid grid-cols-2 w-full">
+                                    <div class="flex gap-2">
+                                        <b>Swaps: </b>
+                                        <MudText Color="Color.Success">32 points</MudText>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <b>Add Liquidty: </b>
+                                        <MudText Color="Color.Success">24 points</MudText>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <b>Redeem Liqudity: </b>
+                                        <MudText Color="Color.Success">16 points</MudText>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <b>Batching: </b>
+                                        <MudText Color="Color.Success">8 points</MudText>
+                                    </div>
+                                </MudPaper>
+                                <MudDivider />
+                            }
+                        </td>
+                    </MudTr>
+                </ChildRowContent>
             </MudTable>
         </MudTabPanel>
-        <MudTabPanel Text="Batchers">
+        <MudTabPanel Text="Badgers" Icon="@Icons.Material.Filled.BatchPrediction">
             <MudTable Items="DummyLeaderboard" Hover="true" Class="w-full">
                 <ToolBarContent>
                     <div class="!flex md:!flex-row !flex-col w-full md:mx-4">
-                        <MudText Typo="Typo.h6" Class="!hidden md:!block">ITN Leaderboard | Batchers</MudText>
+                        <MudText Typo="Typo.h6" Class="!hidden md:!block">ITN Leaderboard | Badgers</MudText>
                         <MudSpacer />
                         <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
                             AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"

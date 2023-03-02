@@ -14,4 +14,9 @@ public partial class Leaderboard
         }
         await base.OnInitializedAsync();
     }
+
+    protected void ToggleRowExpand(DummyLItem item)
+    {
+        item.IsExpandable = !item.IsExpandable;
+    }
 }

@@ -8,4 +8,5 @@ public record DummyLItem
     public int Points => new Random().Next(1000);
     public int Bonus => new Random().Next(100);
     public int Rewards => new Random().Next(100000);
+    public bool IsExpandable { get; set; }
 }
