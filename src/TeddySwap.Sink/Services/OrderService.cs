@@ -97,6 +97,7 @@ public class OrderService
                 string assetLq = string.Concat(poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
                 string poolNft = string.Concat(poolDatum.Nft.PolicyId + poolDatum.Nft.Name);
                 string orderBase = "";
+
                 BigInteger reservesX = FindAsset(outputs[0], poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
                 BigInteger reservesY = FindAsset(outputs[0], poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
                 BigInteger liquidity = FindAsset(outputs[0], poolDatum.Lq.PolicyId, poolDatum.Lq.Name);
