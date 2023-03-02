@@ -17,6 +17,8 @@ public class TeddySwapSinkDbContext : DbContext
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<Price> Prices => Set<Price>();
     public DbSet<AddressVerification> AddressVerifications => Set<AddressVerification>();
+    public DbSet<BlacklistedAddress> BlacklistedAddresses => Set<BlacklistedAddress>();
+
     #endregion
 
     public TeddySwapSinkDbContext(DbContextOptions<TeddySwapSinkDbContext> options) : base(options) { }
@@ -29,6 +31,7 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<Order>().HasKey(order => new { order.TxHash, order.Index });
         modelBuilder.Entity<Price>().HasKey(price => new { price.TxHash, price.Index });
+        modelBuilder.Entity<BlacklistedAddress>().HasKey(ba => ba.Address);
         modelBuilder.Entity<AddressVerification>().HasKey(a => a.TestnetAddress);
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
