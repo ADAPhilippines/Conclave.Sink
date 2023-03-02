@@ -1,5 +1,4 @@
 
-using TeddySwap.Common.Models;
 using TeddySwap.Sink.Models.Oura;
 
 namespace TeddySwap.Sink.Reducers;

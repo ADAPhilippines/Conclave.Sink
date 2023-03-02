@@ -1,16 +1,8 @@
 using System.Numerics;
 using System.Text;
-using CardanoSharp.Wallet.Encoding;
-using CardanoSharp.Wallet.Enums;
-using CardanoSharp.Wallet.Extensions;
-using CardanoSharp.Wallet.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Options;
-using PeterO.Cbor2;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
-using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Models.Oura;
 using TeddySwap.Sink.Services;
 
@@ -21,25 +13,16 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<OrderReducer> _logger;
     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
-    private readonly CardanoService _cardanoService;
     private readonly OrderService _orderService;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly TeddySwapSinkSettings _settings;
 
     public OrderReducer(
         ILogger<OrderReducer> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
-        CardanoService cardanoService,
-        OrderService orderService,
-        IServiceProvider serviceProvider,
-        IOptions<TeddySwapSinkSettings> settings)
+        OrderService orderService)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
-        _cardanoService = cardanoService;
         _orderService = orderService;
-        _serviceProvider = serviceProvider;
-        _settings = settings.Value;
     }
 
     public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
@@ -73,8 +56,6 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
                     if (order.OrderType == OrderType.Swap)
                     {
-                        Console.WriteLine(order);
-
                         await _dbContext.Prices.AddAsync(new Price()
                         {
                             TxHash = order.TxHash,
