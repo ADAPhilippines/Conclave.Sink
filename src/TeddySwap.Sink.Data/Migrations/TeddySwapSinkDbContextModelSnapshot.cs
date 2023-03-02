@@ -157,6 +157,9 @@ namespace TeddySwap.Sink.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Blockhash")
+                        .HasColumnType("text");
+
                     b.Property<BigInteger>("Liquidity")
                         .HasColumnType("numeric");
 
@@ -201,6 +204,8 @@ namespace TeddySwap.Sink.Data.Migrations
 
                     b.HasKey("TxHash", "Index");
 
+                    b.HasIndex("Blockhash");
+
                     b.ToTable("Orders");
                 });
 
@@ -212,13 +217,6 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<decimal>("Index")
                         .HasColumnType("numeric(20,0)");
 
-                    b.Property<decimal>("OrderIndex")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.Property<string>("OrderTxHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<decimal>("PriceX")
                         .HasColumnType("numeric");
 
@@ -226,8 +224,6 @@ namespace TeddySwap.Sink.Data.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("TxHash", "Index");
-
-                    b.HasIndex("OrderTxHash", "OrderIndex");
 
                     b.ToTable("Prices");
                 });
@@ -351,11 +347,21 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Navigation("Transaction");
                 });
 
+            modelBuilder.Entity("TeddySwap.Common.Models.Order", b =>
+                {
+                    b.HasOne("TeddySwap.Common.Models.Block", "Block")
+                        .WithMany("Orders")
+                        .HasForeignKey("Blockhash")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Block");
+                });
+
             modelBuilder.Entity("TeddySwap.Common.Models.Price", b =>
                 {
                     b.HasOne("TeddySwap.Common.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderTxHash", "OrderIndex")
+                        .WithOne("Price")
+                        .HasForeignKey("TeddySwap.Common.Models.Price", "TxHash", "Index")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -409,6 +415,8 @@ namespace TeddySwap.Sink.Data.Migrations
 
             modelBuilder.Entity("TeddySwap.Common.Models.Block", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("Transactions");
                 });
 
@@ -417,6 +425,11 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Navigation("Assets");
 
                     b.Navigation("Inputs");
+                });
+
+            modelBuilder.Entity("TeddySwap.Common.Models.Order", b =>
+                {
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.Transaction", b =>

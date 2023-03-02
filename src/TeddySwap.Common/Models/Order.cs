@@ -6,7 +6,10 @@ public record Order
 {
     public string TxHash { get; init; } = string.Empty;
     public ulong Index { get; init; }
+    public string Blockhash { get; set; } = string.Empty;
     public OrderType OrderType { get; init; }
+    public Block Block { get; set; } = new();
+    public Price? Price { get; init; }
     public byte[]? PoolDatum { get; init; }
     public byte[]? OrderDatum { get; init; }
     public string RewardAddress { get; init; } = string.Empty;

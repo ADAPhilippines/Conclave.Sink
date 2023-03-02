@@ -66,6 +66,9 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
                 if (order is not null)
                 {
+                    order.Block = block;
+                    order.Blockhash = block.BlockHash;
+
                     await _dbContext.Orders.AddAsync(order);
 
                     if (order.OrderType == OrderType.Swap)
@@ -87,25 +90,24 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
         }
     }
 
-    decimal BigIntegerDivToDecimal(BigInteger x, BigInteger y, int precision)
+    private static decimal BigIntegerDivToDecimal(BigInteger x, BigInteger y, int precision)
     {
 
         var divResult = BigInteger.DivRem(x, y);
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new();
         result.Append(divResult.Quotient.ToString());
 
         if (divResult.Remainder != 0)
         {
-            result.Append(".");
+            result.Append('.');
 
             for (int i = 0; i < precision; i++)
             {
                 divResult.Remainder *= 10;
-                var nextDivResult = BigInteger.DivRem(divResult.Remainder, y);
-                result.Append(nextDivResult.Quotient.ToString());
+                result.Append(BigInteger.DivRem(divResult.Remainder, y).Quotient.ToString());
 
-                if (nextDivResult.Remainder == 0)
+                if (BigInteger.DivRem(divResult.Remainder, y).Remainder == 0)
                 {
                     break;
                 }
@@ -114,37 +116,5 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
         return decimal.Parse(result.ToString());
     }
-    public async Task RollbackAsync(Block rollbackBlock)
-    {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        Block? block = await _dbContext.Blocks
-            .Include(b => b.Transactions)
-            .FirstOrDefaultAsync();
-
-        if (block is null) return;
-
-        foreach (Transaction transaction in block.Transactions)
-        {
-            if (transaction is null) continue;
-            Order? order = await _dbContext.Orders
-                .Where(o => o.TxHash == transaction.Hash &&
-                    o.Index == transaction.Index)
-                .FirstOrDefaultAsync();
-
-            if (order is null) continue;
-
-            _dbContext.Orders.Remove(order);
-
-            Price? price = await _dbContext.Prices
-                .Where(p => p.TxHash == transaction.Hash &&
-                    p.Index == transaction.Index)
-                .FirstOrDefaultAsync();
-
-            if (price is null) continue;
-
-            _dbContext.Prices.Remove(price);
-        }
-
-        await _dbContext.SaveChangesAsync();
-    }
+    public async Task RollbackAsync(Block _) => await Task.CompletedTask;
 }

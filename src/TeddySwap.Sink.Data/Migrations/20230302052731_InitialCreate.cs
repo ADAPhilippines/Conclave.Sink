@@ -35,6 +35,7 @@ namespace TeddySwap.Sink.Data.Migrations
                 {
                     TxHash = table.Column<string>(type: "text", nullable: false),
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    Blockhash = table.Column<string>(type: "text", nullable: true),
                     OrderType = table.Column<int>(type: "integer", nullable: false),
                     PoolDatum = table.Column<byte[]>(type: "bytea", nullable: true),
                     OrderDatum = table.Column<byte[]>(type: "bytea", nullable: true),
@@ -56,6 +57,12 @@ namespace TeddySwap.Sink.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => new { x.TxHash, x.Index });
+                    table.ForeignKey(
+                        name: "FK_Orders_Blocks_Blockhash",
+                        column: x => x.Blockhash,
+                        principalTable: "Blocks",
+                        principalColumn: "BlockHash",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,8 +91,6 @@ namespace TeddySwap.Sink.Data.Migrations
                 {
                     TxHash = table.Column<string>(type: "text", nullable: false),
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    OrderTxHash = table.Column<string>(type: "text", nullable: false),
-                    OrderIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     PriceX = table.Column<decimal>(type: "numeric", nullable: false),
                     PriceY = table.Column<decimal>(type: "numeric", nullable: false)
                 },
@@ -93,8 +98,8 @@ namespace TeddySwap.Sink.Data.Migrations
                 {
                     table.PrimaryKey("PK_Prices", x => new { x.TxHash, x.Index });
                     table.ForeignKey(
-                        name: "FK_Prices_Orders_OrderTxHash_OrderIndex",
-                        columns: x => new { x.OrderTxHash, x.OrderIndex },
+                        name: "FK_Prices_Orders_TxHash_Index",
+                        columns: x => new { x.TxHash, x.Index },
                         principalTable: "Orders",
                         principalColumns: new[] { "TxHash", "Index" },
                         onDelete: ReferentialAction.Cascade);
@@ -251,9 +256,9 @@ namespace TeddySwap.Sink.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prices_OrderTxHash_OrderIndex",
-                table: "Prices",
-                columns: new[] { "OrderTxHash", "OrderIndex" });
+                name: "IX_Orders_Blockhash",
+                table: "Orders",
+                column: "Blockhash");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_BlockHash",

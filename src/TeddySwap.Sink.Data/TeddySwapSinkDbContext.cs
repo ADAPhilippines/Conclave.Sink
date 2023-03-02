@@ -1,5 +1,5 @@
-using TeddySwap.Common.Models;
 using Microsoft.EntityFrameworkCore;
+using TeddySwap.Common.Models;
 
 namespace TeddySwap.Sink.Data;
 
@@ -38,6 +38,12 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
 
         // Relations
+        modelBuilder.Entity<Block>()
+            .HasMany(b => b.Orders)
+            .WithOne(o => o.Block)
+            .HasForeignKey(o => o.Blockhash)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<TxInput>()
             .HasOne<TxOutput>(txInput => txInput.TxOutput)
             .WithMany(txOutput => txOutput.Inputs)
@@ -47,6 +53,19 @@ public class TeddySwapSinkDbContext : DbContext
             .HasOne<Transaction>(txInput => txInput.Transaction)
             .WithMany(tx => tx.Inputs)
             .HasForeignKey(txInput => txInput.TxHash);
+
+
+        modelBuilder.Entity<Order>()
+            .HasOne<Block>(o => o.Block)
+            .WithMany(b => b.Orders)
+            .HasForeignKey(o => o.Blockhash)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Price>()
+            .HasOne(p => p.Order)
+            .WithOne(o => o.Price)
+            .HasForeignKey<Price>(p => new { p.TxHash, p.Index });
 
         modelBuilder.Entity<CollateralTxInput>()
             .HasOne<TxOutput>(txInput => txInput.TxOutput)
@@ -62,11 +81,6 @@ public class TeddySwapSinkDbContext : DbContext
             .HasOne<Transaction>(txOutput => txOutput.Transaction)
             .WithMany(tx => tx.Outputs)
             .HasForeignKey(txOutput => txOutput.TxHash);
-
-        // modelBuilder.Entity<Order>()
-        //     .HasOne<Transaction>(order => order.Transaction)
-        //     .WithMany(tx => tx.Orders)
-        //     .HasForeignKey(order => order.TxHash);
 
         modelBuilder.Entity<CollateralTxOutput>()
             .HasOne<Transaction>(txOutput => txOutput.Transaction)

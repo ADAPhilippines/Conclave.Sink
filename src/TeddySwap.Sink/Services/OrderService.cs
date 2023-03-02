@@ -54,23 +54,23 @@ public class OrderService
                     _settings.RedeemAddress
                 };
 
+            if (transactionEvent.Context is null) return null;
+
             // Find Validator Utxos
             TxOutput? poolInput = inputs.Where(i => i.Address == _settings.PoolAddress).FirstOrDefault();
             TxOutput? orderInput = inputs.Where(i => validators.Contains(i.Address)).FirstOrDefault();
 
-
-
             // Return if not a TeddySwap transaction
             if (poolInput is null || orderInput is null) return null;
 
-            order = processOrder(poolInput, orderInput, transactionEvent);
+            order = ProcessOrder(poolInput, orderInput, transactionEvent);
         }
 
 
         return order;
     }
 
-    public Order? processOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
+    public Order? ProcessOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
     {
 
         if (transactionEvent.Context is not null &&
