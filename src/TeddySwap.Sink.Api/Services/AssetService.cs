@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TeddySwap.Common.Models;
 using TeddySwap.Common.Models.CardanoDbSync;
-using TeddySwap.Common.Models.Enums;
+using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models.Request;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Models;

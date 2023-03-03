@@ -2,7 +2,7 @@ using System.Numerics;
 using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
 using TeddySwap.Common.Models;
-using TeddySwap.Common.Models.Enums;
+using TeddySwap.Common.Enums;
 using TeddySwap.Sink.Models;
 
 namespace TeddySwap.Sink.Services;

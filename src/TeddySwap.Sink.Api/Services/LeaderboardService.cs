@@ -30,7 +30,7 @@ public class LeaderboardService
         var rewardQuery = await _dbContext.Orders
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
             .GroupBy(o => o.UserAddress)
-            .Select(g => new LeaderboardResponse
+            .Select(g => new LeaderBoardResponse
             {
                 TestnetAddress = g.Key,
                 Total = g.Count(o => o.OrderType != OrderType.Unknown),
@@ -44,7 +44,7 @@ public class LeaderboardService
         var batchQuery = await _dbContext.Orders
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
             .GroupBy(o => o.BatcherAddress)
-            .Select(g => new LeaderboardResponse
+            .Select(g => new LeaderBoardResponse
             {
                 TestnetAddress = g.Key,
                 Total = 0,
@@ -59,7 +59,7 @@ public class LeaderboardService
             .Concat(batchQuery)
             .GroupBy(r => r.TestnetAddress)
             .OrderByDescending(g => g.Sum(r => r.Total + r.Batch))
-            .Select((g, rank) => new LeaderboardResponse
+            .Select((g, rank) => new LeaderBoardResponse
             {
                 TestnetAddress = g.Key,
                 Rank = rank + 1,
@@ -77,7 +77,7 @@ public class LeaderboardService
             .OrderByDescending(r => r.Total)
             .Skip(offset)
             .Take(limit)
-            .Select((r, index) => new LeaderboardResponse
+            .Select((r, index) => new LeaderBoardResponse
             {
                 TestnetAddress = r.TestnetAddress,
                 Rank = index + 1 + offset,
@@ -91,7 +91,7 @@ public class LeaderboardService
             })
             .ToList();
 
-        foreach (LeaderboardResponse response in pagedEntries)
+        foreach (LeaderBoardResponse response in pagedEntries)
         {
             AddressVerification? addressVerification = await _dbContext.AddressVerifications
                 .Where(av => av.TestnetAddress == response.TestnetAddress)
@@ -111,7 +111,7 @@ public class LeaderboardService
         };
     }
 
-    public async Task<LeaderboardResponse?> GetLeaderboardAddressAsync(string bech32Address)
+    public async Task<LeaderBoardResponse?> GetLeaderboardAddressAsync(string bech32Address)
     {
         var response = await GetLeaderboardAsync(0, int.MaxValue);
         var filteredResponse = response.Result
@@ -142,7 +142,7 @@ public class LeaderboardService
 
         var pagedEntries = rewardQuery
             .OrderByDescending(r => r.Total)
-            .Select((r, i) => new LeaderboardResponse
+            .Select((r, i) => new LeaderBoardResponse
             {
                 TestnetAddress = r.Address,
                 Total = r.Total,
@@ -158,7 +158,7 @@ public class LeaderboardService
             .Take(limit)
             .ToList();
 
-        foreach (LeaderboardResponse response in pagedEntries)
+        foreach (LeaderBoardResponse response in pagedEntries)
         {
             AddressVerification? addressVerification = await _dbContext.AddressVerifications
                 .Where(av => av.TestnetAddress == response.TestnetAddress)
@@ -175,7 +175,7 @@ public class LeaderboardService
         };
     }
 
-    public async Task<LeaderboardResponse?> GetUserLeaderboardAddressAsync(string bech32Address)
+    public async Task<LeaderBoardResponse?> GetUserLeaderboardAddressAsync(string bech32Address)
     {
         var response = await GetUserLeaderboardAsync(0, int.MaxValue);
         var filteredResponse = response.Result
@@ -203,7 +203,7 @@ public class LeaderboardService
         var allEntries = batchQuery
             .OrderByDescending(b => b.TotalCount)
             .ThenBy(b => b.Address)
-            .Select((b, rank) => new LeaderboardResponse
+            .Select((b, rank) => new LeaderBoardResponse
             {
                 TestnetAddress = b.Address,
                 Rank = rank + 1,
@@ -220,7 +220,7 @@ public class LeaderboardService
         int totalCount = batchQuery.Count;
         var pagedEntries = allEntries.Skip(offset).Take(limit).ToList();
 
-        foreach (LeaderboardResponse response in pagedEntries)
+        foreach (LeaderBoardResponse response in pagedEntries)
         {
             AddressVerification? addressVerification = await _dbContext.AddressVerifications
                 .Where(av => av.TestnetAddress == response.TestnetAddress)
@@ -237,7 +237,7 @@ public class LeaderboardService
         };
     }
 
-    public async Task<LeaderboardResponse?> GetBatcherLeaderboardAddressAsync(string bech32Address)
+    public async Task<LeaderBoardResponse?> GetBatcherLeaderboardAddressAsync(string bech32Address)
     {
         var response = await GetBatcherLeaderboardAsync(0, int.MaxValue);
         var filteredResponse = response.Result
