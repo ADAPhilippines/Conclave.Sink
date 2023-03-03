@@ -8,8 +8,10 @@
 <header>
     <MudAppBar Color="Color.Tertiary" Fixed="false">
         <img src="/images/teddy-logo.svg" alt="teddy-logo" class="h-[30px] mr-6" />
-        <div class="pt-[4px] gap-6 flex hidden lg:block">
-            <NavLink href="/leaderboard" class="font-bold text-[16px]">Dashboard</NavLink>
+        <div class="pt-[4px] gap-6 hidden lg:flex">
+            <NavLink href="/leaderboard" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">Leaderboard</NavLink>
+            <NavLink href="/rewards" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">Rewards</NavLink>
+            <NavLink href="/fiso" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">FISO</NavLink>
         </div>
         <MudSpacer />
         <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"

@@ -16,7 +16,7 @@ public partial class MainLayout
             Surface = new MudColor("rgb(24, 24, 27)"),
             Tertiary = new MudColor("rgba(15, 23, 42, 0.5)"),
             TextPrimary = new MudColor("#FFFFFF"),
-            TextSecondary = new MudColor("#acacac"),
+            TextSecondary = new MudColor("rgb(161,161,170)"),
             DrawerBackground = new MudColor("#1f394d"),
             DrawerText = new MudColor("#FFFFFF")
         },

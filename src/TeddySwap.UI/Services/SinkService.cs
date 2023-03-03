@@ -17,12 +17,12 @@ public class SinkService
     public async Task<PaginatedLeaderboardResponse> GetLeaderboardAsync(LeaderBoardType leaderboardType = LeaderBoardType.Users, int offset = 0, int limit = 10, string? address = null)
     {
         HttpClient httpClient = _clientFactory.CreateClient();
-        string leaderboardTypeString = leaderboardType == LeaderBoardType.Users ? "user" : "batcher";
+        string leaderboardTypeString = leaderboardType == LeaderBoardType.Users ? "users" : "badgers";
         if (address is not null && address != string.Empty)
         {
             LeaderBoardResponse? response = await httpClient
                 .GetFromJsonAsync<LeaderBoardResponse>(
-                    $"{_configService.SinkApiUrl}/leaderboard/{leaderboardTypeString}/address/{address}"
+                    $"{_configService.SinkApiUrl}/api/v1/leaderboard/{leaderboardTypeString}/address/{address}"
                 );
             if (response is null) throw new HttpRequestException("Bad response from GetLeaderboardAsync.");
             return new PaginatedLeaderboardResponse
@@ -37,7 +37,7 @@ public class SinkService
             PaginatedLeaderboardResponse? response =
                 await httpClient
                     .GetFromJsonAsync<PaginatedLeaderboardResponse>(
-                        $"{_configService.SinkApiUrl}/leaderboard/{leaderboardTypeString}?offset={offset}&limit={limit}"
+                        $"{_configService.SinkApiUrl}/api/v1/leaderboard/{leaderboardTypeString}?offset={offset}&limit={limit}"
                     );
             if (response is null) throw new HttpRequestException("Bad response from GetLeaderboardAsync.");
             return response;
