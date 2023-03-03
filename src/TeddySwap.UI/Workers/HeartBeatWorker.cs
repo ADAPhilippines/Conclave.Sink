@@ -1,5 +1,5 @@
 using System.Text.Json;
-using TeddySwap.UI.Models.Models;
+using TeddySwap.UI.Models;
 using TeddySwap.UI.Services;
 
 namespace TeddySwap.UI.Workers;
@@ -27,12 +27,19 @@ public class HeartBeatWorker : BackgroundService
     {
         while (true)
         {
-            HttpClient httpClient = _httpClientFactory.CreateClient();
-            BlockInfoResponse? blockInfoResponse = await httpClient.GetFromJsonAsync<BlockInfoResponse>($"{_configService.ExplorerApiUrl}/cardano/v1/blocks/bestBlock");
-            ulong latestBlockNo = blockInfoResponse?.BlockNo ?? _heartBeatService.LatestBlockNo;
-            if (latestBlockNo > _heartBeatService.LatestBlockNo)
+            try
             {
-                _heartBeatService.LatestBlockNo = latestBlockNo;
+                HttpClient httpClient = _httpClientFactory.CreateClient();
+                BlockInfoResponse? blockInfoResponse = await httpClient.GetFromJsonAsync<BlockInfoResponse>($"{_configService.ExplorerApiUrl}/cardano/v1/blocks/bestBlock");
+                ulong latestBlockNo = blockInfoResponse?.BlockNo ?? _heartBeatService.LatestBlockNo;
+                if (latestBlockNo > _heartBeatService.LatestBlockNo)
+                {
+                    _heartBeatService.LatestBlockNo = latestBlockNo;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Blockinfo Request failed.");
             }
             await Task.Delay(20_000);
         }

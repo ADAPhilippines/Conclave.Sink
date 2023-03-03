@@ -14,6 +14,7 @@ builder.Services.AddHostedService<HeartBeatWorker>();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<HeartBeatService>();
+builder.Services.AddSingleton<SinkService>();
 
 var app = builder.Build();
 

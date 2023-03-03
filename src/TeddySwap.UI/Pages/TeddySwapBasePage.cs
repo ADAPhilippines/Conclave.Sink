@@ -19,14 +19,15 @@ public class TeddySwapBasePage : ComponentBase, IAsyncDisposable
         }
     }
 
-    private void OnHeartBeatEvent(object? sender, EventArgs e)
+    protected virtual void OnHeartBeatEvent(object? sender, EventArgs e)
     {
         if (HeartBeatService is not null)
         {
             Console.WriteLine($"Blockchain Heartbeat Received: {HeartBeatService.LatestBlockNo}");
         }
     }
-    public async ValueTask DisposeAsync()
+    
+    async ValueTask IAsyncDisposable.DisposeAsync()
     {
         if (HeartBeatService is not null)
         {

@@ -1,6 +1,6 @@
 namespace TeddySwap.Common.Models.Response;
 
-public class LeaderboardResponse
+public class LeaderBoardResponse
 {
     public string TestnetAddress { get; init; } = string.Empty;
     public string MainnetAddress { get; set; } = string.Empty;

@@ -10,4 +10,5 @@ public class ConfigService
     }
 
     public string ExplorerApiUrl => _config["ExplorerApiUrl"] ?? "https://8081-parallel-guidance-uagipf.us1.demeter.run";
+    public string SinkApiUrl => _config["SinkApiUrl"] ?? "https://3000-faithful-contract-kybztp.us1.demeter.run";
 }

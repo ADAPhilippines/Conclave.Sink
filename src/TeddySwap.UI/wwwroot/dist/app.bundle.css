@@ -635,8 +635,16 @@ video {
   width: 100vw;
 }
 
+.w-\[150px\] {
+  width: 150px;
+}
+
 .w-full {
   width: 100%;
+}
+
+.w-\[200px\] {
+  width: 200px;
 }
 
 .shrink-0 {
@@ -693,10 +701,6 @@ video {
 
 .justify-center {
   justify-content: center;
-}
-
-.gap-2 {
-  gap: 0.5rem;
 }
 
 .gap-4 {
@@ -822,10 +826,6 @@ video {
 
   .md\:\!block {
     display: block !important;
-  }
-
-  .md\:flex {
-    display: flex;
   }
 
   .md\:\!flex-row {

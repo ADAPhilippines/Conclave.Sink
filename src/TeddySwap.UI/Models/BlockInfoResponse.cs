@@ -1,4 +1,4 @@
-namespace TeddySwap.UI.Models.Models;
+namespace TeddySwap.UI.Models;
 
 public record BlockInfoResponse
 {
