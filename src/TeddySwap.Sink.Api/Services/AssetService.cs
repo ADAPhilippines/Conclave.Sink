@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TeddySwap.Common.Models;
@@ -93,11 +94,46 @@ public class AssetService
         };
     }
 
-    public async Task<AssetMetadataResponse> GetAssetsMetadataAsync(AssetMetadataRequest request)
+
+    public async Task<PaginatedAssetResponse> GetAssetsWithMetadataAsync(PaginatedAssetRequest request)
     {
+        var unspentTxOuts = await _dbContext.TxOuts
+            .Where(o => o.Address == request.Address && !_dbContext.TxIns.Any(i => i.TxOutId == o.TxId && i.TxOutIndex == o.Index))
+            .OrderBy(o => o.Id)
+            .ToListAsync();
 
+        var policyBytes = HexToByteArray(request.PolicyId);
 
-        return new AssetMetadataResponse();
+        var maTxOuts = await _dbContext.MaTxOuts
+            .Include(maTxOut => maTxOut.TxOut)
+            .Include(maTxOut => maTxOut.IdentNavigation)
+            .Include(maTxOut => maTxOut.TxOut.Tx)
+            .ThenInclude(txOut => txOut.TxMetadata)
+            .Where(maTxOut => maTxOut.IdentNavigation.Policy.SequenceEqual(policyBytes))
+            .Where(maTxOut => unspentTxOuts.Contains(maTxOut.TxOut))
+            .ToListAsync();
+
+        var assets = maTxOuts
+            .GroupBy(maTxOut => new
+            {
+                Name = Encoding.UTF8.GetString(maTxOut.IdentNavigation.Name),
+                PolicyId = BitConverter.ToString(maTxOut.IdentNavigation.Policy).Replace("-", string.Empty).ToLower()
+            })
+            .Select(g => new AssetResponse
+            {
+                Name = g.Key.Name,
+                Amount = (ulong)g.Sum(maTxOut => maTxOut.Quantity),
+                MetadataJson = g.FirstOrDefault(maTxOut => maTxOut.TxOut.Tx.TxMetadata != null)?.TxOut.Tx.TxMetadata.FirstOrDefault()?.Json
+            })
+            .ToList();
+
+        return new PaginatedAssetResponse()
+        {
+            PolicyId = request.PolicyId,
+            Address = request.Address,
+            TotalCount = assets.Count(),
+            Result = assets.Skip(request.Offset).Take(request.Limit).ToList()
+        };
     }
 
 }

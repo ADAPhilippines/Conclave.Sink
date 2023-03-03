@@ -31,4 +31,14 @@ public class AssetController : ControllerBase
 
         return Ok(res);
     }
+
+    [HttpGet("metadata")]
+    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetAssetsWithMetadataAsync([FromQuery] PaginatedAssetRequest request)
+    {
+        if (request.Offset < 0 || request.Limit > 100) return BadRequest();
+
+        var res = await _assetService.GetAssetsWithMetadataAsync(request);
+
+        return Ok(res);
+    }
 }
