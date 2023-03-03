@@ -38,7 +38,7 @@ public class AssetService
 
         for (int i = 0; i < hex.Length >> 1; ++i)
         {
-            arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));
+            arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + GetHexVal(hex[(i << 1) + 1]));
         }
 
         return arr;
@@ -131,7 +131,7 @@ public class AssetService
         {
             PolicyId = request.PolicyId,
             Address = request.Address,
-            TotalCount = assets.Count(),
+            TotalCount = assets.Count,
             Result = assets.Skip(request.Offset).Take(request.Limit).ToList()
         };
     }

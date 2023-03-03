@@ -5,6 +5,7 @@ using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Models;
 using TeddySwap.Sink.Data;
+using TeddySwap.Common.Models.Request;
 
 namespace TeddySwap.Sink.Api.Services;
 
@@ -13,14 +14,17 @@ public class LeaderboardService
     private readonly ILogger<LeaderboardService> _logger;
     private readonly TeddySwapSinkDbContext _dbContext;
     private readonly TeddySwapITNRewardSettings _settings;
+    private readonly AssetService _assetService;
 
     public LeaderboardService(
         ILogger<LeaderboardService> logger,
         TeddySwapSinkDbContext dbContext,
+        AssetService assetService,
         IOptions<TeddySwapITNRewardSettings> settings)
     {
         _logger = logger;
         _dbContext = dbContext;
+        _assetService = assetService;
         _settings = settings.Value;
     }
 
@@ -28,7 +32,7 @@ public class LeaderboardService
     {
         var rewardQuery = await _dbContext.Orders
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
-            .Where(o => o.Slot <= _settings.ITNEndSlot)
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
             .GroupBy(o => o.UserAddress)
             .Select(g => new LeaderBoardResponse
             {
@@ -43,7 +47,7 @@ public class LeaderboardService
 
         var batchQuery = await _dbContext.Orders
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
-            .Where(o => o.Slot <= _settings.ITNEndSlot)
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
             .GroupBy(o => o.BatcherAddress)
             .Select(g => new LeaderBoardResponse
             {
@@ -110,6 +114,23 @@ public class LeaderboardService
                 .FirstOrDefaultAsync();
 
             response.MainnetAddress = addressVerification is null ? "" : addressVerification.MainnetAddress;
+
+            if (addressVerification is not null && !string.IsNullOrEmpty(addressVerification.MainnetAddress))
+            {
+                PaginatedAssetResponse res = await _assetService.GetAssetsAsync(new PaginatedAssetRequest()
+                {
+                    Limit = 1,
+                    Offset = 0,
+                    PolicyId = _settings.TbcPolicyId,
+                    Address = addressVerification.MainnetAddress
+                });
+
+                if (res.TotalCount > 0)
+                {
+                    response.TotalNft = res.TotalCount;
+                    response.BonusReward = response.BaseReward * res.TotalCount * (decimal)0.05;
+                }
+            }
         }
 
         int totalAmount = allEntries.Sum(r => r.Total);
