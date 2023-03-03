@@ -3,6 +3,7 @@ using TeddySwap.Common.Models.Request;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Services;
 using Asp.Versioning;
+using TeddySwap.Common.Enums;
 
 namespace TeddySwap.Sink.Api.Controllers;
 
@@ -27,7 +28,7 @@ public class LeaderboardController : ControllerBase
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit);
+        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.All);
 
         return Ok(res);
     }
@@ -37,7 +38,7 @@ public class LeaderboardController : ControllerBase
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAddressAsync(address);
+        var res = await _leaderboardService.GetLeaderboardAddressAsync(address, LeaderBoardType.All);
 
         if (res is null) return NotFound();
 
@@ -49,7 +50,7 @@ public class LeaderboardController : ControllerBase
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetUserLeaderboardAsync(request.Offset, request.Limit);
+        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Users);
 
         return Ok(res);
     }
@@ -59,7 +60,7 @@ public class LeaderboardController : ControllerBase
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 
-        var res = await _leaderboardService.GetUserLeaderboardAddressAsync(address);
+        var res = await _leaderboardService.GetLeaderboardAddressAsync(address, LeaderBoardType.Users);
 
         if (res is null) return NotFound();
 
@@ -71,7 +72,7 @@ public class LeaderboardController : ControllerBase
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetBatcherLeaderboardAsync(request.Offset, request.Limit);
+        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Badgers);
 
         return Ok(res);
     }
@@ -81,7 +82,7 @@ public class LeaderboardController : ControllerBase
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 
-        var res = await _leaderboardService.GetBatcherLeaderboardAddressAsync(address);
+        var res = await _leaderboardService.GetLeaderboardAddressAsync(address, LeaderBoardType.Badgers);
 
         if (res is null) return NotFound();
 
