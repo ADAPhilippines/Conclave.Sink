@@ -8,14 +8,14 @@ using TeddySwap.Sink.Data;
 
 namespace TeddySwap.Sink.Api.Services;
 
-public class TbcNftService
+public class AssetService
 {
-    private readonly ILogger<TbcNftService> _logger;
+    private readonly ILogger<AssetService> _logger;
     private readonly CardanoDbSyncContext _dbContext;
     private readonly TeddySwapITNRewardSettings _settings;
 
-    public TbcNftService(
-        ILogger<TbcNftService> logger,
+    public AssetService(
+        ILogger<AssetService> logger,
         CardanoDbSyncContext dbContext,
         IOptions<TeddySwapITNRewardSettings> settings)
     {
