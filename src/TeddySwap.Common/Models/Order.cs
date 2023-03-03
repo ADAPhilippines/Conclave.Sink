@@ -1,5 +1,5 @@
 using System.Numerics;
-using TeddySwap.Common.Models.Enums;
+using TeddySwap.Common.Enums;
 
 namespace TeddySwap.Common.Models;
 

@@ -1,4 +1,4 @@
-namespace TeddySwap.Common.Models.Enums;
+namespace TeddySwap.Common.Enums;
 
 public enum OrderType
 {

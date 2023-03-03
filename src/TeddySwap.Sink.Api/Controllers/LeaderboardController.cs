@@ -33,7 +33,7 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpGet("address/{address}")]
-    public async Task<ActionResult<LeaderboardResponse>> GetLeaderboardAddressAsync(string? address)
+    public async Task<ActionResult<LeaderBoardResponse>> GetLeaderboardAddressAsync(string? address)
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 
@@ -55,7 +55,7 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpGet("users/address/{address}")]
-    public async Task<ActionResult<LeaderboardResponse>> GetUserLeaderboardAddressAsync(string? address)
+    public async Task<ActionResult<LeaderBoardResponse>> GetUserLeaderboardAddressAsync(string? address)
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 
@@ -77,7 +77,7 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpGet("badgers/address/{address}")]
-    public async Task<ActionResult<LeaderboardResponse>> GetBatcherLeaderboardAddressAsync(string? address)
+    public async Task<ActionResult<LeaderBoardResponse>> GetBatcherLeaderboardAddressAsync(string? address)
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 

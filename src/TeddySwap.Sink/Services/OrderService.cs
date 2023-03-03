@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
 using TeddySwap.Common.Models;
-using TeddySwap.Common.Models.Enums;
+using TeddySwap.Common.Enums;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Models.Oura;

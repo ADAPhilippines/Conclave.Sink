@@ -1,0 +1,45 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider IsDarkMode="true" Theme="Theme" DefaultScrollbar="true" />
+<MudSnackbarProvider />
+@* <MudDialogProvider/> *@
+<PageTitle>TeddySwap.UI</PageTitle>
+
+<header>
+    <MudAppBar Color="Color.Tertiary" Fixed="false">
+        <img src="/images/teddy-logo.svg" alt="teddy-logo" class="h-[30px] mr-6" />
+        <div class="pt-[4px] gap-6 hidden lg:flex">
+            <NavLink href="/leaderboard" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">Leaderboard</NavLink>
+            <NavLink href="/rewards" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">Rewards</NavLink>
+            <NavLink href="/fiso" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">FISO</NavLink>
+        </div>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
+            Class="!normal-case !text-[16px] !font-bold !px-4 hidden lg:block">Connect Wallet</MudButton>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="ToggleDrawer" />
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
+        <MudDrawerHeader Class="pl-[16px] pr-[8px] py-[8px]">
+            <img src="/favicon.svg" alt="teddy-logo" class="h-[30px] my-[12px]" />
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavGroup Title="Dashboard" Expanded="true">
+                <MudNavLink Href="/leaderboard">Leaderboard</MudNavLink>
+                <MudNavLink Href="/staking">Staking</MudNavLink>
+                <MudNavLink Href="/rewards">Rewards</MudNavLink>
+                <MudNavLink Href="/claim">Claim / Verify Wallet</MudNavLink>
+            </MudNavGroup>
+        </MudNavMenu>
+        <div class="flex justify-center mt-4">
+            <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
+                Class="!normal-case !text-[16px] !font-bold !px-4">Connect Wallet</MudButton>
+        </div>
+    </MudDrawer>
+</header>
+
+<main class="container mx-auto py-10">
+    @Body
+</main>
