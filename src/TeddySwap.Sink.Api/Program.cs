@@ -13,10 +13,23 @@ builder.Services.AddDbContext<TeddySwapSinkDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
 });
 
+// export DBSYNC_POSTGRESQL_HOSTNAME="abf9b162cd9c04557972d3e081cdad51-1462675688.us-west-2.elb.amazonaws.com"
+// export DBSYNC_POSTGRESQL_PORT="5432"
+// export DBSYNC_POSTGRESQL_USER="dmtrro"
+// export DBSYNC_POSTGRESQL_PASSWORD="jegvUgg3Lv8Nedc2vNSxHGifyDJRUNkBV9866MQRpyx8PPsg3ro1M5f4aZgGne59"
+// export DBSYNC_POSTGRESQL_DATABASE="cardanodbsync"
+
+string hostname = builder.Configuration["DBSYNC_POSTGRESQL_HOSTNAME"] ?? "";
+string port = builder.Configuration["DBSYNC_POSTGRESQL_PORT"] ?? "";
+string user = builder.Configuration["DBSYNC_POSTGRESQL_USER"] ?? "";
+string password = builder.Configuration["DBSYNC_POSTGRESQL_PASSWORD"] ?? "";
+string database = builder.Configuration["DBSYNC_POSTGRESQL_DATABASE"] ?? "";
+string connectionString = $"Host={hostname};Database={database};Username={user};Password={password};Port={port}";
+
 builder.Services.AddDbContext<CardanoDbSyncContext>(options =>
 {
     options.EnableSensitiveDataLogging(true);
-    options.UseNpgsql(builder.Configuration.GetConnectionString("CardanoDbSync"));
+    options.UseNpgsql(connectionString);
 });
 
 builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Configuration.GetSection("TeddySwapITNRewardSettings").Bind(options));
