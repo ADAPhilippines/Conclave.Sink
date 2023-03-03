@@ -34,6 +34,12 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
             Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txOutputEvent.Context.TxHash).FirstOrDefaultAsync();
             if (tx is not null)
             {
+                TxOutput? existingOutput = await _dbContext.TxOutputs
+                    .Where(o => o.TxHash == tx.Hash && o.Index == txOutputEvent.Context.OutputIdx)
+                    .FirstOrDefaultAsync();
+
+                if (existingOutput is not null) return;
+
                 TxOutput newTxOutput = new()
                 {
                     Amount = (ulong)txOutputEvent.TxOutput.Amount,

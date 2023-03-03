@@ -45,6 +45,12 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
             if (block.InvalidTransactions is null ||
                 !block.InvalidTransactions.ToList().Contains((ulong)transactionEvent.Context.TxIdx))
             {
+                Order? existingOrder = await _dbContext.Orders
+                    .Where(o => o.TxHash == transactionEvent.Context.TxHash && o.Index == transactionEvent.Context.TxIdx)
+                    .FirstOrDefaultAsync();
+
+                if (existingOrder is not null) return;
+
                 Order? order = await _orderService.ProcessOrderAsync(transactionEvent);
 
                 if (order is not null)

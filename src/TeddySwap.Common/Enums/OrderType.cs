@@ -1,8 +1,10 @@
+namespace TeddySwap.Common.Models.Enums;
+
 public enum OrderType
 {
-    Unknown,
-    Deposit,
-    Redeem,
-    Swap,
-    All
+    Unknown = 0,
+    Deposit = 1,
+    Redeem = 2,
+    Swap = 3,
+    All = 4
 }

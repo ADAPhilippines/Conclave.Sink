@@ -40,6 +40,12 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
 
+            Transaction? existingTransaction = await _dbContext.Transactions
+                .Where(t => t.Hash == transactionEvent.Context.TxHash && t.Index == transactionEvent.Context.TxIdx)
+                .FirstOrDefaultAsync();
+
+            if (existingTransaction is not null) return;
+
             Transaction transaction = new()
             {
                 Hash = transactionEvent.Context.TxHash,
