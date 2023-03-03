@@ -13,12 +13,6 @@ builder.Services.AddDbContext<TeddySwapSinkDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
 });
 
-// export DBSYNC_POSTGRESQL_HOSTNAME="abf9b162cd9c04557972d3e081cdad51-1462675688.us-west-2.elb.amazonaws.com"
-// export DBSYNC_POSTGRESQL_PORT="5432"
-// export DBSYNC_POSTGRESQL_USER="dmtrro"
-// export DBSYNC_POSTGRESQL_PASSWORD="jegvUgg3Lv8Nedc2vNSxHGifyDJRUNkBV9866MQRpyx8PPsg3ro1M5f4aZgGne59"
-// export DBSYNC_POSTGRESQL_DATABASE="cardanodbsync"
-
 string hostname = builder.Configuration["DBSYNC_POSTGRESQL_HOSTNAME"] ?? "";
 string port = builder.Configuration["DBSYNC_POSTGRESQL_PORT"] ?? "";
 string user = builder.Configuration["DBSYNC_POSTGRESQL_USER"] ?? "";
