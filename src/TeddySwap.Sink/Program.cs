@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Extensions;
 using TeddySwap.Sink.Models;
@@ -14,11 +15,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options =>
-{
-    options.EnableSensitiveDataLogging(true);
-    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
-});
+builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddSingleton<ByteArrayService>();
@@ -28,6 +25,33 @@ builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
 
 var app = builder.Build();
+
+// Set up oura cursor
+var ouraSettings = builder.Configuration.GetSection("OuraSettings");
+var slot = ouraSettings.GetValue<string>("DefaultSlot");
+var hash = ouraSettings.GetValue<string>("DefaultBlockHash");
+var path = ouraSettings.GetValue<string>("CursorPath");
+var offset = ouraSettings.GetValue<int>("Offset");
+
+using (var scopedProvider = app.Services.CreateScope())
+{
+    var service = scopedProvider.ServiceProvider;
+    var dbContext = service.GetService<TeddySwapSinkDbContext>();
+
+    if (dbContext is not null)
+    {
+        Block? block = await dbContext.Blocks.OrderByDescending(b => b.BlockNumber).Take(offset).LastOrDefaultAsync();
+
+        if (block is not null)
+        {
+            slot = block.Slot.ToString();
+            hash = block.BlockHash;
+        }
+    }
+
+    using StreamWriter outputFile = new(Path.Combine(path ?? "../../deployments/config", "cursor"));
+    outputFile.WriteLine($"{slot},{hash}");
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
