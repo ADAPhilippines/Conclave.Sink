@@ -1,6 +1,6 @@
 namespace TeddySwap.Common.Models.Response;
 
-public class PaginatedAssetResponse : PaginatedResponse<AssetResponse>
+public class PaginatedAssetMetadataResponse : PaginatedResponse<AssetMetadataResponse>
 {
 
     public string Address { get; init; } = string.Empty;

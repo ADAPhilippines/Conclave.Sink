@@ -22,6 +22,7 @@ builder.Services.AddDbContext<CardanoDbSyncContext>(options =>
 builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Configuration.GetSection("TeddySwapITNRewardSettings").Bind(options));
 builder.Services.AddControllers();
 builder.Services.AddScoped<LeaderboardService>();
+builder.Services.AddScoped<AssetService>();
 builder.Services.AddApiVersioning(options => options.AssumeDefaultVersionWhenUnspecified = true).AddMvc();
 builder.Services.AddHttpContextAccessor();
 
