@@ -13,8 +13,8 @@ using TeddySwap.Sink.Data;
 namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapSinkDbContext))]
-    [Migration("20230302140406_UpdateTransaction")]
-    partial class UpdateTransaction
+    [Migration("20230303154353_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,8 +146,8 @@ namespace TeddySwap.Sink.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("OrderDatum")
-                        .HasColumnType("text");
+                    b.Property<byte[]>("OrderDatum")
+                        .HasColumnType("bytea");
 
                     b.Property<BigInteger>("OrderLq")
                         .HasColumnType("numeric");
@@ -161,8 +161,8 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<BigInteger>("OrderY")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("PoolDatum")
-                        .HasColumnType("text");
+                    b.Property<byte[]>("PoolDatum")
+                        .HasColumnType("bytea");
 
                     b.Property<string>("PoolNft")
                         .IsRequired()
