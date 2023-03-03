@@ -9,9 +9,12 @@
     <MudAppBar Color="Color.Tertiary" Fixed="false">
         <img src="/images/teddy-logo.svg" alt="teddy-logo" class="h-[30px] mr-6" />
         <div class="pt-[4px] gap-6 hidden lg:flex">
-            <NavLink href="/leaderboard" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">Leaderboard</NavLink>
-            <NavLink href="/rewards" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">Rewards</NavLink>
-            <NavLink href="/fiso" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]" ActiveClass="text-[var(--mud-palette-text-primary)]">FISO</NavLink>
+            <NavLink href="/leaderboard" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                ActiveClass="!text-[var(--mud-palette-text-primary)]">Leaderboard</NavLink>
+            <NavLink href="/rewards" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                ActiveClass="!text-[var(--mud-palette-text-primary)]">Rewards</NavLink>
+            <NavLink href="/fiso" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                ActiveClass="!text-[var(--mud-palette-text-primary)]">FISO</NavLink>
         </div>
         <MudSpacer />
         <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
@@ -26,12 +29,9 @@
             <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
         </MudDrawerHeader>
         <MudNavMenu>
-            <MudNavGroup Title="Dashboard" Expanded="true">
-                <MudNavLink Href="/leaderboard">Leaderboard</MudNavLink>
-                <MudNavLink Href="/staking">Staking</MudNavLink>
-                <MudNavLink Href="/rewards">Rewards</MudNavLink>
-                <MudNavLink Href="/claim">Claim / Verify Wallet</MudNavLink>
-            </MudNavGroup>
+            <MudNavLink Href="/leaderboard">Leaderboard</MudNavLink>
+            <MudNavLink Href="/staking">Staking</MudNavLink>
+            <MudNavLink Href="/rewards">Rewards</MudNavLink>
         </MudNavMenu>
         <div class="flex justify-center mt-4">
             <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"

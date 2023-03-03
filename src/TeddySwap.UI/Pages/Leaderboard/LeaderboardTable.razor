@@ -1,38 +1,39 @@
-<MudTable @ref="LeaderBoardTable" Hover="true" Class="w-full" Dense="true" ServerData="LeaderboardServerData">
-    <ToolBarContent>
-        <div class="!flex md:!flex-row !flex-col w-full md:mx-4">
-            <div class="grid content-end">
-                <MudText Typo="Typo.h6" Class="!hidden md:!block">ITN Leaderboard | @(LeaderBoardType ==
-                    Common.Enums.LeaderBoardType.Users ? "Global" : "Badgers")</MudText>
-                </div>
-                <MudSpacer />
-                <MudTextField Placeholder="Search your address" Adornment="Adornment.Start"
-                AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
-                ValueChanged="@((v) => OnSearch(v))" T="string"/>
-            </div>
-        </ToolBarContent>
-        <HeaderContent>
-            <MudTh Class="!font-bold">Rank</MudTh>
-            <MudTh Class="!font-bold">Testnet Address</MudTh>
-            <MudTh Class="!font-bold">Mainnet Address</MudTh>
-            <MudTh Class="!font-bold">Points</MudTh>
-            <MudTh Class="!font-bold">Bonus</MudTh>
-            <MudTh Class="!font-bold">Total Rewards</MudTh>
-            <MudTh></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Rank" Class="font-bold">#@context.Rank</MudTd>
-            <MudTd DataLabel="Testnet Address">
-                <div>
-                    @context.TestnetAddress.Substring(0,6) ...
-                    @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)
-                    <MudIconButton Icon="@Icons.Material.Filled.Link" Target="_blank"
+<div class="!flex md:!flex-row !flex-col w-full mb-4">
+    <div class="grid content-center">
+        <MudText Class="!hidden md:!block text-[24px] font-bold">
+            Testnet Leaderboard | @(LeaderBoardType == Common.Enums.LeaderBoardType.Users ? "Global" : "Badgers")
+        </MudText>
+    </div>
+    <MudSpacer />
+    <div id="leaderboard-search" class="grow">
+        <MudTextField Variant="Variant.Outlined" Placeholder="Search your address" Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
+            ValueChanged="@((v) => OnSearch(v))" T="string" />
+    </div>
+</div>
+<MudTable @ref="LeaderBoardTable" Hover="true" Class="w-full p-4" Dense="true" ServerData="LeaderboardServerData">
+    <HeaderContent>
+        <MudTh Class="!font-bold">Rank</MudTh>
+        <MudTh Class="!font-bold">Testnet Address</MudTh>
+        <MudTh Class="!font-bold">Mainnet Address</MudTh>
+        <MudTh Class="!font-bold">Points</MudTh>
+        <MudTh Class="!font-bold">Bonus</MudTh>
+        <MudTh Class="!font-bold">Total Rewards</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Rank" Class="font-bold">#@context.Rank</MudTd>
+        <MudTd DataLabel="Testnet Address">
+            <div>
+                @context.TestnetAddress.Substring(0,6) ...
+                @context.TestnetAddress.Substring(@context.TestnetAddress.Length - 6)
+                <MudIconButton Icon="@Icons.Material.Filled.Link" Target="_blank"
                     Href=@("https://preview.cardanoscan.io/address/" + @context.TestnetAddress)>
-                    </MudIconButton>
-                </div>
-            </MudTd>
-            <MudTd DataLabel="Mainnet Address">
-                @if (context.MainnetAddress != string.Empty)
+                </MudIconButton>
+            </div>
+        </MudTd>
+        <MudTd DataLabel="Mainnet Address">
+            @if (context.MainnetAddress != string.Empty)
             {
                 <div>
                     @context.MainnetAddress.Substring(0,6) ...

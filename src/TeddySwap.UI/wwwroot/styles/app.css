@@ -5,3 +5,26 @@
 .mud-table-toolbar {
     padding: 0px !important;
 }
+
+#leaderboard-tabs .mud-tabs-toolbar {
+    background: transparent !important;
+}
+
+#leaderboard-tabs .mud-tabs-toolbar-wrapper {
+    background-color: var(--mud-palette-surface);
+    border-radius: var(--mud-default-borderradius);
+    overflow: hidden;
+}
+
+#leaderboard-tabs .mud-tab-active {
+    background-color: var(--mud-palette-secondary);
+    color: var(--mud-palette-text-primary);
+}
+
+#leaderboard-search .mud-icon-default {
+    color: var(--mud-palette-text-primary) !important;
+}
+
+#leaderboard-search ::placeholder {
+    opacity: 1;
+}
