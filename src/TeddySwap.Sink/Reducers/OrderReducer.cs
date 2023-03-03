@@ -2,6 +2,7 @@ using System.Numerics;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using TeddySwap.Common.Models;
+using TeddySwap.Common.Models.Enums;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models.Oura;
 using TeddySwap.Sink.Services;

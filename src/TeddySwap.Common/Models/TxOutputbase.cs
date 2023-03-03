@@ -1,4 +1,3 @@
-using System.Text.Json;
 namespace TeddySwap.Common.Models;
 
 public partial record TxOutputBase

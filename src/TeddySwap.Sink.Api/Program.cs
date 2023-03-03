@@ -12,11 +12,18 @@ builder.Services.AddDbContext<TeddySwapSinkDbContext>(options =>
     options.EnableSensitiveDataLogging(true);
     options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
 });
+
+builder.Services.AddDbContext<CardanoDbSyncContext>(options =>
+{
+    options.EnableSensitiveDataLogging(true);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("CardanoDbSync"));
+});
+
 builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Configuration.GetSection("TeddySwapITNRewardSettings").Bind(options));
 builder.Services.AddControllers();
 builder.Services.AddScoped<LeaderboardService>();
 builder.Services.AddApiVersioning(options => options.AssumeDefaultVersionWhenUnspecified = true).AddMvc();
-
+builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
