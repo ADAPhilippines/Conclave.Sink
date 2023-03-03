@@ -26,6 +26,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v4
         with:
+          build-args: CACHE_BUST=${{ github.sha }}
           file: "./teddyswap.sink.Dockerfile"
           push: true
           tags: clarkteddyswap/teddy-sink:${{ github.sha }}

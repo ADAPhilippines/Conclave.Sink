@@ -1,7 +1,5 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using PeterO.Cbor2;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models.Oura;
@@ -25,23 +23,30 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
     {
         using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         if (txOutputEvent is not null &&
-        txOutputEvent.Context is not null &&
-         txOutputEvent.TxOutput is not null &&
-         txOutputEvent.Context.TxHash is not null &&
-         txOutputEvent.Context.OutputIdx is not null &&
-         txOutputEvent.Context.BlockHash is not null &&
-         txOutputEvent.TxOutput.Amount is not null &&
-         txOutputEvent.TxOutput.Address is not null)
+            txOutputEvent.Context is not null &&
+            txOutputEvent.TxOutput is not null &&
+            txOutputEvent.Context.TxHash is not null &&
+            txOutputEvent.Context.OutputIdx is not null &&
+            txOutputEvent.Context.BlockHash is not null &&
+            txOutputEvent.TxOutput.Amount is not null &&
+            txOutputEvent.TxOutput.Address is not null)
         {
             Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txOutputEvent.Context.TxHash).FirstOrDefaultAsync();
             if (tx is not null)
             {
+                TxOutput? existingOutput = await _dbContext.TxOutputs
+                    .Where(o => o.TxHash == tx.Hash && o.Index == txOutputEvent.Context.OutputIdx)
+                    .FirstOrDefaultAsync();
+
+                if (existingOutput is not null) return;
+
                 TxOutput newTxOutput = new()
                 {
                     Amount = (ulong)txOutputEvent.TxOutput.Amount,
                     Address = txOutputEvent.TxOutput.Address,
                     Index = (ulong)txOutputEvent.Context.OutputIdx,
-                    InlineDatum = CBORObject.FromJSONBytes(JsonSerializer.SerializeToUtf8Bytes(txOutputEvent.TxOutput.InlineDatum)).EncodeToBytes()
+                    DatumCbor = txOutputEvent.TxOutput.DatumCbor,
+                    TxHash = txOutputEvent.Context.TxHash,
                 };
 
                 newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };

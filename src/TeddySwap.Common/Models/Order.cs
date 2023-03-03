@@ -11,8 +11,8 @@ public record Order
     public OrderType OrderType { get; init; }
     public Block Block { get; set; } = new();
     public Price? Price { get; init; }
-    public byte[]? PoolDatum { get; init; }
-    public byte[]? OrderDatum { get; init; }
+    public string? PoolDatum { get; init; }
+    public string? OrderDatum { get; init; }
     public string UserAddress { get; init; } = string.Empty;
     public string BatcherAddress { get; init; } = string.Empty;
     public string AssetX { get; init; } = string.Empty;

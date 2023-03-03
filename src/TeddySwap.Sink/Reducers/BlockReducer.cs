@@ -1,4 +1,3 @@
-using System.Text.Json;
 using CardanoSharp.Wallet.Extensions;
 using CardanoSharp.Wallet.Utilities;
 using Microsoft.EntityFrameworkCore;

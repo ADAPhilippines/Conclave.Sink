@@ -6,7 +6,7 @@ public class CborService
 {
     public object DecodeValueByCborType(CBORObject cborObject)
     {
-        object result = new object();
+        object result = new();
 
         switch (cborObject.Type)
         {

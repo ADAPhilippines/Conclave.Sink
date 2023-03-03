@@ -5,7 +5,6 @@ using CardanoSharp.Wallet.Extensions.Models;
 using CardanoSharp.Wallet.Models.Addresses;
 using CardanoSharp.Wallet.Utilities;
 using Microsoft.Extensions.Options;
-using TeddySwap.Common.Models;
 using TeddySwap.Sink.Models;
 
 namespace TeddySwap.Sink.Services;

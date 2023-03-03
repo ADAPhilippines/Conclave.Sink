@@ -7,6 +7,7 @@ RUN dotnet publish -c Release -o /build/bin
 
 FROM rust:1.67.1 AS rust-builder
 WORKDIR /
+ARG CACHE_BUST=1
 RUN git clone https://github.com/ADAPhilippines/oura.git
 WORKDIR /oura
 RUN cargo install --all-features --path .

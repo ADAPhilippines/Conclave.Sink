@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeddySwap.Sink.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdateTransaction : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,17 @@ namespace TeddySwap.Sink.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AddressVerifications", x => x.TestnetAddress);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlacklistedAddresses",
+                columns: table => new
+                {
+                    Address = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlacklistedAddresses", x => x.Address);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,8 +62,8 @@ namespace TeddySwap.Sink.Data.Migrations
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Blockhash = table.Column<string>(type: "text", nullable: true),
                     OrderType = table.Column<int>(type: "integer", nullable: false),
-                    PoolDatum = table.Column<byte[]>(type: "bytea", nullable: true),
-                    OrderDatum = table.Column<byte[]>(type: "bytea", nullable: true),
+                    PoolDatum = table.Column<string>(type: "text", nullable: true),
+                    OrderDatum = table.Column<string>(type: "text", nullable: true),
                     UserAddress = table.Column<string>(type: "text", nullable: false),
                     BatcherAddress = table.Column<string>(type: "text", nullable: false),
                     AssetX = table.Column<string>(type: "text", nullable: false),
@@ -90,7 +101,7 @@ namespace TeddySwap.Sink.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transactions", x => x.Hash);
+                    table.PrimaryKey("PK_Transactions", x => new { x.Hash, x.Index });
                     table.ForeignKey(
                         name: "FK_Transactions_Blocks_Blockhash",
                         column: x => x.Blockhash,
@@ -120,44 +131,24 @@ namespace TeddySwap.Sink.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CollateralTxOutputs",
-                columns: table => new
-                {
-                    TxHash = table.Column<string>(type: "text", nullable: false),
-                    Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    InlineDatum = table.Column<byte[]>(type: "bytea", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CollateralTxOutputs", x => new { x.TxHash, x.Index });
-                    table.ForeignKey(
-                        name: "FK_CollateralTxOutputs_Transactions_TxHash",
-                        column: x => x.TxHash,
-                        principalTable: "Transactions",
-                        principalColumn: "Hash",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TxOutputs",
                 columns: table => new
                 {
                     TxHash = table.Column<string>(type: "text", nullable: false),
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    TxIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
-                    InlineDatum = table.Column<byte[]>(type: "bytea", nullable: true)
+                    DatumCbor = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TxOutputs", x => new { x.TxHash, x.Index });
                     table.ForeignKey(
-                        name: "FK_TxOutputs_Transactions_TxHash",
-                        column: x => x.TxHash,
+                        name: "FK_TxOutputs_Transactions_TxHash_TxIndex",
+                        columns: x => new { x.TxHash, x.TxIndex },
                         principalTable: "Transactions",
-                        principalColumn: "Hash",
+                        principalColumns: new[] { "Hash", "Index" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -169,18 +160,11 @@ namespace TeddySwap.Sink.Data.Migrations
                     TxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     PolicyId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    CollateralTxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    CollateralTxOutputTxHash = table.Column<string>(type: "text", nullable: true)
+                    Amount = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Assets", x => new { x.PolicyId, x.Name, x.TxOutputHash, x.TxOutputIndex });
-                    table.ForeignKey(
-                        name: "FK_Assets_CollateralTxOutputs_CollateralTxOutputTxHash_Collate~",
-                        columns: x => new { x.CollateralTxOutputTxHash, x.CollateralTxOutputIndex },
-                        principalTable: "CollateralTxOutputs",
-                        principalColumns: new[] { "TxHash", "Index" });
                     table.ForeignKey(
                         name: "FK_Assets_TxOutputs_TxOutputHash_TxOutputIndex",
                         columns: x => new { x.TxOutputHash, x.TxOutputIndex },
@@ -189,85 +173,10 @@ namespace TeddySwap.Sink.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "CollateralTxInputs",
-                columns: table => new
-                {
-                    TxHash = table.Column<string>(type: "text", nullable: false),
-                    TxOutputHash = table.Column<string>(type: "text", nullable: false),
-                    TxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    InlineDatum = table.Column<byte>(type: "smallint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CollateralTxInputs", x => new { x.TxHash, x.TxOutputHash, x.TxOutputIndex });
-                    table.ForeignKey(
-                        name: "FK_CollateralTxInputs_Transactions_TxHash",
-                        column: x => x.TxHash,
-                        principalTable: "Transactions",
-                        principalColumn: "Hash",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CollateralTxInputs_TxOutputs_TxOutputHash_TxOutputIndex",
-                        columns: x => new { x.TxOutputHash, x.TxOutputIndex },
-                        principalTable: "TxOutputs",
-                        principalColumns: new[] { "TxHash", "Index" },
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TxInputs",
-                columns: table => new
-                {
-                    TxHash = table.Column<string>(type: "text", nullable: false),
-                    TxOutputHash = table.Column<string>(type: "text", nullable: false),
-                    TxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    CollateralTxOutputIndex = table.Column<decimal>(type: "numeric(20,0)", nullable: true),
-                    CollateralTxOutputTxHash = table.Column<string>(type: "text", nullable: true),
-                    InlineDatum = table.Column<byte>(type: "smallint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TxInputs", x => new { x.TxHash, x.TxOutputHash, x.TxOutputIndex });
-                    table.ForeignKey(
-                        name: "FK_TxInputs_CollateralTxOutputs_CollateralTxOutputTxHash_Colla~",
-                        columns: x => new { x.CollateralTxOutputTxHash, x.CollateralTxOutputIndex },
-                        principalTable: "CollateralTxOutputs",
-                        principalColumns: new[] { "TxHash", "Index" });
-                    table.ForeignKey(
-                        name: "FK_TxInputs_Transactions_TxHash",
-                        column: x => x.TxHash,
-                        principalTable: "Transactions",
-                        principalColumn: "Hash",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TxInputs_TxOutputs_TxOutputHash_TxOutputIndex",
-                        columns: x => new { x.TxOutputHash, x.TxOutputIndex },
-                        principalTable: "TxOutputs",
-                        principalColumns: new[] { "TxHash", "Index" },
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Assets_CollateralTxOutputTxHash_CollateralTxOutputIndex",
-                table: "Assets",
-                columns: new[] { "CollateralTxOutputTxHash", "CollateralTxOutputIndex" });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_TxOutputHash_TxOutputIndex",
                 table: "Assets",
                 columns: new[] { "TxOutputHash", "TxOutputIndex" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CollateralTxInputs_TxOutputHash_TxOutputIndex",
-                table: "CollateralTxInputs",
-                columns: new[] { "TxOutputHash", "TxOutputIndex" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CollateralTxOutputs_TxHash",
-                table: "CollateralTxOutputs",
-                column: "TxHash",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_Blockhash",
@@ -280,14 +189,9 @@ namespace TeddySwap.Sink.Data.Migrations
                 column: "Blockhash");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TxInputs_CollateralTxOutputTxHash_CollateralTxOutputIndex",
-                table: "TxInputs",
-                columns: new[] { "CollateralTxOutputTxHash", "CollateralTxOutputIndex" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TxInputs_TxOutputHash_TxOutputIndex",
-                table: "TxInputs",
-                columns: new[] { "TxOutputHash", "TxOutputIndex" });
+                name: "IX_TxOutputs_TxHash_TxIndex",
+                table: "TxOutputs",
+                columns: new[] { "TxHash", "TxIndex" });
         }
 
         /// <inheritdoc />
@@ -300,22 +204,16 @@ namespace TeddySwap.Sink.Data.Migrations
                 name: "Assets");
 
             migrationBuilder.DropTable(
-                name: "CollateralTxInputs");
+                name: "BlacklistedAddresses");
 
             migrationBuilder.DropTable(
                 name: "Prices");
 
             migrationBuilder.DropTable(
-                name: "TxInputs");
+                name: "TxOutputs");
 
             migrationBuilder.DropTable(
                 name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "CollateralTxOutputs");
-
-            migrationBuilder.DropTable(
-                name: "TxOutputs");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

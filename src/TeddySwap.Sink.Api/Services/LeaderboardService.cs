@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TeddySwap.Common.Models;
-using TeddySwap.Common.Models.Request;
+using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Models;
 using TeddySwap.Sink.Data;
@@ -28,6 +28,7 @@ public class LeaderboardService
     {
 
         var rewardQuery = await _dbContext.Orders
+            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
             .GroupBy(o => o.UserAddress)
             .Select(g => new LeaderboardResponse
             {
@@ -41,6 +42,7 @@ public class LeaderboardService
             .ToListAsync();
 
         var batchQuery = await _dbContext.Orders
+            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
             .GroupBy(o => o.BatcherAddress)
             .Select(g => new LeaderboardResponse
             {
@@ -122,6 +124,7 @@ public class LeaderboardService
     public async Task<PaginatedLeaderboardResponse> GetUserLeaderboardAsync(int offset, int limit)
     {
         var rewardQuery = await _dbContext.Orders
+            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
             .GroupBy(o => o.UserAddress)
             .Select(g => new
             {
@@ -185,6 +188,7 @@ public class LeaderboardService
     public async Task<PaginatedLeaderboardResponse> GetBatcherLeaderboardAsync(int offset, int limit)
     {
         var batchQuery = await _dbContext.Orders
+          .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
           .GroupBy(o => o.BatcherAddress)
           .Select(g => new
           {

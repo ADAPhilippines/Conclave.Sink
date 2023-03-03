@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
 using TeddySwap.Common.Models;
+using TeddySwap.Common.Enums;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Models.Oura;
@@ -15,7 +16,7 @@ public class OrderService
 
     private readonly TeddySwapSinkSettings _settings;
     private readonly DatumService _datumService;
-    private readonly CardanoService _cardanoService;
+    private readonly ByteArrayService _byteArrayService;
     private readonly ILogger<OrderService> _logger;
     private IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
 
@@ -23,12 +24,12 @@ public class OrderService
         DatumService datumService,
         IOptions<TeddySwapSinkSettings> settings,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
-        CardanoService cardanoService,
+        ByteArrayService byteArrayService,
         ILogger<OrderService> logger)
     {
         _settings = settings.Value;
         _datumService = datumService;
-        _cardanoService = cardanoService;
+        _byteArrayService = byteArrayService;
         _logger = logger;
         _dbContextFactory = dbContextFactory;
     }
@@ -82,7 +83,11 @@ public class OrderService
 
             OrderType orderType = _datumService.GetOrderType(orderInput.Address);
             List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
-            PoolDatum? poolDatum = _datumService.CborToPoolDatum(CBORObject.DecodeFromBytes(poolInput.InlineDatum));
+            PoolDatum? poolDatum = _datumService
+                .CborToPoolDatum(CBORObject
+                    .DecodeFromBytes(_byteArrayService
+                        .HexToByteArray(poolInput.DatumCbor ?? "")));
+
             OuraTxOutput? poolOutput = outputs[0];
             OuraTxOutput? rewardOutput = outputs[1];
             OuraTxOutput? batcherOutput = outputs[2];
@@ -120,7 +125,11 @@ public class OrderService
 
                         break;
                     case OrderType.Swap:
-                        SwapDatum? swapDatum = _datumService.CborToSwapDatum(CBORObject.DecodeFromBytes(orderInput.InlineDatum));
+                        SwapDatum? swapDatum = _datumService
+                            .CborToSwapDatum(CBORObject
+                                .DecodeFromBytes(_byteArrayService
+                                    .HexToByteArray(orderInput.DatumCbor ?? "")));
+
                         if (swapDatum is not null)
                         {
                             orderBase = swapDatum.Base.PolicyId + swapDatum.Base.Name;
@@ -152,8 +161,8 @@ public class OrderService
                         OrderType = orderType,
                         UserAddress = rewardOutput.Address,
                         BatcherAddress = batcherOutput.Address,
-                        PoolDatum = poolInput.InlineDatum,
-                        OrderDatum = orderInput.InlineDatum,
+                        PoolDatum = poolInput.DatumCbor,
+                        OrderDatum = orderInput.DatumCbor,
                         AssetX = assetX,
                         AssetY = assetY,
                         AssetLq = assetLq,
