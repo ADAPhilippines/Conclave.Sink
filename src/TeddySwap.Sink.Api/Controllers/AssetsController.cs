@@ -9,13 +9,13 @@ namespace TeddySwap.Sink.Api.Controllers;
 [ApiVersion(1.0)]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
-public class AssetController : ControllerBase
+public class AssetsController : ControllerBase
 {
-    private readonly ILogger<AssetController> _logger;
+    private readonly ILogger<AssetsController> _logger;
     private readonly AssetService _assetService;
 
-    public AssetController(
-        ILogger<AssetController> logger,
+    public AssetsController(
+        ILogger<AssetsController> logger,
         AssetService assetService)
     {
         _logger = logger;
