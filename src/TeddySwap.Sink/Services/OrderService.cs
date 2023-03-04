@@ -84,6 +84,8 @@ public class OrderService
             OrderType orderType = _datumService.GetOrderType(orderInput.Address);
             List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
 
+            if (outputs.Count < 2) return null;
+
             byte[] poolDatumByteArray = _byteArrayService.HexToByteArray(poolInput.DatumCbor ?? "");
             byte[] orderDatumByteArray = _byteArrayService.HexToByteArray(orderInput.DatumCbor ?? "");
 
