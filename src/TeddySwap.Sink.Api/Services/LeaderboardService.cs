@@ -91,6 +91,7 @@ public class LeaderboardService
 
         var pagedEntries = allEntries
             .OrderByDescending(r => r.Total)
+            .Where(r => r.Total > 0)
             .Skip(offset)
             .Take(limit)
             .Select((r, index) => new LeaderBoardResponse
@@ -134,7 +135,7 @@ public class LeaderboardService
         }
 
         int totalAmount = allEntries.Sum(r => r.Total);
-        int totalCount = allEntries.Count;
+        int totalCount = allEntries.Where(t => t.Total > 0).ToList().Count;
 
         return new PaginatedLeaderboardResponse()
         {
