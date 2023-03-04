@@ -90,8 +90,8 @@ public class LeaderboardService
         };
 
         var pagedEntries = allEntries
-            .OrderByDescending(r => r.Total)
             .Where(r => r.Total > 0)
+            .OrderByDescending(r => r.Total)
             .Skip(offset)
             .Take(limit)
             .Select((r, index) => new LeaderBoardResponse
