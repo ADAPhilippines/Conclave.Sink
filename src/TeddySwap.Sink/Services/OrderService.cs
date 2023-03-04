@@ -3,8 +3,8 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
-using TeddySwap.Common.Models;
 using TeddySwap.Common.Enums;
+using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Models.Oura;
@@ -83,10 +83,11 @@ public class OrderService
 
             OrderType orderType = _datumService.GetOrderType(orderInput.Address);
             List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
-            PoolDatum? poolDatum = _datumService
-                .CborToPoolDatum(CBORObject
-                    .DecodeFromBytes(_byteArrayService
-                        .HexToByteArray(poolInput.DatumCbor ?? "")));
+
+            byte[] poolDatumByteArray = _byteArrayService.HexToByteArray(poolInput.DatumCbor ?? "");
+            byte[] orderDatumByteArray = _byteArrayService.HexToByteArray(orderInput.DatumCbor ?? "");
+
+            PoolDatum? poolDatum = _datumService.CborToPoolDatum(CBORObject.DecodeFromBytes(poolDatumByteArray));
 
             OuraTxOutput? poolOutput = outputs[0];
             OuraTxOutput? rewardOutput = outputs[1];
@@ -125,10 +126,7 @@ public class OrderService
 
                         break;
                     case OrderType.Swap:
-                        SwapDatum? swapDatum = _datumService
-                            .CborToSwapDatum(CBORObject
-                                .DecodeFromBytes(_byteArrayService
-                                    .HexToByteArray(orderInput.DatumCbor ?? "")));
+                        SwapDatum? swapDatum = _datumService.CborToSwapDatum(CBORObject.DecodeFromBytes(orderDatumByteArray));
 
                         if (swapDatum is not null)
                         {
@@ -161,8 +159,8 @@ public class OrderService
                         OrderType = orderType,
                         UserAddress = rewardOutput.Address,
                         BatcherAddress = batcherOutput.Address,
-                        PoolDatum = poolInput.DatumCbor,
-                        OrderDatum = orderInput.DatumCbor,
+                        PoolDatum = poolDatumByteArray,
+                        OrderDatum = orderDatumByteArray,
                         AssetX = assetX,
                         AssetY = assetY,
                         AssetLq = assetLq,

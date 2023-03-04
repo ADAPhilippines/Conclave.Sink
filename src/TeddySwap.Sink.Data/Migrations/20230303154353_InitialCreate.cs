@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeddySwap.Sink.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateTransaction : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,8 +62,8 @@ namespace TeddySwap.Sink.Data.Migrations
                     Index = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Blockhash = table.Column<string>(type: "text", nullable: true),
                     OrderType = table.Column<int>(type: "integer", nullable: false),
-                    PoolDatum = table.Column<string>(type: "text", nullable: true),
-                    OrderDatum = table.Column<string>(type: "text", nullable: true),
+                    PoolDatum = table.Column<byte[]>(type: "bytea", nullable: true),
+                    OrderDatum = table.Column<byte[]>(type: "bytea", nullable: true),
                     UserAddress = table.Column<string>(type: "text", nullable: false),
                     BatcherAddress = table.Column<string>(type: "text", nullable: false),
                     AssetX = table.Column<string>(type: "text", nullable: false),
