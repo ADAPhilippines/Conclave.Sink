@@ -1,14 +1,12 @@
-using System.Linq;
 using System.Text.Json;
-using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models;
-using TeddySwap.Sink.Reducers;
-using TeddySwap.Sink.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TeddySwap.Sink.Models.Oura;
 using Microsoft.Extensions.Options;
+using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
+using TeddySwap.Sink.Models.Oura;
+using TeddySwap.Sink.Reducers;
+using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Controllers;
 
