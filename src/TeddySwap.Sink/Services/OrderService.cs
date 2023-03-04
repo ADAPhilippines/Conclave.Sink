@@ -91,12 +91,10 @@ public class OrderService
 
             OuraTxOutput? poolOutput = outputs[0];
             OuraTxOutput? rewardOutput = outputs[1];
-            OuraTxOutput? batcherOutput = outputs[2];
 
             if (poolDatum is not null &&
                 poolOutput is not null &&
-                rewardOutput is not null &&
-                batcherOutput is not null)
+                rewardOutput is not null)
             {
                 string assetX = string.Concat(poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
                 string assetY = string.Concat(poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
@@ -146,19 +144,22 @@ public class OrderService
                         break;
                 }
 
+
                 if (poolDatum is not null &&
                     rewardOutput is not null &&
                     rewardOutput.Address is not null &&
-                    batcherOutput.Address is not null &&
                     transactionEvent.Context.Slot is not null)
                 {
+
+                    string? batcherAddress = outputs.Count < 3 ? null : outputs[2].Address;
+
                     return new()
                     {
                         TxHash = transactionEvent.Context.TxHash,
                         Index = (ulong)transactionEvent.Context.TxIdx,
                         OrderType = orderType,
                         UserAddress = rewardOutput.Address,
-                        BatcherAddress = batcherOutput.Address,
+                        BatcherAddress = batcherAddress,
                         PoolDatum = poolDatumByteArray,
                         OrderDatum = orderDatumByteArray,
                         AssetX = assetX,

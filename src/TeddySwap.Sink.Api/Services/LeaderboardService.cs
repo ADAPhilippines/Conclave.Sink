@@ -46,6 +46,7 @@ public class LeaderboardService
             .ToListAsync();
 
         var batchQuery = await _dbContext.Orders
+            .Where(b => b.BatcherAddress != null)
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
             .Where(o => o.Slot <= _settings.ItnEndSlot)
             .GroupBy(o => o.BatcherAddress)
