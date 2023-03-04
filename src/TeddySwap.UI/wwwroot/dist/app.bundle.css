@@ -595,6 +595,10 @@ video {
   margin-top: 1.5rem;
 }
 
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
 .\!flex {
   display: flex !important;
 }
@@ -814,20 +818,27 @@ video {
   text-transform: none;
 }
 
-.text-\[var\(--mud-palette-text-primary\)\] {
-  color: var(--mud-palette-text-primary);
+.\!text-\[var\(--mud-palette-text-primary\)\] {
+  color: var(--mud-palette-text-primary) !important;
 }
 
 .text-\[var\(--mud-palette-text-secondary\)\] {
   color: var(--mud-palette-text-secondary);
 }
 
-.\!text-\[var\(--mud-palette-text-primary\)\] {
-  color: var(--mud-palette-text-primary) !important;
+.backdrop-blur-xl {
+  --tw-backdrop-blur: blur(24px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 .mud-table-toolbar {
   padding: 0px !important;
+}
+
+.mud-paper {
+  -webkit-backdrop-filter: blur(24px) !important;
+          backdrop-filter: blur(24px) !important;
 }
 
 #leaderboard-tabs .mud-tabs-toolbar {
@@ -837,12 +848,27 @@ video {
 #leaderboard-tabs .mud-tabs-toolbar-wrapper {
   background-color: var(--mud-palette-surface);
   border-radius: var(--mud-default-borderradius);
+  -webkit-backdrop-filter: blur(24px) !important;
+          backdrop-filter: blur(24px) !important;
   overflow: hidden;
 }
 
 #leaderboard-tabs .mud-tab-active {
   background-color: var(--mud-palette-secondary);
   color: var(--mud-palette-text-primary);
+}
+
+#leaderboard-tabs .mud-tab {
+  text-transform: none;
+  font-weight: bold;
+}
+
+#leaderboard-tabs .mud-table-container {
+  padding: 12px;
+}
+
+#leaderboard-tabs .mud-table-pagination-toolbar {
+  background-color: var(--mud-palette-background-grey);
 }
 
 #leaderboard-search .mud-icon-default {

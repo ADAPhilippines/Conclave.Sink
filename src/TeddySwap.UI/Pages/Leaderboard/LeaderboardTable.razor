@@ -1,4 +1,38 @@
-<div class="!flex md:!flex-row !flex-col w-full mb-4">
+<section class="grid grid-cols-3 gap-6 mb-6 text-center">
+    <MudCard Elevation="6">
+        <MudCardContent>
+            <MudText Typo="Typo.caption" Class="font-bold">Available Rewards</MudText>
+            <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@((LeaderBoardType ==
+                Common.Enums.LeaderBoardType.Users ? 2_000_000 : 1_000_000).ToString("N0")) $TEDY</MudText>
+            <MudText Typo="Typo.caption">Divided by % of user txs</MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="6">
+        <MudCardContent>
+            <MudText Typo="Typo.caption" Class="font-bold">
+                Total @(LeaderBoardType == Common.Enums.LeaderBoardType.Users
+                ? "Users" : "Baders")
+            </MudText>
+            <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">
+                @(@LeaderBoardStats.TotalCount.ToString("N0"))
+            </MudText>
+            <MudText Typo="Typo.caption">
+                Testnet @(LeaderBoardType == Common.Enums.LeaderBoardType.Users
+                ? "Users" : "Baders")
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="6">
+        <MudCardContent>
+            <MudText Typo="Typo.caption" Class="font-bold">Total Transactions</MudText>
+            <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">
+                @(@LeaderBoardStats.TotalAmount.ToString("N0"))
+            </MudText>
+            <MudText Typo="Typo.caption">All Time</MudText>
+        </MudCardContent>
+    </MudCard>
+</section>
+<section class="!flex md:!flex-row !flex-col w-full mb-4">
     <div class="grid content-center">
         <MudText Class="!hidden md:!block text-[24px] font-bold">
             Testnet Leaderboard | @(LeaderBoardType == Common.Enums.LeaderBoardType.Users ? "Global" : "Badgers")
@@ -10,8 +44,9 @@
             AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"
             ValueChanged="@((v) => OnSearch(v))" T="string" />
     </div>
-</div>
-<MudTable @ref="LeaderBoardTable" Hover="true" Class="w-full p-4" Dense="true" ServerData="LeaderboardServerData">
+</section>
+<MudTable Elevation="6" @ref="LeaderBoardTable" Hover="true" Class="w-full backdrop-blur-xl" Dense="true"
+    ServerData="LeaderboardServerData">
     <HeaderContent>
         <MudTh Class="!font-bold">Rank</MudTh>
         <MudTh Class="!font-bold">Testnet Address</MudTh>
@@ -79,6 +114,6 @@
         </MudTh>
     </RowTemplate>
     <PagerContent>
-        <MudTablePager />
+        <MudTablePager Class="test" />
     </PagerContent>
 </MudTable>

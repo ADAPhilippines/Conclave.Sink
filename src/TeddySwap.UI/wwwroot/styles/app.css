@@ -6,6 +6,10 @@
     padding: 0px !important;
 }
 
+.mud-paper {
+    backdrop-filter: blur(24px) !important;
+}
+
 #leaderboard-tabs .mud-tabs-toolbar {
     background: transparent !important;
 }
@@ -13,12 +17,26 @@
 #leaderboard-tabs .mud-tabs-toolbar-wrapper {
     background-color: var(--mud-palette-surface);
     border-radius: var(--mud-default-borderradius);
+    backdrop-filter: blur(24px) !important;
     overflow: hidden;
 }
 
 #leaderboard-tabs .mud-tab-active {
     background-color: var(--mud-palette-secondary);
     color: var(--mud-palette-text-primary);
+}
+
+#leaderboard-tabs .mud-tab {
+    text-transform: none;
+    font-weight: bold;
+}
+
+#leaderboard-tabs .mud-table-container {
+    padding: 12px;
+}
+
+#leaderboard-tabs .mud-table-pagination-toolbar {
+    background-color: var(--mud-palette-background-grey);
 }
 
 #leaderboard-search .mud-icon-default {

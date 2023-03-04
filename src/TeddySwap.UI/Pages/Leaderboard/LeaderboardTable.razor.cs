@@ -15,12 +15,14 @@ public partial class LeaderboardTable
     protected IEnumerable<LeaderBoardItem>? LeaderBoardItems { get; set; }
     protected MudTable<LeaderBoardItem>? LeaderBoardTable { get; set; }
     protected string SearchQuery { get; set; } = string.Empty;
+    protected PaginatedLeaderBoardResponse LeaderBoardStats { get; set; } = new();
 
     [Parameter]
     public LeaderBoardType LeaderBoardType { get; set; } = LeaderBoardType.Users;
 
     protected override async Task OnInitializedAsync()
     {
+        await RefreshDataAsync();
         await base.OnInitializedAsync();
     }
 
@@ -30,6 +32,8 @@ public partial class LeaderboardTable
         {
             if (LeaderBoardTable is not null)
                 await LeaderBoardTable.ReloadServerData();
+            if (SinkService is not null)
+                LeaderBoardStats = await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
         });
     }
 
@@ -40,7 +44,7 @@ public partial class LeaderboardTable
         {
             try
             {
-                PaginatedLeaderboardResponse resp = await SinkService.GetLeaderboardAsync(LeaderBoardType, ts.Page * ts.PageSize, ts.PageSize, SearchQuery);
+                PaginatedLeaderBoardResponse resp = await SinkService.GetLeaderboardAsync(LeaderBoardType, ts.Page * ts.PageSize, ts.PageSize, SearchQuery);
                 IEnumerable<LeaderBoardItem>? result = resp.Result.Select(lbr => LeaderBoardItem.FromResponse(lbr)).Where(lbr => lbr is not null) as IEnumerable<LeaderBoardItem>;
                 if (result is not null)
                 {
