@@ -1,8 +1,8 @@
 using System.Numerics;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using TeddySwap.Common.Models;
 using TeddySwap.Common.Enums;
+using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models.Oura;
 using TeddySwap.Sink.Services;
@@ -35,6 +35,8 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
             transactionEvent.Transaction.Fee is not null &&
             transactionEvent.Context.TxIdx is not null)
         {
+            if (transactionEvent.Transaction.HasCollateralOutput) return;
+
             TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
@@ -43,36 +45,34 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
 
-            if (block.InvalidTransactions is null ||
-                !block.InvalidTransactions.ToList().Contains((ulong)transactionEvent.Context.TxIdx))
+
+            Order? existingOrder = await _dbContext.Orders
+                .Where(o => o.TxHash == transactionEvent.Context.TxHash && o.Index == transactionEvent.Context.TxIdx)
+                .FirstOrDefaultAsync();
+
+            if (existingOrder is not null) return;
+
+            Order? order = await _orderService.ProcessOrderAsync(transactionEvent);
+
+            if (order is not null)
             {
-                Order? existingOrder = await _dbContext.Orders
-                    .Where(o => o.TxHash == transactionEvent.Context.TxHash && o.Index == transactionEvent.Context.TxIdx)
-                    .FirstOrDefaultAsync();
+                order.Block = block;
+                order.Blockhash = block.BlockHash;
 
-                if (existingOrder is not null) return;
+                await _dbContext.Orders.AddAsync(order);
 
-                Order? order = await _orderService.ProcessOrderAsync(transactionEvent);
-
-                if (order is not null)
+                if (order.OrderType == OrderType.Swap)
                 {
-                    order.Block = block;
-                    order.Blockhash = block.BlockHash;
-
-                    await _dbContext.Orders.AddAsync(order);
-
-                    if (order.OrderType == OrderType.Swap)
+                    await _dbContext.Prices.AddAsync(new Price()
                     {
-                        await _dbContext.Prices.AddAsync(new Price()
-                        {
-                            TxHash = order.TxHash,
-                            Index = order.Index,
-                            Order = order,
-                            PriceX = BigIntegerDivToDecimal(order.ReservesX, order.ReservesY, 6),
-                            PriceY = BigIntegerDivToDecimal(order.ReservesY, order.ReservesX, 6),
-                        });
-                    }
+                        TxHash = order.TxHash,
+                        Index = order.Index,
+                        Order = order,
+                        PriceX = BigIntegerDivToDecimal(order.ReservesX, order.ReservesY, 6),
+                        PriceY = BigIntegerDivToDecimal(order.ReservesY, order.ReservesX, 6),
+                    });
                 }
+
             }
 
             await _dbContext.SaveChangesAsync();

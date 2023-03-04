@@ -46,6 +46,7 @@ public class LeaderboardService
             .ToListAsync();
 
         var batchQuery = await _dbContext.Orders
+            .Where(b => b.BatcherAddress != null)
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
             .Where(o => o.Slot <= _settings.ItnEndSlot)
             .GroupBy(o => o.BatcherAddress)
@@ -90,6 +91,7 @@ public class LeaderboardService
         };
 
         var pagedEntries = allEntries
+            .Where(r => r.Total > 0)
             .OrderByDescending(r => r.Total)
             .Skip(offset)
             .Take(limit)
@@ -134,7 +136,7 @@ public class LeaderboardService
         }
 
         int totalAmount = allEntries.Sum(r => r.Total);
-        int totalCount = allEntries.Count;
+        int totalCount = allEntries.Where(t => t.Total > 0).ToList().Count;
 
         return new PaginatedLeaderboardResponse()
         {

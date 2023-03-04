@@ -14,7 +14,7 @@ public record Order
     public byte[]? PoolDatum { get; init; }
     public byte[]? OrderDatum { get; init; }
     public string UserAddress { get; init; } = string.Empty;
-    public string BatcherAddress { get; init; } = string.Empty;
+    public string? BatcherAddress { get; init; }
     public string AssetX { get; init; } = string.Empty;
     public string AssetY { get; init; } = string.Empty;
     public string AssetLq { get; init; } = string.Empty;
