@@ -7,6 +7,8 @@ public class LeaderBoardResponse
     public int Rank { get; set; }
     public decimal BaseReward { get; set; }
     public decimal BaseRewardPercentage { get; set; }
+    public decimal BonusReward { get; set; }
+    public int TotalNft { get; set; }
     public int Total { get; init; }
     public int Deposit { get; init; }
     public int Redeem { get; init; }

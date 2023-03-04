@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "src/TeddySwap.Sink.Data"
+		},
+		{
+			"path": "deployments"
 		}
 	],
 	"settings": {
