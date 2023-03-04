@@ -26,15 +26,22 @@ builder.Services.AddOuraReducers();
 
 var app = builder.Build();
 
-// Set up oura cursor
-var ouraSettings = builder.Configuration.GetSection("OuraSettings");
-var slot = ouraSettings.GetValue<string>("DefaultSlot");
-var hash = ouraSettings.GetValue<string>("DefaultBlockHash");
-var path = ouraSettings.GetValue<string>("CursorPath");
-var offset = ouraSettings.GetValue<int>("Offset");
-
-using (var scopedProvider = app.Services.CreateScope())
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+else
+{
+    // Set up oura cursor
+    var ouraSettings = builder.Configuration.GetSection("OuraSettings");
+    var slot = ouraSettings.GetValue<string>("DefaultSlot");
+    var hash = ouraSettings.GetValue<string>("DefaultBlockHash");
+    var path = ouraSettings.GetValue<string>("CursorPath");
+    var offset = ouraSettings.GetValue<int>("Offset");
+
+    using var scopedProvider = app.Services.CreateScope();
     var service = scopedProvider.ServiceProvider;
     var dbContext = service.GetService<TeddySwapSinkDbContext>();
 
@@ -49,15 +56,7 @@ using (var scopedProvider = app.Services.CreateScope())
         }
     }
 
-    using StreamWriter outputFile = new(Path.Combine(path ?? "../../deployments/config", "cursor"));
-    outputFile.WriteLine($"{slot},{hash}");
-}
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    await File.WriteAllTextAsync(Path.Combine(path ?? "../../deployments/config", "cursor"), $"{slot},{hash}");
 }
 
 app.UseHttpsRedirection();
