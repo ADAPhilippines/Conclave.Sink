@@ -24,17 +24,21 @@
         {
             <MudChip OnClick="OnWalletDisconnect" Size="Size.Medium"
             Class="!px-2 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
-                <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="24" height="24"
-                    alt="connected-wallet-logo" />
-                <!-- SUPER WEIRD I DONT KNOW WHY I NEED TO CHECK THIS AGAIN LOL -->
-                @if (!string.IsNullOrEmpty(ConnectedAddress))
-                {
-                    <span>
-                        @ConnectedAddress.Substring(0, 6)
-                        ...
-                        @ConnectedAddress.Substring(ConnectedAddress.Length - 6)
-                    </span>
-                }
+                <div class="flex gap-1">
+                    <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="24" height="24"
+                        alt="connected-wallet-logo" />
+                    <div class="grid content-center">
+                        <!-- SUPER WEIRD I DONT KNOW WHY I NEED TO CHECK THIS AGAIN LOL -->
+                        @if (!string.IsNullOrEmpty(ConnectedAddress))
+                        {
+                            <span>
+                                @ConnectedAddress.Substring(0, 6)
+                                ...
+                                @ConnectedAddress.Substring(ConnectedAddress.Length - 6)
+                            </span>
+                        }
+                    </div>
+                </div>
             </MudChip>
         }
         else

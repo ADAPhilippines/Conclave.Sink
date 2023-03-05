@@ -46,10 +46,17 @@ public partial class Rewards : IAsyncDisposable
         ArgumentNullException.ThrowIfNull(CardanoWalletService);
         if (!string.IsNullOrEmpty(CardanoWalletService.ConnectedAddress))
         {
-            PaginatedLeaderBoardResponse response = await SinkService.GetLeaderboardAsync(Common.Enums.LeaderBoardType.Users, 0, 1, CardanoWalletService.ConnectedAddress);
-            LeaderBoardResponse = response.Result.FirstOrDefault() ?? LeaderBoardResponse;
+            try
+            {
+                PaginatedLeaderBoardResponse response = await SinkService.GetLeaderboardAsync(Common.Enums.LeaderBoardType.Users, 0, 1, CardanoWalletService.ConnectedAddress);
+                LeaderBoardResponse = response.Result.FirstOrDefault() ?? LeaderBoardResponse;
+            }
+            catch
+            {
+                // @TODO: Push error to analytics
+            }
         }
-        
+
         IsTestnetRewardsLoaded = true;
         await InvokeAsync(StateHasChanged);
     }
