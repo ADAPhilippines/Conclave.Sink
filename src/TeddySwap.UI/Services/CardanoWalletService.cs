@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.JSInterop;
 using TeddySwap.UI.Models;
 
@@ -7,13 +8,26 @@ namespace TeddySwap.UI.Services;
 public class CardanoWalletService
 {
     private readonly IJSRuntime _jsRuntime;
+    private readonly ILocalStorageService _localStorage;
+
+    public event EventHandler? ConnectionStateChange;
 
     public string? ConnectedAddress { get; set; }
     public CardanoWallet? ConnectedWallet { get; set; }
 
-    public CardanoWalletService(IJSRuntime jSRuntime)
+    public CardanoWalletService(IJSRuntime jSRuntime, ILocalStorageService localStorage)
     {
         _jsRuntime = jSRuntime;
+        _localStorage = localStorage;
+    }
+
+    public async Task LoadStateFromStorageAsync()
+    {
+        if (await _localStorage.ContainKeyAsync("ConnectedWallet"))
+        {
+            CardanoWallet wallet = await _localStorage.GetItemAsync<CardanoWallet>("ConnectedWallet");
+            await EnableAsync(wallet);
+        }
     }
 
     public async Task<IEnumerable<CardanoWallet>> GetAvailableWalletsAsync()
@@ -31,9 +45,20 @@ public class CardanoWalletService
         {
             ConnectedAddress = await GetAddressAsync();
             ConnectedWallet = wallet;
+            await _localStorage.SetItemAsync<CardanoWallet>("ConnectedWallet", ConnectedWallet);
+            ConnectionStateChange?.Invoke(this, EventArgs.Empty);
         }
 
         return result;
+    }
+
+    public async Task DisconnectAsync()
+    {
+        ArgumentNullException.ThrowIfNull(_jsRuntime);
+        ConnectedAddress = string.Empty;
+        await _jsRuntime.InvokeVoidAsync("CardanoWalletService.disconnect");
+        await _localStorage.RemoveItemAsync("ConnectedWallet");
+        ConnectionStateChange?.Invoke(this, EventArgs.Empty);
     }
 
     public async Task<string> GetAddressAsync()

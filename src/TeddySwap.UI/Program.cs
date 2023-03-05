@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
@@ -6,9 +7,11 @@ using TeddySwap.UI.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddBlazoredLocalStorage();
 // Add services to the container.
 builder.Services.AddMudServices(config =>
 {
+    config.SnackbarConfiguration.PositionClass = MudBlazor.Defaults.Classes.Position.BottomLeft;
     config.SnackbarConfiguration.HideTransitionDuration = 100;
     config.SnackbarConfiguration.ShowTransitionDuration = 100;
 });

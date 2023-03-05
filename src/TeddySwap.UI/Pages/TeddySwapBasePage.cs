@@ -27,7 +27,7 @@ public class TeddySwapBasePage : ComponentBase, IAsyncDisposable
         }
     }
     
-    async ValueTask IAsyncDisposable.DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (HeartBeatService is not null)
         {

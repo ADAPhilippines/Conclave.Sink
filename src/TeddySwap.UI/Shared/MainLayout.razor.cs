@@ -38,8 +38,10 @@ public partial class MainLayout
 
     [Inject]
     protected CardanoWalletService? CardanoWalletService { get; set; }
+
     [Inject]
     protected ISnackbar? Snackbar { get; set; }
+    
     protected IEnumerable<CardanoWallet> CardanoWallets { get; set; } = new List<CardanoWallet>();
     protected bool IsWalletDialogShown { get; set; } = false;
     protected DialogOptions WalletDialogOptions => new()
@@ -48,6 +50,20 @@ public partial class MainLayout
         FullWidth = true
     };
     protected bool IsWalletConnected => !string.IsNullOrEmpty(CardanoWalletService?.ConnectedAddress);
+    protected string ConnectedAddress => (IsWalletConnected ? CardanoWalletService?.ConnectedAddress : string.Empty) ?? string.Empty;
+    protected bool IsLoaded { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ArgumentNullException.ThrowIfNull(CardanoWalletService);
+            await CardanoWalletService.LoadStateFromStorageAsync();
+            IsLoaded = true;
+            await InvokeAsync(StateHasChanged);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     protected async Task OnConnectWalletShowClicked()
     {
@@ -71,6 +87,13 @@ public partial class MainLayout
             Snackbar.Add("Wallet connected succesfully!", Severity.Success);
             IsWalletDialogShown = false;
         }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected async Task OnWalletDisconnect()
+    {
+        ArgumentNullException.ThrowIfNull(CardanoWalletService);
+        await CardanoWalletService.DisconnectAsync();
         await InvokeAsync(StateHasChanged);
     }
 }

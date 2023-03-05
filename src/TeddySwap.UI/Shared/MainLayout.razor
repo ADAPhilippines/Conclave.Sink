@@ -22,16 +22,24 @@
         <MudSpacer />
         @if (IsWalletConnected)
         {
-            <MudChip Size="Size.Medium" Class="!px-2 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
-                <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="24" height="24" alt="connected-wallet-logo"/>
-                @CardanoWalletService?.ConnectedAddress?.Substring(0, 6)
-                ...
-                @CardanoWalletService?.ConnectedAddress?.Substring(@CardanoWalletService.ConnectedAddress.Length - 6)
+            <MudChip OnClick="OnWalletDisconnect" Size="Size.Medium"
+            Class="!px-2 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
+                <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="24" height="24"
+                    alt="connected-wallet-logo" />
+                <!-- SUPER WEIRD I DONT KNOW WHY I NEED TO CHECK THIS AGAIN LOL -->
+                @if (!string.IsNullOrEmpty(ConnectedAddress))
+                {
+                    <span>
+                        @ConnectedAddress.Substring(0, 6)
+                        ...
+                        @ConnectedAddress.Substring(ConnectedAddress.Length - 6)
+                    </span>
+                }
             </MudChip>
         }
         else
         {
-            <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
+            <MudButton Disabled="!IsLoaded" Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
             Class="!normal-case !text-[16px] !font-bold !px-4 hidden lg:block"
             OnClick="() => OnConnectWalletShowClicked()">
                 Connect Wallet

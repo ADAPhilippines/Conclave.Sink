@@ -5,6 +5,7 @@ declare global {
     interface Window {
         CardanoWalletService: {
             enableAsync: (walletId: string) => Promise<boolean>;
+            disconnect: () => void;
             getWallets: () => Wallet[];
             getAddressAsync: () => Promise<string | undefined>;
             lucid?: Lucid;
@@ -51,8 +52,13 @@ const getAddressAsync = async () => {
     return await window.CardanoWalletService.lucid?.wallet.address()
 };
 
+const disconnect = () => {
+    delete window.CardanoWalletService.lucid;
+}
+
 window.CardanoWalletService = {
-    getWallets,
     enableAsync,
+    disconnect,
+    getWallets,
     getAddressAsync
 };
