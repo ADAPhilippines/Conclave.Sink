@@ -10,6 +10,14 @@
     backdrop-filter: blur(24px) !important;
 }
 
+.mud-dialog {
+    background-color: var(--mud-palette-drawer-background);
+}
+
+.mud-nav-link {
+    font-weight: bold;
+}
+
 #leaderboard-tabs .mud-tabs-toolbar {
     background: transparent !important;
 }
@@ -45,4 +53,10 @@
 
 #leaderboard-search ::placeholder {
     opacity: 1;
+}
+
+#wallet-list .mud-list-item-clickable {
+    background-color: var(--mud-palette-surface);
+    border-radius: var(--mud-default-borderradius);
+    backdrop-filter: blur(24px) !important;
 }

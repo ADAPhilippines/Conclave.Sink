@@ -11,14 +11,14 @@
         <MudCardContent>
             <MudText Typo="Typo.caption" Class="font-bold">
                 Total @(LeaderBoardType == Common.Enums.LeaderBoardType.Users
-                ? "Users" : "Baders")
+                ? "Users" : "Badgers")
             </MudText>
             <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">
                 @(@LeaderBoardStats.TotalCount.ToString("N0"))
             </MudText>
             <MudText Typo="Typo.caption">
                 Testnet @(LeaderBoardType == Common.Enums.LeaderBoardType.Users
-                ? "Users" : "Baders")
+                ? "Users" : "Badgers")
             </MudText>
         </MudCardContent>
     </MudCard>

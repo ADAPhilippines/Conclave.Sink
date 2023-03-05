@@ -7,7 +7,12 @@ using TeddySwap.UI.Workers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.HideTransitionDuration = 100;
+    config.SnackbarConfiguration.ShowTransitionDuration = 100;
+});
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHostedService<HeartBeatWorker>();
@@ -15,6 +20,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<HeartBeatService>();
 builder.Services.AddSingleton<SinkService>();
+builder.Services.AddScoped<CardanoWalletService>();
 
 var app = builder.Build();
 

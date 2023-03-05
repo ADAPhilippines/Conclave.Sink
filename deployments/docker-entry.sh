@@ -8,7 +8,7 @@ mkdir -p /ipc
 ln -s $CARDANO_NODE_SOCKET_PATH /ipc/node.socket
 
 # Wait for Dotnet to startup
-sleep 5
+sleep 10
 
 # Start the second process
 /bin/oura daemon --config /config/oura.toml &

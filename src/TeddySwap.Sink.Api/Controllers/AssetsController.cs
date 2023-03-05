@@ -23,7 +23,7 @@ public class AssetsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetAssetsAsync([FromQuery] PaginatedAssetRequest request)
+    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetAssetsAsync([FromQuery] PaginatedAssetRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
@@ -33,7 +33,7 @@ public class AssetsController : ControllerBase
     }
 
     [HttpGet("metadata")]
-    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetAssetsWithMetadataAsync([FromQuery] PaginatedAssetRequest request)
+    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetAssetsWithMetadataAsync([FromQuery] PaginatedAssetRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 

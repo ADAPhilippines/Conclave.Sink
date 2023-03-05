@@ -30,10 +30,11 @@ public partial class LeaderboardTable
     {
         await InvokeAsync(async () =>
         {
+            ArgumentNullException.ThrowIfNull(SinkService);
             if (LeaderBoardTable is not null)
                 await LeaderBoardTable.ReloadServerData();
-            if (SinkService is not null)
-                LeaderBoardStats = await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
+            LeaderBoardStats = await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
+            await InvokeAsync(StateHasChanged);
         });
     }
 

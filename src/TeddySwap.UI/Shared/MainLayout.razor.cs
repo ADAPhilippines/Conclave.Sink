@@ -1,5 +1,9 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Utilities;
+using TeddySwap.UI.Models;
+using TeddySwap.UI.Services;
 
 namespace TeddySwap.UI.Shared;
 
@@ -18,7 +22,7 @@ public partial class MainLayout
             Tertiary = new MudColor("rgba(15, 23, 42, 0.5)"),
             TextPrimary = new MudColor("#FFFFFF"),
             TextSecondary = new MudColor("rgb(161,161,170)"),
-            DrawerBackground = new MudColor("#1f394d"),
+            DrawerBackground = new MudColor("rgb(38, 74, 94)"),
             DrawerText = new MudColor("#FFFFFF")
         },
         Typography = new Typography()
@@ -31,4 +35,42 @@ public partial class MainLayout
     };
 
     protected void ToggleDrawer() => IsDrawerOpen = !IsDrawerOpen;
+
+    [Inject]
+    protected CardanoWalletService? CardanoWalletService { get; set; }
+    [Inject]
+    protected ISnackbar? Snackbar { get; set; }
+    protected IEnumerable<CardanoWallet> CardanoWallets { get; set; } = new List<CardanoWallet>();
+    protected bool IsWalletDialogShown { get; set; } = false;
+    protected DialogOptions WalletDialogOptions => new()
+    {
+        MaxWidth = MaxWidth.Small,
+        FullWidth = true
+    };
+    protected bool IsWalletConnected => !string.IsNullOrEmpty(CardanoWalletService?.ConnectedAddress);
+
+    protected async Task OnConnectWalletShowClicked()
+    {
+        ArgumentNullException.ThrowIfNull(CardanoWalletService);
+        CardanoWallets = (await CardanoWalletService.GetAvailableWalletsAsync()).OrderBy(a => a.Name);
+        IsWalletDialogShown = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected async Task OnConnectWalletClicked(CardanoWallet wallet)
+    {
+        ArgumentNullException.ThrowIfNull(CardanoWalletService);
+        ArgumentNullException.ThrowIfNull(Snackbar);
+        bool connectionResult = await CardanoWalletService.EnableAsync(wallet);
+        if (!connectionResult)
+        {
+            Snackbar.Add("Wallet connection failed, make sure you are connected to the correct network.", Severity.Error);
+        }
+        else
+        {
+            Snackbar.Add("Wallet connected succesfully!", Severity.Success);
+            IsWalletDialogShown = false;
+        }
+        await InvokeAsync(StateHasChanged);
+    }
 }
