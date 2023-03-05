@@ -40,8 +40,11 @@ public partial class MainLayout
     protected CardanoWalletService? CardanoWalletService { get; set; }
 
     [Inject]
+    protected HeartBeatService? HeartBeatService { get; set; }
+
+    [Inject]
     protected ISnackbar? Snackbar { get; set; }
-    
+
     protected IEnumerable<CardanoWallet> CardanoWallets { get; set; } = new List<CardanoWallet>();
     protected bool IsWalletDialogShown { get; set; } = false;
     protected DialogOptions WalletDialogOptions => new()

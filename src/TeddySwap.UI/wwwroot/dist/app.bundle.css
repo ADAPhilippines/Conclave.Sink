@@ -551,6 +551,10 @@ video {
   position: fixed;
 }
 
+.absolute {
+  position: absolute;
+}
+
 .relative {
   position: relative;
 }
@@ -635,6 +639,10 @@ video {
   display: flex;
 }
 
+.inline-flex {
+  display: inline-flex;
+}
+
 .grid {
   display: grid;
 }
@@ -671,6 +679,10 @@ video {
   height: 100px;
 }
 
+.h-3 {
+  height: 0.75rem;
+}
+
 .max-h-\[45px\] {
   max-height: 45px;
 }
@@ -693,6 +705,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-3 {
+  width: 0.75rem;
 }
 
 .shrink-0 {
@@ -719,6 +735,17 @@ video {
 
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .cursor-pointer {
@@ -793,12 +820,31 @@ video {
   overflow-x: hidden;
 }
 
+.rounded-full {
+  border-radius: 9999px;
+}
+
 .bg-\[var\(--mud-palette-surface\)\] {
   background-color: var(--mud-palette-surface);
 }
 
 .\!bg-\[var\(--mud-palette-surface\)\] {
   background-color: var(--mud-palette-surface) !important;
+}
+
+.bg-sky-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(56 189 248 / var(--tw-bg-opacity));
+}
+
+.bg-sky-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(14 165 233 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#0FC43B\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 196 59 / var(--tw-bg-opacity));
 }
 
 .bg-\[url\(\'\/images\/bear-with-balloons\.png\'\)\] {
@@ -968,6 +1014,15 @@ video {
 
 .text-\[var\(--mud-palette-text-secondary\)\] {
   color: var(--mud-palette-text-secondary);
+}
+
+.\!text-\[\#0FC43B\] {
+  --tw-text-opacity: 1 !important;
+  color: rgb(15 196 59 / var(--tw-text-opacity)) !important;
+}
+
+.opacity-75 {
+  opacity: 0.75;
 }
 
 .backdrop-blur-xl {
