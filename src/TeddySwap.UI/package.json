@@ -4,8 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "watch": "concurrently --kill-others \"npx tailwindcss -i ./wwwroot/styles/app.css -o ./wwwroot/dist/app.bundle.css --watch\" \"npx webpack --watch\"",
-    "build": "npx tailwindcss -i ./wwwroot/styles/app.css -o ./wwwroot/dist/app.bundle.css -m"
+    "watch": "concurrently --kill-others \"npx tailwindcss -i ./wwwroot/styles/app.css -o ./wwwroot/dist/app.bundle.css --watch\" \"npx webpack --mode development --watch\"",
+    "build": "npx tailwindcss -i ./wwwroot/styles/app.css -o ./wwwroot/dist/app.bundle.css -m && npx webpack --mode production --optimization-minimize"
   },
   "author": "",
   "license": "ISC",

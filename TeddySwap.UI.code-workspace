@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "src/TeddySwap.Common"
+		},
+		{
+			"path": ".github/workflows"
 		}
 	],
 	"settings": {}
