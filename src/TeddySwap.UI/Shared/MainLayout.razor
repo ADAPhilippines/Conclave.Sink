@@ -7,7 +7,7 @@
 <MudDialogProvider />
 <PageTitle>TeddySwap.UI</PageTitle>
 
-<header>
+<section>
     <MudAppBar Color="Color.Tertiary" Fixed="false">
         <img src="/images/teddy-logo.svg" alt="teddy-logo" class="h-[30px] mr-6" />
         <div class="pt-[4px] gap-6 hidden lg:flex">
@@ -52,38 +52,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="ToggleDrawer" />
     </MudAppBar>
 
-    <MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
-        <MudDrawerHeader Class="pl-[16px] pr-[8px] py-[8px]">
-            <div class="grid content-center relative">
-                <div class="flex gap-2">
-                    <div class="grid content-center">
-                        <span class="relative flex h-3 w-3">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0FC43B] opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-[#0FC43B]"></span>
-                        </span>
-                    </div>
-                    <MudText Class="font-bold !text-[#0FC43B]">@HeartBeatService?.LatestBlockNo</MudText>
-                </div>
-            </div>
-            <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
-        </MudDrawerHeader>
-        <MudNavMenu>
-            <MudNavLink Href="/leaderboard" ActiveClass="!text-[var(--mud-palette-text-primary)]"
-                Class="!font-bold text-[var(--mud-palette-text-secondary)]">Leaderboard</MudNavLink>
-            <MudNavLink Href="/rewards" ActiveClass="!text-[var(--mud-palette-text-primary)]"
-                Class="!font-bold text-[var(--mud-palette-text-secondary)]">Rewards</MudNavLink>
-            <MudNavLink Href="https://fiso.teddyswap.org/" Target="_blank"
-                ActiveClass="!text-[var(--mud-palette-text-primary)]"
-                Class="!font-bold text-[var(--mud-palette-text-secondary)]">Staking</MudNavLink>
-        </MudNavMenu>
-        <div class="flex justify-center mt-4">
-            <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
-                Class="!normal-case !text-[16px] !font-bold !px-4">Connect Wallet</MudButton>
-        </div>
-    </MudDrawer>
-</header>
+</section>
 
 <main class="container mx-auto py-10 relative z-[2]">
     @Body
@@ -120,3 +89,35 @@
 </MudDialog>
 
 <div class="bg-[url('/images/bear-with-balloons.png')] w-[384[x] h-[527px] bg-cover fixed bottom-0 right-20 w-96" />
+
+<MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
+    <MudDrawerHeader Class="pl-[16px] pr-[8px] py-[8px]">
+        <div class="grid content-center relative">
+            <div class="flex gap-2">
+                <div class="grid content-center">
+                    <span class="relative flex h-3 w-3">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0FC43B] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-[#0FC43B]"></span>
+                    </span>
+                </div>
+                <MudText Class="font-bold !text-[#0FC43B]">@HeartBeatService?.LatestBlockNo</MudText>
+            </div>
+        </div>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <MudNavLink Href="/leaderboard" ActiveClass="!text-[var(--mud-palette-text-primary)]"
+            Class="!font-bold text-[var(--mud-palette-text-secondary)]">Leaderboard</MudNavLink>
+        <MudNavLink Href="/rewards" ActiveClass="!text-[var(--mud-palette-text-primary)]"
+            Class="!font-bold text-[var(--mud-palette-text-secondary)]">Rewards</MudNavLink>
+        <MudNavLink Href="https://fiso.teddyswap.org/" Target="_blank"
+            ActiveClass="!text-[var(--mud-palette-text-primary)]"
+            Class="!font-bold text-[var(--mud-palette-text-secondary)]">Staking</MudNavLink>
+    </MudNavMenu>
+    <div class="flex justify-center mt-4">
+        <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
+            Class="!normal-case !text-[16px] !font-bold !px-4">Connect Wallet</MudButton>
+    </div>
+</MudDrawer>
