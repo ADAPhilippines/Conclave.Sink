@@ -60,8 +60,16 @@ public partial class MainLayout
     {
         if (firstRender)
         {
-            ArgumentNullException.ThrowIfNull(CardanoWalletService);
-            await CardanoWalletService.LoadStateFromStorageAsync();
+            try
+            {
+                ArgumentNullException.ThrowIfNull(CardanoWalletService);
+                await CardanoWalletService.LoadStateFromStorageAsync();
+            }
+            catch
+            {
+                // @TODO log error
+            }
+            
             IsLoaded = true;
             await InvokeAsync(StateHasChanged);
         }
