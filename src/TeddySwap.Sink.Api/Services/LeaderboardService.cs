@@ -125,7 +125,7 @@ public class LeaderboardService
                     Offset = 0,
                     PolicyId = _settings.TbcPolicyId,
                     Address = addressVerification.MainnetAddress
-                });
+                }, false);
 
                 if (res.TotalCount > 0)
                 {
