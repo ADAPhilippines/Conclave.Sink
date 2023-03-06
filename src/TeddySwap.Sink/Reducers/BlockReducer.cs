@@ -35,7 +35,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraBlockEvent blockEvent)
     {
-        TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         if (blockEvent.Context is not null &&
             blockEvent.Context.BlockNumber is not null &&
             blockEvent.Context.Slot is not null &&
@@ -74,7 +74,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task RollbackBySlotAsync(ulong rollbackSlot)
     {
-        TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         ulong currentTipSlot = await _dbContext.Blocks.AnyAsync() ? await _dbContext.Blocks.MaxAsync(block => block.Slot) : 0;
 
         // Check if current database tip clashes with the current tip oura is pushing

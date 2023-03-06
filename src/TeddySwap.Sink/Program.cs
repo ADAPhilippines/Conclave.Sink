@@ -43,7 +43,7 @@ else
 
     using var scopedProvider = app.Services.CreateScope();
     var service = scopedProvider.ServiceProvider;
-    var dbContext = service.GetService<TeddySwapSinkDbContext>();
+    using var dbContext = service.GetService<TeddySwapSinkDbContext>();
 
     if (dbContext is not null)
     {

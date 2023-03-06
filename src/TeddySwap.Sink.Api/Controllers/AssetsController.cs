@@ -22,22 +22,22 @@ public class AssetsController : ControllerBase
         _assetService = assetService;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetAssetsAsync([FromQuery] PaginatedAssetRequest request)
+    [HttpGet("policy/{policyId}/address/{address}")]
+    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetAssetsAsync([FromRoute] string policyId, [FromRoute] string address, [FromQuery] PaginatedRequest request)
     {
-        if (request.Offset < 0 || request.Limit > 100) return BadRequest();
+        if (request.Offset < 0 || request.Limit > 100 || string.IsNullOrEmpty(policyId) || string.IsNullOrEmpty(address)) return BadRequest();
 
-        var res = await _assetService.GetAssetsAsync(request);
+        var res = await _assetService.GetAssetsAsync(policyId, address, request.Offset, request.Limit, false);
 
         return Ok(res);
     }
 
-    [HttpGet("metadata")]
-    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetAssetsWithMetadataAsync([FromQuery] PaginatedAssetRequest request)
+    [HttpGet("metadata/policy/{policyId}/address/{address}")]
+    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetAssetsWithMetadataAsync([FromRoute] string policyId, [FromRoute] string address, [FromQuery] PaginatedRequest request)
     {
-        if (request.Offset < 0 || request.Limit > 100) return BadRequest();
+        if (request.Offset < 0 || request.Limit > 100 || string.IsNullOrEmpty(policyId) || string.IsNullOrEmpty(address)) return BadRequest();
 
-        var res = await _assetService.GetAssetsWithMetadataAsync(request);
+        var res = await _assetService.GetAssetsAsync(policyId, address, request.Offset, request.Limit, true);
 
         return Ok(res);
     }
