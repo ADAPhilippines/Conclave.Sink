@@ -23,7 +23,6 @@ public partial class Leaderboard
         {
             try
             {
-
                 if (LeaderBoardTable is not null)
                     await LeaderBoardTable.RefreshDataAsync();
             }
