@@ -37,7 +37,7 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
         {
             if (transactionEvent.Transaction.HasCollateralOutput) return;
 
-            TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)

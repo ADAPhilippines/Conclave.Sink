@@ -36,7 +36,7 @@ public class OrderService
 
     public async Task<Order?> ProcessOrderAsync(OuraTransactionEvent transactionEvent)
     {
-        TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         Order? order = null;
 
         if (transactionEvent.Transaction is not null &&
