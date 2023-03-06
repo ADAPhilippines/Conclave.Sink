@@ -28,21 +28,21 @@ public partial class LeaderboardTable
 
     public async Task RefreshDataAsync()
     {
-        await InvokeAsync(async () =>
+        try
         {
-            try
+            await InvokeAsync(async () =>
             {
                 ArgumentNullException.ThrowIfNull(SinkService);
                 if (LeaderBoardTable is not null)
                     await LeaderBoardTable.ReloadServerData();
                 LeaderBoardStats = await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
                 await InvokeAsync(StateHasChanged);
-            }
-            catch
-            {
-                // @TODO log the error
-            }
-        });
+            });
+        }
+        catch
+        {
+            // @TODO log the error
+        }
     }
 
     protected async Task<TableData<LeaderBoardItem>> LeaderboardServerData(TableState ts)

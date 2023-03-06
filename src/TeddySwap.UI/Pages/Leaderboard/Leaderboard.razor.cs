@@ -19,18 +19,18 @@ public partial class Leaderboard
 
     protected override async void OnHeartBeatEvent(object? s, EventArgs e)
     {
-        await InvokeAsync(async () =>
+        try
         {
-            try
+            await InvokeAsync(async () =>
             {
                 if (LeaderBoardTable is not null)
                     await LeaderBoardTable.RefreshDataAsync();
-            }
-            catch
-            {
-                // @TODO log the error
-            }
-        });
+            });
+        }
+        catch
+        {
+            // @TODO log error
+        }
     }
 
 }
