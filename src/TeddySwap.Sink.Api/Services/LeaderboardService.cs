@@ -28,7 +28,7 @@ public class LeaderboardService
         _settings = settings.Value;
     }
 
-    public async Task<PaginatedLeaderboardResponse> GetLeaderboardAsync(int offset, int limit, LeaderBoardType leaderboardType)
+    public async Task<PaginatedLeaderboardResponse> GetLeaderboardAsync(int offset, int limit, LeaderBoardType leaderboardType, List<string>? addresses)
     {
         var rewardQuery = await _dbContext.Orders
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
@@ -90,11 +90,13 @@ public class LeaderboardService
             _ => _settings.TotalReward
         };
 
-        var pagedEntries = allEntries
-            .Where(r => r.Total > 0)
-            .OrderByDescending(r => r.Total)
-            .Skip(offset)
-            .Take(limit)
+        var filteredEntriesQuery = allEntries
+                .Where(r => r.Total > 0)
+                .OrderByDescending(r => r.Total)
+                .Skip(offset)
+                .Take(limit); ;
+
+        var filteredEntries = filteredEntriesQuery
             .Select((r, index) => new LeaderBoardResponse
             {
                 TestnetAddress = r.TestnetAddress,
@@ -109,7 +111,12 @@ public class LeaderboardService
             })
             .ToList();
 
-        foreach (LeaderBoardResponse response in pagedEntries)
+        if (addresses is not null && addresses.Count > 0)
+        {
+            filteredEntries = filteredEntries.Where(r => addresses.Contains(r.TestnetAddress)).ToList();
+        }
+
+        foreach (LeaderBoardResponse response in filteredEntries)
         {
             AddressVerification? addressVerification = await _dbContext.AddressVerifications
                 .Where(av => av.TestnetAddress == response.TestnetAddress)
@@ -142,17 +149,41 @@ public class LeaderboardService
         {
             TotalAmount = totalAmount,
             TotalCount = totalCount,
-            Result = pagedEntries
+            Result = filteredEntries
         };
     }
 
     public async Task<LeaderBoardResponse?> GetLeaderboardAddressAsync(string bech32Address, LeaderBoardType leaderBoardType)
     {
-        var response = await GetLeaderboardAsync(0, int.MaxValue, leaderBoardType);
-        var filteredResponse = response.Result
-            .Where(l => l.TestnetAddress == bech32Address || l.MainnetAddress == bech32Address)
-            .FirstOrDefault();
 
-        return filteredResponse;
+        var response = await GetLeaderboardAsync(0, int.MaxValue, leaderBoardType, new List<string>
+        {
+            bech32Address
+        });
+
+        return response.Result.FirstOrDefault();
+    }
+
+    public async Task<LeaderBoardResponse?> GetUserLeaderboardAddressesAsync(List<string> bech32Addresses, LeaderBoardType leaderBoardType)
+    {
+
+        var response = await GetLeaderboardAsync(0, int.MaxValue, leaderBoardType, bech32Addresses);
+        var leaderboardResponses = response.Result;
+
+        return response is not null && response.Result.Count > 0 ? new()
+        {
+            TestnetAddress = leaderboardResponses.FirstOrDefault()?.TestnetAddress ?? "",
+            MainnetAddress = leaderboardResponses.FirstOrDefault()?.MainnetAddress ?? "",
+            Rank = leaderboardResponses.Average(x => x.Rank),
+            Total = leaderboardResponses.Sum(x => x.Total),
+            Deposit = leaderboardResponses.Sum(x => x.Deposit),
+            Redeem = leaderboardResponses.Sum(x => x.Redeem),
+            Swap = leaderboardResponses.Sum(x => x.Swap),
+            Batch = leaderboardResponses.Sum(x => x.Batch),
+            BaseRewardPercentage = leaderboardResponses.Sum(x => x.BaseRewardPercentage),
+            BaseReward = leaderboardResponses.Sum(x => x.BaseReward),
+            BonusReward = leaderboardResponses.Sum(x => x.BonusReward),
+            TotalNft = leaderboardResponses.Sum(x => x.TotalNft),
+        } : null;
     }
 }

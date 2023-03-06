@@ -28,7 +28,7 @@ public class LeaderboardController : ControllerBase
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.All);
+        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.All, null);
 
         return Ok(res);
     }
@@ -50,7 +50,7 @@ public class LeaderboardController : ControllerBase
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Users);
+        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Users, null);
 
         return Ok(res);
     }
@@ -67,12 +67,24 @@ public class LeaderboardController : ControllerBase
         return Ok(res);
     }
 
+    [HttpPost("users/addresses")]
+    public async Task<ActionResult<LeaderBoardResponse>> GetUserLeaderboardAddressesAsync([FromBody] WalletRewardsRequest request)
+    {
+        if (request.Addresses is null || request.Addresses.Count < 1) return BadRequest();
+
+        var res = await _leaderboardService.GetUserLeaderboardAddressesAsync(request.Addresses, LeaderBoardType.Users);
+
+        if (res is null) return NotFound();
+
+        return Ok(res);
+    }
+
     [HttpGet("badgers")]
     public async Task<ActionResult<PaginatedLeaderboardResponse>> GetBatcherLeaderboardAsync([FromQuery] PaginatedRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Badgers);
+        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Badgers, null);
 
         return Ok(res);
     }
