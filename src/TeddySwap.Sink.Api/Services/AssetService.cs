@@ -55,15 +55,15 @@ public class AssetService
         return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
     }
 
-    public async Task<PaginatedAssetResponse> GetAssetsAsync(PaginatedAssetRequest request, bool includeMetadata)
+    public async Task<PaginatedAssetResponse> GetAssetsAsync(string policyId, string bech32Address, int offset, int limit, bool includeMetadata)
     {
         var unspentTxOuts = await _dbContext.TxOuts
-            .Where(o => o.Address == request.Address && !_dbContext.TxIns.Any(i => i.TxOutId == o.TxId && i.TxOutIndex == o.Index))
+            .Where(o => o.Address == bech32Address && !_dbContext.TxIns.Any(i => i.TxOutId == o.TxId && i.TxOutIndex == o.Index))
             .OrderBy(o => o.Id)
             .Select(o => o.Id)
             .ToListAsync();
 
-        var policyBytes = HexToByteArray(request.PolicyId);
+        var policyBytes = HexToByteArray(policyId);
 
         var assets = await _dbContext.MaTxOuts
             .Where(maTxOut => maTxOut.IdentNavigation.Policy.SequenceEqual(policyBytes) && unspentTxOuts.Contains(maTxOut.TxOutId))
@@ -82,12 +82,12 @@ public class AssetService
             .ToListAsync();
 
         var totalCount = assets.Count;
-        assets = assets.Skip(request.Offset).Take(request.Limit).ToList();
+        assets = assets.Skip(offset).Take(limit).ToList();
 
         return new PaginatedAssetResponse()
         {
-            PolicyId = request.PolicyId,
-            Address = request.Address,
+            PolicyId = policyId,
+            Address = bech32Address,
             TotalCount = totalCount,
             Result = assets
         };

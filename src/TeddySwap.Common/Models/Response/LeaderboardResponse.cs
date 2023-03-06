@@ -3,7 +3,7 @@ namespace TeddySwap.Common.Models.Response;
 public class LeaderBoardResponse
 {
     public string TestnetAddress { get; init; } = string.Empty;
-    public string MainnetAddress { get; set; } = string.Empty;
+    public string? MainnetAddress { get; set; }
     public double Rank { get; set; }
     public decimal BaseReward { get; set; }
     public decimal BaseRewardPercentage { get; set; }
