@@ -15,22 +15,34 @@ public partial class LeaderboardTable
     protected IEnumerable<LeaderBoardItem>? LeaderBoardItems { get; set; }
     protected MudTable<LeaderBoardItem>? LeaderBoardTable { get; set; }
     protected string SearchQuery { get; set; } = string.Empty;
+    protected PaginatedLeaderBoardResponse LeaderBoardStats { get; set; } = new();
 
     [Parameter]
     public LeaderBoardType LeaderBoardType { get; set; } = LeaderBoardType.Users;
 
     protected override async Task OnInitializedAsync()
     {
+        await RefreshDataAsync();
         await base.OnInitializedAsync();
     }
 
     public async Task RefreshDataAsync()
     {
-        await InvokeAsync(async () =>
+        try
         {
-            if (LeaderBoardTable is not null)
-                await LeaderBoardTable.ReloadServerData();
-        });
+            await InvokeAsync(async () =>
+            {
+                ArgumentNullException.ThrowIfNull(SinkService);
+                if (LeaderBoardTable is not null)
+                    await LeaderBoardTable.ReloadServerData();
+                LeaderBoardStats = await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        catch
+        {
+            // @TODO log the error
+        }
     }
 
     protected async Task<TableData<LeaderBoardItem>> LeaderboardServerData(TableState ts)
@@ -40,7 +52,7 @@ public partial class LeaderboardTable
         {
             try
             {
-                PaginatedLeaderboardResponse resp = await SinkService.GetLeaderboardAsync(LeaderBoardType, ts.Page * ts.PageSize, ts.PageSize, SearchQuery);
+                PaginatedLeaderBoardResponse resp = await SinkService.GetLeaderboardAsync(LeaderBoardType, ts.Page * ts.PageSize, ts.PageSize, SearchQuery);
                 IEnumerable<LeaderBoardItem>? result = resp.Result.Select(lbr => LeaderBoardItem.FromResponse(lbr)).Where(lbr => lbr is not null) as IEnumerable<LeaderBoardItem>;
                 if (result is not null)
                 {

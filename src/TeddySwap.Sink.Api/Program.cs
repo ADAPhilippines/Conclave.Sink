@@ -20,7 +20,7 @@ string password = builder.Configuration["DBSYNC_POSTGRESQL_PASSWORD"] ?? "";
 string database = builder.Configuration["DBSYNC_POSTGRESQL_DATABASE"] ?? "";
 string connectionString = $"Host={hostname};Database={database};Username={user};Password={password};Port={port}";
 
-builder.Services.AddDbContext<CardanoDbSyncContext>(options =>
+builder.Services.AddDbContextPool<CardanoDbSyncContext>(options =>
 {
     options.EnableSensitiveDataLogging(true);
     options.UseNpgsql(connectionString);

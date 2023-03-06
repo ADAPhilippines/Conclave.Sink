@@ -28,7 +28,7 @@ public class LeaderboardService
         _settings = settings.Value;
     }
 
-    public async Task<PaginatedLeaderboardResponse> GetLeaderboardAsync(int offset, int limit, LeaderBoardType leaderboardType, List<string>? addresses)
+    public async Task<PaginatedLeaderBoardResponse> GetLeaderboardAsync(int offset, int limit, LeaderBoardType leaderboardType, List<string>? addresses)
     {
 
         var rewardQuery = _dbContext.Orders
@@ -145,7 +145,7 @@ public class LeaderboardService
             }
         }
 
-        return new PaginatedLeaderboardResponse()
+        return new PaginatedLeaderBoardResponse()
         {
             TotalAmount = allEntriesWithMainnet.Sum(r => r.Total),
             TotalCount = allEntriesWithMainnet.Where(t => t.Total > 0).ToList().Count,

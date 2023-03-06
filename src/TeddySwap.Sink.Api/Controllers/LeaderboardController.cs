@@ -24,7 +24,7 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetLeaderboardAsync([FromQuery] PaginatedRequest request)
+    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetLeaderboardAsync([FromQuery] PaginatedRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
@@ -46,7 +46,7 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpGet("users")]
-    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetUserLeaderboardAsync([FromQuery] PaginatedRequest request)
+    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetUserLeaderboardAsync([FromQuery] PaginatedRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
@@ -80,7 +80,7 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpGet("badgers")]
-    public async Task<ActionResult<PaginatedLeaderboardResponse>> GetBatcherLeaderboardAsync([FromQuery] PaginatedRequest request)
+    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetBatcherLeaderboardAsync([FromQuery] PaginatedRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 

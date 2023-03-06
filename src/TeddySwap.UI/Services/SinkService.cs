@@ -14,7 +14,7 @@ public class SinkService
         _configService = configService;
     }
 
-    public async Task<PaginatedLeaderboardResponse> GetLeaderboardAsync(LeaderBoardType leaderboardType = LeaderBoardType.Users, int offset = 0, int limit = 10, string? address = null)
+    public async Task<PaginatedLeaderBoardResponse> GetLeaderboardAsync(LeaderBoardType leaderboardType = LeaderBoardType.Users, int offset = 0, int limit = 10, string? address = null)
     {
         HttpClient httpClient = _clientFactory.CreateClient();
         string leaderboardTypeString = leaderboardType == LeaderBoardType.Users ? "users" : "badgers";
@@ -25,7 +25,7 @@ public class SinkService
                     $"{_configService.SinkApiUrl}/api/v1/leaderboard/{leaderboardTypeString}/address/{address}"
                 );
             if (response is null) throw new HttpRequestException("Bad response from GetLeaderboardAsync.");
-            return new PaginatedLeaderboardResponse
+            return new PaginatedLeaderBoardResponse
             {
                 TotalAmount = response.Total,
                 TotalCount = 1,
@@ -34,9 +34,9 @@ public class SinkService
         }
         else
         {
-            PaginatedLeaderboardResponse? response =
+            PaginatedLeaderBoardResponse? response =
                 await httpClient
-                    .GetFromJsonAsync<PaginatedLeaderboardResponse>(
+                    .GetFromJsonAsync<PaginatedLeaderBoardResponse>(
                         $"{_configService.SinkApiUrl}/api/v1/leaderboard/{leaderboardTypeString}?offset={offset}&limit={limit}"
                     );
             if (response is null) throw new HttpRequestException("Bad response from GetLeaderboardAsync.");

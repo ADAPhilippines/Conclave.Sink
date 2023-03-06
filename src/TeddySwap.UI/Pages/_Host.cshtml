@@ -4,7 +4,8 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
-<html lang="en" class="bg-gradient-to-t from-sky-900/50 to-cyan-800 w-[100vw] h-[100vh] overflow-y-auto overflow-x-hidden">
+<html lang="en"
+    class="bg-gradient-to-t from-sky-900/50 to-cyan-800 w-[100vw] h-[100vh] overflow-y-auto overflow-x-hidden">
 
 <head>
     <meta charset="utf-8" />
@@ -20,10 +21,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link href="dist/app.bundle.css" rel="stylesheet" />
+    <script src="dist/app.bundle.js"></script>
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 
-<body class="bg-gradient-to-t from-sky-900/50 to-cyan-800 w-[100vw] h-[100vh] overflow-y-auto overflow-x-hidden">
+<body class="bg-gradient-to-t from-sky-900/50 to-cyan-800 w-[100vw] h-[100vh] overflow-y-auto overflow-x-hidden relative">
     <component type="typeof(App)" render-mode="ServerPrerendered" />
 
     @* <div id="blazor-error-ui">
@@ -39,6 +41,15 @@
 
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KGPCGFP94X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KGPCGFP94X');
+    </script>
 </body>
 
 </html>
