@@ -7,6 +7,7 @@ using TeddySwap.UI.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddBlazoredLocalStorage();
 // Add services to the container.
 builder.Services.AddMudServices(config =>

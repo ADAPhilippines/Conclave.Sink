@@ -23,7 +23,7 @@
         @if (IsWalletConnected)
         {
             <MudChip OnClick="OnWalletDisconnect" Size="Size.Medium"
-            Class="!px-2 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
+            Class="!px-4 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
                 <div class="flex gap-1">
                     <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="24" height="24"
                         alt="connected-wallet-logo" />

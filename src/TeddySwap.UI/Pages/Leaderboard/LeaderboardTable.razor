@@ -4,7 +4,7 @@
             <MudText Typo="Typo.caption" Class="font-bold">Available Rewards</MudText>
             <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@((LeaderBoardType ==
                 Common.Enums.LeaderBoardType.Users ? 2_000_000 : 1_000_000).ToString("N0")) $TEDY</MudText>
-            <MudText Typo="Typo.caption">Divided by % of user txs</MudText>
+            <MudText Typo="Typo.caption">Divided by total # of points</MudText>
         </MudCardContent>
     </MudCard>
     <MudCard Elevation="6">
@@ -24,7 +24,7 @@
     </MudCard>
     <MudCard Elevation="6">
         <MudCardContent>
-            <MudText Typo="Typo.caption" Class="font-bold">Total Transactions</MudText>
+            <MudText Typo="Typo.caption" Class="font-bold">Total Points</MudText>
             <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">
                 @(@LeaderBoardStats.TotalAmount.ToString("N0"))
             </MudText>
