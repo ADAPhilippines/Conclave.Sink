@@ -21,8 +21,16 @@ public partial class Leaderboard
     {
         await InvokeAsync(async () =>
         {
-            if (LeaderBoardTable is not null)
-                await LeaderBoardTable.RefreshDataAsync();
+            try
+            {
+
+                if (LeaderBoardTable is not null)
+                    await LeaderBoardTable.RefreshDataAsync();
+            }
+            catch
+            {
+                // @TODO log the error
+            }
         });
     }
 
