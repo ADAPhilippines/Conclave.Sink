@@ -55,85 +55,41 @@ public class AssetService
         return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
     }
 
-
-    public async Task<PaginatedAssetResponse> GetAssetsAsync(PaginatedAssetRequest request)
+    public async Task<PaginatedAssetResponse> GetAssetsAsync(PaginatedAssetRequest request, bool includeMetadata)
     {
         var unspentTxOuts = await _dbContext.TxOuts
             .Where(o => o.Address == request.Address && !_dbContext.TxIns.Any(i => i.TxOutId == o.TxId && i.TxOutIndex == o.Index))
             .OrderBy(o => o.Id)
+            .Select(o => o.Id)
             .ToListAsync();
 
         var policyBytes = HexToByteArray(request.PolicyId);
 
-        var maTxOuts = await _dbContext.MaTxOuts
-            .Include(maTxOut => maTxOut.TxOut)
-            .Include(maTxOut => maTxOut.IdentNavigation)
-            .Where(maTxOut => maTxOut.IdentNavigation.Policy.SequenceEqual(policyBytes))
-            .Where(maTxOut => unspentTxOuts.Contains(maTxOut.TxOut))
-            .ToListAsync();
-
-        var assets = maTxOuts
-            .GroupBy(maTxOut => new
+        var assets = await _dbContext.MaTxOuts
+            .Where(maTxOut => maTxOut.IdentNavigation.Policy.SequenceEqual(policyBytes) && unspentTxOuts.Contains(maTxOut.TxOutId))
+            .Select(maTxOut => new AssetResponse
             {
                 Name = Encoding.UTF8.GetString(maTxOut.IdentNavigation.Name),
-                PolicyId = BitConverter.ToString(maTxOut.IdentNavigation.Policy).Replace("-", string.Empty).ToLower()
+                Amount = (ulong)maTxOut.Quantity,
+                MetadataJson =
+                    includeMetadata &&
+                    maTxOut != null &&
+                    maTxOut.TxOut != null &&
+                    maTxOut.TxOut.Tx != null &&
+                    maTxOut.TxOut.Tx.TxMetadata.FirstOrDefault() != null ?
+                    maTxOut.TxOut.Tx.TxMetadata.FirstOrDefault()!.Json : null
             })
-            .Select(g => new AssetResponse
-            {
-                Name = g.Key.Name,
-                Amount = (ulong)g.Sum(maTxOut => maTxOut.Quantity)
-            })
-            .ToList();
+            .ToListAsync();
+
+        var totalCount = assets.Count;
+        assets = assets.Skip(request.Offset).Take(request.Limit).ToList();
 
         return new PaginatedAssetResponse()
         {
             PolicyId = request.PolicyId,
             Address = request.Address,
-            TotalCount = assets.Count,
-            Result = assets.Skip(request.Offset).Take(request.Limit).ToList()
+            TotalCount = totalCount,
+            Result = assets
         };
     }
-
-
-    public async Task<PaginatedAssetResponse> GetAssetsWithMetadataAsync(PaginatedAssetRequest request)
-    {
-        var unspentTxOuts = await _dbContext.TxOuts
-            .Where(o => o.Address == request.Address && !_dbContext.TxIns.Any(i => i.TxOutId == o.TxId && i.TxOutIndex == o.Index))
-            .OrderBy(o => o.Id)
-            .ToListAsync();
-
-        var policyBytes = HexToByteArray(request.PolicyId);
-
-        var maTxOuts = await _dbContext.MaTxOuts
-            .Include(maTxOut => maTxOut.TxOut)
-            .Include(maTxOut => maTxOut.IdentNavigation)
-            .Include(maTxOut => maTxOut.TxOut.Tx)
-            .ThenInclude(txOut => txOut.TxMetadata)
-            .Where(maTxOut => maTxOut.IdentNavigation.Policy.SequenceEqual(policyBytes))
-            .Where(maTxOut => unspentTxOuts.Contains(maTxOut.TxOut))
-            .ToListAsync();
-
-        var assets = maTxOuts
-            .GroupBy(maTxOut => new
-            {
-                Name = Encoding.UTF8.GetString(maTxOut.IdentNavigation.Name),
-                PolicyId = BitConverter.ToString(maTxOut.IdentNavigation.Policy).Replace("-", string.Empty).ToLower()
-            })
-            .Select(g => new AssetResponse
-            {
-                Name = g.Key.Name,
-                Amount = (ulong)g.Sum(maTxOut => maTxOut.Quantity),
-                MetadataJson = g.FirstOrDefault(maTxOut => maTxOut.TxOut.Tx.TxMetadata != null)?.TxOut.Tx.TxMetadata.FirstOrDefault()?.Json
-            })
-            .ToList();
-
-        return new PaginatedAssetResponse()
-        {
-            PolicyId = request.PolicyId,
-            Address = request.Address,
-            TotalCount = assets.Count,
-            Result = assets.Skip(request.Offset).Take(request.Limit).ToList()
-        };
-    }
-
 }

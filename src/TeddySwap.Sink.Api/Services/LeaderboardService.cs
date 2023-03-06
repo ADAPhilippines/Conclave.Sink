@@ -52,7 +52,7 @@ public class LeaderboardService
             .GroupBy(o => o.BatcherAddress)
             .Select(g => new LeaderBoardResponse
             {
-                TestnetAddress = g.Key,
+                TestnetAddress = g.Key ?? "",
                 Total = 0,
                 Deposit = 0,
                 Redeem = 0,

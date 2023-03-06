@@ -27,7 +27,7 @@ public class AssetsController : ControllerBase
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _assetService.GetAssetsAsync(request);
+        var res = await _assetService.GetAssetsAsync(request, false);
 
         return Ok(res);
     }
@@ -37,7 +37,7 @@ public class AssetsController : ControllerBase
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _assetService.GetAssetsWithMetadataAsync(request);
+        var res = await _assetService.GetAssetsAsync(request, true);
 
         return Ok(res);
     }
