@@ -35,7 +35,6 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
             transactionEvent.Transaction.Fee is not null &&
             transactionEvent.Context.TxIdx is not null)
         {
-            if (transactionEvent.Transaction.HasCollateralOutput) return;
 
             using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
@@ -44,7 +43,7 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
                 .FirstOrDefaultAsync();
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
-
+            if (block.InvalidTransactions is not null && block.InvalidTransactions.ToList().Contains((ulong)transactionEvent.Context.TxIdx)) return;
 
             Order? existingOrder = await _dbContext.Orders
                 .Where(o => o.TxHash == transactionEvent.Context.TxHash && o.Index == transactionEvent.Context.TxIdx)
