@@ -3,9 +3,6 @@
 # Start the first process
 ASPNETCORE_URLS="http://*:1337" dotnet /bin/TeddySwap.Sink.dll &
 
-# /ipc/node.socket
-mkdir -p /ipc
-ln -s $CARDANO_NODE_SOCKET_PATH /ipc/node.socket
 
 # Wait for Dotnet to startup
 sleep 10
