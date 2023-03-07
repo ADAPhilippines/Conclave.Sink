@@ -1,11 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using TeddySwap.Common.Models;
 using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Models;
 using TeddySwap.Sink.Data;
-using TeddySwap.Common.Models.Request;
 
 namespace TeddySwap.Sink.Api.Services;
 
@@ -30,7 +28,6 @@ public class LeaderboardService
 
     public async Task<PaginatedLeaderBoardResponse> GetLeaderboardAsync(int offset, int limit, LeaderBoardType leaderboardType, List<string>? addresses)
     {
-
         var rewardQuery = _dbContext.Orders
             .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
             .Where(o => o.Slot <= _settings.ItnEndSlot)
@@ -98,10 +95,10 @@ public class LeaderboardService
             _ => _settings.TotalReward
         };
 
-        var filteredEntriesQuery = allEntriesWithMainnet
+        var filteredEntriesQuery = (await allEntriesWithMainnet
             .Where(e => e.Total > 0)
             .OrderByDescending(e => e.Total)
-            .AsEnumerable()
+            .ToListAsync())
             .Select((entry, index) => new LeaderBoardResponse
             {
                 TestnetAddress = entry.TestnetAddress,
@@ -130,7 +127,6 @@ public class LeaderboardService
 
         foreach (LeaderBoardResponse response in filteredEntries)
         {
-
             if (!string.IsNullOrEmpty(response.MainnetAddress))
             {
                 PaginatedAssetResponse res = await _assetService.GetAssetsAsync(
