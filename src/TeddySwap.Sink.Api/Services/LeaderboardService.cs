@@ -304,7 +304,7 @@ public class LeaderboardService
         };
     }
 
-    public async Task<LeaderBoardResponse?> GetMultipleAddressUserLeaderboardAsync(List<string> bech32Addresses)
+    public async Task<PaginatedLeaderBoardResponse?> GetMultipleAddressUserLeaderboardAsync(List<string> bech32Addresses)
     {
         var usersQuery = _dbContext.Orders
            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
@@ -346,7 +346,6 @@ public class LeaderboardService
             .CountAsync();
         decimal totalPoints = await usersQuery.SumAsync(u => u.Total);
         int reward = GetRewardAmount(LeaderBoardType.Users);
-
         List<LeaderBoardResponse> users = (await usersWithMainnetAddress.ToListAsync())
             .Select(u => new LeaderBoardResponse
             {
@@ -365,7 +364,7 @@ public class LeaderboardService
 
         if (users is null) return null;
 
-        return new()
+        LeaderBoardResponse combinedRewards = new()
         {
             TestnetAddress = "",
             MainnetAddress = "",
@@ -377,6 +376,13 @@ public class LeaderboardService
             Rank = 0,
             BaseRewardPercentage = users.Sum(u => u.BaseRewardPercentage),
             BaseReward = users.Sum(u => u.BaseReward),
+        };
+
+        return new()
+        {
+            Result = new List<LeaderBoardResponse>() { combinedRewards },
+            TotalAmount = (int)totalPoints,
+            TotalCount = totalUsers
         };
     }
 }
