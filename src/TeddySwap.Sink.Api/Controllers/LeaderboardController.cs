@@ -23,44 +23,22 @@ public class LeaderboardController : ControllerBase
         _leaderboardService = leaderboardService;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetLeaderboardAsync([FromQuery] PaginatedRequest request)
-    {
-        if (request.Offset < 0 || request.Limit > 100) return BadRequest();
-
-        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.All, null);
-
-        return Ok(res);
-    }
-
-    [HttpGet("address/{address}")]
-    public async Task<ActionResult<LeaderBoardResponse>> GetLeaderboardAddressAsync(string? address)
-    {
-        if (string.IsNullOrEmpty(address)) return BadRequest();
-
-        var res = await _leaderboardService.GetLeaderboardAddressAsync(address, LeaderBoardType.All);
-
-        if (res is null) return NotFound();
-
-        return Ok(res);
-    }
-
     [HttpGet("users")]
     public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetUserLeaderboardAsync([FromQuery] PaginatedRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Users, null);
+        var res = await _leaderboardService.GetUserLeaderboardAsync(request.Offset, request.Limit);
 
         return Ok(res);
     }
 
     [HttpGet("users/address/{address}")]
-    public async Task<ActionResult<LeaderBoardResponse>> GetUserLeaderboardAddressAsync(string? address)
+    public async Task<ActionResult<LeaderBoardResponse>> GetSingleUserAddressLeaderboardAsync(string? address)
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAddressAsync(address, LeaderBoardType.Users);
+        var res = await _leaderboardService.GetSingleUserAddressLeaderboardAsync(address);
 
         if (res is null) return NotFound();
 
@@ -68,11 +46,11 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpPost("users/addresses")]
-    public async Task<ActionResult<LeaderBoardResponse>> GetUserLeaderboardAddressesAsync([FromBody] WalletRewardsRequest request)
+    public async Task<ActionResult<LeaderBoardResponse>> GetMultipleAddressUserLeaderboardAsync([FromBody] WalletRewardsRequest request)
     {
         if (request.Addresses is null || request.Addresses.Count < 1) return BadRequest();
 
-        var res = await _leaderboardService.GetUserLeaderboardAddressesAsync(request.Addresses, LeaderBoardType.Users);
+        var res = await _leaderboardService.GetMultipleAddressUserLeaderboardAsync(request.Addresses);
 
         if (res is null) return NotFound();
 
@@ -80,21 +58,21 @@ public class LeaderboardController : ControllerBase
     }
 
     [HttpGet("badgers")]
-    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetBatcherLeaderboardAsync([FromQuery] PaginatedRequest request)
+    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetBadgerLeaderboardAsync([FromQuery] PaginatedRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAsync(request.Offset, request.Limit, LeaderBoardType.Badgers, null);
+        var res = await _leaderboardService.GetBadgerLeaderboardAsync(request.Offset, request.Limit);
 
         return Ok(res);
     }
 
     [HttpGet("badgers/address/{address}")]
-    public async Task<ActionResult<LeaderBoardResponse>> GetBatcherLeaderboardAddressAsync(string? address)
+    public async Task<ActionResult<LeaderBoardResponse>> GetSingleBadgerAddressLeaderboardAsync(string? address)
     {
         if (string.IsNullOrEmpty(address)) return BadRequest();
 
-        var res = await _leaderboardService.GetLeaderboardAddressAsync(address, LeaderBoardType.Badgers);
+        var res = await _leaderboardService.GetSingleBadgerAddressLeaderboardAsync(address);
 
         if (res is null) return NotFound();
 
