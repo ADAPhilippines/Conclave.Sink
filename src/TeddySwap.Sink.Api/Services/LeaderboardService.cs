@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TeddySwap.Common.Enums;
+using TeddySwap.Common.Models;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Sink.Api.Models;
 using TeddySwap.Sink.Data;
@@ -95,10 +96,15 @@ public class LeaderboardService
             _ => _settings.TotalReward
         };
 
-        var filteredEntriesQuery = (await allEntriesWithMainnet
+        IEnumerable<LeaderBoardResponse> queryResult = await allEntriesWithMainnet
             .Where(e => e.Total > 0)
             .OrderByDescending(e => e.Total)
-            .ToListAsync())
+            .ToListAsync();
+
+        await _dbContext.DisposeAsync();
+
+        // //@TODO Remove Memory Operations
+        var filteredEntriesQuery = queryResult
             .Select((entry, index) => new LeaderBoardResponse
             {
                 TestnetAddress = entry.TestnetAddress,
@@ -123,7 +129,6 @@ public class LeaderboardService
         }
 
         var filteredEntries = filteredEntriesQuery.ToList();
-
 
         foreach (LeaderBoardResponse response in filteredEntries)
         {

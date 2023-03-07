@@ -2,17 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using TeddySwap.Sink.Api.Models;
 using TeddySwap.Sink.Api.Services;
 using TeddySwap.Sink.Data;
-using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContextPool<TeddySwapSinkDbContext>(options =>
-{
-    options.EnableSensitiveDataLogging(false);
-    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
-});
-
 string hostname = builder.Configuration["DBSYNC_POSTGRESQL_HOSTNAME"] ?? "";
 string port = builder.Configuration["DBSYNC_POSTGRESQL_PORT"] ?? "";
 string user = builder.Configuration["DBSYNC_POSTGRESQL_USER"] ?? "";
@@ -22,9 +15,17 @@ string connectionString = $"Host={hostname};Database={database};Username={user};
 
 builder.Services.AddDbContextPool<CardanoDbSyncContext>(options =>
 {
-    options.EnableSensitiveDataLogging(false);
+    if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
+        options.EnableSensitiveDataLogging(true);
     options.UseNpgsql(connectionString);
-});
+}, 10);
+
+builder.Services.AddDbContextPool<TeddySwapSinkDbContext>(options =>
+{
+    if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
+        options.EnableSensitiveDataLogging(true);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
+}, 10);
 
 builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Configuration.GetSection("TeddySwapITNRewardSettings").Bind(options));
 builder.Services.AddControllers();

@@ -20,10 +20,13 @@ public partial class LeaderboardTable
     [Parameter]
     public LeaderBoardType LeaderBoardType { get; set; } = LeaderBoardType.Users;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await RefreshDataAsync();
-        await base.OnInitializedAsync();
+        if (firstRender)
+        {
+            await RefreshDataAsync();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     public async Task RefreshDataAsync()
@@ -79,11 +82,6 @@ public partial class LeaderboardTable
     {
         SearchQuery = value;
         await RefreshDataAsync();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected void ToggleRowExpand(LeaderBoardItem item)

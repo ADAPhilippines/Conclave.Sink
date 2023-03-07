@@ -100,5 +100,4 @@ public class LeaderboardController : ControllerBase
 
         return Ok(res);
     }
-
 }
