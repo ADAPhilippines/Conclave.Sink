@@ -24,13 +24,10 @@ public partial class LeaderboardTable
     [Parameter]
     public LeaderBoardType LeaderBoardType { get; set; } = LeaderBoardType.Users;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
-        {
-            await RefreshDataAsync();
-        }
-        await base.OnAfterRenderAsync(firstRender);
+        await RefreshDataAsync();
+        await base.OnInitializedAsync();
     }
 
     public async Task RefreshDataAsync()
@@ -49,7 +46,7 @@ public partial class LeaderboardTable
                 {
                     return await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
                 });
-                
+
                 await InvokeAsync(StateHasChanged);
             });
         }
