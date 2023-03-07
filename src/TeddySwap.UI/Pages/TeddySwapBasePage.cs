@@ -12,11 +12,11 @@ public class TeddySwapBasePage : ComponentBase, IAsyncDisposable
 
     protected async override Task OnInitializedAsync()
     {
-        // if (HeartBeatService is not null && !IsHeartBeatEventAttached)
-        // {
-        //     HeartBeatService.Hearbeat += OnHeartBeatEvent;
-        //     IsHeartBeatEventAttached = true;
-        // }
+        if (HeartBeatService is not null && !IsHeartBeatEventAttached)
+        {
+            HeartBeatService.Hearbeat += OnHeartBeatEvent;
+            IsHeartBeatEventAttached = true;
+        }
     }
 
     protected virtual void OnHeartBeatEvent(object? sender, EventArgs e)
@@ -29,10 +29,10 @@ public class TeddySwapBasePage : ComponentBase, IAsyncDisposable
     
     public async ValueTask DisposeAsync()
     {
-        // if (HeartBeatService is not null)
-        // {
-        //     HeartBeatService.Hearbeat -= OnHeartBeatEvent;
-        //     IsHeartBeatEventAttached = false;
-        // }
+        if (HeartBeatService is not null)
+        {
+            HeartBeatService.Hearbeat -= OnHeartBeatEvent;
+            IsHeartBeatEventAttached = false;
+        }
     }
 }

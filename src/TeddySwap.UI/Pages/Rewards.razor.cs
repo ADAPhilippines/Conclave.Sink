@@ -12,6 +12,9 @@ public partial class Rewards : IAsyncDisposable
     [Inject]
     protected SinkService? SinkService { get; set; }
 
+    [Inject]
+    protected QueryService? QueryService { get; set; }
+
     protected LeaderBoardResponse LeaderBoardResponse { get; set; } = new LeaderBoardResponse();
 
     protected decimal TotalRewards => LeaderBoardResponse.BaseReward;
@@ -44,11 +47,14 @@ public partial class Rewards : IAsyncDisposable
 
         ArgumentNullException.ThrowIfNull(SinkService);
         ArgumentNullException.ThrowIfNull(CardanoWalletService);
+        ArgumentNullException.ThrowIfNull(QueryService);
         if (!string.IsNullOrEmpty(CardanoWalletService.ConnectedAddress))
         {
             try
-            {
-                PaginatedLeaderBoardResponse response = await SinkService.GetLeaderboardAsync(Common.Enums.LeaderBoardType.Users, 0, 1, CardanoWalletService.ConnectedAddress);
+            {    PaginatedLeaderBoardResponse response = await QueryService.Query($"/leaderboard/{Common.Enums.LeaderBoardType.Users}/0/1/{CardanoWalletService.ConnectedAddress}", async () =>
+                {
+                    return await SinkService.GetLeaderboardAsync(Common.Enums.LeaderBoardType.Users, 0, 1, CardanoWalletService.ConnectedAddress);
+                });
                 LeaderBoardResponse = response.Result.FirstOrDefault() ?? LeaderBoardResponse;
             }
             catch

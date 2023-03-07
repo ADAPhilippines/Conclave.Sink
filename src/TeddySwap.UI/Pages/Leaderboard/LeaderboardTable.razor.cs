@@ -12,6 +12,10 @@ public partial class LeaderboardTable
 {
     [Inject]
     protected SinkService? SinkService { get; set; }
+
+    [Inject]
+    protected QueryService? QueryService { get; set; }
+
     protected IEnumerable<LeaderBoardItem>? LeaderBoardItems { get; set; }
     protected MudTable<LeaderBoardItem>? LeaderBoardTable { get; set; }
     protected string SearchQuery { get; set; } = string.Empty;
@@ -36,9 +40,16 @@ public partial class LeaderboardTable
             await InvokeAsync(async () =>
             {
                 ArgumentNullException.ThrowIfNull(SinkService);
+                ArgumentNullException.ThrowIfNull(QueryService);
+
                 if (LeaderBoardTable is not null)
                     await LeaderBoardTable.ReloadServerData();
-                LeaderBoardStats = await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
+
+                LeaderBoardStats = await QueryService.Query($"/leaderboard/{LeaderBoardType}/0/0", async () =>
+                {
+                    return await SinkService.GetLeaderboardAsync(LeaderBoardType, 0, 0);
+                });
+                
                 await InvokeAsync(StateHasChanged);
             });
         }
@@ -55,12 +66,18 @@ public partial class LeaderboardTable
         {
             try
             {
-                PaginatedLeaderBoardResponse resp = await SinkService.GetLeaderboardAsync(LeaderBoardType, ts.Page * ts.PageSize, ts.PageSize, SearchQuery);
-                IEnumerable<LeaderBoardItem>? result = resp.Result.Select(lbr => LeaderBoardItem.FromResponse(lbr)).Where(lbr => lbr is not null) as IEnumerable<LeaderBoardItem>;
+                ArgumentNullException.ThrowIfNull(QueryService);
+
+                PaginatedLeaderBoardResponse resp = await QueryService.Query($"/leaderboard/{LeaderBoardType}/{ts.Page * ts.PageSize}/{ts.PageSize}/{SearchQuery}", async () =>
+                {
+                    return await SinkService.GetLeaderboardAsync(LeaderBoardType, ts.Page * ts.PageSize, ts.PageSize, SearchQuery);
+                });
+
+                IEnumerable<LeaderBoardItem> result = resp.Result.Select(lbr => LeaderBoardItem.FromResponse(lbr)).Where(lbr => lbr is not null) as IEnumerable<LeaderBoardItem>;
                 if (result is not null)
                 {
                     tableData.Items = result;
-                    tableData.TotalItems = resp.TotalCount;
+                    tableData.TotalItems = resp?.TotalCount ?? 0;
                 }
                 else
                 {
