@@ -7,9 +7,9 @@ using Asp.Versioning;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<TeddySwapSinkDbContext>(options =>
+builder.Services.AddDbContextPool<TeddySwapSinkDbContext>(options =>
 {
-    options.EnableSensitiveDataLogging(true);
+    options.EnableSensitiveDataLogging(false);
     options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
 });
 
@@ -22,7 +22,7 @@ string connectionString = $"Host={hostname};Database={database};Username={user};
 
 builder.Services.AddDbContextPool<CardanoDbSyncContext>(options =>
 {
-    options.EnableSensitiveDataLogging(true);
+    options.EnableSensitiveDataLogging(false);
     options.UseNpgsql(connectionString);
 });
 
