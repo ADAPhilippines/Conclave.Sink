@@ -52,6 +52,12 @@ public class CardanoWalletService
         return result;
     }
 
+    public async Task<string[]> GetUsedAddressesAsync()
+    {
+        ArgumentNullException.ThrowIfNull(_jsRuntime);
+        return await _jsRuntime.InvokeAsync<string[]>("CardanoWalletService.getUsedAddressesAsync");
+    }
+
     public async Task DisconnectAsync()
     {
         ArgumentNullException.ThrowIfNull(_jsRuntime);

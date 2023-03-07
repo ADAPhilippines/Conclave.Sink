@@ -9,6 +9,8 @@ declare global {
             getWallets: () => Wallet[];
             getAddressAsync: () => Promise<string | undefined>;
             lucid?: Lucid;
+            getUsedAddressesAsync: () => Promise<string[]>;
+            walletApi?: any;
         }
     }
 }
@@ -39,6 +41,7 @@ const enableAsync = async (walletId: string) => {
             "Preview"
         );
         window.CardanoWalletService.lucid.selectWallet(walletApi);
+        window.CardanoWalletService.walletApi = walletApi;
     }
     catch (ex) {
         console.error(ex);
@@ -52,13 +55,25 @@ const getAddressAsync = async () => {
     return await window.CardanoWalletService.lucid?.wallet.address()
 };
 
+const getUsedAddressesAsync = async () => {
+    if (window.CardanoWalletService.walletApi != null) {
+        const cborAddresses: string[] = await window.CardanoWalletService.walletApi.getUsedAddresses();
+        const addresses: string[] = cborAddresses.map(cA => window.CardanoWalletService.lucid?.utils.getAddressDetails(cA).address.bech32).filter(cA => cA) as string[];
+        return addresses;
+    }
+    else
+        return [];
+}
+
 const disconnect = () => {
     delete window.CardanoWalletService.lucid;
+    delete window.CardanoWalletService.walletApi;
 }
 
 window.CardanoWalletService = {
     enableAsync,
     disconnect,
     getWallets,
-    getAddressAsync
+    getAddressAsync,
+    getUsedAddressesAsync
 };

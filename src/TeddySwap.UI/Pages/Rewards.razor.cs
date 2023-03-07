@@ -51,13 +51,15 @@ public partial class Rewards : IAsyncDisposable
         if (!string.IsNullOrEmpty(CardanoWalletService.ConnectedAddress))
         {
             try
-            {    PaginatedLeaderBoardResponse response = await QueryService.Query($"/leaderboard/{Common.Enums.LeaderBoardType.Users}/0/1/{CardanoWalletService.ConnectedAddress}", async () =>
+            {
+                string[] addresses = await CardanoWalletService.GetUsedAddressesAsync();
+                PaginatedLeaderBoardResponse response = await QueryService.Query($"/leaderboard/users/addresses/${string.Join(",", addresses)}", async () =>
                 {
-                    return await SinkService.GetLeaderboardAsync(Common.Enums.LeaderBoardType.Users, 0, 1, CardanoWalletService.ConnectedAddress);
+                    return await SinkService.GetRewardFromAddressesAsync(addresses);
                 });
                 LeaderBoardResponse = response.Result.FirstOrDefault() ?? LeaderBoardResponse;
             }
-            catch
+            catch(Exception ex)
             {
                 // @TODO: Push error to analytics
             }

@@ -16,7 +16,7 @@ public class SinkService
 
     public async Task<PaginatedLeaderBoardResponse> GetLeaderboardAsync(LeaderBoardType leaderboardType = LeaderBoardType.Users, int offset = 0, int limit = 10, string? address = null)
     {
-        HttpClient httpClient = _clientFactory.CreateClient();
+        using HttpClient httpClient = _clientFactory.CreateClient();
         string leaderboardTypeString = leaderboardType == LeaderBoardType.Users ? "users" : "badgers";
         if (address is not null && address != string.Empty)
         {
@@ -36,5 +36,13 @@ public class SinkService
             if (response is null) throw new HttpRequestException("Bad response from GetLeaderboardAsync.");
             return response;
         }
+    }
+
+    public async Task<PaginatedLeaderBoardResponse> GetRewardFromAddressesAsync(string[] addresses)
+    {
+        using HttpClient httpClient = _clientFactory.CreateClient();
+        HttpResponseMessage resp = await httpClient
+                .PostAsJsonAsync($"{_configService.SinkApiUrl}/api/v1/leaderboard/users/addresses", new { addresses });
+        return await resp.Content.ReadFromJsonAsync<PaginatedLeaderBoardResponse>() ?? throw new HttpRequestException("Bad response from GetRewardFromAddressesAsync.");
     }
 }
