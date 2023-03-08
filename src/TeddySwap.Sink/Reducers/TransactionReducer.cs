@@ -32,7 +32,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             transactionEvent.Transaction.Fee is not null &&
             transactionEvent.Context.TxIdx is not null)
         {
-            TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)

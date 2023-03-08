@@ -27,164 +27,396 @@ public class LeaderboardService
         _settings = settings.Value;
     }
 
-    public async Task<PaginatedLeaderBoardResponse> GetLeaderboardAsync(int offset, int limit, LeaderBoardType leaderboardType, List<string>? addresses)
+    public int GetRewardAmount(LeaderBoardType type)
     {
-        var rewardQuery = _dbContext.Orders
-            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
-            .Where(o => o.Slot <= _settings.ItnEndSlot)
-            .GroupBy(o => o.UserAddress)
-            .Select(g => new LeaderBoardResponse
-            {
-                TestnetAddress = g.Key,
-                Total = g.Count(o => o.OrderType != OrderType.Unknown),
-                Deposit = g.Count(o => o.OrderType == OrderType.Deposit),
-                Redeem = g.Count(o => o.OrderType == OrderType.Redeem),
-                Swap = g.Count(o => o.OrderType == OrderType.Swap),
-                Batch = 0
-            });
-
-        var batchQuery = _dbContext.Orders
-            .Where(b => b.BatcherAddress != null)
-            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
-            .Where(o => o.Slot <= _settings.ItnEndSlot)
-            .GroupBy(o => o.BatcherAddress)
-            .Select(g => new LeaderBoardResponse
-            {
-                TestnetAddress = g.Key ?? "",
-                Total = 0,
-                Deposit = 0,
-                Redeem = 0,
-                Swap = 0,
-                Batch = g.Count()
-            });
-
-        var entriesWithoutMainnetAddress = rewardQuery
-            .Union(batchQuery)
-            .GroupBy(r => r.TestnetAddress)
-            .Select(g => new LeaderBoardResponse
-            {
-                TestnetAddress = g.Key,
-                Total = g.Sum(r => leaderboardType == LeaderBoardType.All ? r.Total + r.Batch : leaderboardType == LeaderBoardType.Users ? r.Total : r.Batch),
-                Deposit = g.Sum(r => r.Deposit),
-                Redeem = g.Sum(r => r.Redeem),
-                Swap = g.Sum(r => r.Swap),
-                Batch = g.Sum(r => r.Batch),
-            });
-
-        var allEntriesWithMainnet = entriesWithoutMainnetAddress
-            .GroupJoin(_dbContext.AddressVerifications,
-                entry => entry.TestnetAddress,
-                verification => verification.TestnetAddress,
-                (entry, verifications) => new { Entry = entry, Verifications = verifications })
-            .SelectMany(x => x.Verifications.DefaultIfEmpty(),
-                (x, verification) => new LeaderBoardResponse
-                {
-                    TestnetAddress = x.Entry.TestnetAddress,
-                    MainnetAddress = verification == null ? "" : verification.MainnetAddress,
-                    Total = x.Entry.Total,
-                    Deposit = x.Entry.Deposit,
-                    Redeem = x.Entry.Redeem,
-                    Swap = x.Entry.Swap,
-                    Batch = x.Entry.Batch,
-                });
-
-        decimal overallTotalAmount = allEntriesWithMainnet.Sum(a => a.Total);
-        int totalReward = leaderboardType switch
+        int totalReward = type switch
         {
             LeaderBoardType.Users => _settings.UserReward,
             LeaderBoardType.Badgers => _settings.BatcherReward,
             _ => _settings.TotalReward
         };
 
-        IEnumerable<LeaderBoardResponse> queryResult = await allEntriesWithMainnet
-            .Where(e => e.Total > 0)
-            .OrderByDescending(e => e.Total)
-            .ToListAsync();
+        return totalReward;
+    }
 
-        await _dbContext.DisposeAsync();
-
-        // //@TODO Remove Memory Operations
-        var filteredEntriesQuery = queryResult
-            .Select((entry, index) => new LeaderBoardResponse
+    public async Task<PaginatedLeaderBoardResponse?> GetUserLeaderboardAsync(int offset, int limit)
+    {
+        var usersQuery = _dbContext.Orders
+            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
+            .GroupBy(o => o.UserAddress)
+            .Select(g => new
             {
-                TestnetAddress = entry.TestnetAddress,
-                MainnetAddress = entry.MainnetAddress,
-                Total = entry.Total,
-                Deposit = entry.Deposit,
-                Redeem = entry.Redeem,
-                Swap = entry.Swap,
-                Batch = entry.Batch,
-                BaseRewardPercentage = entry.Total / overallTotalAmount,
-                BaseReward = entry.Total / overallTotalAmount * totalReward,
-                Rank = index + 1
-            });
+                TestnetAddress = g.Key,
+                Total = g.Count(o => o.OrderType != OrderType.Unknown),
+                Deposit = g.Count(o => o.OrderType == OrderType.Deposit),
+                Redeem = g.Count(o => o.OrderType == OrderType.Redeem),
+                Swap = g.Count(o => o.OrderType == OrderType.Swap),
+            })
+            .Where(u => u.Total > 0);
 
-        if (addresses != null && addresses.Count > 0)
-        {
-            filteredEntriesQuery = filteredEntriesQuery.Where(r => addresses.Contains(r.TestnetAddress));
-        }
-        else
-        {
-            filteredEntriesQuery = filteredEntriesQuery.Skip(offset).Take(limit);
-        }
+        var paginatedUsersQuery = usersQuery
+            .OrderByDescending(u => u.Total)
+            .ThenBy(u => u.TestnetAddress)
+            .Skip(offset)
+            .Take(limit);
 
-        var filteredEntries = filteredEntriesQuery.ToList();
-
-        foreach (LeaderBoardResponse response in filteredEntries)
-        {
-            if (!string.IsNullOrEmpty(response.MainnetAddress))
-            {
-                PaginatedAssetResponse res = await _assetService.GetAssetsAsync(
-                    _settings.TbcPolicyId,
-                    response.MainnetAddress, 0, 1, false);
-
-                if (res.TotalCount > 0)
+        var usersWithMainnetAddress = paginatedUsersQuery
+            .GroupJoin(_dbContext.AddressVerifications,
+                entry => entry.TestnetAddress,
+                verification => verification.TestnetAddress,
+                (entry, verifications) => new { Entry = entry, Verifications = verifications })
+            .SelectMany(x => x.Verifications.DefaultIfEmpty(),
+                (x, verification) => new
                 {
-                    response.TotalNft = res.TotalCount;
-                    response.BonusReward = response.BaseReward * res.TotalCount * (decimal)0.05;
-                }
-            }
-        }
+                    x.Entry.TestnetAddress,
+                    MainnetAddress = verification == null ? "" : verification.MainnetAddress,
+                    x.Entry.Total,
+                    x.Entry.Deposit,
+                    x.Entry.Redeem,
+                    x.Entry.Swap,
+                });
 
-        return new PaginatedLeaderBoardResponse()
+        int totalUsers = await _dbContext.Orders.Select(o => o.UserAddress)
+            .Distinct()
+            .Where(ua => !_dbContext.BlacklistedAddresses.Select(ba => ba.Address).Contains(ua))
+            .CountAsync();
+        decimal totalPoints = await usersQuery.SumAsync(u => u.Total);
+        int reward = GetRewardAmount(LeaderBoardType.Users);
+
+        List<LeaderBoardResponse> users = (await usersWithMainnetAddress.ToListAsync())
+            .Select((u, index) => new LeaderBoardResponse
+            {
+                TestnetAddress = u.TestnetAddress,
+                MainnetAddress = u.MainnetAddress,
+                Total = u.Total,
+                Deposit = u.Deposit,
+                Redeem = u.Redeem,
+                Swap = u.Swap,
+                Batch = 0,
+                Rank = index + offset + 1,
+                BaseRewardPercentage = u.Total / totalPoints,
+                BaseReward = u.Total / totalPoints * reward,
+            })
+            .ToList();
+
+        return new()
         {
-            TotalAmount = allEntriesWithMainnet.Sum(r => r.Total),
-            TotalCount = allEntriesWithMainnet.Where(t => t.Total > 0).ToList().Count,
-            Result = filteredEntries
+            Result = users,
+            TotalCount = totalUsers,
+            TotalAmount = (int)totalPoints
         };
     }
 
-    public async Task<LeaderBoardResponse?> GetLeaderboardAddressAsync(string bech32Address, LeaderBoardType leaderBoardType)
+    public async Task<PaginatedLeaderBoardResponse?> GetBadgerLeaderboardAsync(int offset, int limit)
     {
+        var badgersQuery = _dbContext.Orders
+            .Where(b => b.BatcherAddress != null)
+            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
+            .GroupBy(o => o.BatcherAddress)
+            .Select(g => new
+            {
+                TestnetAddress = g.Key ?? "",
+                Total = g.Count(),
+            });
 
-        var response = await GetLeaderboardAsync(0, int.MaxValue, leaderBoardType, new List<string>
+        var paginatedBadgersQuery = badgersQuery
+            .OrderByDescending(u => u.Total)
+            .ThenBy(u => u.TestnetAddress)
+            .Skip(offset)
+            .Take(limit);
+
+        var badgersWithMainnetAddress = paginatedBadgersQuery
+            .GroupJoin(_dbContext.AddressVerifications,
+                entry => entry.TestnetAddress,
+                verification => verification.TestnetAddress,
+                (entry, verifications) => new { Entry = entry, Verifications = verifications })
+            .SelectMany(x => x.Verifications.DefaultIfEmpty(),
+                (x, verification) => new
+                {
+                    x.Entry.TestnetAddress,
+                    MainnetAddress = verification == null ? "" : verification.MainnetAddress,
+                    x.Entry.Total,
+                });
+
+        int totalBadgers = await _dbContext.Orders
+            .Select(o => o.BatcherAddress)
+            .Where(ba => ba != null)
+            .Distinct()
+            .Where(ba => !_dbContext.BlacklistedAddresses.Select(ta => ta.Address).Contains(ba))
+            .CountAsync();
+        decimal totalPoints = await _dbContext.Orders.Where(o => o.BatcherAddress != null).CountAsync();
+        int reward = GetRewardAmount(LeaderBoardType.Badgers);
+
+        List<LeaderBoardResponse> users = (await badgersWithMainnetAddress.ToListAsync())
+            .Select((u, index) => new LeaderBoardResponse
+            {
+                TestnetAddress = u.TestnetAddress,
+                MainnetAddress = u.MainnetAddress,
+                Total = u.Total,
+                Deposit = 0,
+                Redeem = 0,
+                Swap = 0,
+                Batch = u.Total,
+                Rank = index + offset + 1,
+                BaseRewardPercentage = u.Total / totalPoints,
+                BaseReward = u.Total / totalPoints * reward,
+            })
+            .ToList();
+
+        return new()
         {
-            bech32Address
-        });
-
-        return response.Result.FirstOrDefault();
+            Result = users,
+            TotalCount = totalBadgers,
+            TotalAmount = (int)totalPoints
+        };
     }
 
-    public async Task<LeaderBoardResponse?> GetUserLeaderboardAddressesAsync(List<string> bech32Addresses, LeaderBoardType leaderBoardType)
+    public async Task<PaginatedLeaderBoardResponse?> GetSingleUserAddressLeaderboardAsync(string bech32Address)
     {
+        var usersQuery = _dbContext.Orders
+           .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
+           .Where(o => o.Slot <= _settings.ItnEndSlot)
+           .GroupBy(o => o.UserAddress)
+           .Select(g => new
+           {
+               TestnetAddress = g.Key,
+               Total = g.Count(o => o.OrderType != OrderType.Unknown),
+               Deposit = g.Count(o => o.OrderType == OrderType.Deposit),
+               Redeem = g.Count(o => o.OrderType == OrderType.Redeem),
+               Swap = g.Count(o => o.OrderType == OrderType.Swap),
+           })
+           .Where(u => u.Total > 0)
+           .OrderByDescending(u => u.Total);
 
-        var response = await GetLeaderboardAsync(0, int.MaxValue, leaderBoardType, bech32Addresses);
-        var leaderboardResponses = response.Result;
+        var filteredUser = usersQuery
+            .Where(u => u.TestnetAddress == bech32Address);
 
-        return response is not null && response.Result.Count > 0 ? new()
+        var rankedUsers = filteredUser
+            .Select(u => new
+            {
+                u.TestnetAddress,
+                u.Deposit,
+                u.Swap,
+                u.Redeem,
+                u.Total,
+                Rank = usersQuery
+                    .Where(x => x.Total > 0 && x.Total > usersQuery
+                        .Where(y => y.TestnetAddress == u.TestnetAddress)
+                        .Select(y => y.Total)
+                        .FirstOrDefault())
+                    .Count() + 1,
+            });
+
+        var userWithMainnetAddress = rankedUsers
+            .GroupJoin(_dbContext.AddressVerifications,
+                entry => entry.TestnetAddress,
+                verification => verification.TestnetAddress,
+                (entry, verifications) => new { Entry = entry, Verifications = verifications })
+            .SelectMany(x => x.Verifications.DefaultIfEmpty(),
+                (x, verification) => new
+                {
+                    x.Entry.TestnetAddress,
+                    MainnetAddress = verification == null ? "" : verification.MainnetAddress,
+                    x.Entry.Total,
+                    x.Entry.Deposit,
+                    x.Entry.Redeem,
+                    x.Entry.Swap,
+                    x.Entry.Rank
+                });
+
+        int totalUsers = await _dbContext.Orders.Select(o => o.UserAddress)
+            .Distinct()
+            .Where(ua => !_dbContext.BlacklistedAddresses.Select(ba => ba.Address).Contains(ua))
+            .CountAsync();
+        decimal totalPoints = await usersQuery.SumAsync(u => u.Total);
+        var user = await userWithMainnetAddress.FirstOrDefaultAsync();
+        int reward = GetRewardAmount(LeaderBoardType.Users);
+
+        if (user is null) return null;
+
+        LeaderBoardResponse leaderboardUser = new()
         {
-            TestnetAddress = leaderboardResponses.FirstOrDefault()?.TestnetAddress ?? "",
-            MainnetAddress = leaderboardResponses.FirstOrDefault()?.MainnetAddress ?? "",
-            Rank = leaderboardResponses.Average(x => x.Rank),
-            Total = leaderboardResponses.Sum(x => x.Total),
-            Deposit = leaderboardResponses.Sum(x => x.Deposit),
-            Redeem = leaderboardResponses.Sum(x => x.Redeem),
-            Swap = leaderboardResponses.Sum(x => x.Swap),
-            Batch = leaderboardResponses.Sum(x => x.Batch),
-            BaseRewardPercentage = leaderboardResponses.Sum(x => x.BaseRewardPercentage),
-            BaseReward = leaderboardResponses.Sum(x => x.BaseReward),
-            BonusReward = leaderboardResponses.Sum(x => x.BonusReward),
-            TotalNft = leaderboardResponses.Sum(x => x.TotalNft),
-        } : null;
+            TestnetAddress = user.TestnetAddress,
+            MainnetAddress = user.MainnetAddress,
+            Total = user.Total,
+            Deposit = user.Deposit,
+            Redeem = user.Redeem,
+            Swap = user.Swap,
+            Batch = 0,
+            Rank = user.Rank,
+            BaseRewardPercentage = user.Total / totalPoints,
+            BaseReward = user.Total / totalPoints * reward,
+        };
+
+        return new()
+        {
+            Result = new List<LeaderBoardResponse>() { leaderboardUser },
+            TotalAmount = (int)totalPoints,
+            TotalCount = totalUsers
+        };
+    }
+
+    public async Task<PaginatedLeaderBoardResponse?> GetSingleBadgerAddressLeaderboardAsync(string bech32Address)
+    {
+        var badgersQuery = _dbContext.Orders
+            .Where(b => b.BatcherAddress != null)
+            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
+            .GroupBy(o => o.BatcherAddress)
+            .Select(g => new
+            {
+                TestnetAddress = g.Key ?? "",
+                Total = g.Count(),
+            })
+            .OrderByDescending(u => u.Total);
+
+
+        var filteredBadger = badgersQuery
+            .Where(u => u.TestnetAddress == bech32Address);
+
+        var rankedBadgers = filteredBadger
+             .Select(u => new
+             {
+                 u.TestnetAddress,
+                 u.Total,
+                 Rank = badgersQuery
+                     .Where(x => x.Total > 0 && x.Total > badgersQuery
+                         .Where(y => y.TestnetAddress == u.TestnetAddress)
+                         .Select(y => y.Total)
+                         .FirstOrDefault())
+                     .Count() + 1,
+             });
+
+        var badgersWithMainnetAddress = rankedBadgers
+            .GroupJoin(_dbContext.AddressVerifications,
+                entry => entry.TestnetAddress,
+                verification => verification.TestnetAddress,
+                (entry, verifications) => new { Entry = entry, Verifications = verifications })
+            .SelectMany(x => x.Verifications.DefaultIfEmpty(),
+                (x, verification) => new
+                {
+                    x.Entry.TestnetAddress,
+                    MainnetAddress = verification == null ? "" : verification.MainnetAddress,
+                    x.Entry.Total,
+                    x.Entry.Rank
+                });
+
+        int totalBadgers = await _dbContext.Orders
+            .Select(o => o.BatcherAddress)
+            .Where(ba => ba != null)
+            .Distinct()
+            .Where(ba => !_dbContext.BlacklistedAddresses.Select(ta => ta.Address).Contains(ba))
+            .CountAsync();
+
+        decimal totalPoints = await _dbContext.Orders.Where(o => o.BatcherAddress != null).CountAsync();
+        var badger = await badgersWithMainnetAddress.FirstOrDefaultAsync();
+        int reward = GetRewardAmount(LeaderBoardType.Badgers);
+
+        if (badger is null) return null;
+
+        LeaderBoardResponse leaderboardUser = new()
+        {
+            TestnetAddress = badger.TestnetAddress,
+            MainnetAddress = badger.MainnetAddress,
+            Total = badger.Total,
+            Deposit = 0,
+            Redeem = 0,
+            Swap = 0,
+            Batch = badger.Total,
+            Rank = badger.Rank,
+            BaseRewardPercentage = badger.Total / totalPoints,
+            BaseReward = badger.Total / totalPoints * reward,
+        };
+
+        return new()
+        {
+            Result = new List<LeaderBoardResponse>() { leaderboardUser },
+            TotalAmount = (int)totalPoints,
+            TotalCount = totalBadgers
+        };
+    }
+
+    public async Task<PaginatedLeaderBoardResponse?> GetMultipleAddressUserLeaderboardAsync(List<string> bech32Addresses)
+    {
+        var usersQuery = _dbContext.Orders
+           .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
+           .Where(o => o.Slot <= _settings.ItnEndSlot)
+           .GroupBy(o => o.UserAddress)
+           .Select(g => new
+           {
+               TestnetAddress = g.Key,
+               Total = g.Count(o => o.OrderType != OrderType.Unknown),
+               Deposit = g.Count(o => o.OrderType == OrderType.Deposit),
+               Redeem = g.Count(o => o.OrderType == OrderType.Redeem),
+               Swap = g.Count(o => o.OrderType == OrderType.Swap),
+           })
+           .Where(u => u.Total > 0)
+           .OrderByDescending(u => u.Total);
+
+        var filteredUser = usersQuery
+            .Where(u => bech32Addresses.Contains(u.TestnetAddress));
+
+        var usersWithMainnetAddress = filteredUser
+            .GroupJoin(_dbContext.AddressVerifications,
+                entry => entry.TestnetAddress,
+                verification => verification.TestnetAddress,
+                (entry, verifications) => new { Entry = entry, Verifications = verifications })
+            .SelectMany(x => x.Verifications.DefaultIfEmpty(),
+                (x, verification) => new
+                {
+                    x.Entry.TestnetAddress,
+                    MainnetAddress = verification == null ? "" : verification.MainnetAddress,
+                    x.Entry.Total,
+                    x.Entry.Deposit,
+                    x.Entry.Redeem,
+                    x.Entry.Swap,
+                });
+
+        int totalUsers = await _dbContext.Orders.Select(o => o.UserAddress)
+            .Distinct()
+            .Where(ua => !_dbContext.BlacklistedAddresses.Select(ba => ba.Address).Contains(ua))
+            .CountAsync();
+        decimal totalPoints = await usersQuery.SumAsync(u => u.Total);
+        int reward = GetRewardAmount(LeaderBoardType.Users);
+        List<LeaderBoardResponse> users = (await usersWithMainnetAddress.ToListAsync())
+            .Select(u => new LeaderBoardResponse
+            {
+                TestnetAddress = u.TestnetAddress,
+                MainnetAddress = u.MainnetAddress,
+                Total = u.Total,
+                Deposit = u.Deposit,
+                Redeem = u.Redeem,
+                Swap = u.Swap,
+                Batch = 0,
+                Rank = 0,
+                BaseRewardPercentage = u.Total / totalPoints,
+                BaseReward = u.Total / totalPoints * reward,
+            })
+            .ToList();
+
+        if (users is null) return null;
+
+        LeaderBoardResponse combinedRewards = new()
+        {
+            TestnetAddress = "",
+            MainnetAddress = "",
+            Total = users.Sum(u => u.Total),
+            Deposit = users.Sum(u => u.Deposit),
+            Redeem = users.Sum(u => u.Redeem),
+            Swap = users.Sum(u => u.Swap),
+            Batch = 0,
+            Rank = users.Average(u => u.Rank),
+            BaseRewardPercentage = users.Sum(u => u.BaseRewardPercentage),
+            BaseReward = users.Sum(u => u.BaseReward),
+        };
+
+        return new()
+        {
+            Result = new List<LeaderBoardResponse>() { combinedRewards },
+            TotalAmount = (int)totalPoints,
+            TotalCount = totalUsers
+        };
     }
 }
