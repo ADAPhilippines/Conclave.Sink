@@ -11,7 +11,7 @@ public class CardanoWalletService
     private readonly ILocalStorageService _localStorage;
 
     public event EventHandler? ConnectionStateChange;
-
+    public Guid SessionId { get; } = Guid.NewGuid();
     public string? ConnectedAddress { get; set; }
     public CardanoWallet? ConnectedWallet { get; set; }
 

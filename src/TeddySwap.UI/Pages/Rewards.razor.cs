@@ -52,14 +52,18 @@ public partial class Rewards : IAsyncDisposable
         {
             try
             {
-                string[] addresses = await CardanoWalletService.GetUsedAddressesAsync();
+                string[] addresses = await QueryService.Query($"CardanoWalletService.GetUsedAddressesAsync:{CardanoWalletService.SessionId}", async () =>
+                {
+                    return await CardanoWalletService.GetUsedAddressesAsync();
+                });
+
                 PaginatedLeaderBoardResponse response = await QueryService.Query($"/leaderboard/users/addresses/${string.Join(",", addresses)}", async () =>
                 {
                     return await SinkService.GetRewardFromAddressesAsync(addresses);
                 });
                 LeaderBoardResponse = response.Result.FirstOrDefault() ?? LeaderBoardResponse;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // @TODO: Push error to analytics
             }
