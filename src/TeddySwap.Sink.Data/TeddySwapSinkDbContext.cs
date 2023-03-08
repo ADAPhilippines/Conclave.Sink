@@ -62,6 +62,26 @@ public class TeddySwapSinkDbContext : DbContext
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<Order>()
+            .HasIndex(o => o.UserAddress)
+            .IsUnique(false);
+
+        modelBuilder.Entity<Order>()
+            .HasIndex(o => o.BatcherAddress)
+            .IsUnique(false);
+
+        modelBuilder.Entity<Order>()
+            .HasIndex(o => o.OrderType)
+            .IsUnique(false);
+
+        modelBuilder.Entity<Order>()
+            .HasIndex(o => o.Slot)
+            .IsUnique(false);
+
+        modelBuilder.Entity<Order>()
+            .HasIndex(o => o.Slot)
+            .IsUnique(false);
+
         modelBuilder.Entity<Price>()
             .HasOne(p => p.Order)
             .WithOne(o => o.Price)

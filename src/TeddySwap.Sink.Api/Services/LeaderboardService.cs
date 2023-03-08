@@ -57,6 +57,7 @@ public class LeaderboardService
 
         var paginatedUsersQuery = usersQuery
             .OrderByDescending(u => u.Total)
+            .ThenBy(u => u.TestnetAddress)
             .Skip(offset)
             .Take(limit);
 
@@ -122,6 +123,7 @@ public class LeaderboardService
 
         var paginatedBadgersQuery = badgersQuery
             .OrderByDescending(u => u.Total)
+            .ThenBy(u => u.TestnetAddress)
             .Skip(offset)
             .Take(limit);
 
@@ -191,7 +193,23 @@ public class LeaderboardService
         var filteredUser = usersQuery
             .Where(u => u.TestnetAddress == bech32Address);
 
-        var userWithMainnetAddress = filteredUser
+        var rankedUsers = filteredUser
+            .Select(u => new
+            {
+                u.TestnetAddress,
+                u.Deposit,
+                u.Swap,
+                u.Redeem,
+                u.Total,
+                Rank = usersQuery
+                    .Where(x => x.Total > 0 && x.Total > usersQuery
+                        .Where(y => y.TestnetAddress == u.TestnetAddress)
+                        .Select(y => y.Total)
+                        .FirstOrDefault())
+                    .Count() + 1,
+            });
+
+        var userWithMainnetAddress = rankedUsers
             .GroupJoin(_dbContext.AddressVerifications,
                 entry => entry.TestnetAddress,
                 verification => verification.TestnetAddress,
@@ -205,6 +223,7 @@ public class LeaderboardService
                     x.Entry.Deposit,
                     x.Entry.Redeem,
                     x.Entry.Swap,
+                    x.Entry.Rank
                 });
 
         int totalUsers = await _dbContext.Orders.Select(o => o.UserAddress)
@@ -226,7 +245,7 @@ public class LeaderboardService
             Redeem = user.Redeem,
             Swap = user.Swap,
             Batch = 0,
-            Rank = 0,
+            Rank = user.Rank,
             BaseRewardPercentage = user.Total / totalPoints,
             BaseReward = user.Total / totalPoints * reward,
         };
@@ -253,10 +272,24 @@ public class LeaderboardService
             })
             .OrderByDescending(u => u.Total);
 
+
         var filteredBadger = badgersQuery
             .Where(u => u.TestnetAddress == bech32Address);
 
-        var badgersWithMainnetAddress = filteredBadger
+        var rankedBadgers = filteredBadger
+             .Select(u => new
+             {
+                 u.TestnetAddress,
+                 u.Total,
+                 Rank = badgersQuery
+                     .Where(x => x.Total > 0 && x.Total > badgersQuery
+                         .Where(y => y.TestnetAddress == u.TestnetAddress)
+                         .Select(y => y.Total)
+                         .FirstOrDefault())
+                     .Count() + 1,
+             });
+
+        var badgersWithMainnetAddress = rankedBadgers
             .GroupJoin(_dbContext.AddressVerifications,
                 entry => entry.TestnetAddress,
                 verification => verification.TestnetAddress,
@@ -267,6 +300,7 @@ public class LeaderboardService
                     x.Entry.TestnetAddress,
                     MainnetAddress = verification == null ? "" : verification.MainnetAddress,
                     x.Entry.Total,
+                    x.Entry.Rank
                 });
 
         int totalBadgers = await _dbContext.Orders
@@ -291,7 +325,7 @@ public class LeaderboardService
             Redeem = 0,
             Swap = 0,
             Batch = badger.Total,
-            Rank = 0,
+            Rank = badger.Rank,
             BaseRewardPercentage = badger.Total / totalPoints,
             BaseReward = badger.Total / totalPoints * reward,
         };
@@ -373,7 +407,7 @@ public class LeaderboardService
             Redeem = users.Sum(u => u.Redeem),
             Swap = users.Sum(u => u.Swap),
             Batch = 0,
-            Rank = 0,
+            Rank = users.Average(u => u.Rank),
             BaseRewardPercentage = users.Sum(u => u.BaseRewardPercentage),
             BaseReward = users.Sum(u => u.BaseReward),
         };
