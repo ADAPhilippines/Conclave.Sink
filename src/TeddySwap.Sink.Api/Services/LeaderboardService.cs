@@ -407,9 +407,8 @@ public class LeaderboardService
     private async Task<decimal> GetTotalUserPoints()
     {
         decimal totalPoints = await _dbContext.Orders
+            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.UserAddress))
             .Where(o => o.Slot <= _settings.ItnEndSlot)
-            .Where(b => b.BatcherAddress != null)
-            .Where(o => !_dbContext.BlacklistedAddresses.Any(b => b.Address == o.BatcherAddress))
             .CountAsync();
 
         return totalPoints;
