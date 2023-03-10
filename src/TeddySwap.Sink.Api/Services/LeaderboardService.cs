@@ -77,8 +77,8 @@ public class LeaderboardService
                     x.Entry.Swap,
                 });
 
-        int totalUsers = await GetTotalUsers();
         decimal totalPoints = await GetTotalUserPoints();
+        int totalUsers = await GetTotalUsers();
         int reward = GetRewardAmount(LeaderBoardType.Users);
 
         List<LeaderBoardResponse> users = (await usersWithMainnetAddress.ToListAsync())
@@ -137,8 +137,8 @@ public class LeaderboardService
                     x.Entry.Total,
                 });
 
-        int totalBadgers = await GetTotalBadgers();
         decimal totalPoints = await GetTotalBadgerPoints();
+        int totalBadgers = await GetTotalBadgers();
         int reward = GetRewardAmount(LeaderBoardType.Badgers);
 
         List<LeaderBoardResponse> users = (await badgersWithMainnetAddress.ToListAsync())
@@ -182,9 +182,6 @@ public class LeaderboardService
            .Where(u => u.Total > 0)
            .OrderByDescending(u => u.Total);
 
-
-
-
         var filteredUser = usersQuery
             .Where(u => u.TestnetAddress == bech32Address);
 
@@ -221,8 +218,8 @@ public class LeaderboardService
                     x.Entry.Rank
                 });
 
-        int totalUsers = await GetTotalUsers();
         decimal totalPoints = await GetTotalUserPoints();
+        int totalUsers = await GetTotalUsers();
         int reward = GetRewardAmount(LeaderBoardType.Users);
         var user = await userWithMainnetAddress.FirstOrDefaultAsync();
 
@@ -295,8 +292,8 @@ public class LeaderboardService
                     x.Entry.Rank
                 });
 
-        int totalBadgers = await GetTotalBadgers();
         decimal totalPoints = await GetTotalBadgerPoints();
+        int totalBadgers = await GetTotalBadgers();
         int reward = GetRewardAmount(LeaderBoardType.Badgers);
         var badger = await badgersWithMainnetAddress.FirstOrDefaultAsync();
 
@@ -360,8 +357,8 @@ public class LeaderboardService
                     x.Entry.Swap,
                 });
 
-        int totalUsers = await GetTotalUsers();
         decimal totalPoints = await GetTotalUserPoints();
+        int totalUsers = await GetTotalUsers();
         int reward = GetRewardAmount(LeaderBoardType.Users);
 
         List<LeaderBoardResponse> users = (await usersWithMainnetAddress.ToListAsync())
