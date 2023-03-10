@@ -146,7 +146,7 @@ public class LeaderboardService
             .Distinct()
             .Where(ba => !_dbContext.BlacklistedAddresses.Select(ta => ta.Address).Contains(ba))
             .CountAsync();
-        decimal totalPoints = await _dbContext.Orders.Where(o => o.BatcherAddress != null).CountAsync();
+        decimal totalPoints = await badgersQuery.SumAsync(u => u.Total);
         int reward = GetRewardAmount(LeaderBoardType.Badgers);
 
         List<LeaderBoardResponse> users = (await badgersWithMainnetAddress.ToListAsync())
@@ -310,7 +310,7 @@ public class LeaderboardService
             .Where(ba => !_dbContext.BlacklistedAddresses.Select(ta => ta.Address).Contains(ba))
             .CountAsync();
 
-        decimal totalPoints = await _dbContext.Orders.Where(o => o.BatcherAddress != null).CountAsync();
+        decimal totalPoints = await badgersQuery.SumAsync(u => u.Total);
         var badger = await badgersWithMainnetAddress.FirstOrDefaultAsync();
         int reward = GetRewardAmount(LeaderBoardType.Badgers);
 
