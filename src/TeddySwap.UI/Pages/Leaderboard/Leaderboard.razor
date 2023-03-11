@@ -10,11 +10,16 @@
 <div class="flex gap-4">
     <MudTabs id="leaderboard-tabs" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="w-full"
         SliderColor="Color.Secondary" PanelClass="mt-6">
-        <MudTabPanel Text="Users" Icon="@Icons.Material.Filled.People">
-            <LeaderboardTable @ref="LeaderBoardTable" LeaderBoardType="LeaderBoardType.Users" />
-        </MudTabPanel>
-        <MudTabPanel Text="Badgers" Icon="@Icons.Material.Filled.BatchPrediction">
-            <LeaderboardTable @ref="LeaderBoardTable" LeaderBoardType="LeaderBoardType.Badgers" />
-        </MudTabPanel>
+        <Header>
+            <MudText Class="font-bold ">Time remaining @RemainingTime.ToString("dd:HH:mm:ss")</MudText>
+        </Header>
+        <ChildContent>
+            <MudTabPanel Text="Users" Icon="@Icons.Material.Filled.People">
+                <LeaderboardTable @ref="LeaderBoardTable" LeaderBoardType="LeaderBoardType.Users" />
+            </MudTabPanel>
+            <MudTabPanel Text="Badgers" Icon="@Icons.Material.Filled.BatchPrediction">
+                <LeaderboardTable @ref="LeaderBoardTable" LeaderBoardType="LeaderBoardType.Badgers" />
+            </MudTabPanel>
+        </ChildContent>
     </MudTabs>
 </div>

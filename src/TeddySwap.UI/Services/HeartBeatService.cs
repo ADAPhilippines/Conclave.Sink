@@ -9,18 +9,16 @@ public class HeartBeatService
         _queryService = queryService;
     }
 
-    private ulong latestBlockNo;
-    public ulong LatestBlockNo
-    {
-        get => latestBlockNo;
-        set
-        {
-            _queryService.Invalidate();
-            latestBlockNo = value;
-            Hearbeat?.Invoke(this, EventArgs.Empty);
-        }
-    }
+    public ulong LatestBlockNo { get; set; }
+
+    public ulong LatestSlotNo { get; set; }
 
     public event EventHandler? Hearbeat;
+
+    public void TriggerHeartBeat()
+    {
+        _queryService.Invalidate();
+        Hearbeat?.Invoke(this, EventArgs.Empty);
+    }
 
 }
