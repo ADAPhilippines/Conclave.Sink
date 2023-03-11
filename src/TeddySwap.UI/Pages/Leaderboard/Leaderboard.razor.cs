@@ -12,7 +12,7 @@ public partial class Leaderboard
 {
     protected LeaderboardTable? LeaderBoardTable { get; set; }
 
-    protected ulong EndSlot { get => 12128504; }
+    protected ulong EndSlot { get => 12056038; }
     protected DateTimeOffset RemainingTime
     {
         get
