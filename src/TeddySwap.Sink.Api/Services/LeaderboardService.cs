@@ -77,7 +77,9 @@ public class LeaderboardService
                     x.Entry.Swap,
                 });
 
-        int totalUsers = await _dbContext.Orders.Select(o => o.UserAddress)
+        int totalUsers = await _dbContext.Orders
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
+            .Select(o => o.UserAddress)
             .Distinct()
             .Where(ua => !_dbContext.BlacklistedAddresses.Select(ba => ba.Address).Contains(ua))
             .CountAsync();
@@ -141,6 +143,7 @@ public class LeaderboardService
                 });
 
         int totalBadgers = await _dbContext.Orders
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
             .Select(o => o.BatcherAddress)
             .Where(ba => ba != null)
             .Distinct()
@@ -226,7 +229,9 @@ public class LeaderboardService
                     x.Entry.Rank
                 });
 
-        int totalUsers = await _dbContext.Orders.Select(o => o.UserAddress)
+        int totalUsers = await _dbContext.Orders
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
+            .Select(o => o.UserAddress)
             .Distinct()
             .Where(ua => !_dbContext.BlacklistedAddresses.Select(ba => ba.Address).Contains(ua))
             .CountAsync();
@@ -304,6 +309,7 @@ public class LeaderboardService
                 });
 
         int totalBadgers = await _dbContext.Orders
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
             .Select(o => o.BatcherAddress)
             .Where(ba => ba != null)
             .Distinct()
@@ -374,12 +380,16 @@ public class LeaderboardService
                     x.Entry.Swap,
                 });
 
-        int totalUsers = await _dbContext.Orders.Select(o => o.UserAddress)
+        int totalUsers = await _dbContext.Orders
+            .Where(o => o.Slot <= _settings.ItnEndSlot)
+            .Select(o => o.UserAddress)
             .Distinct()
             .Where(ua => !_dbContext.BlacklistedAddresses.Select(ba => ba.Address).Contains(ua))
             .CountAsync();
+
         decimal totalPoints = await usersQuery.SumAsync(u => u.Total);
         int reward = GetRewardAmount(LeaderBoardType.Users);
+
         List<LeaderBoardResponse> users = (await usersWithMainnetAddress.ToListAsync())
             .Select(u => new LeaderBoardResponse
             {
