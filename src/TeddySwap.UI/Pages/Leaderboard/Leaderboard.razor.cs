@@ -12,17 +12,13 @@ public partial class Leaderboard
 {
     protected LeaderboardTable? LeaderBoardTable { get; set; }
 
-    protected ulong EndSlot { get => 12056038; }
-    protected DateTimeOffset RemainingTime
+    protected ulong EndSlot { get => 12142438; }
+    protected TimeSpan RemainingTime
     {
         get
         {
-            DateTimeOffset result = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(EndSlot - HeartBeatService?.LatestSlotNo ?? 0));
-            
-            if (result < DateTimeOffset.FromUnixTimeSeconds(0))
-                result = DateTimeOffset.FromUnixTimeSeconds(0);
-                
-            return result;
+            if (HeartBeatService?.LatestSlotNo > EndSlot) return TimeSpan.Zero;
+            return TimeSpan.FromSeconds(Convert.ToDouble(EndSlot - HeartBeatService?.LatestSlotNo));
         }
     }
 
