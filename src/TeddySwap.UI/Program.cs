@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
+using TeddySwap.Common.Services;
 using TeddySwap.UI.Services;
 using TeddySwap.UI.Workers;
 

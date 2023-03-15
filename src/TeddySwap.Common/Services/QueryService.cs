@@ -1,4 +1,4 @@
-namespace TeddySwap.UI.Services;
+namespace TeddySwap.Common.Services;
 
 public class QueryService
 {

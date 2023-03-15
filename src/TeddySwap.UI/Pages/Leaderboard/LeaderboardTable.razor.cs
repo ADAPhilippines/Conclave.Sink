@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models.Response;
+using TeddySwap.Common.Services;
 using TeddySwap.UI.Models;
 using TeddySwap.UI.Services;
 

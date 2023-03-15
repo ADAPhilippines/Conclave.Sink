@@ -1,4 +1,4 @@
-namespace TeddySwap.UI.Services;
+namespace TeddySwap.Common.Services;
 
 public class HeartBeatService
 {
@@ -20,5 +20,4 @@ public class HeartBeatService
         _queryService.Invalidate();
         Hearbeat?.Invoke(this, EventArgs.Empty);
     }
-
 }
