@@ -11,7 +11,7 @@ public class CardanoWalletService
     private readonly ILocalStorageService _localStorage;
 
     public event EventHandler? ConnectionStateChange;
-
+    public Guid SessionId { get; } = Guid.NewGuid();
     public string? ConnectedAddress { get; set; }
     public CardanoWallet? ConnectedWallet { get; set; }
 
@@ -50,6 +50,12 @@ public class CardanoWalletService
         }
 
         return result;
+    }
+
+    public async Task<string[]> GetUsedAddressesAsync()
+    {
+        ArgumentNullException.ThrowIfNull(_jsRuntime);
+        return await _jsRuntime.InvokeAsync<string[]>("CardanoWalletService.getUsedAddressesAsync");
     }
 
     public async Task DisconnectAsync()

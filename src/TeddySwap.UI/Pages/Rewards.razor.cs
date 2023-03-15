@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using TeddySwap.Common.Models.Response;
+using TeddySwap.Common.Services;
 using TeddySwap.UI.Services;
 
 namespace TeddySwap.UI.Pages;
@@ -11,6 +12,9 @@ public partial class Rewards : IAsyncDisposable
 
     [Inject]
     protected SinkService? SinkService { get; set; }
+
+    [Inject]
+    protected QueryService? QueryService { get; set; }
 
     protected LeaderBoardResponse LeaderBoardResponse { get; set; } = new LeaderBoardResponse();
 
@@ -44,14 +48,23 @@ public partial class Rewards : IAsyncDisposable
 
         ArgumentNullException.ThrowIfNull(SinkService);
         ArgumentNullException.ThrowIfNull(CardanoWalletService);
+        ArgumentNullException.ThrowIfNull(QueryService);
         if (!string.IsNullOrEmpty(CardanoWalletService.ConnectedAddress))
         {
             try
             {
-                PaginatedLeaderBoardResponse response = await SinkService.GetLeaderboardAsync(Common.Enums.LeaderBoardType.Users, 0, 1, CardanoWalletService.ConnectedAddress);
+                string[] addresses = await QueryService.Query($"CardanoWalletService.GetUsedAddressesAsync:{CardanoWalletService.SessionId}", async () =>
+                {
+                    return await CardanoWalletService.GetUsedAddressesAsync();
+                });
+
+                PaginatedLeaderBoardResponse response = await QueryService.Query($"/leaderboard/users/addresses/${string.Join(",", addresses)}", async () =>
+                {
+                    return await SinkService.GetRewardFromAddressesAsync(addresses);
+                });
                 LeaderBoardResponse = response.Result.FirstOrDefault() ?? LeaderBoardResponse;
             }
-            catch
+            catch (Exception ex)
             {
                 // @TODO: Push error to analytics
             }

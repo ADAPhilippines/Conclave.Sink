@@ -17,14 +17,14 @@ builder.Services.AddDbContextPool<CardanoDbSyncContext>(options =>
 {
     if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
         options.EnableSensitiveDataLogging(true);
-    options.UseNpgsql(connectionString);
+    options.UseNpgsql(connectionString, pgOptions => pgOptions.EnableRetryOnFailure(3));
 }, 10);
 
 builder.Services.AddDbContextPool<TeddySwapSinkDbContext>(options =>
 {
     if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
         options.EnableSensitiveDataLogging(true);
-    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink"), pgOptions => pgOptions.EnableRetryOnFailure(3));
 }, 10);
 
 builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Configuration.GetSection("TeddySwapITNRewardSettings").Bind(options));

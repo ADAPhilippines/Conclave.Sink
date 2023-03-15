@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
+using TeddySwap.Common.Services;
 using TeddySwap.UI.Services;
 using TeddySwap.UI.Workers;
 
@@ -24,6 +25,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<HeartBeatService>();
 builder.Services.AddSingleton<SinkService>();
+builder.Services.AddSingleton<QueryService>();
 builder.Services.AddScoped<CardanoWalletService>();
 
 var app = builder.Build();

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using TeddySwap.Common.Services;
 using TeddySwap.UI.Models;
 using TeddySwap.UI.Services;
 
@@ -32,9 +33,13 @@ public class HeartBeatWorker : BackgroundService
                 HttpClient httpClient = _httpClientFactory.CreateClient();
                 BlockInfoResponse? blockInfoResponse = await httpClient.GetFromJsonAsync<BlockInfoResponse>($"{_configService.ExplorerApiUrl}/cardano/v1/blocks/bestBlock");
                 ulong latestBlockNo = blockInfoResponse?.BlockNo ?? _heartBeatService.LatestBlockNo;
+                ulong latestSlotNo = blockInfoResponse?.SlotNo ?? _heartBeatService.LatestSlotNo;
+
                 if (latestBlockNo > _heartBeatService.LatestBlockNo)
                 {
-                    _heartBeatService.LatestBlockNo = latestBlockNo;
+                    _heartBeatService.LatestBlockNo = blockInfoResponse?.BlockNo ?? _heartBeatService.LatestBlockNo;
+                    _heartBeatService.LatestSlotNo = blockInfoResponse?.SlotNo ?? _heartBeatService.LatestSlotNo;
+                    _heartBeatService.TriggerHeartBeat();
                 }
             }
             catch (Exception ex)

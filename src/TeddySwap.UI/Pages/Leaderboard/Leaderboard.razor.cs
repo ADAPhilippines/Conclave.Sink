@@ -12,6 +12,16 @@ public partial class Leaderboard
 {
     protected LeaderboardTable? LeaderBoardTable { get; set; }
 
+    protected ulong EndSlot { get => 12142438; }
+    protected TimeSpan RemainingTime
+    {
+        get
+        {
+            if (HeartBeatService?.LatestSlotNo > EndSlot) return TimeSpan.Zero;
+            return TimeSpan.FromSeconds(Convert.ToDouble(EndSlot - HeartBeatService?.LatestSlotNo));
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -25,6 +35,7 @@ public partial class Leaderboard
             {
                 if (LeaderBoardTable is not null)
                     await LeaderBoardTable.RefreshDataAsync();
+                StateHasChanged();
             });
         }
         catch
