@@ -6,13 +6,13 @@ namespace TeddySwap.Sink.Models.Oura;
 
 public enum OuraVariant
 {
-    Unknown,
-    RollBack,
-    Block,
-    Transaction,
-    TxInput,
-    TxOutput,
-    Order
+    Unknown = 0,
+    RollBack = 1,
+    Block = 2,
+    Transaction = 3,
+    TxInput = 4,
+    TxOutput = 5,
+    Order = 6
 }
 
 public interface IOuraEvent

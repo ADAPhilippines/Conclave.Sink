@@ -19,34 +19,33 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task ReduceAsync(OuraTxOutputEvent txOutputEvent)
+    public async Task ReduceAsync(OuraTxOutput txOutput)
     {
         using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        if (txOutputEvent is not null &&
-            txOutputEvent.Context is not null &&
-            txOutputEvent.TxOutput is not null &&
-            txOutputEvent.Context.TxHash is not null &&
-            txOutputEvent.Context.OutputIdx is not null &&
-            txOutputEvent.Context.BlockHash is not null &&
-            txOutputEvent.TxOutput.Amount is not null &&
-            txOutputEvent.TxOutput.Address is not null)
+        if (txOutput is not null &&
+            txOutput.Context is not null &&
+            txOutput.OutputIndex is not null &&
+            txOutput.Context.BlockHash is not null &&
+            txOutput.Amount is not null &&
+            txOutput.Address is not null &&
+            txOutput.TxHash is not null)
         {
-            Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txOutputEvent.Context.TxHash).FirstOrDefaultAsync();
+            Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txOutput.TxHash).FirstOrDefaultAsync();
             if (tx is not null)
             {
                 TxOutput? existingOutput = await _dbContext.TxOutputs
-                    .Where(o => o.TxHash == tx.Hash && o.Index == txOutputEvent.Context.OutputIdx)
+                    .Where(o => o.TxHash == tx.Hash && o.Index == txOutput.OutputIndex)
                     .FirstOrDefaultAsync();
 
                 if (existingOutput is not null) return;
 
                 TxOutput newTxOutput = new()
                 {
-                    Amount = (ulong)txOutputEvent.TxOutput.Amount,
-                    Address = txOutputEvent.TxOutput.Address,
-                    Index = (ulong)txOutputEvent.Context.OutputIdx,
-                    DatumCbor = txOutputEvent.TxOutput.DatumCbor,
-                    TxHash = txOutputEvent.Context.TxHash,
+                    Amount = (ulong)txOutput.Amount,
+                    Address = txOutput.Address,
+                    Index = (ulong)txOutput.OutputIndex,
+                    DatumCbor = txOutput.DatumCbor,
+                    TxHash = txOutput.TxHash,
                 };
 
                 newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };
@@ -54,9 +53,9 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
                 EntityEntry<TxOutput> insertResult = await _dbContext.TxOutputs.AddAsync(newTxOutput);
                 await _dbContext.SaveChangesAsync();
 
-                if (txOutputEvent.TxOutput.Assets is not null && txOutputEvent.TxOutput.Assets.Count() > 0)
+                if (txOutput.Assets is not null && txOutput.Assets.Count() > 0)
                 {
-                    await _dbContext.AddRangeAsync(txOutputEvent.TxOutput.Assets.Select(ouraAsset =>
+                    await _dbContext.AddRangeAsync(txOutput.Assets.Select(ouraAsset =>
                     {
                         return new Asset
                         {

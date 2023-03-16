@@ -35,33 +35,39 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraBlockEvent blockEvent)
     {
-        if (blockEvent.Context is not null &&
-            blockEvent.Context.BlockNumber is not null &&
-            blockEvent.Context.Slot is not null &&
-            blockEvent.Context.BlockHash is not null &&
-            blockEvent.Block is not null &&
-            blockEvent.Block.Era is not null)
+        try
         {
-            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-            await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
-
-            Block? existingBlock = await _dbContext.Blocks.Where(block => block.BlockNumber == blockEvent.Context.BlockNumber).FirstOrDefaultAsync();
-
-            if (existingBlock is not null)
-                _dbContext.Blocks.Remove(existingBlock);
-
-            await _dbContext.Blocks.AddAsync(new()
+            if (blockEvent.Context is not null &&
+                blockEvent.Context.BlockNumber is not null &&
+                blockEvent.Context.Slot is not null &&
+                blockEvent.Context.BlockHash is not null &&
+                blockEvent.Block is not null &&
+                blockEvent.Block.Era is not null)
             {
-                BlockNumber = (ulong)blockEvent.Context.BlockNumber,
-                VrfKeyhash = HashUtility.Blake2b256(blockEvent.Block.VrfVkey.HexToByteArray()).ToStringHex(),
-                Slot = (ulong)blockEvent.Context.Slot,
-                BlockHash = blockEvent.Context.BlockHash,
-                Era = blockEvent.Block.Era,
-                Epoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot),
-                InvalidTransactions = blockEvent.Block.InvalidTransactions
-            });
-            await _dbContext.SaveChangesAsync();
-            await _dbContext.DisposeAsync();
+                using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+                // await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
+
+                Block? existingBlock = await _dbContext.Blocks.Where(block => block.BlockNumber == blockEvent.Context.BlockNumber).FirstOrDefaultAsync();
+
+                if (existingBlock is not null) return;
+
+                await _dbContext.Blocks.AddAsync(new()
+                {
+                    BlockNumber = (ulong)blockEvent.Context.BlockNumber,
+                    VrfKeyhash = HashUtility.Blake2b256(blockEvent.Block.VrfVkey.HexToByteArray()).ToStringHex(),
+                    Slot = (ulong)blockEvent.Context.Slot,
+                    BlockHash = blockEvent.Context.BlockHash,
+                    Era = blockEvent.Block.Era,
+                    Epoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot),
+                    InvalidTransactions = blockEvent.Block.InvalidTransactions
+                });
+                await _dbContext.SaveChangesAsync();
+                await _dbContext.DisposeAsync();
+            }
+        }
+        catch
+        {
+            _logger.LogInformation("Block insert failed...");
         }
     }
 

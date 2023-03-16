@@ -9,7 +9,7 @@ using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Reducers;
 
-[OuraReducer(OuraVariant.Transaction)]
+[OuraReducer(OuraVariant.Order)]
 public class OrderReducer : OuraReducerBase
 {
     private readonly ILogger<OrderReducer> _logger;
