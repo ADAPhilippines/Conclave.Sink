@@ -18,7 +18,7 @@ public class OrderService
     private readonly DatumService _datumService;
     private readonly ByteArrayService _byteArrayService;
     private readonly ILogger<OrderService> _logger;
-    private IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
 
     public OrderService(
         DatumService datumService,
@@ -34,16 +34,16 @@ public class OrderService
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<Order?> ProcessOrderAsync(OuraTransactionEvent transactionEvent)
+    public async Task<Order?> ProcessOrderAsync(OuraTransaction transaction)
     {
         using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         Order? order = null;
 
-        if (transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Inputs is not null &&
-            transactionEvent.Transaction.Outputs is not null)
+        if (transaction is not null &&
+            transaction.Inputs is not null &&
+            transaction.Outputs is not null)
         {
-            List<string> inputRefs = transactionEvent.Transaction.Inputs.Select(i => i.TxHash + i.Index).ToList();
+            List<string> inputRefs = transaction.Inputs.Select(i => i.TxHash + i.Index).ToList();
             List<TxOutput>? inputs = await _dbContext.TxOutputs
                 .Include(o => o.Assets)
                 .Where(o => inputRefs.Contains(o.TxHash + o.Index)).ToListAsync();
@@ -55,7 +55,7 @@ public class OrderService
                     _settings.RedeemAddress
                 };
 
-            if (transactionEvent.Context is null) return null;
+            if (transaction.Context is null) return null;
 
             // Find Validator Utxos
             TxOutput? poolInput = inputs.Where(i => i.Address == _settings.PoolAddress).FirstOrDefault();
@@ -64,25 +64,25 @@ public class OrderService
             // Return if not a TeddySwap transaction
             if (poolInput is null || orderInput is null) return null;
 
-            order = ProcessOrder(poolInput, orderInput, transactionEvent);
+            order = ProcessOrder(poolInput, orderInput, transaction);
         }
 
 
         return order;
     }
 
-    public Order? ProcessOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
+    public Order? ProcessOrder(TxOutput poolInput, TxOutput orderInput, OuraTransaction transaction)
     {
 
-        if (transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Context.TxIdx is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Outputs is not null)
+        if (transaction.Context is not null &&
+            transaction.Context.TxHash is not null &&
+            transaction.Context.TxIdx is not null &&
+            transaction is not null &&
+            transaction.Outputs is not null)
         {
 
             OrderType orderType = _datumService.GetOrderType(orderInput.Address);
-            List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
+            List<OuraTxOutput> outputs = transaction.Outputs.ToList();
 
             if (outputs.Count < 2) return null;
 
@@ -150,15 +150,15 @@ public class OrderService
                 if (poolDatum is not null &&
                     rewardOutput is not null &&
                     rewardOutput.Address is not null &&
-                    transactionEvent.Context.Slot is not null)
+                    transaction.Context.Slot is not null)
                 {
 
                     string? batcherAddress = outputs.Count < 3 ? null : outputs[2].Address;
 
                     return new()
                     {
-                        TxHash = transactionEvent.Context.TxHash,
-                        Index = (ulong)transactionEvent.Context.TxIdx,
+                        TxHash = transaction.Context.TxHash,
+                        Index = (ulong)transaction.Context.TxIdx,
                         OrderType = orderType,
                         UserAddress = rewardOutput.Address,
                         BatcherAddress = batcherAddress,
@@ -175,7 +175,7 @@ public class OrderService
                         OrderX = orderX,
                         OrderY = orderY,
                         OrderLq = orderLq,
-                        Slot = (ulong)transactionEvent.Context.Slot
+                        Slot = (ulong)transaction.Context.Slot
                     };
                 }
             }

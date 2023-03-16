@@ -10,7 +10,7 @@ using TeddySwap.Sink.Services;
 namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Transaction)]
-public class OrderReducer : OuraReducerBase, IOuraCoreReducer
+public class OrderReducer : OuraReducerBase
 {
     private readonly ILogger<OrderReducer> _logger;
     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
@@ -26,32 +26,29 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
         _orderService = orderService;
     }
 
-    public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
+    public async Task ReduceAsync(OuraTransaction transaction)
     {
-        if (transactionEvent is not null &&
-            transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Fee is not null &&
-            transactionEvent.Context.TxIdx is not null)
+        if (transaction is not null &&
+            transaction.Context is not null &&
+            transaction.Fee is not null)
         {
 
             using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
-                .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
+                .Where(b => b.BlockHash == transaction.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
-            if (block.InvalidTransactions is not null && block.InvalidTransactions.ToList().Contains((ulong)transactionEvent.Context.TxIdx)) return;
+            if (block.InvalidTransactions is not null && block.InvalidTransactions.ToList().Contains((ulong)transaction.Index)) return;
 
             Order? existingOrder = await _dbContext.Orders
-                .Where(o => o.TxHash == transactionEvent.Context.TxHash && o.Index == transactionEvent.Context.TxIdx)
+                .Where(o => o.TxHash == transaction.Hash && o.Index == (ulong)transaction.Index)
                 .FirstOrDefaultAsync();
 
             if (existingOrder is not null) return;
 
-            Order? order = await _orderService.ProcessOrderAsync(transactionEvent);
+            Order? order = await _orderService.ProcessOrderAsync(transaction);
 
             if (order is not null)
             {

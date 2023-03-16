@@ -11,4 +11,5 @@ public class OuraBlock
 
     [JsonPropertyName("invalid_transactions")]
     public IEnumerable<ulong>? InvalidTransactions { get; set; }
+    public List<OuraTransaction>? Transactions { get; set; }
 }

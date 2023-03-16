@@ -23,39 +23,37 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
+    public async Task ReduceAsync(OuraTransaction transaction)
     {
-        if (transactionEvent is not null &&
-            transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Fee is not null &&
-            transactionEvent.Context.TxIdx is not null)
+        if (transaction is not null &&
+            transaction.Context is not null &&
+            transaction.Fee is not null &&
+            transaction.Hash is not null)
         {
             using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
-                .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
+                .Where(b => b.BlockHash == transaction.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
 
             Transaction? existingTransaction = await _dbContext.Transactions
-                .Where(t => t.Hash == transactionEvent.Context.TxHash && t.Index == transactionEvent.Context.TxIdx)
+                .Where(t => t.Hash == transaction.Hash && t.Index == (ulong)transaction.Index)
                 .FirstOrDefaultAsync();
 
             if (existingTransaction is not null) return;
 
-            Transaction transaction = new()
+            Transaction newTransaction = new()
             {
-                Hash = transactionEvent.Context.TxHash,
-                Fee = (ulong)transactionEvent.Transaction.Fee,
-                Index = (ulong)transactionEvent.Context.TxIdx,
+                Hash = transaction.Hash,
+                Fee = (ulong)transaction.Fee,
+                Index = (ulong)transaction.Index,
                 Block = block,
                 Blockhash = block.BlockHash
             };
 
-            await _dbContext.Transactions.AddAsync(transaction);
+            await _dbContext.Transactions.AddAsync(newTransaction);
             await _dbContext.SaveChangesAsync();
         }
     }

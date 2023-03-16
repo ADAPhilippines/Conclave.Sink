@@ -35,7 +35,6 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraBlockEvent blockEvent)
     {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         if (blockEvent.Context is not null &&
             blockEvent.Context.BlockNumber is not null &&
             blockEvent.Context.Slot is not null &&
@@ -43,6 +42,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
             blockEvent.Block is not null &&
             blockEvent.Block.Era is not null)
         {
+            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
             await RollbackBySlotAsync((ulong)blockEvent.Context.Slot);
 
             Block? existingBlock = await _dbContext.Blocks.Where(block => block.BlockNumber == blockEvent.Context.BlockNumber).FirstOrDefaultAsync();

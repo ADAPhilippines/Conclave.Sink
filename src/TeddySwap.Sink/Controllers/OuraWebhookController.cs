@@ -62,23 +62,32 @@ public class OuraWebhookController : ControllerBase
             else
             {
                 _logger.LogInformation($"Event Received: {_event.Variant}, Block No: {_event.Context.BlockNumber}, Slot No: {_event.Context.Slot}, Block Hash: {_event.Context.BlockHash}");
+
+                OuraBlockEvent? blockEvent = null;
+                BlockReducer? blockReducer = _reducers.Where(r => r is BlockReducer).FirstOrDefault() as BlockReducer;
+                if (_event.Variant == OuraVariant.Block && blockReducer is not null)
+                {
+                    blockEvent = _eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions);
+                    if (blockEvent is not null && blockEvent.Block is not null)
+                    {
+                        blockEvent.Block.Transactions = blockEvent.Block.Transactions?.Select((t, i) => { t.Index = i; return t; }).ToList();
+                        await blockReducer.HandleReduceAsync(blockEvent);
+                    }
+                }
+
+                if (blockEvent is null || blockEvent.Block is null) return BadRequest();
+
+                Console.WriteLine(_eventJson);
                 await Task.WhenAll(_reducers.SelectMany((reducer) =>
                 {
                     ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
                     return reducerVariants.ToList().Select((reducerVariant) =>
                     {
-                        if (reducerVariant == _event.Variant &&
-                            (
-                                _settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) ||
-                                reducer is IOuraCoreReducer
-                            )
-                        )
+                        if (_settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) || reducer is IOuraCoreReducer)
                         {
                             return reducerVariant switch
                             {
-                                OuraVariant.Block => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.Transaction => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTransactionEvent>(ConclaveJsonSerializerOptions)),
-                                OuraVariant.TxOutput => reducer.HandleReduceAsync(_eventJson.Deserialize<OuraTxOutputEvent>(ConclaveJsonSerializerOptions)),
+                                OuraVariant.Transaction => (blockEvent.Block.Transactions == null) ? Task.CompletedTask : Task.WhenAll(blockEvent.Block.Transactions.Select(te => reducer.HandleReduceAsync(te))),
                                 _ => Task.CompletedTask
                             };
                         }
