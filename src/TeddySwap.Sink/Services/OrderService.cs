@@ -18,12 +18,12 @@ public class OrderService
     private readonly DatumService _datumService;
     private readonly ByteArrayService _byteArrayService;
     private readonly ILogger<OrderService> _logger;
-    private readonly IDbContextFactory<OrderSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapOrderSinkDbContext> _dbContextFactory;
 
     public OrderService(
         DatumService datumService,
         IOptions<TeddySwapSinkSettings> settings,
-        IDbContextFactory<OrderSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapOrderSinkDbContext> dbContextFactory,
         ByteArrayService byteArrayService,
         ILogger<OrderService> logger)
     {
@@ -41,7 +41,7 @@ public class OrderService
         {
             Console.WriteLine("should be counted");
         }
-        using OrderSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapOrderSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         Order? order = null;
 
         if (transaction is not null &&

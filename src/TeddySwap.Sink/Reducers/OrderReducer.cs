@@ -13,13 +13,13 @@ namespace TeddySwap.Sink.Reducers;
 public class OrderReducer : OuraReducerBase
 {
     private readonly ILogger<OrderReducer> _logger;
-    private readonly IDbContextFactory<OrderSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapOrderSinkDbContext> _dbContextFactory;
 
     private readonly OrderService _orderService;
 
     public OrderReducer(
         ILogger<OrderReducer> logger,
-        IDbContextFactory<OrderSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapOrderSinkDbContext> dbContextFactory,
         IDbContextFactory<TeddySwapSinkDbContext> teddySwapSinkDbContextFactory,
         OrderService orderService)
     {
@@ -36,7 +36,7 @@ public class OrderReducer : OuraReducerBase
             transaction.Fee is not null)
         {
 
-            using OrderSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using TeddySwapOrderSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             if (_dbContext is null) return;
 

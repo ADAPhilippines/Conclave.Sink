@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using TeddySwap.Common.DbContexts.Interfaces;
 using TeddySwap.Common.Models;
 
 namespace TeddySwap.Sink.Data;
 
-public class TeddySwapSinkDbContext : DbContext, ITeddySwapDbContext
+public class TeddySwapSinkDbContext : DbContext
 {
 
     #region Core Models

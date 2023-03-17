@@ -11,8 +11,8 @@ using TeddySwap.Sink.Data;
 
 namespace TeddySwap.Sink.Data.Migrations
 {
-    [DbContext(typeof(OrderSinkDbContext))]
-    partial class OrderSinkDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TeddySwapOrderSinkDbContext))]
+    partial class TeddySwapOrderSinkDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

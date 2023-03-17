@@ -12,7 +12,7 @@ using TeddySwap.Sink.Data;
 
 namespace TeddySwap.Sink.Data.Migrations
 {
-    [DbContext(typeof(OrderSinkDbContext))]
+    [DbContext(typeof(TeddySwapOrderSinkDbContext))]
     [Migration("20230317114741_InitialCreate")]
     partial class InitialCreate
     {

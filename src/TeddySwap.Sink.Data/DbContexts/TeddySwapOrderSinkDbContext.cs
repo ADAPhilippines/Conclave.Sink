@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using TeddySwap.Common.DbContexts.Interfaces;
 using TeddySwap.Common.Models;
 
 namespace TeddySwap.Sink.Data;
 
-public class OrderSinkDbContext : TeddySwapSinkDbContext, ITeddySwapDbContext
+public class TeddySwapOrderSinkDbContext : TeddySwapSinkDbContext
 {
 
     #region TeddySwap Models
@@ -14,9 +13,7 @@ public class OrderSinkDbContext : TeddySwapSinkDbContext, ITeddySwapDbContext
     public DbSet<BlacklistedAddress> BlacklistedAddresses => Set<BlacklistedAddress>();
     #endregion
 
-    public OrderSinkDbContext(DbContextOptions options) : base(options)
-    {
-    }
+    public TeddySwapOrderSinkDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
