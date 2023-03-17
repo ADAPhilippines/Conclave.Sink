@@ -13,12 +13,14 @@ namespace TeddySwap.Sink.Reducers;
 public class OrderReducer : OuraReducerBase
 {
     private readonly ILogger<OrderReducer> _logger;
-    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<OrderSinkDbContext> _dbContextFactory;
+
     private readonly OrderService _orderService;
 
     public OrderReducer(
         ILogger<OrderReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
+        IDbContextFactory<OrderSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapSinkDbContext> teddySwapSinkDbContextFactory,
         OrderService orderService)
     {
         _logger = logger;
@@ -29,17 +31,14 @@ public class OrderReducer : OuraReducerBase
     public async Task ReduceAsync(OuraTransaction transaction)
     {
 
-        if (transaction.Hash == "3a957d40b97205c63458b9b1a4d2bfbe9e04e8122282cb5c25f35ff962018249")
-        {
-            Console.WriteLine("should be counted");
-        }
-
         if (transaction is not null &&
             transaction.Context is not null &&
             transaction.Fee is not null)
         {
 
-            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using OrderSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+            if (_dbContext is null) return;
 
             Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transaction.Context.BlockHash)

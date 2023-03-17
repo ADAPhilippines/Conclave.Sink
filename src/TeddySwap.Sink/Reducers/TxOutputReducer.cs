@@ -23,11 +23,6 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
     {
         using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        if (txOutput.TxHash == "3a957d40b97205c63458b9b1a4d2bfbe9e04e8122282cb5c25f35ff962018249")
-        {
-            Console.WriteLine("here");
-        }
-
         if (txOutput is not null &&
             txOutput.Context is not null &&
             txOutput.OutputIndex is not null &&

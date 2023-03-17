@@ -12,9 +12,9 @@ using TeddySwap.Sink.Data;
 
 namespace TeddySwap.Sink.Data.Migrations
 {
-    [DbContext(typeof(TeddySwapSinkDbContext))]
-    [Migration("20230304134024_UpdateNullableBatcherAddress")]
-    partial class UpdateNullableBatcherAddress
+    [DbContext(typeof(OrderSinkDbContext))]
+    [Migration("20230317114741_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,6 @@ namespace TeddySwap.Sink.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("MainnetAddress")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MainnetSignedData")
@@ -135,7 +134,12 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<string>("BatcherAddress")
                         .HasColumnType("text");
 
+                    b.Property<string>("BlockHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Blockhash")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<BigInteger>("Liquidity")
@@ -182,7 +186,15 @@ namespace TeddySwap.Sink.Data.Migrations
 
                     b.HasKey("TxHash", "Index");
 
-                    b.HasIndex("Blockhash");
+                    b.HasIndex("BatcherAddress");
+
+                    b.HasIndex("BlockHash");
+
+                    b.HasIndex("OrderType");
+
+                    b.HasIndex("Slot");
+
+                    b.HasIndex("UserAddress");
 
                     b.ToTable("Orders");
                 });
@@ -270,9 +282,10 @@ namespace TeddySwap.Sink.Data.Migrations
             modelBuilder.Entity("TeddySwap.Common.Models.Order", b =>
                 {
                     b.HasOne("TeddySwap.Common.Models.Block", "Block")
-                        .WithMany("Orders")
-                        .HasForeignKey("Blockhash")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("BlockHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Block");
                 });
@@ -312,8 +325,6 @@ namespace TeddySwap.Sink.Data.Migrations
 
             modelBuilder.Entity("TeddySwap.Common.Models.Block", b =>
                 {
-                    b.Navigation("Orders");
-
                     b.Navigation("Transactions");
                 });
 
