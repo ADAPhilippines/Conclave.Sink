@@ -36,6 +36,11 @@ public class OrderService
 
     public async Task<Order?> ProcessOrderAsync(OuraTransaction transaction)
     {
+
+        if (transaction.Hash == "3a957d40b97205c63458b9b1a4d2bfbe9e04e8122282cb5c25f35ff962018249")
+        {
+            Console.WriteLine("should be counted");
+        }
         using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         Order? order = null;
 
@@ -74,10 +79,7 @@ public class OrderService
     public Order? ProcessOrder(TxOutput poolInput, TxOutput orderInput, OuraTransaction transaction)
     {
 
-        if (transaction.Context is not null &&
-            transaction.Context.TxHash is not null &&
-            transaction.Context.TxIdx is not null &&
-            transaction is not null &&
+        if (transaction is not null &&
             transaction.Outputs is not null)
         {
 
@@ -150,15 +152,17 @@ public class OrderService
                 if (poolDatum is not null &&
                     rewardOutput is not null &&
                     rewardOutput.Address is not null &&
-                    transaction.Context.Slot is not null)
+                    transaction.Context is not null &&
+                    transaction.Context.Slot is not null &&
+                    transaction.Hash is not null)
                 {
 
                     string? batcherAddress = outputs.Count < 3 ? null : outputs[2].Address;
 
                     return new()
                     {
-                        TxHash = transaction.Context.TxHash,
-                        Index = (ulong)transaction.Context.TxIdx,
+                        TxHash = transaction.Hash,
+                        Index = (ulong)transaction.Index,
                         OrderType = orderType,
                         UserAddress = rewardOutput.Address,
                         BatcherAddress = batcherAddress,

@@ -43,6 +43,11 @@ public class OuraWebhookController : ControllerBase
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
 
+        if (_event is not null && _event.Context is not null && _event.Context.Slot == 9119134)
+        {
+            Console.WriteLine(_eventJson);
+        }
+
         if (_event is not null && _event.Context is not null)
         {
 
@@ -88,26 +93,39 @@ public class OuraWebhookController : ControllerBase
                     }
                 }
 
-                if (blockEvent is null || blockEvent.Block is null) return Ok();
+                if (blockEvent is null || blockEvent.Block is null || blockEvent.Block.Transactions is null) return Ok();
 
-                await Task.WhenAll(_reducers.SelectMany((reducer) =>
+                foreach (var transaction in blockEvent.Block.Transactions)
                 {
-                    ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
-                    return reducerVariants.ToList().Select((reducerVariant) =>
+                    if (_reducers.Where(r => r is TransactionReducer).FirstOrDefault() is not TransactionReducer transactionReducer) continue;
+                    await transactionReducer.HandleReduceAsync(transaction);
+
+                    var tasks = _reducers.SelectMany(reducer =>
                     {
+                        List<OuraVariant> reducerVariants = _GetReducerVariants(reducer).ToList();
+
                         if (_settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) || reducer is IOuraCoreReducer)
                         {
-                            return reducerVariant switch
+                            return reducerVariants.Select(reducerVariant =>
                             {
-                                OuraVariant.Transaction => (blockEvent.Block.Transactions == null) ? Task.CompletedTask : Task.WhenAll(blockEvent.Block.Transactions.Select(te => reducer.HandleReduceAsync(te))),
-                                OuraVariant.TxOutput => (blockEvent.Block.Transactions == null) ? Task.CompletedTask : Task.WhenAll(blockEvent.Block.Transactions.Select(te => Task.WhenAll(te.Outputs!.Select(o => reducer.HandleReduceAsync(o))))),
-                                OuraVariant.Order => (blockEvent.Block.Transactions == null) ? Task.CompletedTask : Task.WhenAll(blockEvent.Block.Transactions.Select(te => reducer.HandleReduceAsync(te))),
-                                _ => Task.CompletedTask
-                            };
+                                return reducerVariant switch
+                                {
+                                    OuraVariant.Transaction => reducer.HandleReduceAsync(transaction),
+                                    OuraVariant.TxOutput => Task.WhenAll(transaction.Outputs?.Select(o => reducer.HandleReduceAsync(o)) ?? Enumerable.Empty<Task>()),
+                                    _ => Task.CompletedTask,
+                                };
+                            });
                         }
-                        else return Task.CompletedTask;
+                        else
+                        {
+                            return Enumerable.Empty<Task>();
+                        }
                     });
-                }));
+
+                    await Task.WhenAll(tasks);
+                }
+
+                return Ok();
             }
         }
         return Ok();

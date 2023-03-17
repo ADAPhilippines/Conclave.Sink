@@ -9,7 +9,7 @@ using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Reducers;
 
-[OuraReducer(OuraVariant.Order)]
+[OuraReducer(OuraVariant.Transaction)]
 public class OrderReducer : OuraReducerBase
 {
     private readonly ILogger<OrderReducer> _logger;
@@ -28,6 +28,12 @@ public class OrderReducer : OuraReducerBase
 
     public async Task ReduceAsync(OuraTransaction transaction)
     {
+
+        if (transaction.Hash == "3a957d40b97205c63458b9b1a4d2bfbe9e04e8122282cb5c25f35ff962018249")
+        {
+            Console.WriteLine("should be counted");
+        }
+
         if (transaction is not null &&
             transaction.Context is not null &&
             transaction.Fee is not null)

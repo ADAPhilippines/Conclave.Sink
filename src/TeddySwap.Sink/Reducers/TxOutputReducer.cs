@@ -22,6 +22,12 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
     public async Task ReduceAsync(OuraTxOutput txOutput)
     {
         using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+        if (txOutput.TxHash == "3a957d40b97205c63458b9b1a4d2bfbe9e04e8122282cb5c25f35ff962018249")
+        {
+            Console.WriteLine("here");
+        }
+
         if (txOutput is not null &&
             txOutput.Context is not null &&
             txOutput.OutputIndex is not null &&
@@ -46,14 +52,13 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
                     Index = (ulong)txOutput.OutputIndex,
                     DatumCbor = txOutput.DatumCbor,
                     TxHash = txOutput.TxHash,
+                    Transaction = tx
                 };
-
-                newTxOutput = newTxOutput with { Transaction = tx, TxHash = tx.Hash };
 
                 EntityEntry<TxOutput> insertResult = await _dbContext.TxOutputs.AddAsync(newTxOutput);
                 await _dbContext.SaveChangesAsync();
 
-                if (txOutput.Assets is not null && txOutput.Assets.Count() > 0)
+                if (txOutput.Assets is not null && txOutput.Assets.Any())
                 {
                     await _dbContext.AddRangeAsync(txOutput.Assets.Select(ouraAsset =>
                     {
