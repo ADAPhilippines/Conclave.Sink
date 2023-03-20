@@ -20,7 +20,7 @@ builder.Services.AddDbContextPool<CardanoDbSyncContext>(options =>
     options.UseNpgsql(connectionString, pgOptions => pgOptions.EnableRetryOnFailure(3));
 }, 10);
 
-builder.Services.AddDbContextPool<TeddySwapSinkDbContext>(options =>
+builder.Services.AddDbContextPool<TeddySwapSinkCoreDbContext>(options =>
 {
     if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
         options.EnableSensitiveDataLogging(true);
@@ -41,7 +41,6 @@ builder.Services.AddDbContextPool<TeddySwapNftSinkDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapNftSink"), pgOptions => pgOptions.EnableRetryOnFailure(3));
 }, 10);
 
-ThreadPool.SetMaxThreads(50, 50);
 builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Configuration.GetSection("TeddySwapITNRewardSettings").Bind(options));
 builder.Services.AddControllers();
 builder.Services.AddScoped<LeaderboardService>();
