@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
+builder.Services.AddDbContextFactory<TeddySwapSinkCoreDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.AddDbContextFactory<TeddySwapOrderSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.AddDbContextFactory<TeddySwapNftSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
@@ -46,7 +46,7 @@ else
 
     using var scopedProvider = app.Services.CreateScope();
     var service = scopedProvider.ServiceProvider;
-    using var dbContext = service.GetService<TeddySwapSinkDbContext>();
+    using var dbContext = service.GetService<TeddySwapSinkCoreDbContext>();
 
     if (dbContext is not null)
     {

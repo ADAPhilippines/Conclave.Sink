@@ -12,12 +12,12 @@ namespace TeddySwap.Sink.Reducers;
 public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TransactionReducer> _logger;
-    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
 
 
     public TransactionReducer(
         ILogger<TransactionReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory,
         IOptions<TeddySwapSinkSettings> settings)
     {
         _logger = logger;
@@ -32,7 +32,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
             transaction.Fee is not null &&
             transaction.Hash is not null)
         {
-            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
                 .Where(b => b.BlockHash == transaction.Context.BlockHash)

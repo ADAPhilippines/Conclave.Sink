@@ -10,10 +10,10 @@ namespace TeddySwap.Sink.Reducers;
 public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TxInputReducer> _logger;
-    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
     public TxInputReducer(
         ILogger<TxInputReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory)
+        IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
@@ -24,7 +24,7 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
         if (txInput is not null &&
             txInput.TxHash is not null)
         {
-            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
             TxOutput? txOutput = await _dbContext.TxOutputs
                 .Where(txOutput => txOutput.TxHash == txInput.TxHash && txOutput.Index == txInput.Index).FirstOrDefaultAsync();
             Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txInput.TxHash).FirstOrDefaultAsync();

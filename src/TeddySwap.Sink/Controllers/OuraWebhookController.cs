@@ -16,7 +16,7 @@
 // public class OuraWebhookController : ControllerBase
 // {
 //     private readonly ILogger<OuraWebhookController> _logger;
-//     private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+//     private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
 //     private readonly JsonSerializerOptions ConclaveJsonSerializerOptions = new JsonSerializerOptions()
 //     {
 //         PropertyNameCaseInsensitive = true
@@ -26,7 +26,7 @@
 //     private readonly IOptions<TeddySwapSinkSettings> _settings;
 //     public OuraWebhookController(
 //         ILogger<OuraWebhookController> logger,
-//         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
+//         IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory,
 //         CardanoService cardanoService,
 //         IEnumerable<IOuraReducer> reducers,
 //         IOptions<TeddySwapSinkSettings> settings
@@ -161,7 +161,7 @@ namespace TeddySwap.Sink.Controllers;
 public class OuraWebhookController : ControllerBase
 {
     private readonly ILogger<OuraWebhookController> _logger;
-    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
     private readonly JsonSerializerOptions ConclaveJsonSerializerOptions = new JsonSerializerOptions()
     {
         PropertyNameCaseInsensitive = true
@@ -171,7 +171,7 @@ public class OuraWebhookController : ControllerBase
     private readonly IOptions<TeddySwapSinkSettings> _settings;
     public OuraWebhookController(
         ILogger<OuraWebhookController> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory,
         CardanoService cardanoService,
         IEnumerable<IOuraReducer> reducers,
         IOptions<TeddySwapSinkSettings> settings

@@ -10,10 +10,10 @@ namespace TeddySwap.Sink.Reducers;
 public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TxOutputReducer> _logger;
-    private IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
     public TxOutputReducer(
         ILogger<TxOutputReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory)
+        IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
@@ -21,7 +21,7 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraTxOutput txOutput)
     {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
         if (txOutput is not null &&
             txOutput.Context is not null &&

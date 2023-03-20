@@ -3,7 +3,7 @@ using TeddySwap.Common.Models;
 
 namespace TeddySwap.Sink.Data;
 
-public class TeddySwapNftSinkDbContext : TeddySwapSinkDbContext
+public class TeddySwapNftSinkDbContext : TeddySwapSinkCoreDbContext
 {
 
     #region TeddySwap Models

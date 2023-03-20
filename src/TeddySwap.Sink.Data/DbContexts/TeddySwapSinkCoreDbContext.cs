@@ -3,7 +3,7 @@ using TeddySwap.Common.Models;
 
 namespace TeddySwap.Sink.Data;
 
-public class TeddySwapSinkDbContext : DbContext
+public class TeddySwapSinkCoreDbContext : DbContext
 {
 
     #region Core Models
@@ -14,7 +14,7 @@ public class TeddySwapSinkDbContext : DbContext
     public DbSet<Asset> Assets => Set<Asset>();
     #endregion
 
-    public TeddySwapSinkDbContext(DbContextOptions options) : base(options) { }
+    public TeddySwapSinkCoreDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

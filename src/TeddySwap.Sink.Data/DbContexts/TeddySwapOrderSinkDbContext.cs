@@ -3,7 +3,7 @@ using TeddySwap.Common.Models;
 
 namespace TeddySwap.Sink.Data;
 
-public class TeddySwapOrderSinkDbContext : TeddySwapSinkDbContext
+public class TeddySwapOrderSinkDbContext : TeddySwapSinkCoreDbContext
 {
 
     #region TeddySwap Models
@@ -23,7 +23,6 @@ public class TeddySwapOrderSinkDbContext : TeddySwapSinkDbContext
         modelBuilder.Entity<AddressVerification>().HasKey(a => a.TestnetAddress);
 
         // Relations
-
         modelBuilder.Entity<Price>()
             .HasOne(p => p.Order)
             .WithOne(o => o.Price)
