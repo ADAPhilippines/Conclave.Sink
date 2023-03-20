@@ -8,4 +8,5 @@ public class MintTransaction
     public string TokenName { get; init; } = string.Empty;
     public string AsciiTokenName { get; init; } = string.Empty;
     public Transaction Transaction { get; init; } = new();
+    public string? Metadata { get; init; }
 }

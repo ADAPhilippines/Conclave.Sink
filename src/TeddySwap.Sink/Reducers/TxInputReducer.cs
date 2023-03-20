@@ -10,7 +10,7 @@ namespace TeddySwap.Sink.Reducers;
 public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TxInputReducer> _logger;
-    private IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
     public TxInputReducer(
         ILogger<TxInputReducer> logger,
         IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory)
@@ -21,10 +21,10 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraTxInput txInput)
     {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         if (txInput is not null &&
             txInput.TxHash is not null)
         {
+            using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
             TxOutput? txOutput = await _dbContext.TxOutputs
                 .Where(txOutput => txOutput.TxHash == txInput.TxHash && txOutput.Index == txInput.Index).FirstOrDefaultAsync();
             Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txInput.TxHash).FirstOrDefaultAsync();
@@ -36,19 +36,21 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
                         .Where(i => i.TxHash == tx.Hash && i.TxOutputIndex == txOutput.Index)
                         .FirstOrDefaultAsync();
 
-                    if (input is not null) return;
-
-                    await _dbContext.TxInputs.AddAsync(new()
+                    if (input is null)
                     {
-                        TxHash = txInput.TxHash,
-                        Transaction = tx,
-                        TxOutputHash = txInput.TxHash,
-                        TxOutputIndex = txInput.Index,
-                        TxOutput = txOutput
-                    });
+                        await _dbContext.TxInputs.AddAsync(new()
+                        {
+                            TxHash = txInput.TxHash,
+                            Transaction = tx,
+                            TxOutputHash = txInput.TxHash,
+                            TxOutputIndex = txInput.Index,
+                            TxOutput = txOutput
+                        });
+
+                    }
                 }
-                await _dbContext.SaveChangesAsync();
             }
+            await _dbContext.SaveChangesAsync();
         }
     }
 

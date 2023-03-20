@@ -89,6 +89,9 @@ namespace TeddySwap.Sink.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Metadata")
+                        .HasColumnType("text");
+
                     b.Property<string>("TransactionHash")
                         .IsRequired()
                         .HasColumnType("text");

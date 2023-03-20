@@ -69,7 +69,8 @@ namespace TeddySwap.Sink.Data.Migrations
                     PolicyId = table.Column<string>(type: "text", nullable: false),
                     TokenName = table.Column<string>(type: "text", nullable: false),
                     AsciiTokenName = table.Column<string>(type: "text", nullable: false),
-                    TransactionHash = table.Column<string>(type: "text", nullable: false)
+                    TransactionHash = table.Column<string>(type: "text", nullable: false),
+                    Metadata = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

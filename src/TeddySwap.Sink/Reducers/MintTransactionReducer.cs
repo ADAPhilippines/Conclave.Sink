@@ -44,7 +44,6 @@ public class MintTransactionReducer : OuraReducerBase
         {
 
             using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
-
             if (_dbContext is null) return;
 
             Transaction? existingTransaction = await _dbContext.Transactions
@@ -62,6 +61,7 @@ public class MintTransactionReducer : OuraReducerBase
                     PolicyId = asset.PolicyId.ToLower(),
                     TokenName = asset.Name,
                     AsciiTokenName = asset.AsciiName ?? "",
+                    Metadata = asset.Metadata,
                     Transaction = existingTransaction
                 });
             }

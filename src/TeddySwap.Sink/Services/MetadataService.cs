@@ -77,6 +77,7 @@ public class MetadataService
                             PolicyId = policyId.ToLower(),
                             Name = Convert.ToHexString(Encoding.ASCII.GetBytes(asset.Name)).ToLower(),
                             AsciiName = asset.Name,
+                            Metadata = JsonSerializer.Serialize(asset)
                         });
                     }
                 }

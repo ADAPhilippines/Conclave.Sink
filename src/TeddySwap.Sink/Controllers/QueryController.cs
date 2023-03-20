@@ -1,5 +1,5 @@
-using TeddySwap.Sink.Data;
 using Microsoft.AspNetCore.Mvc;
+using TeddySwap.Sink.Data;
 
 namespace TeddySwap.Sink.Controllers;
 

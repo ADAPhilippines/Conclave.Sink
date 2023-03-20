@@ -13,7 +13,7 @@ using TeddySwap.Sink.Data;
 namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapNftSinkDbContext))]
-    [Migration("20230320093418_AdInitialCreate")]
+    [Migration("20230320113009_AdInitialCreate")]
     partial class AdInitialCreate
     {
         /// <inheritdoc />
@@ -90,6 +90,9 @@ namespace TeddySwap.Sink.Data.Migrations
 
                     b.Property<string>("AsciiTokenName")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Metadata")
                         .HasColumnType("text");
 
                     b.Property<string>("TransactionHash")

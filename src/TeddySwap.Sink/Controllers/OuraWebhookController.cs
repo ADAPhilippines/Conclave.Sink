@@ -43,11 +43,6 @@ public class OuraWebhookController : ControllerBase
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
 
-        if (_event is not null && _event.Context is not null && _event.Context.Slot == 1470391)
-        {
-            Console.WriteLine(_eventJson);
-        }
-
         if (_event is not null && _event.Context is not null)
         {
 
@@ -100,30 +95,43 @@ public class OuraWebhookController : ControllerBase
                     if (_reducers.Where(r => r is TransactionReducer).FirstOrDefault() is not TransactionReducer transactionReducer) continue;
                     await transactionReducer.HandleReduceAsync(transaction);
 
-                    var tasks = _reducers.SelectMany(reducer =>
+                    foreach (var reducer in _reducers)
                     {
                         List<OuraVariant> reducerVariants = _GetReducerVariants(reducer).ToList();
 
                         if (_settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) || reducer is IOuraCoreReducer)
                         {
-                            return reducerVariants.Select(reducerVariant =>
+                            foreach (var reducerVariant in reducerVariants)
                             {
-                                return reducerVariant switch
+                                switch (reducerVariant)
                                 {
-                                    OuraVariant.Transaction => reducer.HandleReduceAsync(transaction),
-                                    OuraVariant.TxInput => Task.WhenAll(transaction.Inputs?.Select(i => reducer.HandleReduceAsync(i)) ?? Enumerable.Empty<Task>()),
-                                    OuraVariant.TxOutput => Task.WhenAll(transaction.Outputs?.Select(o => reducer.HandleReduceAsync(o)) ?? Enumerable.Empty<Task>()),
-                                    _ => Task.CompletedTask,
-                                };
-                            });
+                                    case OuraVariant.Transaction:
+                                        await reducer.HandleReduceAsync(transaction);
+                                        break;
+                                    case OuraVariant.TxInput:
+                                        if (transaction.Inputs != null)
+                                        {
+                                            foreach (var input in transaction.Inputs)
+                                            {
+                                                await reducer.HandleReduceAsync(input);
+                                            }
+                                        }
+                                        break;
+                                    case OuraVariant.TxOutput:
+                                        if (transaction.Outputs != null)
+                                        {
+                                            foreach (var output in transaction.Outputs)
+                                            {
+                                                await reducer.HandleReduceAsync(output);
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                         }
-                        else
-                        {
-                            return Enumerable.Empty<Task>();
-                        }
-                    });
-
-                    await Task.WhenAll(tasks);
+                    }
                 }
 
                 return Ok();
