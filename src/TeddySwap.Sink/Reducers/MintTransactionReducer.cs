@@ -43,9 +43,7 @@ public class MintTransactionReducer : OuraReducerBase
             transaction.Metadata is not null)
         {
 
-            using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
-            if (_dbContext is null) return;
-
+            using TeddySwapNftSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
             Transaction? existingTransaction = await _dbContext.Transactions
                 .Where(t => t.Hash == transaction.Hash)
                 .FirstOrDefaultAsync();
@@ -72,7 +70,6 @@ public class MintTransactionReducer : OuraReducerBase
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-
         if (rollbackBlock is not null)
         {
             using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();

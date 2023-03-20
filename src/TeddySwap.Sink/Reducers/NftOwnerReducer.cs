@@ -37,7 +37,8 @@ public class NftOwnerReducer : OuraReducerBase
         {
             using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-            foreach (OuraAsset asset in txOutput.Assets.Where(a => _settings.NftPolicyIds.Contains(a.Policy)))
+            List<OuraAsset>? assets = txOutput.Assets.Where(a => _settings.NftPolicyIds.Contains(a.Policy)).ToList();
+            foreach (OuraAsset asset in assets)
             {
                 if (asset.Policy is not null && asset.Asset is not null)
                 {
@@ -73,7 +74,7 @@ public class NftOwnerReducer : OuraReducerBase
     {
         if (rollbackBlock is not null)
         {
-            using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using TeddySwapNftSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
             List<Transaction>? transactions = await _dbContext.Transactions
                  .Include(tx => tx.Inputs)
                  .ThenInclude(i => i.TxOutput)

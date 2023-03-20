@@ -26,7 +26,6 @@ builder.Services.AddSingleton<DatumService>();
 builder.Services.AddSingleton<MetadataService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
-ThreadPool.SetMaxThreads(20, 20);
 
 var app = builder.Build();
 

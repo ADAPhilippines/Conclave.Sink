@@ -25,35 +25,37 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
             txInput.TxHash is not null)
         {
             using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-
-            Transaction? tx = await _dbContext.Transactions
-                .Include(tx => tx.Block)
-                .Where(tx => tx.Hash == txInput.TxHash)
-                .FirstOrDefaultAsync();
-            if (tx is not null)
             {
-                TxOutput? txOutput = await _dbContext.TxOutputs
-                    .Where(txOutput => txOutput.TxHash == txInput.TxHash && txOutput.Index == txInput.Index)
+
+                Transaction? tx = await _dbContext.Transactions
+                    .Include(tx => tx.Block)
+                    .Where(tx => tx.Hash == txInput.TxHash)
                     .FirstOrDefaultAsync();
-                if (txOutput is not null)
+                if (tx is not null)
                 {
-                    TxInput? input = await _dbContext.TxInputs
-                        .Where(i => i.TxHash == tx.Hash && i.TxOutputIndex == txOutput.Index)
+                    TxOutput? txOutput = await _dbContext.TxOutputs
+                        .Where(txOutput => txOutput.TxHash == txInput.TxHash && txOutput.Index == txInput.Index)
                         .FirstOrDefaultAsync();
-
-                    if (input is null)
+                    if (txOutput is not null)
                     {
-                        await _dbContext.TxInputs.AddAsync(new()
-                        {
-                            TxHash = txInput.TxHash,
-                            Transaction = tx,
-                            TxOutputHash = txInput.TxHash,
-                            TxOutputIndex = txInput.Index,
-                            TxOutput = txOutput
-                        });
+                        TxInput? input = await _dbContext.TxInputs
+                            .Where(i => i.TxHash == tx.Hash && i.TxOutputIndex == txOutput.Index)
+                            .FirstOrDefaultAsync();
 
+                        if (input is null)
+                        {
+                            await _dbContext.TxInputs.AddAsync(new()
+                            {
+                                TxHash = txInput.TxHash,
+                                Transaction = tx,
+                                TxOutputHash = txInput.TxHash,
+                                TxOutputIndex = txInput.Index,
+                                TxOutput = txOutput
+                            });
+
+                        }
+                        await _dbContext.SaveChangesAsync();
                     }
-                    await _dbContext.SaveChangesAsync();
                 }
             }
         }
