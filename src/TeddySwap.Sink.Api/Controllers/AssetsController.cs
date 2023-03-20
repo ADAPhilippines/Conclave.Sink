@@ -23,7 +23,7 @@ public class AssetsController : ControllerBase
     }
 
     [HttpGet("policy/{policyId}/address/{address}")]
-    public async Task<ActionResult<PaginatedLeaderBoardResponse>> GetAssetsAsync([FromRoute] string policyId, [FromRoute] string address, [FromQuery] PaginatedRequest request)
+    public async Task<ActionResult<PaginatedAssetResponse>> GetAssetsAsync([FromRoute] string policyId, [FromRoute] string address, [FromQuery] PaginatedRequest request)
     {
         if (request.Offset < 0 || request.Limit > 100 || string.IsNullOrEmpty(policyId) || string.IsNullOrEmpty(address)) return BadRequest();
 
