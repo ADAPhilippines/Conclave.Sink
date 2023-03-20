@@ -31,7 +31,11 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
             txOutput.TxHash is not null)
         {
             using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-            Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txOutput.TxHash).FirstOrDefaultAsync();
+            Transaction? tx = await _dbContext.Transactions
+                .Include(tx => tx.Block)
+                .Where(tx => tx.Hash == txOutput.TxHash)
+                .FirstOrDefaultAsync();
+
             if (tx is not null)
             {
                 TxOutput? existingOutput = await _dbContext.TxOutputs

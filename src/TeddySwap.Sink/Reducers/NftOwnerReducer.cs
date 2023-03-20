@@ -8,7 +8,7 @@ using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Reducers;
 
-[OuraReducer(OuraVariant.TxOutput)]
+[OuraReducer(OuraVariant.Asset)]
 public class NftOwnerReducer : OuraReducerBase
 {
     private readonly ILogger<NftOwnerReducer> _logger;
@@ -28,45 +28,41 @@ public class NftOwnerReducer : OuraReducerBase
         _metadataService = metadataService;
     }
 
-    public async Task ReduceAsync(OuraTxOutput txOutput)
+    public async Task ReduceAsync(OuraAssetEvent asset)
     {
 
-        if (txOutput is not null &&
-            txOutput.Assets is not null &&
-            txOutput.Address is not null)
+        if (asset is not null &&
+            asset.Address is not null &&
+            asset.PolicyId is not null &&
+            asset.TokenName is not null)
         {
-            using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-            List<OuraAsset>? assets = txOutput.Assets.Where(a => _settings.NftPolicyIds.Contains(a.Policy)).ToList();
-            foreach (OuraAsset asset in assets)
+            if (_settings.NftPolicyIds.Contains(asset.PolicyId))
             {
-                if (asset.Policy is not null && asset.Asset is not null)
-                {
-                    NftOwner? owner = await _dbContext.NftOwners
-                        .Where(n => n.PolicyId == asset.Policy.ToLower() && n.TokenName == asset.Asset.ToLower())
-                        .FirstOrDefaultAsync();
+                using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+                NftOwner? owner = await _dbContext.NftOwners
+                    .Where(n => n.PolicyId == asset.PolicyId.ToLower() && n.TokenName == asset.TokenName.ToLower())
+                    .FirstOrDefaultAsync();
 
-                    if (owner is null)
+                if (owner is null)
+                {
+                    await _dbContext.NftOwners.AddAsync(new()
                     {
-                        await _dbContext.NftOwners.AddAsync(new()
-                        {
-                            Address = txOutput.Address,
-                            PolicyId = asset.Policy.ToLower(),
-                            TokenName = asset.Asset.ToLower(),
-                        });
-                    }
-                    else
+                        Address = asset.Address,
+                        PolicyId = asset.PolicyId.ToLower(),
+                        TokenName = asset.TokenName.ToLower(),
+                    });
+                }
+                else
+                {
+                    if (owner.Address != asset.Address)
                     {
-                        if (owner.Address != txOutput.Address)
-                        {
-                            owner.Address = txOutput.Address;
-                            _dbContext.NftOwners.Update(owner);
-                        }
+                        owner.Address = asset.Address;
+                        _dbContext.NftOwners.Update(owner);
                     }
                 }
+                await _dbContext.SaveChangesAsync();
             }
-
-            await _dbContext.SaveChangesAsync();
         }
     }
 

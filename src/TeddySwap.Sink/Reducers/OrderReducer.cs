@@ -35,7 +35,6 @@ public class OrderReducer : OuraReducerBase
         {
 
             using TeddySwapOrderSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
-
             if (_dbContext is null) return;
 
             Block? block = await _dbContext.Blocks

@@ -11,7 +11,8 @@ public enum OuraVariant
     Block = 2,
     Transaction = 3,
     TxInput = 4,
-    TxOutput = 5
+    TxOutput = 5,
+    Asset = 6
 }
 
 public interface IOuraEvent

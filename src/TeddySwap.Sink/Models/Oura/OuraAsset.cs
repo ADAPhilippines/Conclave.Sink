@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace TeddySwap.Sink.Models.Oura;
 
 public class OuraAsset
