@@ -18,17 +18,20 @@ public class MintTransactionReducer : OuraReducerBase
     private readonly IDbContextFactory<TeddySwapNftSinkDbContext> _dbContextFactory;
     private readonly TeddySwapSinkSettings _settings;
     private readonly ByteArrayService _byteArrayService;
+    private readonly MetadataService _metadataService;
 
     public MintTransactionReducer(
         ILogger<MintTransactionReducer> logger,
         IDbContextFactory<TeddySwapNftSinkDbContext> dbContextFactory,
         IOptions<TeddySwapSinkSettings> settings,
-        ByteArrayService byteArrayService)
+        ByteArrayService byteArrayService,
+        MetadataService metadataService)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
         _settings = settings.Value;
         _byteArrayService = byteArrayService;
+        _metadataService = metadataService;
     }
 
     public async Task ReduceAsync(OuraTransaction transaction)
@@ -50,33 +53,47 @@ public class MintTransactionReducer : OuraReducerBase
 
             if (existingTransaction is null) return;
 
-            foreach (Metadatum metadatum in transaction.Metadata)
-            {
-                if (metadatum.Content is null) continue;
-                foreach (string policyId in _settings.NftPolicyIds)
-                {
-                    // Deserialize Content to a JsonElement
-                    JsonElement? jsonElement = JsonSerializer.Deserialize<JsonElement>(metadatum.Content.ToString()!);
+            List<AssetClass> assets = _metadataService.FindAssets(transaction, _settings.NftPolicyIds.ToList());
 
-                    if (jsonElement.Value.TryGetProperty(policyId, out JsonElement policyMetadata))
-                    {
-                        foreach (var asset in policyMetadata.EnumerateObject())
-                        {
-                            await _dbContext.MintTransactions.AddAsync(new()
-                            {
-                                PolicyId = policyId,
-                                TokenName = Convert.ToHexString(Encoding.ASCII.GetBytes(asset.Name)).ToLower(),
-                                AsciiTokenName = asset.Name,
-                                Transaction = existingTransaction
-                            });
-                        }
-                    }
-                }
+            foreach (AssetClass asset in assets)
+            {
+                await _dbContext.MintTransactions.AddAsync(new()
+                {
+                    PolicyId = asset.PolicyId.ToLower(),
+                    TokenName = asset.Name,
+                    AsciiTokenName = asset.AsciiName ?? "",
+                    Transaction = existingTransaction
+                });
             }
 
             await _dbContext.SaveChangesAsync();
         }
     }
 
-    public async Task RollbackAsync(Block _) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+
+        if (rollbackBlock is not null)
+        {
+            using TeddySwapNftSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            List<Transaction>? transactions = await _dbContext.Transactions
+                .Where(t => t.Block == rollbackBlock)
+                .ToListAsync();
+
+            if (transactions is not null)
+            {
+                List<MintTransaction>? mintTransactions = await _dbContext.MintTransactions
+                    .Include(mtx => mtx.Transaction)
+                    .Where(mtx => transactions.Contains(mtx.Transaction))
+                    .ToListAsync();
+
+                if (mintTransactions is not null)
+                {
+                    _dbContext.RemoveRange(mintTransactions);
+                }
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }

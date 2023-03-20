@@ -71,5 +71,5 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block _) => await Task.CompletedTask;
 }

@@ -111,6 +111,7 @@ public class OuraWebhookController : ControllerBase
                                 return reducerVariant switch
                                 {
                                     OuraVariant.Transaction => reducer.HandleReduceAsync(transaction),
+                                    OuraVariant.TxInput => Task.WhenAll(transaction.Inputs?.Select(i => reducer.HandleReduceAsync(i)) ?? Enumerable.Empty<Task>()),
                                     OuraVariant.TxOutput => Task.WhenAll(transaction.Outputs?.Select(o => reducer.HandleReduceAsync(o)) ?? Enumerable.Empty<Task>()),
                                     _ => Task.CompletedTask,
                                 };

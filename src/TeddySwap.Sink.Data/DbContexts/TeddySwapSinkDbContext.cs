@@ -7,6 +7,7 @@ public class TeddySwapSinkDbContext : DbContext
 {
 
     #region Core Models
+    public DbSet<TxInput> TxInputs => Set<TxInput>();
     public DbSet<TxOutput> TxOutputs => Set<TxOutput>();
     public DbSet<Block> Blocks => Set<Block>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
@@ -18,10 +19,11 @@ public class TeddySwapSinkDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Primary Keys
+        modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
         modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Asset>().HasKey(asset => new { asset.PolicyId, asset.Name, asset.TxOutputHash, asset.TxOutputIndex });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
-        modelBuilder.Entity<Transaction>().HasKey(tx => new { tx.Hash, tx.Index });
+        modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
         modelBuilder.Entity<Transaction>().Property(tx => tx.Metadata).HasColumnType("jsonb");
 
@@ -34,13 +36,34 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<Transaction>()
             .HasOne(t => t.Block)
             .WithMany(b => b.Transactions)
-            .HasForeignKey(t => t.Blockhash)
+            .HasForeignKey(t => t.Blockhash);
+
+        modelBuilder.Entity<Transaction>()
+            .HasMany(t => t.Inputs)
+            .WithOne(i => i.Transaction)
+            .HasForeignKey(i => i.TxHash)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Transaction>()
+            .HasMany(t => t.Outputs)
+            .WithOne(o => o.Transaction)
+            .HasForeignKey(o => o.TxHash)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<TxInput>()
+            .HasOne<TxOutput>(txInput => txInput.TxOutput)
+            .WithMany(txOutput => txOutput.Inputs)
+            .HasForeignKey(txInput => new { txInput.TxOutputHash, txInput.TxOutputIndex });
+
+        modelBuilder.Entity<TxInput>()
+            .HasOne<Transaction>(txInput => txInput.Transaction)
+            .WithMany(tx => tx.Inputs)
+            .HasForeignKey(txInput => txInput.TxHash);
 
         modelBuilder.Entity<TxOutput>()
             .HasOne<Transaction>(txOutput => txOutput.Transaction)
             .WithMany(tx => tx.Outputs)
-            .HasForeignKey(txOutput => new { txOutput.TxHash, txOutput.TxIndex });
+            .HasForeignKey(txOutput => txOutput.TxHash);
 
         modelBuilder.Entity<Asset>()
             .HasOne<TxOutput>(asset => asset.TxOutput)

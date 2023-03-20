@@ -23,6 +23,7 @@ builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddSingleton<ByteArrayService>();
 builder.Services.AddSingleton<CborService>();
 builder.Services.AddSingleton<DatumService>();
+builder.Services.AddSingleton<MetadataService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
 
