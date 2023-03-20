@@ -25,11 +25,16 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
             txInput.TxHash is not null)
         {
             using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-            TxOutput? txOutput = await _dbContext.TxOutputs
-                .Where(txOutput => txOutput.TxHash == txInput.TxHash && txOutput.Index == txInput.Index).FirstOrDefaultAsync();
-            Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txInput.TxHash).FirstOrDefaultAsync();
+
+            Transaction? tx = await _dbContext.Transactions
+                .Include(tx => tx.Block)
+                .Where(tx => tx.Hash == txInput.TxHash)
+                .FirstOrDefaultAsync();
             if (tx is not null)
             {
+                TxOutput? txOutput = await _dbContext.TxOutputs
+                    .Where(txOutput => txOutput.TxHash == txInput.TxHash && txOutput.Index == txInput.Index)
+                    .FirstOrDefaultAsync();
                 if (txOutput is not null)
                 {
                     TxInput? input = await _dbContext.TxInputs
@@ -48,9 +53,9 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
                         });
 
                     }
+                    await _dbContext.SaveChangesAsync();
                 }
             }
-            await _dbContext.SaveChangesAsync();
         }
     }
 
