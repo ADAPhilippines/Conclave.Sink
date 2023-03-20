@@ -8,5 +8,5 @@ public class Metadatum
     public string? Label { get; init; }
 
     [JsonPropertyName("map_json")]
-    public JsonElement Content { get; init; }
+    public object? Content { get; init; }
 }

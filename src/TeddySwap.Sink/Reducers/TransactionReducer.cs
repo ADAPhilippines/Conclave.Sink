@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TeddySwap.Common.Models;
@@ -51,7 +52,8 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 Fee = (ulong)transaction.Fee,
                 Index = (ulong)transaction.Index,
                 Block = block,
-                Blockhash = block.BlockHash
+                Blockhash = block.BlockHash,
+                Metadata = JsonSerializer.Serialize(transaction.Metadata),
             };
 
             await _dbContext.Transactions.AddAsync(newTransaction);

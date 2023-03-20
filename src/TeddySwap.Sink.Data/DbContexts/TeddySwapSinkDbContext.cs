@@ -23,6 +23,7 @@ public class TeddySwapSinkDbContext : DbContext
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<Transaction>().HasKey(tx => new { tx.Hash, tx.Index });
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
+        modelBuilder.Entity<Transaction>().Property(tx => tx.Metadata).HasColumnType("jsonb");
 
         modelBuilder.Entity<Block>()
             .HasMany(b => b.Transactions)

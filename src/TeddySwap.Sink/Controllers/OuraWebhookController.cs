@@ -43,7 +43,7 @@ public class OuraWebhookController : ControllerBase
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
 
-        if (_event is not null && _event.Context is not null && _event.Context.Slot == 9119134)
+        if (_event is not null && _event.Context is not null && _event.Context.Slot == 1470391)
         {
             Console.WriteLine(_eventJson);
         }

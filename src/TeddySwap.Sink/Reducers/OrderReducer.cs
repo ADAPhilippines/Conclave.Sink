@@ -14,13 +14,11 @@ public class OrderReducer : OuraReducerBase
 {
     private readonly ILogger<OrderReducer> _logger;
     private readonly IDbContextFactory<TeddySwapOrderSinkDbContext> _dbContextFactory;
-
     private readonly OrderService _orderService;
 
     public OrderReducer(
         ILogger<OrderReducer> logger,
         IDbContextFactory<TeddySwapOrderSinkDbContext> dbContextFactory,
-        IDbContextFactory<TeddySwapSinkDbContext> teddySwapSinkDbContextFactory,
         OrderService orderService)
     {
         _logger = logger;

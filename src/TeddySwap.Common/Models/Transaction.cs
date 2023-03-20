@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace TeddySwap.Common.Models;
 
 public record Transaction
@@ -8,4 +10,5 @@ public record Transaction
     public string Blockhash { get; init; } = string.Empty;
     public Block Block { get; init; } = new();
     public IEnumerable<TxOutput> Outputs { get; init; } = new List<TxOutput>();
+    public string? Metadata { get; init; }
 }

@@ -7,7 +7,7 @@ public class TeddySwapNftSinkDbContext : TeddySwapSinkDbContext
 {
 
     #region TeddySwap Models
-    public DbSet<Nft> Nfts => Set<Nft>();
+    public DbSet<MintTransaction> MintTransactions => Set<MintTransaction>();
     public DbSet<NftOwner> NftOwners => Set<NftOwner>();
     #endregion
 
@@ -15,8 +15,8 @@ public class TeddySwapNftSinkDbContext : TeddySwapSinkDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Nft>().HasKey(nft => new { nft.PolicyId, nft.TokenName });
-        modelBuilder.Entity<Nft>().Property(nft => nft.Metadata).HasColumnType("jsonb");
+        modelBuilder.Entity<MintTransaction>().HasKey(mt => new { mt.PolicyId, mt.TokenName });
+        modelBuilder.Entity<NftOwner>().HasKey(nft => new { nft.PolicyId, nft.TokenName });
 
         base.OnModelCreating(modelBuilder);
     }

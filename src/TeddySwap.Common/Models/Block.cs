@@ -11,8 +11,4 @@ public class Block
     public IEnumerable<Transaction> Transactions { get; set; } = new List<Transaction>();
     public IEnumerable<ulong>? InvalidTransactions { get; set; }
 
-    public static implicit operator string(Block v)
-    {
-        throw new NotImplementedException();
-    }
 }
