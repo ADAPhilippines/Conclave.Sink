@@ -30,12 +30,15 @@ public class NftOwnerReducer : OuraReducerBase
 
     public async Task ReduceAsync(OuraAssetEvent asset)
     {
-
         if (asset is not null &&
             asset.Address is not null &&
             asset.PolicyId is not null &&
             asset.TokenName is not null)
         {
+            // skip invalid transactions
+            if (asset.Context is not null &&
+                asset.Context.InvalidTransactions is not null &&
+                asset.Context.InvalidTransactions.ToList().Contains((ulong)asset.Context.TxIdx!)) return;
 
             if (_settings.NftPolicyIds.Contains(asset.PolicyId))
             {

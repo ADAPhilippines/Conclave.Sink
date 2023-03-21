@@ -10,7 +10,7 @@ public record OuraTransaction : OuraEvent
     [JsonPropertyName("has_collateral_output")]
     public bool HasCollateralOutput { get; init; }
     public IEnumerable<OuraWithdrawal>? Withdrawals { get; init; }
-    public IEnumerable<OuraTxInput>? Inputs { get; init; }
+    public IEnumerable<OuraTxInput>? Inputs { get; set; }
     public IEnumerable<OuraTxOutput>? Outputs { get; set; }
     [JsonPropertyName("collateral_inputs")]
     public IEnumerable<OuraTxInput>? CollateralInputs { get; init; }

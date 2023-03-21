@@ -36,12 +36,13 @@ public class MintTransactionReducer : OuraReducerBase
 
     public async Task ReduceAsync(OuraTransaction transaction)
     {
-
         if (transaction is not null &&
             transaction.Context is not null &&
             transaction.Fee is not null &&
             transaction.Metadata is not null)
         {
+            // skip invalid transactions
+            if (transaction.Context.InvalidTransactions is not null && transaction.Context.InvalidTransactions.ToList().Contains((ulong)transaction.Index)) return;
 
             using TeddySwapNftSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
             Transaction? existingTransaction = await _dbContext.Transactions

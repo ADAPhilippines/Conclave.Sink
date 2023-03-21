@@ -70,6 +70,7 @@ public class OuraWebhookController : ControllerBase
                     blockEvent = _eventJson.Deserialize<OuraBlockEvent>(ConclaveJsonSerializerOptions);
                     if (blockEvent is not null && blockEvent.Block is not null)
                     {
+                        if (blockEvent.Context is not null) blockEvent.Context.InvalidTransactions = blockEvent.Block.InvalidTransactions;
                         blockEvent.Block.Transactions = blockEvent.Block.Transactions?.Select((t, ti) =>
                         {
                             t.Index = ti;
@@ -81,6 +82,12 @@ public class OuraWebhookController : ControllerBase
                                 o.TxHash = t.Hash;
                                 o.TxIndex = (ulong)ti;
                                 return o;
+                            });
+                            t.Inputs = t.Inputs?.Select(i =>
+                            {
+                                i.Context = blockEvent.Context;
+                                i.Context!.TxIdx = (ulong)ti;
+                                return i;
                             });
                             return t;
                         }).ToList();
@@ -154,7 +161,8 @@ public class OuraWebhookController : ControllerBase
                 Address = o.Address ?? "",
                 PolicyId = a.Policy ?? "",
                 TokenName = a.Asset ?? "",
-                Amount = a.Amount is not null ? (ulong)a.Amount : 0
+                Amount = a.Amount is not null ? (ulong)a.Amount : 0,
+                Context = o.Context
             }))
             .ToList();
 
