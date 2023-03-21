@@ -32,8 +32,8 @@ public class NftOwnerReducer : OuraReducerBase
     {
         if (asset is not null &&
             asset.Address is not null &&
-            asset.PolicyId is not null &&
-            asset.TokenName is not null)
+            !string.IsNullOrEmpty(asset.PolicyId) &&
+            !string.IsNullOrEmpty(asset.TokenName))
         {
             // skip invalid transactions
             if (asset.Context is not null &&

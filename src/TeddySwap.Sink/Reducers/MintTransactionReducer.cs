@@ -77,7 +77,7 @@ public class MintTransactionReducer : OuraReducerBase
                     {
                         PolicyId = asset.Policy.ToLower(),
                         TokenName = asset.Asset.ToLower(),
-                        AsciiTokenName = Encoding.ASCII.GetString(_byteArrayService.HexToByteArray(asset.Asset).Where(b => b < 128 && b != 0x00).ToArray()),
+                        AsciiTokenName = Encoding.ASCII.GetString(Convert.FromHexString(asset.Asset).Where(b => b < 128 && b != 0x00).ToArray()),
                         Metadata = metadata,
                         Transaction = existingTransaction
                     });
