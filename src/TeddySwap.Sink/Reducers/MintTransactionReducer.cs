@@ -1,6 +1,7 @@
 
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TeddySwap.Common.Models;
@@ -39,7 +40,9 @@ public class MintTransactionReducer : OuraReducerBase
         if (transaction is not null &&
             transaction.Context is not null &&
             transaction.Fee is not null &&
-            transaction.Metadata is not null)
+            transaction.Metadata is not null &&
+            transaction.Mint is not null &&
+            transaction.Mint.Any())
         {
             // skip invalid transactions
             if (transaction.Context.InvalidTransactions is not null && transaction.Context.InvalidTransactions.ToList().Contains((ulong)transaction.Index)) return;
@@ -51,29 +54,38 @@ public class MintTransactionReducer : OuraReducerBase
 
             if (existingTransaction is null) return;
 
-            List<AssetClass> assets = _metadataService.FindAssets(transaction, _settings.NftPolicyIds.ToList());
+            List<AssetClass> assetWithMetada = _metadataService.FindAssets(transaction, _settings.NftPolicyIds.ToList());
 
-            foreach (AssetClass asset in assets)
+            foreach (MintAsset asset in transaction.Mint)
             {
+                if (string.IsNullOrEmpty(asset.Policy) ||
+                    string.IsNullOrEmpty(asset.Asset) ||
+                    !_settings.NftPolicyIds.ToList().Contains(asset.Policy)) continue;
+
                 MintTransaction? mintTransaction = await _dbContext.MintTransactions
-                    .Where(mtx => mtx.PolicyId == asset.PolicyId.ToLower() && mtx.TokenName == asset.Name.ToLower())
+                    .Where(mtx => mtx.PolicyId == asset.Policy.ToLower() && mtx.TokenName == asset.Asset.ToLower())
                     .FirstOrDefaultAsync();
+
+                string? metadata = assetWithMetada
+                    .Where(awm => awm.PolicyId == asset.Policy && (awm.Name == asset.Asset || awm.AsciiName == asset.Asset))
+                    .Select(a => a.Metadata)
+                    .FirstOrDefault();
 
                 if (mintTransaction is null)
                 {
                     await _dbContext.MintTransactions.AddAsync(new()
                     {
-                        PolicyId = asset.PolicyId.ToLower(),
-                        TokenName = asset.Name.ToLower(),
-                        AsciiTokenName = asset.AsciiName ?? "",
-                        Metadata = asset.Metadata,
+                        PolicyId = asset.Policy.ToLower(),
+                        TokenName = asset.Asset.ToLower(),
+                        AsciiTokenName = Encoding.ASCII.GetString(_byteArrayService.HexToByteArray(asset.Asset).Where(b => b < 128 && b != 0x00).ToArray()),
+                        Metadata = metadata,
                         Transaction = existingTransaction
                     });
                 }
                 else
                 {
                     mintTransaction.Transaction = existingTransaction;
-                    mintTransaction.Metadata = asset.Metadata;
+                    mintTransaction.Metadata = metadata;
                     _dbContext.MintTransactions.Update(mintTransaction);
                 }
             }

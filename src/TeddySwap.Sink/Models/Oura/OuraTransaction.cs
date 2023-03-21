@@ -17,4 +17,5 @@ public record OuraTransaction : OuraEvent
     [JsonPropertyName("collateral_output")]
     public OuraTxOutput? CollateralOutput { get; set; }
     public IEnumerable<Metadatum>? Metadata { get; init; }
+    public IEnumerable<MintAsset>? Mint { get; init; }
 }
