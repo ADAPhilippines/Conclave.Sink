@@ -13,8 +13,8 @@ using TeddySwap.Sink.Data;
 namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapNftSinkDbContext))]
-    [Migration("20230320113009_AdInitialCreate")]
-    partial class AdInitialCreate
+    [Migration("20230321032637_NftInitialCreate")]
+    partial class NftInitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

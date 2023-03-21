@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TeddySwap.Sink.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AdInitialCreate : Migration
+    public partial class NftInitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
