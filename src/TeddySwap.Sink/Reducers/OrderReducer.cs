@@ -103,5 +103,19 @@ public class OrderReducer : OuraReducerBase
 
         return decimal.Parse(result.ToString());
     }
-    public async Task RollbackAsync(Block _) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+        if (rollbackBlock is not null)
+        {
+            using TeddySwapOrderSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+            List<Order>? orders = await _dbContext.Orders
+                .Include(o => o.Block)
+                .Where(o => o.Block == rollbackBlock)
+                .ToListAsync();
+
+            _dbContext.Orders.RemoveRange(orders);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }
