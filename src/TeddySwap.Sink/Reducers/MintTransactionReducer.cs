@@ -54,14 +54,27 @@ public class MintTransactionReducer : OuraReducerBase
 
             foreach (AssetClass asset in assets)
             {
-                await _dbContext.MintTransactions.AddAsync(new()
+                MintTransaction? mintTransaction = await _dbContext.MintTransactions
+                    .Where(mtx => mtx.PolicyId == asset.PolicyId.ToLower() && mtx.TokenName == asset.Name.ToLower())
+                    .FirstOrDefaultAsync();
+
+                if (mintTransaction is null)
                 {
-                    PolicyId = asset.PolicyId.ToLower(),
-                    TokenName = asset.Name,
-                    AsciiTokenName = asset.AsciiName ?? "",
-                    Metadata = asset.Metadata,
-                    Transaction = existingTransaction
-                });
+                    await _dbContext.MintTransactions.AddAsync(new()
+                    {
+                        PolicyId = asset.PolicyId.ToLower(),
+                        TokenName = asset.Name.ToLower(),
+                        AsciiTokenName = asset.AsciiName ?? "",
+                        Metadata = asset.Metadata,
+                        Transaction = existingTransaction
+                    });
+                }
+                else
+                {
+                    mintTransaction.Transaction = existingTransaction;
+                    mintTransaction.Metadata = asset.Metadata;
+                    _dbContext.MintTransactions.Update(mintTransaction);
+                }
             }
 
             await _dbContext.SaveChangesAsync();
