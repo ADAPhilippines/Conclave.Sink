@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,11 +42,6 @@ public class OuraWebhookController : ControllerBase
     public async Task<IActionResult> ReceiveEventAsync([FromBody] JsonElement _eventJson)
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
-
-        if (_event is not null && _event.Context is not null && _event.Context.Slot == 9119134)
-        {
-            Console.WriteLine(_eventJson);
-        }
 
         if (_event is not null && _event.Context is not null)
         {
@@ -101,33 +95,38 @@ public class OuraWebhookController : ControllerBase
                     if (_reducers.Where(r => r is TransactionReducer).FirstOrDefault() is not TransactionReducer transactionReducer) continue;
                     await transactionReducer.HandleReduceAsync(transaction);
 
-                    var tasks = _reducers.SelectMany(reducer =>
+                    foreach (var reducer in _reducers)
                     {
                         List<OuraVariant> reducerVariants = _GetReducerVariants(reducer).ToList();
 
                         if (_settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) || reducer is IOuraCoreReducer)
                         {
-                            return reducerVariants.Select(reducerVariant =>
+                            foreach (var reducerVariant in reducerVariants)
                             {
-                                return reducerVariant switch
+                                switch (reducerVariant)
                                 {
-                                    OuraVariant.Transaction => reducer.HandleReduceAsync(transaction),
-                                    OuraVariant.TxOutput => Task.WhenAll(transaction.Outputs?.Select(o => reducer.HandleReduceAsync(o)) ?? Enumerable.Empty<Task>()),
-                                    OuraVariant.TxInput => Task.WhenAll(transaction.Inputs?.Select(i => reducer.HandleReduceAsync(i)) ?? Enumerable.Empty<Task>()),
-                                    OuraVariant.Asset => Task.WhenAll(MapToOuraAssetEvents(transaction.Outputs).Select(a => reducer.HandleReduceAsync(a)) ?? Enumerable.Empty<Task>()),
-                                    _ => Task.CompletedTask,
-                                };
-                            });
+                                    case OuraVariant.Transaction:
+                                        await reducer.HandleReduceAsync(transaction);
+                                        break;
+                                    case OuraVariant.TxInput:
+                                        if (transaction.Inputs is null) break;
+                                        foreach (var input in transaction.Inputs) await reducer.HandleReduceAsync(input);
+                                        break;
+                                    case OuraVariant.TxOutput:
+                                        if (transaction.Outputs is null) break;
+                                        foreach (var output in transaction.Outputs) await reducer.HandleReduceAsync(output);
+                                        break;
+                                    case OuraVariant.Asset:
+                                        List<OuraAssetEvent> assets = MapToOuraAssetEvents(transaction.Outputs);
+                                        foreach (var asset in assets) await reducer.HandleReduceAsync(asset);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                         }
-                        else
-                        {
-                            return Enumerable.Empty<Task>();
-                        }
-                    });
-
-                    await Task.WhenAll(tasks);
+                    }
                 }
-
                 return Ok();
             }
         }
@@ -140,7 +139,7 @@ public class OuraWebhookController : ControllerBase
             .Where(
                 reducerAttributeObject => reducerAttributeObject as OuraReducerAttribute is not null
             )
-            .Select(reducerAttributeObject => (reducerAttributeObject as OuraReducerAttribute)).FirstOrDefault();
+            .Select(reducerAttributeObject => reducerAttributeObject as OuraReducerAttribute).FirstOrDefault();
         return reducerAttribute?.Variants ?? new OuraVariant[] { OuraVariant.Unknown }.ToList();
     }
 
@@ -162,3 +161,5 @@ public class OuraWebhookController : ControllerBase
         return assets;
     }
 }
+
+
