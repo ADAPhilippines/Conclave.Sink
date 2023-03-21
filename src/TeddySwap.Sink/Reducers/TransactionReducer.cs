@@ -14,7 +14,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
     private readonly ILogger<TransactionReducer> _logger;
     private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
 
-
     public TransactionReducer(
         ILogger<TransactionReducer> logger,
         IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory,
@@ -26,7 +25,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraTransaction transaction)
     {
-
         if (transaction is not null &&
             transaction.Context is not null &&
             transaction.Fee is not null &&

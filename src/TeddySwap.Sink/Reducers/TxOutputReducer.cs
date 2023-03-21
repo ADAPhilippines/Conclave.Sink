@@ -21,7 +21,6 @@ public class TxOutputReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraTxOutput txOutput)
     {
-
         if (txOutput is not null &&
             txOutput.Context is not null &&
             txOutput.OutputIndex is not null &&
