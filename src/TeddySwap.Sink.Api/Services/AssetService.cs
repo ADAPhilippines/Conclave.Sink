@@ -69,4 +69,18 @@ public class AssetService
             })
             .FirstOrDefaultAsync();
     }
+
+    public async Task<List<AssetMetadataResponse>?> GetNftMetadataAsync(List<string> assets)
+    {
+        return await _dbContext.MintTransactions
+            .Where(mtx => assets.Contains(mtx.PolicyId + mtx.TokenName))
+            .Select(m => new AssetMetadataResponse()
+            {
+                PolicyId = m.PolicyId,
+                TokenName = m.TokenName,
+                AsciiTokenName = m.AsciiTokenName,
+                Metadata = m.Metadata
+            })
+            .ToListAsync();
+    }
 }

@@ -41,4 +41,14 @@ public class AssetsController : ControllerBase
 
         return Ok(res);
     }
+
+    [HttpPost("metadata")]
+    public async Task<ActionResult<AssetMetadataResponse>> GetAssetMetadataAsync([FromBody] List<string> assets)
+    {
+        if (assets is null || assets.Count < 1) return BadRequest();
+
+        var res = await _assetService.GetNftMetadataAsync(assets);
+
+        return Ok(res);
+    }
 }
