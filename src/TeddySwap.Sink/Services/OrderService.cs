@@ -36,11 +36,6 @@ public class OrderService
 
     public async Task<Order?> ProcessOrderAsync(OuraTransaction transaction)
     {
-
-        if (transaction.Hash == "3a957d40b97205c63458b9b1a4d2bfbe9e04e8122282cb5c25f35ff962018249")
-        {
-            Console.WriteLine("should be counted");
-        }
         using TeddySwapOrderSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         Order? order = null;
 
