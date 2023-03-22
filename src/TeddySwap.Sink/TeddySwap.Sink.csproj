@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CardanoSharp.Koios.Client" Version="1.0.11" />
     <PackageReference Include="CardanoSharp.Wallet" Version="4.0.5" />
     <ProjectReference Include="..\TeddySwap.Common\TeddySwap.Common.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />

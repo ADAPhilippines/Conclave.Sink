@@ -14,7 +14,7 @@ using TeddySwap.Sink.Data;
 namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
 {
     [DbContext(typeof(TeddySwapOrderSinkDbContext))]
-    [Migration("20230321032653_OrderInitialCreate")]
+    [Migration("20230322140301_OrderInitialCreate")]
     partial class OrderInitialCreate
     {
         /// <inheritdoc />

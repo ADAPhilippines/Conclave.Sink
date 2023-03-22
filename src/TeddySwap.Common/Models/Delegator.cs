@@ -2,9 +2,9 @@ using System.Numerics;
 
 namespace TeddySwap.Common.Models;
 
-public record FisoPoolActiveStake
+public class Delegator
 {
-    public ulong EpochNumber { get; init; }
+    public string StakeAddress { get; init; } = string.Empty;
     public string PoolId { get; init; } = string.Empty;
     public ulong StakeAmount { get; init; }
 }

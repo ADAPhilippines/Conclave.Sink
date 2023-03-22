@@ -12,7 +12,8 @@ public enum OuraVariant
     Transaction = 3,
     TxInput = 4,
     TxOutput = 5,
-    Asset = 6
+    Asset = 6,
+    StakeDelegation = 7
 }
 
 public interface IOuraEvent
