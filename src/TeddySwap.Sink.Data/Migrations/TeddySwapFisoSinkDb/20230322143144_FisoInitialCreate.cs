@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TeddySwap.Sink.Data.Migrations
+namespace TeddySwap.Sink.Data.Migrations.TeddySwapFisoSinkDb
 {
     /// <inheritdoc />
     public partial class FisoInitialCreate : Migration

@@ -4,18 +4,21 @@ using System.Collections.Generic;
 using System.Numerics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TeddySwap.Sink.Data;
 
 #nullable disable
 
-namespace TeddySwap.Sink.Data.Migrations
+namespace TeddySwap.Sink.Data.Migrations.TeddySwapFisoSinkDb
 {
     [DbContext(typeof(TeddySwapFisoSinkDbContext))]
-    partial class TeddySwapFisoSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230322143144_FisoInitialCreate")]
+    partial class FisoInitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

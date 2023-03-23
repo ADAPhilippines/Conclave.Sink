@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
+namespace TeddySwap.Sink.Data.Migrations
 {
     /// <inheritdoc />
     public partial class OrderInitialCreate : Migration

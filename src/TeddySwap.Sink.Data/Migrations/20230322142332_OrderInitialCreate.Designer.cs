@@ -4,18 +4,21 @@ using System.Collections.Generic;
 using System.Numerics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TeddySwap.Sink.Data;
 
 #nullable disable
 
-namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
+namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapOrderSinkDbContext))]
-    partial class TeddySwapOrderSinkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230322142332_OrderInitialCreate")]
+    partial class OrderInitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
