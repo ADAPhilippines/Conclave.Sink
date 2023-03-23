@@ -9,5 +9,6 @@ public record Transaction
     public Block Block { get; init; } = new();
     public IEnumerable<TxInput> Inputs { get; init; } = new List<TxInput>();
     public IEnumerable<TxOutput> Outputs { get; init; } = new List<TxOutput>();
+    public bool HasCollateralOutput { get; init; }
     public string? Metadata { get; init; }
 }

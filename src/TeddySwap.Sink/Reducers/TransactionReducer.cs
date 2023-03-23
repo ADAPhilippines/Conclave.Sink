@@ -52,6 +52,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 Block = block,
                 Blockhash = block.BlockHash,
                 Metadata = JsonSerializer.Serialize(transaction.Metadata),
+                HasCollateralOutput = transaction.HasCollateralOutput
             };
 
             await _dbContext.Transactions.AddAsync(newTransaction);
