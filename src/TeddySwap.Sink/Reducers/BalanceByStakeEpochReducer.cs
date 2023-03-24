@@ -6,7 +6,7 @@ using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Reducers;
 
-[OuraReducer(OuraVariant.TxInput, OuraVariant.TxOutput)]
+[OuraReducer(OuraVariant.TxInput, OuraVariant.TxOutput, OuraVariant.CollateralInput, OuraVariant.CollateralOutput)]
 public class BalanceByStakeEpochReducer : OuraReducerBase
 {
     private readonly ILogger<BalanceByStakeEpoch> _logger;
@@ -34,8 +34,12 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
                 if (txInputEvent is not null &&
                     txInputEvent.TxInput is not null &&
                     txInputEvent.Context is not null &&
-                    txInputEvent.Context.Slot is not null)
+                    txInputEvent.Context.Slot is not null &&
+                    txInputEvent.Context.TxIdx is not null)
                 {
+                    if (txInputEvent.Context.InvalidTransactions is not null &&
+                        txInputEvent.Context.InvalidTransactions.ToList().Contains((ulong)txInputEvent.Context.TxIdx)) return;
+
                     TxOutput? input = await _dbContext.TxOutputs
                         .Include(txOut => txOut.Transaction)
                         .ThenInclude(transaction => transaction.Block)
@@ -84,8 +88,12 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
                     txOutputEvent.TxOutput.Amount is not null &&
                     txOutputEvent.TxOutput.Address is not null &&
                     txOutputEvent.Context is not null &&
-                    txOutputEvent.Context.Slot is not null)
+                    txOutputEvent.Context.Slot is not null &&
+                    txOutputEvent.Context.TxIdx is not null)
                 {
+                    if (txOutputEvent.Context.InvalidTransactions is not null &&
+                        txOutputEvent.Context.InvalidTransactions.ToList().Contains((ulong)txOutputEvent.Context.TxIdx)) return;
+
                     string? stakeAddress = _cardanoService.TryGetStakeAddress(txOutputEvent.TxOutput.Address);
                     ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutputEvent.Context.Slot);
                     ulong amount = (ulong)txOutputEvent.TxOutput.Amount;
@@ -112,6 +120,14 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
 
                     await _dbContext.SaveChangesAsync();
                 }
+            }),
+            OuraVariant.CollateralInput => Task.Run(async () =>
+            {
+
+            }),
+            OuraVariant.CollateralOutput => Task.Run(async () =>
+            {
+
             }),
             _ => Task.Run(() => { })
         });

@@ -57,7 +57,7 @@ public class FisoEpochRewardReducer : OuraReducerBase
             ulong currentEpoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot);
 
             // fiso reward has ended or not yet epoch boundary
-            if (currentEpoch >= _settings.FisoStartEpoch && currentEpoch <= _settings.FisoEndEpoch && currentEpoch > previousEpoch)
+            if (currentEpoch >= _settings.FisoStartEpoch - 1 && currentEpoch <= _settings.FisoEndEpoch && currentEpoch > previousEpoch)
             {
 
                 List<FisoPool> fisoPools = _settings.FisoPools
@@ -84,6 +84,8 @@ public class FisoEpochRewardReducer : OuraReducerBase
                     });
                 }
 
+                // Calculate rewards if current epoch >= start epoch
+
                 // Fetch all delegators
                 List<Delegator> delegators = new();
 
@@ -98,25 +100,36 @@ public class FisoEpochRewardReducer : OuraReducerBase
                     {
                         StakeAddress = d.StakeAddress!,
                         StakeAmount = ulong.Parse(d.Amount!),
-                        PoolId = fisoPool.PoolId
+                        PoolId = fisoPool.PoolId,
+                        Epoch = calculationEpoch
                     }));
                 }
 
-                // Calculate share
-                List<FisoEpochReward> epochRewards = delegators.Select(d => new FisoEpochReward()
-                {
-                    EpochNumber = calculationEpoch,
-                    StakeAddress = d.StakeAddress,
-                    PoolId = d.PoolId,
-                    StakeAmount = d.StakeAmount,
-                    SharePercentage = d.StakeAmount / (decimal)totalStakes,
-                    ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * (d.StakeAmount / (decimal)totalStakes)),
-                    ActiveBonus = false,
-                    BonusAmount = 0
-                })
-                .ToList();
+                // save snapshot of delegator stakes
+                _dbContext.FisoDelegators.AddRange(delegators);
 
-                _dbContext.FisoEpochRewards.AddRange(epochRewards);
+                // Calculate fiso rewards
+                if (currentEpoch >= _settings.FisoStartEpoch)
+                {
+                    // Calculate share
+                    List<FisoEpochReward> epochRewards = delegators.Select(d => new FisoEpochReward()
+                    {
+                        EpochNumber = calculationEpoch,
+                        StakeAddress = d.StakeAddress,
+                        PoolId = d.PoolId,
+                        StakeAmount = d.StakeAmount,
+                        SharePercentage = d.StakeAmount / (decimal)totalStakes,
+                        ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * (d.StakeAmount / (decimal)totalStakes)),
+                        ActiveBonus = false,
+                        BonusAmount = 0
+                    })
+                    .ToList();
+
+                    _dbContext.FisoEpochRewards.AddRange(epochRewards);
+                }
+
+
+
                 _dbContext.FisoPoolActiveStakes.AddRange(poolStakes);
                 await _dbContext.SaveChangesAsync();
             }

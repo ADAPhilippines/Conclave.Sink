@@ -43,8 +43,12 @@ public class OuraWebhookController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> ReceiveEventAsync([FromBody] JsonElement _eventJson)
     {
-
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
+
+        if (_event.Context.BlockNumber == 433251)
+        {
+            Console.WriteLine(_eventJson);
+        }
 
         if (_event is not null && _event.Context is not null)
         {
@@ -116,6 +120,18 @@ public class OuraWebhookController : ControllerBase
                                     i.Context!.TxIdx = (ulong)ti;
                                     return i;
                                 });
+                                t.CollateralInputs = t.CollateralInputs?.Select(ci =>
+                                {
+                                    ci.Context = blockEvent.Context;
+                                    ci.Context!.TxIdx = (ulong)ti;
+                                    return ci;
+                                });
+                                if (t.HasCollateralOutput)
+                                {
+                                    t.CollateralOutput!.Context = blockEvent.Context;
+                                    t.CollateralOutput.Context!.HasCollateralOutput = t.HasCollateralOutput;
+                                    t.CollateralOutput.TxHash = t.Hash;
+                                }
                                 return t;
                             }).ToList();
                             await blockReducer.HandleReduceAsync(blockEvent);

@@ -29,4 +29,5 @@ public record OuraContext
     public string? OutputAddress { get; init; }
     public ulong? CertificateIdx { get; init; }
     public IEnumerable<ulong>? InvalidTransactions { get; set; }
+    public bool HasCollateralOutput { get; set; }
 }
