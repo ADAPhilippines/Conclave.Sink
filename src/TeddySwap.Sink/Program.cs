@@ -1,3 +1,4 @@
+using Blockfrost.Api.Extensions;
 using CardanoSharp.Koios.Client;
 using Microsoft.EntityFrameworkCore;
 using Refit;
@@ -30,6 +31,7 @@ builder.Services.AddSingleton<MetadataService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
 builder.Services.AddKoios("https://preview.koios.rest/api/v0");
+builder.Services.AddBlockfrost("Preview", builder.Configuration["BLOCKFROST_PROJECT_ID"]);
 
 var app = builder.Build();
 

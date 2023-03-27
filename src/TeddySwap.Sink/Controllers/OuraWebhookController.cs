@@ -45,7 +45,7 @@ public class OuraWebhookController : ControllerBase
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
 
-        if (_event.Context.BlockNumber == 433251)
+        if (_event.Context.BlockNumber == 586654)
         {
             Console.WriteLine(_eventJson);
         }

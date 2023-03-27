@@ -12,8 +12,12 @@ public class TeddySwapSinkCoreDbContext : DbContext
     public DbSet<Block> Blocks => Set<Block>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Asset> Assets => Set<Asset>();
+    public DbSet<Withdrawal> Withdrawals => Set<Withdrawal>();
     #endregion
 
+    #region Other Models
+    public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
+    #endregion
     public TeddySwapSinkCoreDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,6 +30,8 @@ public class TeddySwapSinkCoreDbContext : DbContext
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
         modelBuilder.Entity<Transaction>().Property(tx => tx.Metadata).HasColumnType("jsonb");
+        modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
+        modelBuilder.Entity<Withdrawal>().HasKey(w => new { w.TxHash, w.StakeAddress });
 
         modelBuilder.Entity<Block>()
             .HasMany(b => b.Transactions)
@@ -49,6 +55,11 @@ public class TeddySwapSinkCoreDbContext : DbContext
             .WithOne(o => o.Transaction)
             .HasForeignKey(o => o.TxHash)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Withdrawal>()
+            .HasOne<Transaction>(withdrawal => withdrawal.Transaction)
+            .WithMany(tx => tx.Withdrawals)
+            .HasForeignKey(withdrawal => withdrawal.TxHash);
 
         modelBuilder.Entity<TxInput>()
             .HasOne<TxOutput>(txInput => txInput.TxOutput)
