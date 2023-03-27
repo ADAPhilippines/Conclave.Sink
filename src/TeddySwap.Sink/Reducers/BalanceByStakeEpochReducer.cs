@@ -30,26 +30,25 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
         {
             OuraVariant.TxInput => Task.Run(async () =>
             {
-                OuraTxInputEvent? txInputEvent = ouraEvent as OuraTxInputEvent;
-                if (txInputEvent is not null &&
-                    txInputEvent.TxInput is not null &&
-                    txInputEvent.Context is not null &&
-                    txInputEvent.Context.Slot is not null &&
-                    txInputEvent.Context.TxIdx is not null)
+                OuraTxInput? txInput = ouraEvent as OuraTxInput;
+                if (txInput is not null &&
+                    txInput.Context is not null &&
+                    txInput.Context.Slot is not null &&
+                    txInput.Context.TxIdx is not null)
                 {
-                    if (txInputEvent.Context.InvalidTransactions is not null &&
-                        txInputEvent.Context.InvalidTransactions.ToList().Contains((ulong)txInputEvent.Context.TxIdx)) return;
+                    if (txInput.Context.InvalidTransactions is not null &&
+                        txInput.Context.InvalidTransactions.ToList().Contains((ulong)txInput.Context.TxIdx)) return;
 
                     TxOutput? input = await _dbContext.TxOutputs
                         .Include(txOut => txOut.Transaction)
                         .ThenInclude(transaction => transaction.Block)
-                        .Where(txOut => txOut.TxHash == txInputEvent.TxInput.TxHash && txOut.Index == txInputEvent.TxInput.Index)
+                        .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.Index)
                         .FirstOrDefaultAsync();
 
                     if (input is not null)
                     {
                         string? stakeAddress = _cardanoService.TryGetStakeAddress(input.Address);
-                        ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInputEvent.Context.Slot);
+                        ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInput.Context.Slot);
 
                         if (stakeAddress is null) return;
 
@@ -82,21 +81,20 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
             }),
             OuraVariant.TxOutput => Task.Run(async () =>
             {
-                OuraTxOutputEvent? txOutputEvent = ouraEvent as OuraTxOutputEvent;
-                if (txOutputEvent is not null &&
-                    txOutputEvent.TxOutput is not null &&
-                    txOutputEvent.TxOutput.Amount is not null &&
-                    txOutputEvent.TxOutput.Address is not null &&
-                    txOutputEvent.Context is not null &&
-                    txOutputEvent.Context.Slot is not null &&
-                    txOutputEvent.Context.TxIdx is not null)
+                OuraTxOutput? txOutput = ouraEvent as OuraTxOutput;
+                if (txOutput is not null &&
+                    txOutput.Amount is not null &&
+                    txOutput.Address is not null &&
+                    txOutput.Context is not null &&
+                    txOutput.Context.Slot is not null &&
+                    txOutput.Context.TxIdx is not null)
                 {
-                    if (txOutputEvent.Context.InvalidTransactions is not null &&
-                        txOutputEvent.Context.InvalidTransactions.ToList().Contains((ulong)txOutputEvent.Context.TxIdx)) return;
+                    if (txOutput.Context.InvalidTransactions is not null &&
+                        txOutput.Context.InvalidTransactions.ToList().Contains((ulong)txOutput.Context.TxIdx)) return;
 
-                    string? stakeAddress = _cardanoService.TryGetStakeAddress(txOutputEvent.TxOutput.Address);
-                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutputEvent.Context.Slot);
-                    ulong amount = (ulong)txOutputEvent.TxOutput.Amount;
+                    string? stakeAddress = _cardanoService.TryGetStakeAddress(txOutput.Address);
+                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutput.Context.Slot);
+                    ulong amount = (ulong)txOutput.Amount;
 
                     if (stakeAddress is null) return;
 
@@ -123,11 +121,96 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
             }),
             OuraVariant.CollateralInput => Task.Run(async () =>
             {
+                OuraTxInput? txInput = ouraEvent as OuraTxInput;
 
+                if (txInput is not null &&
+                    txInput.Context is not null &&
+                    txInput.Context.Slot is not null &&
+                    txInput.Context.TxIdx is not null)
+                {
+                    if (txInput.Context.HasCollateralOutput ||
+                        (txInput.Context.InvalidTransactions is not null &&
+                            txInput.Context.InvalidTransactions.ToList().Contains((ulong)txInput.Context.TxIdx)))
+                    {
+                        TxOutput? input = await _dbContext.TxOutputs
+                            .Include(txOut => txOut.Transaction)
+                            .ThenInclude(transaction => transaction.Block)
+                            .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.Index)
+                            .FirstOrDefaultAsync();
+
+                        if (input is not null)
+                        {
+                            string? stakeAddress = _cardanoService.TryGetStakeAddress(input.Address);
+
+                            if (stakeAddress is null) return;
+
+                            ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInput.Context.Slot);
+                            BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
+                                .Where((bbae) => bbae.StakeAddress == stakeAddress && bbae.Epoch == epoch)
+                                .FirstOrDefaultAsync();
+
+                            if (entry is not null)
+                            {
+                                entry.Balance -= input.Amount;
+
+                                if (entry.Balance <= 0UL)
+                                {
+                                    _dbContext.BalanceByStakeEpoch.Remove(entry);
+                                }
+                            }
+                            else
+                            {
+                                await _dbContext.BalanceByStakeEpoch.AddAsync(new()
+                                {
+                                    StakeAddress = stakeAddress,
+                                    Balance = await GetLastEpochBalanceByStakeAsync(stakeAddress, epoch) - input.Amount,
+                                    Epoch = epoch
+                                });
+                            }
+
+                            await _dbContext.SaveChangesAsync();
+                        }
+                    }
+                }
             }),
             OuraVariant.CollateralOutput => Task.Run(async () =>
             {
+                OuraTxOutput? txOutput = ouraEvent as OuraTxOutput;
+                if (txOutput is not null &&
+                    txOutput.Context is not null &&
+                    txOutput.Context.HasCollateralOutput &&
+                    txOutput.Context.Slot is not null &&
+                    txOutput.Address is not null &&
+                    txOutput.Amount is not null)
+                {
 
+                    string? stakeAddress = _cardanoService.TryGetStakeAddress(txOutput.Address);
+                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutput.Context.Slot);
+                    ulong amount = (ulong)txOutput.Amount;
+
+                    if (stakeAddress is null) return;
+
+                    BalanceByStakeEpoch? entry = await _dbContext.BalanceByStakeEpoch
+                    .Where((bbae) => bbae.StakeAddress == stakeAddress && bbae.Epoch == epoch)
+                    .FirstOrDefaultAsync();
+
+                    if (entry is not null)
+                    {
+                        entry.Balance += amount;
+                    }
+                    else
+                    {
+                        await _dbContext.BalanceByStakeEpoch.AddAsync(new()
+                        {
+                            StakeAddress = stakeAddress,
+                            Balance = await GetLastEpochBalanceByStakeAsync(stakeAddress, epoch) + amount,
+                            Epoch = epoch
+                        });
+                    }
+
+                    await _dbContext.SaveChangesAsync();
+
+                }
             }),
             _ => Task.Run(() => { })
         });
@@ -137,7 +220,7 @@ public class BalanceByStakeEpochReducer : OuraReducerBase
     {
         using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         return await _dbContext.BalanceByStakeEpoch
-            .Where((bbae) => (bbae.StakeAddress == stakeAddress && bbae.Epoch < epoch))
+            .Where((bbae) => bbae.StakeAddress == stakeAddress && bbae.Epoch < epoch)
             .OrderByDescending(s => s.Epoch)
             .Select(s => s.Balance)
             .FirstOrDefaultAsync();

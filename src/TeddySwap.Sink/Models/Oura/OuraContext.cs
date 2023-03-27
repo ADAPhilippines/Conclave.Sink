@@ -17,7 +17,7 @@ public record OuraContext
     public ulong? TxIdx { get; set; }
 
     [JsonPropertyName("tx_hash")]
-    public string? TxHash { get; init; }
+    public string? TxHash { get; set; }
 
     [JsonPropertyName("input_idx")]
     public ulong? InputIdx { get; init; }

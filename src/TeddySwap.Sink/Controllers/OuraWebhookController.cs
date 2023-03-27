@@ -130,7 +130,7 @@ public class OuraWebhookController : ControllerBase
                                 {
                                     t.CollateralOutput!.Context = blockEvent.Context;
                                     t.CollateralOutput.Context!.HasCollateralOutput = t.HasCollateralOutput;
-                                    t.CollateralOutput.TxHash = t.Hash;
+                                    t.CollateralOutput.Context.TxHash = t.Hash;
                                 }
                                 return t;
                             }).ToList();
@@ -195,6 +195,14 @@ public class OuraWebhookController : ControllerBase
                                         case OuraVariant.Asset:
                                             List<OuraAssetEvent> assets = MapToOuraAssetEvents(transaction.Outputs);
                                             foreach (var asset in assets) await reducer.HandleReduceAsync(asset);
+                                            break;
+                                        case OuraVariant.CollateralInput:
+                                            if (transaction.CollateralInputs is null) break;
+                                            foreach (var collateralInput in transaction.CollateralInputs) await reducer.HandleReduceAsync(collateralInput);
+                                            break;
+                                        case OuraVariant.CollateralOutput:
+                                            if (!transaction.HasCollateralOutput) break;
+                                            await reducer.HandleReduceAsync(transaction.CollateralOutput);
                                             break;
                                         default:
                                             break;
