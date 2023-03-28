@@ -15,12 +15,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextFactory<TeddySwapSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
+builder.Services.AddPooledDbContextFactory<TeddySwapSinkCoreDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
+builder.Services.AddPooledDbContextFactory<TeddySwapOrderSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
+builder.Services.AddPooledDbContextFactory<TeddySwapNftSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddSingleton<ByteArrayService>();
 builder.Services.AddSingleton<CborService>();
 builder.Services.AddSingleton<DatumService>();
+builder.Services.AddSingleton<MetadataService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
 
@@ -43,7 +46,7 @@ else
 
     using var scopedProvider = app.Services.CreateScope();
     var service = scopedProvider.ServiceProvider;
-    using var dbContext = service.GetService<TeddySwapSinkDbContext>();
+    using var dbContext = service.GetService<TeddySwapSinkCoreDbContext>();
 
     if (dbContext is not null)
     {

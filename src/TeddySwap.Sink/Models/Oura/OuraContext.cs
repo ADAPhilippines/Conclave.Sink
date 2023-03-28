@@ -14,7 +14,7 @@ public record OuraContext
     public ulong? Timestamp { get; init; }
 
     [JsonPropertyName("tx_idx")]
-    public ulong? TxIdx { get; init; }
+    public ulong? TxIdx { get; set; }
 
     [JsonPropertyName("tx_hash")]
     public string? TxHash { get; init; }
@@ -27,6 +27,6 @@ public record OuraContext
 
     [JsonPropertyName("output_address")]
     public string? OutputAddress { get; init; }
-
     public ulong? CertificateIdx { get; init; }
+    public IEnumerable<ulong>? InvalidTransactions { get; set; }
 }

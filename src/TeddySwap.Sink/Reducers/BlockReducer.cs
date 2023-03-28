@@ -14,14 +14,14 @@ namespace TeddySwap.Sink.Reducers;
 public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<BlockReducer> _logger;
-    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly IServiceProvider _serviceProvider;
     private readonly TeddySwapSinkSettings _settings;
 
     public BlockReducer(
         ILogger<BlockReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
+        IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory,
         CardanoService cardanoService,
         IOptions<TeddySwapSinkSettings> settings,
         IServiceProvider serviceProvider)
@@ -35,7 +35,7 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task ReduceAsync(OuraBlockEvent blockEvent)
     {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         if (blockEvent.Context is not null &&
             blockEvent.Context.BlockNumber is not null &&
             blockEvent.Context.Slot is not null &&
@@ -67,14 +67,14 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
 
     public async Task RollbackAsync(Block rollbackBlock)
     {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         _dbContext.Blocks.Remove(rollbackBlock);
         await _dbContext.SaveChangesAsync();
     }
 
     public async Task RollbackBySlotAsync(ulong rollbackSlot)
     {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         ulong currentTipSlot = await _dbContext.Blocks.AnyAsync() ? await _dbContext.Blocks.MaxAsync(block => block.Slot) : 0;
 
         // Check if current database tip clashes with the current tip oura is pushing
@@ -104,7 +104,6 @@ public class BlockReducer : OuraReducerBase, IOuraCoreReducer
                 );
                 await this.HandleRollbackAsync(rollbackBlock);
             }
-
         }
     }
 }
