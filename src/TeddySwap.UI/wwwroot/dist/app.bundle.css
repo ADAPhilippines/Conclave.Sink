@@ -803,10 +803,6 @@ video {
   overflow-x: hidden;
 }
 
-.\!overflow-x-hidden {
-  overflow-x: hidden !important;
-}
-
 .rounded-full {
   border-radius: 9999px;
 }
@@ -883,6 +879,10 @@ video {
   padding-bottom: 0px;
 }
 
+.pb-\[200px\] {
+  padding-bottom: 200px;
+}
+
 .pl-\[16px\] {
   padding-left: 16px;
 }
@@ -893,10 +893,6 @@ video {
 
 .pt-\[4px\] {
   padding-top: 4px;
-}
-
-.pb-\[200px\] {
-  padding-bottom: 200px;
 }
 
 .text-center {
@@ -1081,10 +1077,6 @@ body:has(.mud-drawer--open) {
 
   .md\:\!flex-row {
     flex-direction: row !important;
-  }
-
-  .md\:pb-\[400px\] {
-    padding-bottom: 400px;
   }
 
   .md\:pb-\[450px\] {
