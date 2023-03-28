@@ -7,7 +7,7 @@ public class TeddySwapFisoSinkDbContext : TeddySwapSinkCoreDbContext
 {
 
     #region TeddySwap Models
-    public DbSet<Delegator> FisoDelegators => Set<Delegator>();
+    public DbSet<FisoDelegator> FisoDelegators => Set<FisoDelegator>();
     public DbSet<FisoBonusDelegation> FisoBonusDelegations => Set<FisoBonusDelegation>();
     public DbSet<FisoEpochReward> FisoEpochRewards => Set<FisoEpochReward>();
     public DbSet<FisoPoolActiveStake> FisoPoolActiveStakes => Set<FisoPoolActiveStake>();
@@ -21,7 +21,7 @@ public class TeddySwapFisoSinkDbContext : TeddySwapSinkCoreDbContext
         modelBuilder.Entity<FisoBonusDelegation>().HasKey(fbd => new { fbd.EpochNumber, fbd.PoolId, fbd.StakeAddress, fbd.TxHash });
         modelBuilder.Entity<FisoEpochReward>().HasKey(fer => new { fer.EpochNumber, fer.StakeAddress });
         modelBuilder.Entity<FisoPoolActiveStake>().HasKey(fpas => new { fpas.EpochNumber, fpas.PoolId });
-        modelBuilder.Entity<Delegator>().HasKey(d => new { d.StakeAddress, d.PoolId, d.Epoch });
+        modelBuilder.Entity<FisoDelegator>().HasKey(d => new { d.StakeAddress, d.PoolId, d.Epoch });
         modelBuilder.Entity<BalanceByStakeEpoch>().HasKey(s => new { s.StakeAddress, s.Epoch });
         base.OnModelCreating(modelBuilder);
     }

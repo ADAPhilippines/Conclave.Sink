@@ -4,21 +4,18 @@ using System.Collections.Generic;
 using System.Numerics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TeddySwap.Sink.Data;
 
 #nullable disable
 
-namespace TeddySwap.Sink.Data.Migrations.TeddySwapFisoSinkDb
+namespace TeddySwap.Sink.Data.Migrations
 {
     [DbContext(typeof(TeddySwapFisoSinkDbContext))]
-    [Migration("20230323100223_FisoAddBalanceByStakeEpoch")]
-    partial class FisoAddBalanceByStakeEpoch
+    partial class TeddySwapFisoSinkDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,6 +114,28 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapFisoSinkDb
                     b.HasKey("EpochNumber", "PoolId", "StakeAddress", "TxHash");
 
                     b.ToTable("FisoBonusDelegations");
+                });
+
+            modelBuilder.Entity("TeddySwap.Common.Models.FisoDelegator", b =>
+                {
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PoolId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("StakeAmount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("TotalPoints")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("StakeAddress", "PoolId", "Epoch");
+
+                    b.ToTable("FisoDelegators");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.FisoEpochReward", b =>
@@ -242,6 +261,38 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapFisoSinkDb
                     b.ToTable("TxOutputs");
                 });
 
+            modelBuilder.Entity("TeddySwap.Common.Models.Withdrawal", b =>
+                {
+                    b.Property<string>("TxHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("TxHash", "StakeAddress");
+
+                    b.ToTable("Withdrawals");
+                });
+
+            modelBuilder.Entity("TeddySwap.Common.Models.WithdrawalByStakeEpoch", b =>
+                {
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("StakeAddress", "Epoch");
+
+                    b.ToTable("WithdrawalByStakeEpoch");
+                });
+
             modelBuilder.Entity("TeddySwap.Common.Models.Asset", b =>
                 {
                     b.HasOne("TeddySwap.Common.Models.TxOutput", "TxOutput")
@@ -294,6 +345,17 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapFisoSinkDb
                     b.Navigation("Transaction");
                 });
 
+            modelBuilder.Entity("TeddySwap.Common.Models.Withdrawal", b =>
+                {
+                    b.HasOne("TeddySwap.Common.Models.Transaction", "Transaction")
+                        .WithMany("Withdrawals")
+                        .HasForeignKey("TxHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("TeddySwap.Common.Models.Block", b =>
                 {
                     b.Navigation("Transactions");
@@ -304,6 +366,8 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapFisoSinkDb
                     b.Navigation("Inputs");
 
                     b.Navigation("Outputs");
+
+                    b.Navigation("Withdrawals");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.TxOutput", b =>
