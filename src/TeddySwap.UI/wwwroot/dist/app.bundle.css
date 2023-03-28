@@ -567,6 +567,14 @@ video {
   right: 5rem;
 }
 
+.right-px {
+  right: 1px;
+}
+
+.top-\[8px\] {
+  top: 8px;
+}
+
 .z-\[2\] {
   z-index: 2;
 }
@@ -767,6 +775,10 @@ video {
   align-content: center;
 }
 
+.items-center {
+  align-items: center;
+}
+
 .justify-start {
   justify-content: flex-start;
 }
@@ -777,6 +789,10 @@ video {
 
 .justify-center {
   justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 .gap-1 {
@@ -972,6 +988,15 @@ body:has(.mud-drawer--open) {
 
 .mud-drawer.mud-drawer--open {
   position: fixed;
+}
+
+.mud-expand-panel .mud-expand-panel-header,
+.mud-icon-root.mud-expand-panel-icon {
+  display: block !important;
+}
+
+.mud-icon-root.mud-expand-panel-icon {
+  margin: auto;
 }
 
 .mud-table-toolbar {

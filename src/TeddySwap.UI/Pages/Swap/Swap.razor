@@ -1,0 +1,122 @@
+@page "/swap"
+
+@inherits TeddySwapBasePage
+
+<PageTitle>TeddySwap | Cardano | Swap</PageTitle>
+
+<MudCard Elevation="6" Style="max-width: 448px; margin: auto">
+    <MudCardHeader>
+        <div class="flex justify-between items-center w-full">
+            <h1 class="font-bold">Swap</h1>
+            <div>
+                <MudIconButton Icon="@Icons.Material.Filled.ShowChart" aria-label="show chart"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Tune" aria-label="swap settings"></MudIconButton>
+            </div>
+        </div>
+    </MudCardHeader>
+    <MudCardContent>
+        <div class="flex flex-col gap-4">
+            <div>
+                <div class="relative">
+                    <MudNumericField HideSpinButtons="true" Label="From" Variant="Variant.Outlined" Min="0" />
+                    <MudChip class="absolute right-px top-[8px]" Color="Color.Primary">
+                        <div class="flex items-center gap-2">
+                            <MudImage Src="../../images/tokens/usdt.png" Height="24" Width="24" />
+                            <MudText>iUSDt</MudText>
+                        </div>
+                    </MudChip>
+                </div>
+                <div class="flex justify-between mt-2">
+                    <span>0 ADA</span>
+                    <span>Balance: 17,000</span>
+                </div>
+            </div>
+            <div>
+                <div class="relative">
+                    <MudNumericField HideSpinButtons="true" Label="From" Variant="Variant.Outlined" Min="0" />
+                    <MudChip class="absolute right-px top-[8px]" Color="Color.Primary">
+                        <div class="flex items-center gap-2">
+                            <MudImage Src="../../images/tokens/djed.png" Height="24" Width="24" />
+                            <MudText>DJEDt</MudText>
+                        </div>
+                    </MudChip>
+                </div>
+                <div class="flex justify-between mt-2">
+                    <span>0 ADA</span>
+                    <span>Balance: 17,000</span>
+                </div>
+            </div>
+        </div>
+    </MudCardContent>
+    
+    <MudCardActions>
+        <MudButton FullWidth Variant="Variant.Filled" Color="Color.Primary">Swap</MudButton>
+    </MudCardActions>
+
+    <MudCardContent>
+       
+        <MudText>1 iUSDt = 0.038750 DJEDt</MudText>
+           
+        <MudList Clickable DisableGutters>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Slippage tolerance:</div>
+                    <div>7%</div>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Price impact:</div>
+                    <div>0%</div>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Minimum receivable:</div>
+                    <div>0.036215 DJEDt</div>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Maximum receivable:</div>
+                    <div>0.043458 DJEDt</div>
+                </div>
+            </MudListItem>
+        </MudList>
+        <MudDivider />
+        <MudExpansionPanel DisableGutters Style="background-color: transparent">
+            <MudList Clickable DisableGutters>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Protocol fee:</div>
+                    <div>1.2 ADA</div>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Execution fee:</div>
+                    <div>2 ADA - 2.4 ADA</div>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Transaction fee:</div>
+                    <div>1 ADA</div>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Refundable deposit:</div>
+                    <div>2 ADA</div>
+                </div>
+            </MudListItem>
+            <MudListItem>
+                <div class="flex justify-between items-center">
+                    <div>Total fees:</div>
+                    <div>3 ADA - 3.4 ADA</div>
+                </div>
+            </MudListItem>
+        </MudList>
+        </MudExpansionPanel>
+    </MudCardContent>
+</MudCard>

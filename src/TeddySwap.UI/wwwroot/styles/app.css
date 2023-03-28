@@ -10,6 +10,15 @@ body:has(.mud-drawer--open) {
     position: fixed;
 }
 
+.mud-expand-panel .mud-expand-panel-header,
+.mud-icon-root.mud-expand-panel-icon {
+    display: block !important;
+}
+
+.mud-icon-root.mud-expand-panel-icon {
+    margin: auto;
+}
+
 .mud-table-toolbar {
     padding: 0px !important;
 }
