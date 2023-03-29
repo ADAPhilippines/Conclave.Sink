@@ -832,6 +832,10 @@ video {
   background-color: rgb(15 196 59 / var(--tw-bg-opacity));
 }
 
+.bg-\[var\(--mud-palette-primary\)\] {
+  background-color: var(--mud-palette-primary);
+}
+
 .bg-\[var\(--mud-palette-surface\)\] {
   background-color: var(--mud-palette-surface);
 }
@@ -986,6 +990,24 @@ body:has(.mud-drawer--open) {
   height: 100vh;
 }
 
+.mud-button-filled.mud-button-filled-primary:hover {
+  background-color: var(--mud-palette-primary-darken);
+}
+
+.swap-settings-dialog h6 {
+  font-weight: bold;
+}
+
+.slippage-tolerance-input input,
+.honey-input input {
+  text-align: right !important;
+}
+
+.honey-input,
+.slippage-tolerance-input {
+  margin-top: 0 !important;
+}
+
 .mud-drawer.mud-drawer--open {
   position: fixed;
 }
@@ -1085,6 +1107,10 @@ body:has(.mud-drawer--open) {
 
 .hover\:\!bg-\[var\(--mud-palette-background-grey\)\]:hover {
   background-color: var(--mud-palette-background-grey) !important;
+}
+
+.hover\:bg-\[var\(--mud-palette-primary-darken\)\]:hover {
+  background-color: var(--mud-palette-primary-darken);
 }
 
 @media (min-width: 768px) {

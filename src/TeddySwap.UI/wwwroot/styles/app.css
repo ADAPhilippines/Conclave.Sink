@@ -6,6 +6,24 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
+.mud-button-filled.mud-button-filled-primary:hover {
+    background-color: var(--mud-palette-primary-darken);
+}
+
+.swap-settings-dialog h6 {
+    font-weight: bold;
+}
+
+.slippage-tolerance-input input,
+.honey-input input {
+    text-align: right !important;
+}
+
+.honey-input,
+.slippage-tolerance-input {
+    margin-top: 0 !important;
+}
+
 .mud-drawer.mud-drawer--open {
     position: fixed;
 }

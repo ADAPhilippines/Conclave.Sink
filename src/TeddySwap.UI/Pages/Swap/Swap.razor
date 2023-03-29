@@ -10,7 +10,7 @@
             <h1 class="font-bold">Swap</h1>
             <div>
                 <MudIconButton Icon="@Icons.Material.Filled.ShowChart" aria-label="show chart"></MudIconButton>
-                <MudIconButton Icon="@Icons.Material.Filled.Tune" aria-label="swap settings"></MudIconButton>
+                <MudIconButton OnClick="OpenDialog" Icon="@Icons.Material.Filled.Tune" aria-label="swap settings"></MudIconButton>
             </div>
         </div>
     </MudCardHeader>
@@ -18,7 +18,7 @@
         <div class="flex flex-col gap-4">
             <div>
                 <div class="relative">
-                    <MudNumericField HideSpinButtons="true" Label="From" Variant="Variant.Outlined" Min="0" />
+                    <MudNumericField @bind-Value="_fromValue" Placeholder="0.0" HideSpinButtons Label="From" Variant="Variant.Outlined" Min="0.0" />
                     <MudChip class="absolute right-px top-[8px]" Color="Color.Primary">
                         <div class="flex items-center gap-2">
                             <MudImage Src="../../images/tokens/usdt.png" Height="24" Width="24" />
@@ -33,7 +33,7 @@
             </div>
             <div>
                 <div class="relative">
-                    <MudNumericField HideSpinButtons="true" Label="From" Variant="Variant.Outlined" Min="0" />
+                    <MudNumericField @bind-Value="_toValue" Placeholder="0.0" HideSpinButtons Label="To" Variant="Variant.Outlined" Min="0.0" />
                     <MudChip class="absolute right-px top-[8px]" Color="Color.Primary">
                         <div class="flex items-center gap-2">
                             <MudImage Src="../../images/tokens/djed.png" Height="24" Width="24" />

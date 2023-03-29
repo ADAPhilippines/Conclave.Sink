@@ -16,6 +16,7 @@ public partial class MainLayout
         PaletteDark = new PaletteDark()
         {
             Primary = new MudColor("rgb(3, 105, 161)"),
+            PrimaryDarken = (string)new MudColor("rgb(2, 73, 112)"),
             Secondary = new MudColor("rgb(3, 105, 161)"),
             SecondaryDarken = "rgb(3, 105, 161)",
             Surface = new MudColor("rgba(24, 24, 27, 0.7)"),
@@ -24,7 +25,8 @@ public partial class MainLayout
             TextPrimary = new MudColor("#FFFFFF"),
             TextSecondary = new MudColor("rgb(161,161,170)"),
             DrawerBackground = new MudColor("rgb(38, 74, 94)"),
-            DrawerText = new MudColor("#FFFFFF")
+            DrawerText = new MudColor("#FFFFFF"), 
+            WarningDarken = (string)new MudColor("rgb(25, 18, 7)"),
         },
         Typography = new Typography()
         {

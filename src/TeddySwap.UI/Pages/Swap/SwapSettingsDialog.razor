@@ -1,0 +1,129 @@
+<MudDialog Style="overflow-y: hidden" Class="swap-settings-dialog">
+    <DialogContent>
+        <div>
+            <div class="flex gap-1 items-center">
+                <h5 class="font-bold">Slippage tolerance</h5>
+                <MudTooltip Placement="Placement.Right" Style="max-width: 200px; text-align: left">
+                    <ChildContent>
+                       <svg viewBox="64 64 896 896" focusable="false" data-icon="question-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"></path><path d="M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z"></path></svg>
+                    </ChildContent>
+                    <TooltipContent>
+                        <MudText Typo="Typo.caption">
+                            Your transaction will revert if the price changes unfavorably by more than this percentage
+                        </MudText>
+                    </TooltipContent>
+                </MudTooltip>
+            </div>
+            <div class="flex gap-4 items-center mt-2">
+                <MudButton
+                    DisableElevation
+                    OnClick="@(() => OnSlippageButtonClicked(1))"
+                    Size="Size.Small"
+                    Class="@(_slippageValue == 1 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Style="padding: 6px 16px; height: 36.5px; border-radius: 50px"
+                    Color="Color.Transparent"
+                    Variant="Variant.Filled">
+                        1%
+                </MudButton>
+                <MudButton 
+                    DisableElevation
+                    OnClick="@(() => OnSlippageButtonClicked(3))"
+                    Size="Size.Small"
+                    Class="@(_slippageValue == 3 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Style="padding: 6px 16px; height: 36.5px; border-radius: 50px"
+                    Color="Color.Transparent"
+                    Variant="Variant.Filled">
+                        3%
+                </MudButton>
+                <MudButton
+                    DisableElevation
+                    OnClick="@(() => OnSlippageButtonClicked(7))"
+                    Size="Size.Small"
+                    Class="@(_slippageValue == 7 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Style="padding: 6px 16px; height: 36.5px; border-radius: 50px"
+                    Color="Color.Transparent"
+                    Variant="Variant.Filled">
+                        7%
+                </MudButton>
+                <MudNumericField
+                    HideSpinButtons
+                    @bind-Value="_slippageValue"
+                    Immediate
+                    Placeholder="1"
+                    Class="slippage-tolerance-input"
+                    Style="height: 33px; width: 197px"
+                    Adornment="Adornment.End"
+                    AdornmentText="%"
+                    Variant="Variant.Outlined"
+                    Min="0"
+
+                />
+            </div>
+             <div class="mt-4">
+                 @if (_slippageValue == null)
+                 {
+                    <MudAlert
+                        Style="background-color: var(--mud-palette-warning-darken)"
+                        Severity="Severity.Warning"
+                        Variant="Variant.Filled">
+                            Minimal Slippage is 0.01
+                    </MudAlert>
+                 }
+                 else if (_slippageValue < 3)
+                 {
+                    <MudAlert
+                        Style="background-color: var(--mud-palette-warning-darken)"
+                        Severity="Severity.Warning"
+                        Variant="Variant.Filled">
+                            Your transaction may fail
+                    </MudAlert>
+                 }
+                 else if (_slippageValue > 10)
+                 {
+                    <MudAlert
+                        Style="background-color: var(--mud-palette-warning-darken)"
+                        Severity="Severity.Warning"
+                        Variant="Variant.Filled">
+                            Your transaction may be frontrun
+                    </MudAlert>
+                 }
+             </div>
+        </div>
+        <div class="mt-4">
+            <div class="flex gap-1 items-center">
+                <h5 class="font-bold">Honey</h5>
+                <MudTooltip Placement="Placement.Right" Style="max-width: 200px; text-align: left">
+                    <ChildContent>🍯</ChildContent>
+                    <TooltipContent>
+                        <MudText Typo="Typo.caption">
+                            Max execution fee multiplier
+                        </MudText>
+                    </TooltipContent>
+                </MudTooltip>
+            </div>
+            <div class="flex gap-4 items-center mt-2">
+                <MudButton
+                    OnClick="OnMinimumButtonClicked"
+                    Class="!normal-case"
+                    Size="Size.Small"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary">
+                        Minimum
+                </MudButton>
+                <MudNumericField
+                    HideSpinButtons
+                    @bind-Value="_minValue"
+                    Class="honey-input"
+                    Style="height: 33px"
+                    Adornment="Adornment.End"
+                    AdornmentText="ADA"
+                    Variant="Variant.Outlined"
+                    Min="0"
+                />
+            </div>
+        </div>
+        <div class="mt-2 text-[12px]">
+            Execution Fee Range 2 - 2.4 ADA
+        </div>
+    </DialogContent>
+</MudDialog>
