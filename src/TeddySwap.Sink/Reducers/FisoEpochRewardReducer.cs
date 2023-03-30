@@ -97,16 +97,14 @@ public class FisoEpochRewardReducer : OuraReducerBase
                         StakeAmount = ulong.Parse(d.Amount!),
                         PoolId = fisoPool.PoolId,
                         Epoch = calculationEpoch,
-                        TotalPoints = (decimal)(ulong.Parse(d.Amount!) <= 100_000_000_000 ?
-                            ulong.Parse(d.Amount!) :
-                            Math.Pow(ulong.Parse(d.Amount!) - 100_000_000_000, 0.9) + 100_000_000_000)
                     }));
                 }
 
                 // save snapshot of delegator stakes
                 _dbContext.FisoDelegators.AddRange(delegators);
 
-                decimal totalPoints = delegators.Sum(d => d.TotalPoints);
+                decimal totalPoints = delegators.Sum(d => (decimal)d.StakeAmount <= 100_000_000_000 ?
+                    d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000);
 
                 // Calculate fiso rewards
                 if (currentEpoch > _settings.FisoStartEpoch)
@@ -119,9 +117,8 @@ public class FisoEpochRewardReducer : OuraReducerBase
                         PoolId = d.PoolId,
                         StakeAmount = d.StakeAmount,
                         SharePercentage = d.StakeAmount / (decimal)totalStakes,
-                        ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * (d.TotalPoints / totalPoints)),
-                        ActiveBonus = false,
-                        BonusAmount = 0
+                        ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * ((decimal)d.StakeAmount <= 100_000_000_000 ?
+                            d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000 / totalPoints))
                     })
                     .ToList();
 
@@ -129,6 +126,13 @@ public class FisoEpochRewardReducer : OuraReducerBase
                 }
 
                 _dbContext.FisoPoolActiveStakes.AddRange(poolStakes);
+
+                // if fiso's last epoch, calculate bonuses
+                if (calculationEpoch == _settings.FisoEndEpoch)
+                {
+
+                }
+
                 await _dbContext.SaveChangesAsync();
             }
         }

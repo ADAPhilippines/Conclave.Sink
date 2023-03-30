@@ -4,5 +4,5 @@ namespace TeddySwap.Common.Models;
 
 public class FisoDelegator : Delegator
 {
-    public decimal TotalPoints { get; init; }
+    public bool HasBonus { get; set; }
 }
