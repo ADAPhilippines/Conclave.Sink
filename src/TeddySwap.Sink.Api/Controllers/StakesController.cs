@@ -42,6 +42,16 @@ public class StakesController : ControllerBase
         return Ok(res);
     }
 
+    [HttpGet("pool/{poolId}/fromBlock/{fromBlock}/toBlock/{toBlock}")]
+    public async Task<IActionResult> GetPoolLiveStakeByBlockAsync(string poolId, int fromBlock, int toBlock)
+    {
+        if (string.IsNullOrEmpty(poolId)) return BadRequest();
+
+        var res = await _stakeService.GetPoolLiveStakeTotalsByBlockAsync(poolId, Enumerable.Range(fromBlock, toBlock).ToList());
+
+        return Ok(res);
+    }
+
     [HttpGet("pool/{poolId}/startBlock/{startBlockNumber}/endBlock/{endBlockNumber}/offsetBaseStake/{offsetBaseStake}")]
     public async Task<IActionResult> GetPoolLiveStakeDeltaByBlockAsync(string poolId, int startBlockNumber, int endBlockNumber, decimal offsetBaseStake)
     {
@@ -61,7 +71,6 @@ public class StakesController : ControllerBase
 
         return Ok(res);
     }
-
 
     [HttpGet("stake/{stakeAddress}/latest")]
     public async Task<IActionResult> GetStakeAddressLiveStakeAsync([FromRoute] string stakeAddress)

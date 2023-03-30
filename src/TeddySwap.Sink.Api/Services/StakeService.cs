@@ -157,6 +157,67 @@ public class StakeService
         return stakeAmount + rewardAmount - withdrawalAmount;
     }
 
+    public async Task<Dictionary<int, decimal>?> GetPoolLiveStakeTotalsByBlockAsync(string poolId, List<int> blockNumbers)
+    {
+        byte[] poolBytes = Convert.FromHexString(poolId);
+
+        var query = _dbContext.Blocks
+            .Where(b => b.BlockNo != null)
+            .Where(b => blockNumbers.Contains((int)b.BlockNo!))
+            .Select(b => new
+            {
+                BlockNumber = b.BlockNo,
+                StakeIds = _dbContext.Delegations
+                    .Join(_dbContext.PoolHashes, d1 => d1.PoolHashId, ph => ph.Id, (d1, ph) => new { d1, ph })
+                    .Where(x => x.ph.HashRaw == poolBytes)
+                    .Where(x => !_dbContext.Delegations
+                        .Include(d2 => d2.Tx)
+                        .ThenInclude(tx => tx.Block)
+                        .Where(d2 => d2.Tx.Block.BlockNo <= b.BlockNo)
+                        .Any(d2 => d2.AddrId == x.d1.AddrId && d2.TxId > x.d1.TxId))
+                    .Where(x => !_dbContext.StakeDeregistrations
+                        .Include(sd => sd.Tx)
+                        .ThenInclude(tx => tx.Block)
+                        .Where(sd => sd.Tx.Block.BlockNo <= b.BlockNo)
+                        .Any(sd => sd.AddrId == x.d1.AddrId && sd.TxId > x.d1.TxId))
+                    .Select(x => x.d1.AddrId)
+                    .ToList()
+            })
+            .AsEnumerable()
+            .Select(async x => new
+            {
+                x.BlockNumber,
+                StakeAmount = await _dbContext.TxOuts
+                    .Include(o => o.Tx)
+                    .ThenInclude(tx => tx.Block)
+                    .Where(o => o.Tx.Block.BlockNo == x.BlockNumber)
+                    .Where(o => x.StakeIds.Contains((long)o.StakeAddressId!) && !_dbContext.TxIns
+                        .Include(i => i.TxOut)
+                        .ThenInclude(to => to.Block)
+                        .Where(i => i.TxOut.Block.BlockNo <= x.BlockNumber)
+                        .Any(i => i.TxOutId == o.TxId && i.TxOutIndex == o.Index))
+                    .Select(to => to.Value)
+                    .SumAsync(),
+                RewardAmount = await _dbContext.Rewards
+                    .Where(r => x.StakeIds.Contains(r.AddrId))
+                    .Where(r => r.SpendableEpoch <= x.BlockNumber)
+                    .Select(r => r.Amount)
+                    .SumAsync(),
+                WithdrawalAmount = await _dbContext.Withdrawals
+                    .Include(w => w.Tx)
+                    .ThenInclude(tx => tx.Block)
+                    .Where(w => w.Tx.Block.BlockNo == x.BlockNumber)
+                    .Where(w => x.StakeIds.Contains(w.AddrId))
+                    .Select(w => w.Amount)
+                    .SumAsync()
+            })
+            .ToList();
+
+        var results = await Task.WhenAll(query);
+
+        return results.ToDictionary(x => (int)x.BlockNumber!, x => x.StakeAmount + x.RewardAmount - x.WithdrawalAmount);
+    }
+
     public async Task<decimal> GetPoolBaseLiveStakeByBlockAsync(string poolId, int blockNumber)
     {
         byte[] poolBytes = Convert.FromHexString(poolId);
@@ -353,7 +414,7 @@ public class StakeService
             .Select(x => x.d1.AddrId)
             .ToListAsync();
 
-        return previousStakeIds.Where(psi => !currentStakeIds.Contains(psi)).ToList();
+        return previousStakeIds.Where(psi => currentStakeIds.Contains(psi)).ToList();
     }
 
     public async Task<decimal> GetTotalWithdrawalsAsync(List<long> stakeIds)
