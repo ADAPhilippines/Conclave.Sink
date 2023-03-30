@@ -1,0 +1,20 @@
+<MudDialog Style="width: 600px; height: 469px; overflow-y: hidden" ClassContent="select-token-dialog">
+    <DialogContent>
+        <MudTextField
+            FullWidth
+            Placeholder="Search"
+            @bind-Value="@SearchValue"
+            Variant="Variant.Outlined"
+            Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+        >
+        </MudTextField>
+
+        <MudList Clickable="true" Style="overflow-y: auto">
+            @foreach (var token in Tokens)
+            {
+                <SelectTokenDialogItem Token="token" OnSelectedTokenClicked="OnSelectedTokenClicked" />
+            }
+        </MudList>
+    </DialogContent>
+</MudDialog>

@@ -567,14 +567,6 @@ video {
   right: 5rem;
 }
 
-.right-px {
-  right: 1px;
-}
-
-.top-\[8px\] {
-  top: 8px;
-}
-
 .z-\[2\] {
   z-index: 2;
 }
@@ -990,12 +982,25 @@ body:has(.mud-drawer--open) {
   height: 100vh;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--mud-palette-warning-darken);
+  border-radius: 10px;
+}
+
 .mud-button-filled.mud-button-filled-primary:hover {
   background-color: var(--mud-palette-primary-darken);
 }
 
 .swap-settings-dialog h6 {
   font-weight: bold;
+}
+
+.select-token-dialog > .mud-list.mud-list-padding {
+  height: 330px !important;
 }
 
 .slippage-tolerance-input input,

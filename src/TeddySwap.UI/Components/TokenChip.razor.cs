@@ -5,6 +5,9 @@ namespace TeddySwap.UI.Components;
 public partial class TokenChip
 {
     [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
     public string Image { get; set; } = string.Empty;
 
     [Parameter]

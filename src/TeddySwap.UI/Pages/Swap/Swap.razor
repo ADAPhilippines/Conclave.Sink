@@ -10,7 +10,7 @@
             <h1 class="font-bold">Swap</h1>
             <div>
                 <MudIconButton Icon="@Icons.Material.Filled.ShowChart" aria-label="show chart"></MudIconButton>
-                <MudIconButton OnClick="OpenDialog" Icon="@Icons.Material.Filled.Tune" aria-label="swap settings"></MudIconButton>
+                <MudIconButton OnClick="OpenSwapSettingsDialog" Icon="@Icons.Material.Filled.Tune" aria-label="swap settings"></MudIconButton>
             </div>
         </div>
     </MudCardHeader>
@@ -26,7 +26,7 @@
                         Variant="Variant.Outlined"
                         Min="0.0"
                     />
-                    <TokenChip Image="../../images/tokens/usdt.png" Name="iUSDt" />
+                    <TokenChip OnClick="OpenSelectTokenDialog" Image="../../images/tokens/usdt.png" Name="iUSDt" />
                 </div>
                 <div class="flex justify-between mt-2">
                     <span>0 ADA</span>
@@ -43,7 +43,7 @@
                         Variant="Variant.Outlined"
                         Min="0.0"
                     />
-                    <TokenChip Image="../../images/tokens/djed.png" Name="DJEDt" />
+                    <TokenChip OnClick="OpenSelectTokenDialog" Image="../../images/tokens/djed.png" Name="DJEDt" />
                 </div>
                 <div class="flex justify-between mt-2">
                     <span>0 ADA</span>
