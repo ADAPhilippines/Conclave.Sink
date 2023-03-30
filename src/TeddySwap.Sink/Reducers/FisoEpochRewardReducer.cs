@@ -49,19 +49,18 @@ public class FisoEpochRewardReducer : OuraReducerBase
             if (previousBlock is null) return;
 
             ulong previousEpoch = _cardanoService.CalculateEpochBySlot(previousBlock.Slot);
-            ulong currentEpoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot);
+            ulong calculationEpoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot);
 
             // fiso reward has ended or not yet epoch boundary
-            if (currentEpoch > _settings.FisoStartEpoch && currentEpoch <= _settings.FisoEndEpoch + 1 && currentEpoch > previousEpoch)
+            if (calculationEpoch >= _settings.FisoStartEpoch && calculationEpoch <= _settings.FisoEndEpoch && calculationEpoch > previousEpoch)
             {
 
                 List<FisoPool> fisoPools = _settings.FisoPools
-                    .Where(fp => fp.JoinEpoch <= currentEpoch)
+                    .Where(fp => fp.JoinEpoch <= calculationEpoch)
                     .ToList();
 
                 // Calculate total stakes
                 ulong totalStakes = 0;
-                ulong calculationEpoch = currentEpoch - 1;
                 List<FisoPoolActiveStake> poolStakes = new();
 
                 foreach (FisoPool fisoPool in fisoPools)
@@ -107,7 +106,7 @@ public class FisoEpochRewardReducer : OuraReducerBase
                     d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000);
 
                 // Calculate fiso rewards
-                if (currentEpoch > _settings.FisoStartEpoch)
+                if (calculationEpoch >= _settings.FisoStartEpoch)
                 {
                     // Calculate share
                     List<FisoEpochReward> epochRewards = delegators.Select(d => new FisoEpochReward()
@@ -127,13 +126,30 @@ public class FisoEpochRewardReducer : OuraReducerBase
 
                 _dbContext.FisoPoolActiveStakes.AddRange(poolStakes);
 
+                await _dbContext.SaveChangesAsync();
+
                 // if fiso's last epoch, calculate bonuses
                 if (calculationEpoch == _settings.FisoEndEpoch)
                 {
+                    List<FisoEpochReward> fisoEpochRewardsWithBonus = await _dbContext.FisoEpochRewards
+                        .Where(fer => _dbContext.FisoBonusDelegations.Select(fbd => fbd.StakeAddress).Contains(fer.StakeAddress))
+                        .GroupBy(fer => fer.StakeAddress)
+                        .SelectMany(stakeGroup => stakeGroup.GroupBy(s => s.PoolId)
+                            .Where(poolGroup => poolGroup.Count() >= 6)
+                            .SelectMany(poolGroup => poolGroup)
+                        )
+                        .ToListAsync();
 
+                    foreach (FisoEpochReward fisoEpochReward in fisoEpochRewardsWithBonus)
+                    {
+                        fisoEpochReward.HasBonus = true;
+                        fisoEpochReward.BonusAmount = (ulong)(fisoEpochReward.ShareAmount * 0.25);
+
+                        _dbContext.FisoEpochRewards.Update(fisoEpochReward);
+                    }
+
+                    await _dbContext.SaveChangesAsync();
                 }
-
-                await _dbContext.SaveChangesAsync();
             }
         }
     }

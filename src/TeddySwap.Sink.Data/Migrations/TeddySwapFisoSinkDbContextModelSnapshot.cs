@@ -105,13 +105,7 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
-                    b.Property<string>("TxHash")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Slot")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.HasKey("EpochNumber", "PoolId", "StakeAddress", "TxHash");
+                    b.HasKey("EpochNumber", "PoolId", "StakeAddress");
 
                     b.ToTable("FisoBonusDelegations");
                 });
@@ -127,11 +121,11 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<decimal>("Epoch")
                         .HasColumnType("numeric(20,0)");
 
+                    b.Property<bool>("HasBonus")
+                        .HasColumnType("boolean");
+
                     b.Property<decimal>("StakeAmount")
                         .HasColumnType("numeric(20,0)");
-
-                    b.Property<decimal>("TotalPoints")
-                        .HasColumnType("numeric");
 
                     b.HasKey("StakeAddress", "PoolId", "Epoch");
 
@@ -146,11 +140,11 @@ namespace TeddySwap.Sink.Data.Migrations
                     b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
-                    b.Property<bool>("ActiveBonus")
-                        .HasColumnType("boolean");
-
                     b.Property<decimal>("BonusAmount")
                         .HasColumnType("numeric(20,0)");
+
+                    b.Property<bool>("HasBonus")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PoolId")
                         .IsRequired()

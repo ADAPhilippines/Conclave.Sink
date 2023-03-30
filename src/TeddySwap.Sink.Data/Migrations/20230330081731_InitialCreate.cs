@@ -48,13 +48,11 @@ namespace TeddySwap.Sink.Data.Migrations
                 {
                     EpochNumber = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     StakeAddress = table.Column<string>(type: "text", nullable: false),
-                    PoolId = table.Column<string>(type: "text", nullable: false),
-                    TxHash = table.Column<string>(type: "text", nullable: false),
-                    Slot = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
+                    PoolId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FisoBonusDelegations", x => new { x.EpochNumber, x.PoolId, x.StakeAddress, x.TxHash });
+                    table.PrimaryKey("PK_FisoBonusDelegations", x => new { x.EpochNumber, x.PoolId, x.StakeAddress });
                 });
 
             migrationBuilder.CreateTable(
@@ -64,7 +62,7 @@ namespace TeddySwap.Sink.Data.Migrations
                     StakeAddress = table.Column<string>(type: "text", nullable: false),
                     PoolId = table.Column<string>(type: "text", nullable: false),
                     Epoch = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    TotalPoints = table.Column<decimal>(type: "numeric", nullable: false),
+                    HasBonus = table.Column<bool>(type: "boolean", nullable: false),
                     StakeAmount = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
                 },
                 constraints: table =>
@@ -82,7 +80,7 @@ namespace TeddySwap.Sink.Data.Migrations
                     StakeAmount = table.Column<BigInteger>(type: "numeric", nullable: false),
                     SharePercentage = table.Column<decimal>(type: "numeric", nullable: false),
                     ShareAmount = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    ActiveBonus = table.Column<bool>(type: "boolean", nullable: false),
+                    HasBonus = table.Column<bool>(type: "boolean", nullable: false),
                     BonusAmount = table.Column<decimal>(type: "numeric(20,0)", nullable: false)
                 },
                 constraints: table =>

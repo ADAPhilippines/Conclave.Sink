@@ -45,14 +45,8 @@ public class OuraWebhookController : ControllerBase
     {
         OuraEvent? _event = _eventJson.Deserialize<OuraEvent>(ConclaveJsonSerializerOptions);
 
-        if (_event.Context.BlockNumber == 586654)
-        {
-            Console.WriteLine(_eventJson);
-        }
-
         if (_event is not null && _event.Context is not null)
         {
-
             if (_event.Variant == OuraVariant.RollBack)
             {
                 OuraRollbackEvent? rollbackEvent = _eventJson.Deserialize<OuraRollbackEvent?>();

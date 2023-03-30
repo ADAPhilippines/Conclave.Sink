@@ -11,6 +11,14 @@ using TeddySwap.Sink.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+string hostname = builder.Configuration["DBSYNC_POSTGRESQL_HOSTNAME"] ?? "";
+string port = builder.Configuration["DBSYNC_POSTGRESQL_PORT"] ?? "";
+string user = builder.Configuration["DBSYNC_POSTGRESQL_USER"] ?? "";
+string password = builder.Configuration["DBSYNC_POSTGRESQL_PASSWORD"] ?? "";
+string database = builder.Configuration["DBSYNC_POSTGRESQL_DATABASE"] ?? "";
+string connectionString = $"Host={hostname};Database={database};Username={user};Password={password};Port={port}";
+
+// Add services to the container.
 builder.Services.AddHttpClient();
 builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = null);
 builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.MaxDepth = int.MaxValue);
@@ -22,6 +30,16 @@ builder.Services.AddPooledDbContextFactory<TeddySwapSinkCoreDbContext>(options =
 builder.Services.AddPooledDbContextFactory<TeddySwapOrderSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.AddPooledDbContextFactory<TeddySwapNftSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.AddPooledDbContextFactory<TeddySwapFisoSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
+builder.Services.AddPooledDbContextFactory<CardanoDbSyncContext>(options =>
+{
+    if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
+        options.EnableSensitiveDataLogging(true);
+    options.UseNpgsql(connectionString, pgOptions =>
+    {
+        pgOptions.EnableRetryOnFailure(3);
+        pgOptions.CommandTimeout(999999);
+    });
+}, 10);
 builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddSingleton<ByteArrayService>();

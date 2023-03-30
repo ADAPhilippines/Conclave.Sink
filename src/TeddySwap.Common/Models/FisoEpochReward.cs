@@ -11,5 +11,5 @@ public record FisoEpochReward
     public decimal SharePercentage { get; init; }
     public ulong ShareAmount { get; init; }
     public bool HasBonus { get; set; }
-    public bool BonusAmount { get; set; }
+    public ulong BonusAmount { get; set; }
 }
