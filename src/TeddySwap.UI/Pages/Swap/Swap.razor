@@ -1,5 +1,5 @@
 @page "/swap"
-
+@using TeddySwap.UI.Components
 @inherits TeddySwapBasePage
 
 <PageTitle>TeddySwap | Cardano | Swap</PageTitle>
@@ -18,13 +18,15 @@
         <div class="flex flex-col gap-4">
             <div>
                 <div class="relative">
-                    <MudNumericField @bind-Value="_fromValue" Placeholder="0.0" HideSpinButtons Label="From" Variant="Variant.Outlined" Min="0.0" />
-                    <MudChip class="absolute right-px top-[8px]" Color="Color.Primary">
-                        <div class="flex items-center gap-2">
-                            <MudImage Src="../../images/tokens/usdt.png" Height="24" Width="24" />
-                            <MudText>iUSDt</MudText>
-                        </div>
-                    </MudChip>
+                    <MudNumericField
+                        HideSpinButtons
+                        @bind-Value="_fromValue"
+                        Placeholder="0.0"
+                        Label="From"
+                        Variant="Variant.Outlined"
+                        Min="0.0"
+                    />
+                    <TokenChip Image="../../images/tokens/usdt.png" Name="iUSDt" />
                 </div>
                 <div class="flex justify-between mt-2">
                     <span>0 ADA</span>
@@ -33,13 +35,15 @@
             </div>
             <div>
                 <div class="relative">
-                    <MudNumericField @bind-Value="_toValue" Placeholder="0.0" HideSpinButtons Label="To" Variant="Variant.Outlined" Min="0.0" />
-                    <MudChip class="absolute right-px top-[8px]" Color="Color.Primary">
-                        <div class="flex items-center gap-2">
-                            <MudImage Src="../../images/tokens/djed.png" Height="24" Width="24" />
-                            <MudText>DJEDt</MudText>
-                        </div>
-                    </MudChip>
+                    <MudNumericField
+                        HideSpinButtons
+                        @bind-Value="_toValue"
+                        Placeholder="0.0"
+                        Label="To"
+                        Variant="Variant.Outlined"
+                        Min="0.0"
+                    />
+                    <TokenChip Image="../../images/tokens/djed.png" Name="DJEDt" />
                 </div>
                 <div class="flex justify-between mt-2">
                     <span>0 ADA</span>
@@ -61,7 +65,7 @@
             <MudListItem>
                 <div class="flex justify-between items-center">
                     <div>Slippage tolerance:</div>
-                    <div>7%</div>
+                    <div>@_slippageValue %</div>
                 </div>
             </MudListItem>
             <MudListItem>

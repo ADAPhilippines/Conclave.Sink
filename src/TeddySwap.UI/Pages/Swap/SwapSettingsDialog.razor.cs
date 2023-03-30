@@ -5,7 +5,7 @@ namespace TeddySwap.UI.Pages.Swap;
 public partial class SwapSettingsDialog
 {
     [Parameter]
-    public EventCallback<double>? OnSlippageValueChanged { get; set; }
+    public Action<double> OnSlippageValueChanged { get; set; } = default!;
 
     private double? _slippageValue { get; set; } = 7;
 
