@@ -1,17 +1,19 @@
 using Microsoft.AspNetCore.Components;
 using TeddySwap.UI.Models;
+using MudBlazor;
 
 namespace TeddySwap.UI.Pages.Swap;
 
-public partial class SelectTokenDialog
+public partial class TokenSelectionDialog
 {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
     [Parameter]
     public IEnumerable<Token> Tokens { get; set; } = default!;
 
-    private Token _selectedToken { get; set; } = default!;
-
     [Parameter]
-    public EventCallback<Token> OnSelectedTokenClicked { get; set; }
+    public Action<Token> OnSelectedTokenClicked { get; set; } = default!;
     
     private string SearchValue { get; set; } = string.Empty;
 }

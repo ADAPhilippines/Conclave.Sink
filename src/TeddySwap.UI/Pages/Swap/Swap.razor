@@ -1,5 +1,5 @@
 @page "/swap"
-@using TeddySwap.UI.Pages.Swap
+
 @inherits TeddySwapBasePage
 
 <PageTitle>TeddySwap | Cardano | Swap</PageTitle>
@@ -9,8 +9,12 @@
         <div class="flex justify-between items-center w-full">
             <h1 class="font-bold">Swap</h1>
             <div>
-                <MudIconButton Icon="@Icons.Material.Filled.ShowChart" aria-label="show chart"></MudIconButton>
-                <MudIconButton OnClick="OpenSwapSettingsDialog" Icon="@Icons.Material.Filled.Tune" aria-label="swap settings"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.ShowChart" aria-label="show chart" />
+                <MudIconButton
+                    OnClick="OpenSwapSettingsDialog"
+                    Icon="@Icons.Material.Filled.Tune"
+                    aria-label="swap settings"
+                />
             </div>
         </div>
     </MudCardHeader>
@@ -26,7 +30,7 @@
                         Variant="Variant.Outlined"
                         Min="0.0"
                     />
-                    <TokenChip OnClick="OpenSelectTokenDialog" Image="../../images/tokens/usdt.png" Name="iUSDt" />
+                    <TokenChip Tokens="Tokens" />
                 </div>
                 <div class="flex justify-between mt-2">
                     <span>0 ADA</span>
@@ -43,7 +47,7 @@
                         Variant="Variant.Outlined"
                         Min="0.0"
                     />
-                    <TokenChip OnClick="OpenSelectTokenDialog" Image="../../images/tokens/djed.png" Name="DJEDt" />
+                    <TokenChip Tokens="Tokens" />
                 </div>
                 <div class="flex justify-between mt-2">
                     <span>0 ADA</span>
@@ -58,9 +62,7 @@
     </MudCardActions>
 
     <MudCardContent>
-       
         <MudText>1 iUSDt = 0.038750 DJEDt</MudText>
-           
         <MudList Clickable DisableGutters>
             <MudListItem>
                 <div class="flex justify-between items-center">

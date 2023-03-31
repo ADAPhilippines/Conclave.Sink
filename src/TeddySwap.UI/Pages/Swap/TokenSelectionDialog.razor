@@ -1,5 +1,14 @@
+@using TeddySwap.UI.Models
+
 <MudDialog Style="width: 600px; height: 469px; overflow-y: hidden" ClassContent="select-token-dialog">
     <DialogContent>
+        <MudIconButton
+            OnClick="@(() => MudDialog.Close())"
+            Class="absolute top-[-56px] right-[10px] z-[10]"
+            Icon="@Icons.Material.Filled.Close"
+            aria-label="close"
+        >
+        </MudIconButton>
         <MudTextField
             FullWidth
             Placeholder="Search"
@@ -11,9 +20,9 @@
         </MudTextField>
 
         <MudList Clickable="true" Style="overflow-y: auto">
-            @foreach (var token in Tokens)
+            @foreach (Token token in Tokens)
             {
-                <SelectTokenDialogItem Token="token" OnSelectedTokenClicked="OnSelectedTokenClicked" />
+                <TokenSelectionDialogItem Token="token" OnSelectedTokenClicked="OnSelectedTokenClicked" />
             }
         </MudList>
     </DialogContent>

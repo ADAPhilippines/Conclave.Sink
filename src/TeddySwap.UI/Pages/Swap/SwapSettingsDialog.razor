@@ -1,5 +1,12 @@
 <MudDialog Style="overflow-y: hidden" Class="swap-settings-dialog">
     <DialogContent>
+        <MudIconButton
+            OnClick="@(() => MudDialog.Close())"
+            Class="absolute top-[-56px] right-[10px] z-[10]"
+            Icon="@Icons.Material.Filled.Close"
+            aria-label="close"
+        >
+        </MudIconButton>
         <div>
             <div class="flex gap-1 items-center">
                 <h5 class="font-bold">Slippage tolerance</h5>

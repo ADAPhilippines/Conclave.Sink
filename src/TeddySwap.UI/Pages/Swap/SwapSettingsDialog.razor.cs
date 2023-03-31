@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace TeddySwap.UI.Pages.Swap;
 
 public partial class SwapSettingsDialog
 {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
     [Parameter]
     public Action<double> OnSlippageValueChanged { get; set; } = default!;
 

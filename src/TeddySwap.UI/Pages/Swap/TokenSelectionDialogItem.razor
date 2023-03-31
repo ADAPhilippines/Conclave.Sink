@@ -1,4 +1,4 @@
-<MudListItem OnClick="@(() => OnSelectedTokenClicked.InvokeAsync(Token))">
+<MudListItem OnClick="HandleItemClicked">
     <div class="flex items-center gap-6">
         <div>
             <MudImage Src=@Token.Logo Alt="Teddy swap logo" Height="32" Width="32" />
