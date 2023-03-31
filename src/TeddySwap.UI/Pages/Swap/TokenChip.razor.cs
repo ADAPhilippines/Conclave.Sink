@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace TeddySwap.UI.Components;
+namespace TeddySwap.UI.Pages.Swap;
 
 public partial class TokenChip
 {

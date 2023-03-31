@@ -1,6 +1,6 @@
 using MudBlazor;
 using Microsoft.AspNetCore.Components;
-using TeddySwap.UI.Components;
+using TeddySwap.UI.Pages.Swap;
 using TeddySwap.UI.Models;
 using System.Text.Json;
 
