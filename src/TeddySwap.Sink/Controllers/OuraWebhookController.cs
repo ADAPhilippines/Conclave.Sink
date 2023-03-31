@@ -100,24 +100,28 @@ public class OuraWebhookController : ControllerBase
                             {
                                 t.Index = ti;
                                 t.Context = blockEvent.Context;
+                                t.Context!.TxHash = t.Hash;
                                 t.Outputs = t.Outputs?.Select((o, oi) =>
                                 {
                                     o.Context = blockEvent.Context;
                                     o.OutputIndex = (ulong)oi;
                                     o.TxHash = t.Hash;
                                     o.TxIndex = (ulong)ti;
+                                    o.Variant = OuraVariant.TxOutput;
                                     return o;
                                 });
                                 t.Inputs = t.Inputs?.Select(i =>
                                 {
                                     i.Context = blockEvent.Context;
                                     i.Context!.TxIdx = (ulong)ti;
+                                    i.Variant = OuraVariant.TxInput;
                                     return i;
                                 });
                                 t.CollateralInputs = t.CollateralInputs?.Select(ci =>
                                 {
                                     ci.Context = blockEvent.Context;
                                     ci.Context!.TxIdx = (ulong)ti;
+                                    ci.Variant = OuraVariant.CollateralInput;
                                     return ci;
                                 });
                                 if (t.HasCollateralOutput)
@@ -125,6 +129,7 @@ public class OuraWebhookController : ControllerBase
                                     t.CollateralOutput!.Context = blockEvent.Context;
                                     t.CollateralOutput.Context!.HasCollateralOutput = t.HasCollateralOutput;
                                     t.CollateralOutput.Context.TxHash = t.Hash;
+                                    t.CollateralOutput.Variant = OuraVariant.CollateralOutput;
                                 }
                                 return t;
                             }).ToList();
@@ -132,31 +137,25 @@ public class OuraWebhookController : ControllerBase
                         }
                     }
 
-                    await Task.WhenAll(_reducers.SelectMany((reducer) =>
+                    foreach (var reducer in _reducers)
                     {
                         if (_settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) || reducer is IOuraCoreReducer)
                         {
-                            ICollection<OuraVariant> reducerVariants = _GetReducerVariants(reducer);
-                            return reducerVariants.ToList().Select((reducerVariant) =>
+                            List<OuraVariant> reducerVariants = _GetReducerVariants(reducer).ToList();
+
+                            foreach (var reducerVariant in reducerVariants)
                             {
-                                if (reducerVariant == _event.Variant &&
-                                    (
-                                        _settings.Value.Reducers.Any(rS => reducer.GetType().FullName?.Contains(rS) ?? false) ||
-                                        reducer is IOuraCoreReducer
-                                    )
-                                )
+                                switch (reducerVariant)
                                 {
-                                    return reducerVariant switch
-                                    {
-                                        OuraVariant.Block => reducer.HandleReduceAsync(blockEvent),
-                                        _ => Task.CompletedTask
-                                    };
+                                    case OuraVariant.Block:
+                                        await reducer.HandleReduceAsync(blockEvent);
+                                        break;
+                                    default:
+                                        break;
                                 }
-                                else return Task.CompletedTask;
-                            });
+                            }
                         }
-                        else return Enumerable.Empty<Task>();
-                    }));
+                    }
 
                     if (blockEvent is null || blockEvent.Block is null || blockEvent.Block.Transactions is null) return Ok();
 

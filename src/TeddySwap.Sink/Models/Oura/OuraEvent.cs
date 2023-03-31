@@ -9,7 +9,7 @@ public record OuraEvent : IOuraEvent
     public string? Fingerprint { get; init; }
 
     [JsonConverter(typeof(OuraVariantJsonConverter))]
-    public OuraVariant? Variant { get; init; }
+    public OuraVariant? Variant { get; set; }
 
     public ulong? Timestamp { get; init; }
 }

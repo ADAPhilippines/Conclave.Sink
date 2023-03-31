@@ -22,6 +22,6 @@ public interface IOuraEvent
 {
     public OuraContext? Context { get; set; }
     public string? Fingerprint { get; init; }
-    public OuraVariant? Variant { get; init; }
+    public OuraVariant? Variant { get; set; }
     public ulong? Timestamp { get; init; }
 }

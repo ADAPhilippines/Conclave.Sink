@@ -15,6 +15,7 @@ public class FisoLiveStakeReducer : OuraReducerBase
 {
     private readonly ILogger<FisoLiveStakeReducer> _logger;
     private readonly IDbContextFactory<TeddySwapFisoSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<CardanoDbSyncContext> _cardanoDbSyncContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly IPoolClient _poolClient;
     private readonly ITransactionClient _transactionClient;
@@ -26,8 +27,8 @@ public class FisoLiveStakeReducer : OuraReducerBase
         IOptions<TeddySwapSinkSettings> settings,
         CardanoService cardanoService,
         IPoolClient poolClient,
-        ITransactionClient transactionClient
-        )
+        ITransactionClient transactionClient,
+        IDbContextFactory<CardanoDbSyncContext> cardanoDbSyncContextFactory)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
@@ -35,10 +36,17 @@ public class FisoLiveStakeReducer : OuraReducerBase
         _poolClient = poolClient;
         _settings = settings.Value;
         _transactionClient = transactionClient;
+        _cardanoDbSyncContextFactory = cardanoDbSyncContextFactory;
     }
 
     public async Task ReduceAsync(OuraEvent ouraEvent)
     {
+        if (ouraEvent.Context is null || ouraEvent.Context.Slot is null) return;
+
+        ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)ouraEvent.Context.Slot);
+
+        if (epoch < _settings.FisoStartEpoch || epoch > _settings.FisoEndEpoch - 1) return;
+
         using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         await (ouraEvent.Variant switch
         {
@@ -54,58 +62,48 @@ public class FisoLiveStakeReducer : OuraReducerBase
                     if (txInput.Context.InvalidTransactions is not null &&
                         txInput.Context.InvalidTransactions.ToList().Contains((ulong)txInput.Context.TxIdx)) return;
 
-                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInput.Context.Slot);
+                    TxOutput? input = await _dbContext.TxOutputs
+                        .Include(txOut => txOut.Transaction)
+                        .ThenInclude(transaction => transaction.Block)
+                        .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.Index)
+                        .FirstOrDefaultAsync();
 
-                    if (epoch >= _settings.FisoStartEpoch - 1 && epoch <= _settings.FisoEndEpoch)
+                    if (input is null)
                     {
+                        var txOut = await GetTxOut(txInput.TxHash, (int)txInput.Index);
 
-                        TxOutput? input = await _dbContext.TxOutputs
-                            .Include(txOut => txOut.Transaction)
-                            .ThenInclude(transaction => transaction.Block)
-                            .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.Index)
-                            .FirstOrDefaultAsync();
+                        if (txOut is null) return;
 
-                        if (input is null)
+                        input = new TxOutput()
                         {
-                            GetTransactionRequest req = new()
-                            {
-                                TxHashes = new List<string>() { txInput.Context.TxHash }
-                            };
-                            var txReq = await _transactionClient.GetTransactionUtxos(req);
-                            var txOut = txReq?.Content?[0].Outputs?.Where(i => i.TxIndex == txInput.Index).FirstOrDefault();
+                            Address = txOut.Address,
+                            Amount = (ulong)txOut.Value,
+                        };
+                    }
 
-                            if (txOut is null || txOut.PaymentAddress is null || txOut.PaymentAddress.Bech32 is null || txOut.Value is null) return;
-
-                            input = new TxOutput()
-                            {
-                                Address = txOut.PaymentAddress.Bech32,
-                                Amount = ulong.Parse(txOut.Value)
-                            };
-                        }
-
-                        if (input is not null)
+                    if (input is not null)
+                    {
+                        string? stakeAddress = _cardanoService.TryGetStakeAddress(input.Address);
+                        if (stakeAddress is not null)
                         {
-                            string? stakeAddress = _cardanoService.TryGetStakeAddress(input.Address);
-                            if (stakeAddress is not null)
-                            {
-                                var fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
+                            var fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
 
-                                if (fisoDelegator is not null)
+                            if (fisoDelegator is not null)
+                            {
+                                var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
+                                    .Where(fpas => fpas.PoolId == fisoDelegator.PoolId && fpas.EpochNumber == epoch)
+                                    .FirstOrDefaultAsync();
+
+                                if (fisoPoolActiveStake is not null)
                                 {
-                                    var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
-                                        .Where(fpas => fpas.PoolId == fisoDelegator.PoolId && fpas.EpochNumber == epoch)
-                                        .FirstOrDefaultAsync();
-
-                                    if (fisoPoolActiveStake is not null)
-                                    {
-                                        fisoPoolActiveStake.StakeAmount -= input.Amount;
-                                        _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
-                                    }
+                                    fisoPoolActiveStake.StakeAmount -= input.Amount;
+                                    _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
                                 }
                             }
                         }
-                        await _dbContext.SaveChangesAsync();
                     }
+                    await _dbContext.SaveChangesAsync();
+
                 }
             }),
             OuraVariant.TxOutput => Task.Run(async () =>
@@ -122,26 +120,24 @@ public class FisoLiveStakeReducer : OuraReducerBase
                         txOutput.Context.InvalidTransactions.ToList().Contains((ulong)txOutput.Context.TxIdx)) return;
 
                     string? stakeAddress = _cardanoService.TryGetStakeAddress(txOutput.Address);
-                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutput.Context.Slot);
                     ulong amount = (ulong)txOutput.Amount;
 
-                    if (epoch >= _settings.FisoStartEpoch - 1 && epoch <= _settings.FisoEndEpoch && stakeAddress is not null)
+
+                    var fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
+
+                    if (fisoDelegator is not null)
                     {
-                        var fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
+                        var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
+                            .Where(fpas => fpas.PoolId == fisoDelegator.PoolId && fpas.EpochNumber == epoch)
+                            .FirstOrDefaultAsync();
 
-                        if (fisoDelegator is not null)
+                        if (fisoPoolActiveStake is not null)
                         {
-                            var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
-                                .Where(fpas => fpas.PoolId == fisoDelegator.PoolId && fpas.EpochNumber == epoch)
-                                .FirstOrDefaultAsync();
-
-                            if (fisoPoolActiveStake is not null)
-                            {
-                                fisoPoolActiveStake.StakeAmount += amount;
-                                _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
-                            }
+                            fisoPoolActiveStake.StakeAmount += amount;
+                            _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
                         }
                     }
+
                     await _dbContext.SaveChangesAsync();
                 }
             }),
@@ -162,23 +158,16 @@ public class FisoLiveStakeReducer : OuraReducerBase
                             .Where(txOut => txOut.TxHash == txInput.TxHash && txOut.Index == txInput.Index)
                             .FirstOrDefaultAsync();
 
-                        ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txInput.Context.Slot);
-
                         if (input is null)
                         {
-                            GetTransactionRequest req = new()
-                            {
-                                TxHashes = new List<string>() { txInput.Context.TxHash }
-                            };
-                            var txReq = await _transactionClient.GetTransactionUtxos(req);
-                            var txOut = txReq?.Content?[0].Outputs?.Where(i => i.TxIndex == txInput.Index).FirstOrDefault();
+                            var txOut = await GetTxOut(txInput.TxHash, (int)txInput.Index);
 
-                            if (txOut is null || txOut.PaymentAddress is null || txOut.PaymentAddress.Bech32 is null || txOut.Value is null) return;
+                            if (txOut is null) return;
 
                             input = new TxOutput()
                             {
-                                Address = txOut.PaymentAddress.Bech32,
-                                Amount = ulong.Parse(txOut.Value)
+                                Address = txOut.Address,
+                                Amount = (ulong)txOut.Value,
                             };
                         }
 
@@ -217,26 +206,23 @@ public class FisoLiveStakeReducer : OuraReducerBase
                     txOutput.Address is not null)
                 {
                     string? stakeAddress = _cardanoService.TryGetStakeAddress(txOutput.Address);
-                    ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)txOutput.Context.Slot);
                     ulong amount = txOutput.Amount;
 
-                    if (epoch >= _settings.FisoStartEpoch - 1 && epoch <= _settings.FisoEndEpoch && stakeAddress is not null)
+                    var fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
+
+                    if (fisoDelegator is not null)
                     {
-                        var fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
+                        var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
+                            .Where(fpas => fpas.PoolId == fisoDelegator.PoolId && fpas.EpochNumber == epoch)
+                            .FirstOrDefaultAsync();
 
-                        if (fisoDelegator is not null)
+                        if (fisoPoolActiveStake is not null)
                         {
-                            var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
-                                .Where(fpas => fpas.PoolId == fisoDelegator.PoolId && fpas.EpochNumber == epoch)
-                                .FirstOrDefaultAsync();
-
-                            if (fisoPoolActiveStake is not null)
-                            {
-                                fisoPoolActiveStake.StakeAmount += amount;
-                                _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
-                            }
+                            fisoPoolActiveStake.StakeAmount += amount;
+                            _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
                         }
                     }
+
                     await _dbContext.SaveChangesAsync();
                 }
             }),
@@ -244,6 +230,17 @@ public class FisoLiveStakeReducer : OuraReducerBase
         });
     }
 
+    public async Task<Common.Models.CardanoDbSync.TxOut?> GetTxOut(string hash, int index)
+    {
+        using CardanoDbSyncContext _dbContext = await _cardanoDbSyncContextFactory.CreateDbContextAsync();
+        byte[] txHashBytes = Convert.FromHexString(hash);
+        Common.Models.CardanoDbSync.TxOut? txOut = await _dbContext.TxOuts
+            .Include(to => to.Tx)
+            .Where(to => to.Tx.Hash == txHashBytes && to.Index == index)
+            .FirstOrDefaultAsync();
+
+        return txOut;
+    }
 
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }

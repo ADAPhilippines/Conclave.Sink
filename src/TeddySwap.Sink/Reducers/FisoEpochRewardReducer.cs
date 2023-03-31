@@ -54,7 +54,6 @@ public class FisoEpochRewardReducer : OuraReducerBase
             // fiso reward has ended or not yet epoch boundary
             if (calculationEpoch >= _settings.FisoStartEpoch && calculationEpoch <= _settings.FisoEndEpoch && calculationEpoch > previousEpoch)
             {
-
                 List<FisoPool> fisoPools = _settings.FisoPools
                     .Where(fp => fp.JoinEpoch <= calculationEpoch)
                     .ToList();
@@ -90,7 +89,7 @@ public class FisoEpochRewardReducer : OuraReducerBase
 
                     if (poolDelegatorHistory is null || poolDelegatorHistory.Length < 1) continue;
 
-                    delegators.AddRange(poolDelegatorHistory.Where(d => ulong.Parse(d.Amount!) > 0).Select(d => new FisoDelegator()
+                    delegators.AddRange(poolDelegatorHistory.Where(d => d.Amount != null && d.StakeAddress != null).Select(d => new FisoDelegator()
                     {
                         StakeAddress = d.StakeAddress!,
                         StakeAmount = ulong.Parse(d.Amount!),
@@ -100,7 +99,7 @@ public class FisoEpochRewardReducer : OuraReducerBase
                 }
 
                 // save snapshot of delegator stakes
-                _dbContext.FisoDelegators.AddRange(delegators);
+                _dbContext.FisoDelegators.AddRange(delegators.DistinctBy(d => d.StakeAddress));
 
                 decimal totalPoints = delegators.Sum(d => (decimal)d.StakeAmount <= 100_000_000_000 ?
                     d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000);
@@ -132,7 +131,7 @@ public class FisoEpochRewardReducer : OuraReducerBase
                 if (calculationEpoch == _settings.FisoEndEpoch)
                 {
                     List<FisoEpochReward> fisoEpochRewardsWithBonus = await _dbContext.FisoEpochRewards
-                        .Where(fer => _dbContext.FisoBonusDelegations.Select(fbd => fbd.StakeAddress).Contains(fer.StakeAddress))
+                        .Where(fer => _dbContext.FisoBonusDelegations.Any(fbd => fbd.StakeAddress == fer.StakeAddress))
                         .GroupBy(fer => fer.StakeAddress)
                         .SelectMany(stakeGroup => stakeGroup.GroupBy(s => s.PoolId)
                             .Where(poolGroup => poolGroup.Count() >= 6)
