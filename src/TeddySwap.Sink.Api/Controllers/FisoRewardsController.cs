@@ -31,11 +31,4 @@ public class FisoRewardsController : ControllerBase
 
         return Ok(res);
     }
-    [HttpGet("address/test")]
-    public async Task<IActionResult> Test()
-    {
-        decimal res = (decimal)Math.Pow(900000, 0.9) + 100000;
-
-        return Ok(res);
-    }
 }
