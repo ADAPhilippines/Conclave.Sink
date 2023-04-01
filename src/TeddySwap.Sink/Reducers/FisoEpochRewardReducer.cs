@@ -52,7 +52,7 @@ public class FisoEpochRewardReducer : OuraReducerBase
             ulong calculationEpoch = _cardanoService.CalculateEpochBySlot((ulong)blockEvent.Context.Slot);
 
             // fiso reward has ended or not yet epoch boundary
-            if (calculationEpoch >= _settings.FisoStartEpoch && calculationEpoch <= _settings.FisoEndEpoch && calculationEpoch > previousEpoch)
+            if (calculationEpoch >= _settings.FisoStartEpoch - 1 && calculationEpoch <= _settings.FisoEndEpoch && calculationEpoch > previousEpoch)
             {
                 List<FisoPool> fisoPools = _settings.FisoPools
                     .Where(fp => fp.JoinEpoch <= calculationEpoch)
@@ -77,56 +77,87 @@ public class FisoEpochRewardReducer : OuraReducerBase
                     });
                 }
 
-                // Calculate rewards if current epoch >= start epoch
                 // Fetch all delegators
                 List<FisoDelegator> delegators = new();
 
                 foreach (FisoPool fisoPool in fisoPools)
                 {
-                    var poolDelegatorHistoryReq = await _poolClient.GetDelegatorsHistory(fisoPool.PoolId, calculationEpoch.ToString());
-                    PoolDelegatorHistory[]? poolDelegatorHistory = poolDelegatorHistoryReq.Content;
+                    int offset = 0;
 
-                    if (poolDelegatorHistory is null || poolDelegatorHistory.Length < 1) continue;
-
-                    delegators.AddRange(poolDelegatorHistory.Where(d => d.Amount != null && d.StakeAddress != null).Select(d => new FisoDelegator()
+                    while (true)
                     {
-                        StakeAddress = d.StakeAddress!,
-                        StakeAmount = ulong.Parse(d.Amount!),
-                        PoolId = fisoPool.PoolId,
-                        Epoch = calculationEpoch,
-                    }));
+                        var poolDelegatorHistoryReq = await _poolClient.GetDelegatorsHistory(fisoPool.PoolId, calculationEpoch.ToString(), 1000, offset);
+                        PoolDelegatorHistory[]? poolDelegatorHistory = poolDelegatorHistoryReq.Content;
+
+                        if (poolDelegatorHistory is null || poolDelegatorHistory.Length < 1) continue;
+
+                        delegators.AddRange(poolDelegatorHistory.Where(d => d.Amount != null && d.StakeAddress != null).Select(d => new FisoDelegator()
+                        {
+                            StakeAddress = d.StakeAddress!,
+                            StakeAmount = ulong.Parse(d.Amount!),
+                            PoolId = fisoPool.PoolId,
+                            Epoch = calculationEpoch,
+                        }));
+
+                        if (poolDelegatorHistory.Length < 1000) break;
+                        offset += 1000;
+                    }
                 }
 
                 // save snapshot of delegator stakes
                 _dbContext.FisoDelegators.AddRange(delegators.DistinctBy(d => d.StakeAddress));
-
-                decimal totalPoints = delegators.Sum(d => (decimal)d.StakeAmount <= 100_000_000_000 ?
-                    d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000);
-
-                // Calculate fiso rewards
-                if (calculationEpoch >= _settings.FisoStartEpoch)
-                {
-                    // Calculate share
-                    List<FisoEpochReward> epochRewards = delegators.Select(d => new FisoEpochReward()
-                    {
-                        EpochNumber = calculationEpoch,
-                        StakeAddress = d.StakeAddress,
-                        PoolId = d.PoolId,
-                        StakeAmount = d.StakeAmount,
-                        SharePercentage = d.StakeAmount / (decimal)totalStakes,
-                        ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * ((decimal)d.StakeAmount <= 100_000_000_000 ?
-                            d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000 / totalPoints))
-                    })
-                    .ToList();
-
-                    _dbContext.FisoEpochRewards.AddRange(epochRewards);
-                }
-
                 _dbContext.FisoPoolActiveStakes.AddRange(poolStakes);
 
+                // Only save if within the fiso duration
+                if (calculationEpoch >= _settings.FisoStartEpoch && calculationEpoch <= _settings.FisoEndEpoch)
+                {
+                    decimal totalPoints = delegators.Sum(d => GetPoints(d.StakeAmount));
+
+                    // Calculate fiso rewards
+                    if (calculationEpoch >= _settings.FisoStartEpoch)
+                    {
+                        // Calculate share
+                        List<FisoEpochReward> epochRewards = new();
+                        foreach (FisoDelegator delegator in delegators)
+                        {
+                            decimal points = GetPoints(delegator.StakeAmount);
+                            decimal sharePercentage = points / totalPoints;
+
+                            epochRewards.Add(new()
+                            {
+                                EpochNumber = calculationEpoch,
+                                StakeAddress = delegator.StakeAddress,
+                                PoolId = delegator.PoolId,
+                                StakeAmount = delegator.StakeAmount,
+                                SharePercentage = sharePercentage,
+                                ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * sharePercentage)
+                            });
+                        }
+                        _dbContext.FisoEpochRewards.AddRange(epochRewards);
+                    }
+                }
                 await _dbContext.SaveChangesAsync();
             }
         }
     }
+
+    private static decimal GetAdaValue(ulong lovelace)
+    {
+        return lovelace / 1_000_000;
+    }
+
+    private static decimal GetPoints(ulong stakeAmount)
+    {
+        decimal adaStake = GetAdaValue(stakeAmount);
+        decimal points = adaStake;
+
+        if (points > 100000)
+        {
+            points = (decimal)Math.Pow((double)adaStake - 100000, 0.9) + 100000;
+        }
+
+        return points;
+    }
+
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }

@@ -17,6 +17,7 @@ string user = builder.Configuration["DBSYNC_POSTGRESQL_USER"] ?? "";
 string password = builder.Configuration["DBSYNC_POSTGRESQL_PASSWORD"] ?? "";
 string database = builder.Configuration["DBSYNC_POSTGRESQL_DATABASE"] ?? "";
 string connectionString = $"Host={hostname};Database={database};Username={user};Password={password};Port={port}";
+string koiosEndpoint = builder.Configuration["KOIOS_ENDPOINT"] ?? "";
 
 // Add services to the container.
 builder.Services.AddHttpClient();
@@ -48,8 +49,7 @@ builder.Services.AddSingleton<DatumService>();
 builder.Services.AddSingleton<MetadataService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
-builder.Services.AddKoios("https://preview.koios.rest/api/v0");
-builder.Services.AddBlockfrost("Preview", builder.Configuration["BLOCKFROST_PROJECT_ID"]);
+builder.Services.AddKoios(koiosEndpoint);
 
 var app = builder.Build();
 
