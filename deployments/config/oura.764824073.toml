@@ -28,7 +28,7 @@ include_transaction_details = true
 
 [cursor]
 type = "File"
-path = "cursor"
+path = "/config/cursor"
 
 [sink.retry_policy]
 max_retries = 0
