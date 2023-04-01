@@ -1,7 +1,7 @@
 [source]
 type = "N2C"
 address = ["Unix", "/ipc/node.socket"]
-magic = "Mainnet"
+magic = "mainnet"
 
 [source.intersect]
 type = "Origin"
