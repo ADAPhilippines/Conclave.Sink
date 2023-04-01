@@ -98,9 +98,19 @@ public class FisoDelegationReducer : OuraReducerBase
                         if (newFisoPoolActiveStake is not null)
                         {
                             newFisoPoolActiveStake.StakeAmount += fisoDelegator.StakeAmount;
-                            fisoDelegator.PoolId = poolId;
+                            var newFisoDelegator = new FisoDelegator
+                            {
+                                // Copy over all properties except for the primary key
+                                StakeAmount = fisoDelegator.StakeAmount,
+                                PoolId = poolId,
+                                StakeAddress = fisoDelegator.StakeAddress,
+                                HasBonus = fisoDelegator.HasBonus,
+                                Epoch = fisoDelegator.Epoch
+
+                            };
                             _dbContext.FisoPoolActiveStakes.Update(newFisoPoolActiveStake);
-                            _dbContext.FisoDelegators.Update(fisoDelegator);
+                            _dbContext.FisoDelegators.Remove(fisoDelegator);
+                            await _dbContext.FisoDelegators.AddAsync(newFisoDelegator);
                         }
                     }
                     else
@@ -108,6 +118,7 @@ public class FisoDelegationReducer : OuraReducerBase
                         // else remove
                         _dbContext.FisoDelegators.Remove(fisoDelegator);
                     }
+
                 }
             }
             else

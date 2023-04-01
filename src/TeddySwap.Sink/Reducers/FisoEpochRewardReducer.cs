@@ -78,7 +78,6 @@ public class FisoEpochRewardReducer : OuraReducerBase
                 }
 
                 // Calculate rewards if current epoch >= start epoch
-
                 // Fetch all delegators
                 List<FisoDelegator> delegators = new();
 
@@ -126,29 +125,6 @@ public class FisoEpochRewardReducer : OuraReducerBase
                 _dbContext.FisoPoolActiveStakes.AddRange(poolStakes);
 
                 await _dbContext.SaveChangesAsync();
-
-                // if fiso's last epoch, calculate bonuses
-                if (calculationEpoch == _settings.FisoEndEpoch)
-                {
-                    List<FisoEpochReward> fisoEpochRewardsWithBonus = await _dbContext.FisoEpochRewards
-                        .Where(fer => _dbContext.FisoBonusDelegations.Any(fbd => fbd.StakeAddress == fer.StakeAddress))
-                        .GroupBy(fer => fer.StakeAddress)
-                        .SelectMany(stakeGroup => stakeGroup.GroupBy(s => s.PoolId)
-                            .Where(poolGroup => poolGroup.Count() >= 6)
-                            .SelectMany(poolGroup => poolGroup)
-                        )
-                        .ToListAsync();
-
-                    foreach (FisoEpochReward fisoEpochReward in fisoEpochRewardsWithBonus)
-                    {
-                        fisoEpochReward.HasBonus = true;
-                        fisoEpochReward.BonusAmount = (ulong)(fisoEpochReward.ShareAmount * 0.25);
-
-                        _dbContext.FisoEpochRewards.Update(fisoEpochReward);
-                    }
-
-                    await _dbContext.SaveChangesAsync();
-                }
             }
         }
     }
