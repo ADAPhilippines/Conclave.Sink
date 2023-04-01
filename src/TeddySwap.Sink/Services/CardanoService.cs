@@ -17,7 +17,14 @@ public class CardanoService
         _settings = settings.Value;
     }
 
-    public ulong CalculateEpochBySlot(ulong slot) => slot / _settings.EpochLength;
+    public ulong CalculateEpochBySlot(ulong slot)
+    {
+        return _settings.NetworkType switch
+        {
+            NetworkType.Mainnet => (slot - 4492800) / 432000 + 208,
+            _ => slot / _settings.EpochLength
+        };
+    }
 
     public string PoolHashToBech32(string poolId) => Bech32.Encode(poolId.HexToByteArray(), "pool");
 
