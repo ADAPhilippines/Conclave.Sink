@@ -17,7 +17,6 @@ public class TeddySwapNftSinkDbContext : TeddySwapSinkCoreDbContext
     {
         modelBuilder.Entity<MintTransaction>().HasKey(mt => new { mt.PolicyId, mt.TokenName });
         modelBuilder.Entity<NftOwner>().HasKey(nft => new { nft.PolicyId, nft.TokenName });
-
         base.OnModelCreating(modelBuilder);
     }
 }

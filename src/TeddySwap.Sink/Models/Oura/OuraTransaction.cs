@@ -13,9 +13,9 @@ public record OuraTransaction : OuraEvent
     public IEnumerable<OuraTxInput>? Inputs { get; set; }
     public IEnumerable<OuraTxOutput>? Outputs { get; set; }
     [JsonPropertyName("collateral_inputs")]
-    public IEnumerable<OuraTxInput>? CollateralInputs { get; init; }
+    public IEnumerable<OuraTxInput>? CollateralInputs { get; set; }
     [JsonPropertyName("collateral_output")]
-    public OuraTxOutput? CollateralOutput { get; set; }
+    public OuraCollateralOutput? CollateralOutput { get; set; }
     public IEnumerable<Metadatum>? Metadata { get; init; }
     public IEnumerable<MintAsset>? Mint { get; init; }
 }

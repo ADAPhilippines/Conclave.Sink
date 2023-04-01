@@ -1,4 +1,7 @@
+using Blockfrost.Api.Extensions;
+using CardanoSharp.Koios.Client;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Extensions;
@@ -6,6 +9,14 @@ using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+string hostname = builder.Configuration["DBSYNC_POSTGRESQL_HOSTNAME"] ?? "";
+string port = builder.Configuration["DBSYNC_POSTGRESQL_PORT"] ?? "";
+string user = builder.Configuration["DBSYNC_POSTGRESQL_USER"] ?? "";
+string password = builder.Configuration["DBSYNC_POSTGRESQL_PASSWORD"] ?? "";
+string database = builder.Configuration["DBSYNC_POSTGRESQL_DATABASE"] ?? "";
+string connectionString = $"Host={hostname};Database={database};Username={user};Password={password};Port={port}";
 
 // Add services to the container.
 builder.Services.AddHttpClient();
@@ -18,6 +29,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddPooledDbContextFactory<TeddySwapSinkCoreDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.AddPooledDbContextFactory<TeddySwapOrderSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
 builder.Services.AddPooledDbContextFactory<TeddySwapNftSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
+builder.Services.AddPooledDbContextFactory<TeddySwapFisoSinkDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapSink")));
+builder.Services.AddPooledDbContextFactory<CardanoDbSyncContext>(options =>
+{
+    if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
+        options.EnableSensitiveDataLogging(true);
+    options.UseNpgsql(connectionString, pgOptions =>
+    {
+        pgOptions.EnableRetryOnFailure(3);
+        pgOptions.CommandTimeout(999999);
+    });
+}, 10);
 builder.Services.Configure<TeddySwapSinkSettings>(options => builder.Configuration.GetSection("TeddySwapSinkSettings").Bind(options));
 builder.Services.AddSingleton<CardanoService>();
 builder.Services.AddSingleton<ByteArrayService>();
@@ -26,6 +48,8 @@ builder.Services.AddSingleton<DatumService>();
 builder.Services.AddSingleton<MetadataService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddOuraReducers();
+builder.Services.AddKoios("https://preview.koios.rest/api/v0");
+builder.Services.AddBlockfrost("Preview", builder.Configuration["BLOCKFROST_PROJECT_ID"]);
 
 var app = builder.Build();
 

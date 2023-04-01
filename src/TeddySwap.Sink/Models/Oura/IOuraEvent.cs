@@ -12,13 +12,16 @@ public enum OuraVariant
     Transaction = 3,
     TxInput = 4,
     TxOutput = 5,
-    Asset = 6
+    Asset = 6,
+    StakeDelegation = 7,
+    CollateralInput = 8,
+    CollateralOutput = 9
 }
 
 public interface IOuraEvent
 {
     public OuraContext? Context { get; set; }
     public string? Fingerprint { get; init; }
-    public OuraVariant? Variant { get; init; }
+    public OuraVariant? Variant { get; set; }
     public ulong? Timestamp { get; init; }
 }

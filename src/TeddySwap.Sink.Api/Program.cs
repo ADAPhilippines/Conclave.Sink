@@ -17,7 +17,11 @@ builder.Services.AddDbContextPool<CardanoDbSyncContext>(options =>
 {
     if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
         options.EnableSensitiveDataLogging(true);
-    options.UseNpgsql(connectionString, pgOptions => pgOptions.EnableRetryOnFailure(3));
+    options.UseNpgsql(connectionString, pgOptions =>
+    {
+        pgOptions.EnableRetryOnFailure(3);
+        pgOptions.CommandTimeout(999999);
+    });
 }, 10);
 
 builder.Services.AddDbContextPool<TeddySwapSinkCoreDbContext>(options =>
@@ -45,6 +49,7 @@ builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Config
 builder.Services.AddControllers();
 builder.Services.AddScoped<LeaderboardService>();
 builder.Services.AddScoped<AssetService>();
+builder.Services.AddScoped<StakeService>();
 builder.Services.AddApiVersioning(options => options.AssumeDefaultVersionWhenUnspecified = true).AddMvc();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

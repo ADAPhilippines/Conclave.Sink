@@ -22,7 +22,9 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
     public async Task ReduceAsync(OuraTxInput txInput)
     {
         if (txInput is not null &&
-            txInput.TxHash is not null)
+            txInput.TxHash is not null &&
+            txInput.Context is not null &&
+            txInput.Context.TxHash is not null)
         {
             using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
             Transaction? tx = await _dbContext.Transactions
@@ -53,6 +55,24 @@ public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
 
                     }
                     await _dbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    await _dbContext.TxInputs.AddAsync(new()
+                    {
+                        TxHash = txInput.Context.TxHash,
+                        Transaction = tx,
+                        // GENESIS TX HACK
+                        TxOutput = new TxOutput
+                        {
+                            Transaction = new Transaction
+                            {
+                                Hash = $"GENESIS_{tx.Hash}_{txInput.Fingerprint}",
+                                Block = tx.Block
+                            },
+                            Address = "GENESIS"
+                        }
+                    });
                 }
             }
         }

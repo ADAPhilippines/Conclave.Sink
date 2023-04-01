@@ -10,10 +10,10 @@ using TeddySwap.Sink.Data;
 
 #nullable disable
 
-namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
+namespace TeddySwap.Sink.Data.Migrations
 {
-    [DbContext(typeof(TeddySwapOrderSinkDbContext))]
-    partial class TeddySwapOrderSinkDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TeddySwapFisoSinkDbContext))]
+    partial class TeddySwapFisoSinkDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -23,27 +23,6 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("TeddySwap.Common.Models.AddressVerification", b =>
-                {
-                    b.Property<string>("TestnetAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MainnetAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MainnetSignedData")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TestnetSignedData")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("TestnetAddress");
-
-                    b.ToTable("AddressVerifications");
-                });
 
             modelBuilder.Entity("TeddySwap.Common.Models.Asset", b =>
                 {
@@ -69,14 +48,20 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
                     b.ToTable("Assets");
                 });
 
-            modelBuilder.Entity("TeddySwap.Common.Models.BlacklistedAddress", b =>
+            modelBuilder.Entity("TeddySwap.Common.Models.BalanceByStakeEpoch", b =>
                 {
-                    b.Property<string>("Address")
+                    b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
-                    b.HasKey("Address");
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
 
-                    b.ToTable("BlacklistedAddresses");
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("StakeAddress", "Epoch");
+
+                    b.ToTable("BalanceByStakeEpoch");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.Block", b =>
@@ -109,111 +94,90 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
                     b.ToTable("Blocks");
                 });
 
-            modelBuilder.Entity("TeddySwap.Common.Models.Order", b =>
+            modelBuilder.Entity("TeddySwap.Common.Models.FisoBonusDelegation", b =>
                 {
-                    b.Property<string>("TxHash")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Index")
+                    b.Property<decimal>("EpochNumber")
                         .HasColumnType("numeric(20,0)");
 
-                    b.Property<string>("AssetLq")
-                        .IsRequired()
+                    b.Property<string>("PoolId")
                         .HasColumnType("text");
 
-                    b.Property<string>("AssetX")
-                        .IsRequired()
+                    b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
-                    b.Property<string>("AssetY")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("EpochNumber", "PoolId", "StakeAddress");
 
-                    b.Property<string>("BatcherAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BlockHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Blockhash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<BigInteger>("Liquidity")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("OrderBase")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("OrderDatum")
-                        .HasColumnType("bytea");
-
-                    b.Property<BigInteger>("OrderLq")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("OrderType")
-                        .HasColumnType("integer");
-
-                    b.Property<BigInteger>("OrderX")
-                        .HasColumnType("numeric");
-
-                    b.Property<BigInteger>("OrderY")
-                        .HasColumnType("numeric");
-
-                    b.Property<byte[]>("PoolDatum")
-                        .HasColumnType("bytea");
-
-                    b.Property<string>("PoolNft")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<BigInteger>("ReservesX")
-                        .HasColumnType("numeric");
-
-                    b.Property<BigInteger>("ReservesY")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Slot")
-                        .HasColumnType("numeric(20,0)");
-
-                    b.Property<string>("UserAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("TxHash", "Index");
-
-                    b.HasIndex("BatcherAddress");
-
-                    b.HasIndex("BlockHash");
-
-                    b.HasIndex("OrderType");
-
-                    b.HasIndex("Slot");
-
-                    b.HasIndex("UserAddress");
-
-                    b.ToTable("Orders");
+                    b.ToTable("FisoBonusDelegations");
                 });
 
-            modelBuilder.Entity("TeddySwap.Common.Models.Price", b =>
+            modelBuilder.Entity("TeddySwap.Common.Models.FisoDelegator", b =>
                 {
-                    b.Property<string>("TxHash")
+                    b.Property<string>("StakeAddress")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Index")
+                    b.Property<string>("PoolId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Epoch")
                         .HasColumnType("numeric(20,0)");
 
-                    b.Property<decimal>("PriceX")
+                    b.Property<bool>("HasBonus")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("StakeAmount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("StakeAddress", "PoolId", "Epoch");
+
+                    b.ToTable("FisoDelegators");
+                });
+
+            modelBuilder.Entity("TeddySwap.Common.Models.FisoEpochReward", b =>
+                {
+                    b.Property<decimal>("EpochNumber")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("BonusAmount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<bool>("HasBonus")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PoolId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("ShareAmount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("SharePercentage")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("PriceY")
+                    b.Property<BigInteger>("StakeAmount")
                         .HasColumnType("numeric");
 
-                    b.HasKey("TxHash", "Index");
+                    b.HasKey("EpochNumber", "StakeAddress");
 
-                    b.ToTable("Prices");
+                    b.ToTable("FisoEpochRewards");
+                });
+
+            modelBuilder.Entity("TeddySwap.Common.Models.FisoPoolActiveStake", b =>
+                {
+                    b.Property<decimal>("EpochNumber")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<string>("PoolId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("StakeAmount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("EpochNumber", "PoolId");
+
+                    b.ToTable("FisoPoolActiveStakes");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.Transaction", b =>
@@ -227,6 +191,9 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
 
                     b.Property<decimal>("Fee")
                         .HasColumnType("numeric(20,0)");
+
+                    b.Property<bool>("HasCollateralOutput")
+                        .HasColumnType("boolean");
 
                     b.Property<decimal>("Index")
                         .HasColumnType("numeric(20,0)");
@@ -288,6 +255,38 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
                     b.ToTable("TxOutputs");
                 });
 
+            modelBuilder.Entity("TeddySwap.Common.Models.Withdrawal", b =>
+                {
+                    b.Property<string>("TxHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("TxHash", "StakeAddress");
+
+                    b.ToTable("Withdrawals");
+                });
+
+            modelBuilder.Entity("TeddySwap.Common.Models.WithdrawalByStakeEpoch", b =>
+                {
+                    b.Property<string>("StakeAddress")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Epoch")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(20,0)");
+
+                    b.HasKey("StakeAddress", "Epoch");
+
+                    b.ToTable("WithdrawalByStakeEpoch");
+                });
+
             modelBuilder.Entity("TeddySwap.Common.Models.Asset", b =>
                 {
                     b.HasOne("TeddySwap.Common.Models.TxOutput", "TxOutput")
@@ -297,28 +296,6 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
                         .IsRequired();
 
                     b.Navigation("TxOutput");
-                });
-
-            modelBuilder.Entity("TeddySwap.Common.Models.Order", b =>
-                {
-                    b.HasOne("TeddySwap.Common.Models.Block", "Block")
-                        .WithMany()
-                        .HasForeignKey("BlockHash")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Block");
-                });
-
-            modelBuilder.Entity("TeddySwap.Common.Models.Price", b =>
-                {
-                    b.HasOne("TeddySwap.Common.Models.Order", "Order")
-                        .WithOne("Price")
-                        .HasForeignKey("TeddySwap.Common.Models.Price", "TxHash", "Index")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.Transaction", b =>
@@ -362,14 +339,20 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
                     b.Navigation("Transaction");
                 });
 
+            modelBuilder.Entity("TeddySwap.Common.Models.Withdrawal", b =>
+                {
+                    b.HasOne("TeddySwap.Common.Models.Transaction", "Transaction")
+                        .WithMany("Withdrawals")
+                        .HasForeignKey("TxHash")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("TeddySwap.Common.Models.Block", b =>
                 {
                     b.Navigation("Transactions");
-                });
-
-            modelBuilder.Entity("TeddySwap.Common.Models.Order", b =>
-                {
-                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.Transaction", b =>
@@ -377,6 +360,8 @@ namespace TeddySwap.Sink.Data.Migrations.TeddySwapOrderSinkDb
                     b.Navigation("Inputs");
 
                     b.Navigation("Outputs");
+
+                    b.Navigation("Withdrawals");
                 });
 
             modelBuilder.Entity("TeddySwap.Common.Models.TxOutput", b =>
