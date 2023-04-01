@@ -17,7 +17,7 @@ string user = builder.Configuration["DBSYNC_POSTGRESQL_USER"] ?? "";
 string password = builder.Configuration["DBSYNC_POSTGRESQL_PASSWORD"] ?? "";
 string database = builder.Configuration["DBSYNC_POSTGRESQL_DATABASE"] ?? "";
 string connectionString = $"Host={hostname};Database={database};Username={user};Password={password};Port={port}";
-string koiosEndpoint = builder.Configuration["KOIOS_ENDPOINT"] ?? "";
+string koiosEndpoint = builder.Configuration["KOIOS_ENDPOINT"] ?? "https://preview.koios.rest/api/v0";
 
 // Add services to the container.
 builder.Services.AddHttpClient();
