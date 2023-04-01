@@ -61,6 +61,7 @@ public class FisoRewardService
         return new()
         {
             FisoRewards = rewards,
+            StakeAddress = stakeAddress,
             TotalBaseReward = (ulong)rewards.Sum(r => (long)r.BaseReward),
             TotalBonusReward = (ulong)rewards.Sum(r => (long)r.BonusReward)
         };
