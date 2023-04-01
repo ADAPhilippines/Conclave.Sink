@@ -46,7 +46,7 @@ public class FisoDelegationReducer : OuraReducerBase
         {
             ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)stakeDelegationEvent.Context.Slot!);
 
-            if (epoch < _settings.FisoStartEpoch || epoch >= _settings.FisoEndEpoch) return;
+            if (epoch < _settings.FisoStartEpoch - 1 || epoch >= _settings.FisoEndEpoch) return;
 
             using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 

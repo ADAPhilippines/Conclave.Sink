@@ -45,7 +45,7 @@ public class FisoLiveStakeReducer : OuraReducerBase
 
         ulong epoch = _cardanoService.CalculateEpochBySlot((ulong)ouraEvent.Context.Slot);
 
-        if (epoch < _settings.FisoStartEpoch || epoch > _settings.FisoEndEpoch - 1) return;
+        if (epoch < _settings.FisoStartEpoch - 1 || epoch >= _settings.FisoEndEpoch) return;
 
         using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         await (ouraEvent.Variant switch
