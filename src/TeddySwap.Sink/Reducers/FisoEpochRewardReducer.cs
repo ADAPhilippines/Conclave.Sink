@@ -103,25 +103,28 @@ public class FisoEpochRewardReducer : OuraReducerBase
                 // Only save if within the fiso duration
                 if (calculationEpoch >= _settings.FisoStartEpoch && calculationEpoch <= _settings.FisoEndEpoch)
                 {
-                    decimal totalPoints = delegators.Sum(d => (decimal)d.StakeAmount <= 100_000_000_000 ?
-                        d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000);
+                    decimal totalPoints = delegators.Sum(d => GetPoints(d.StakeAmount));
 
                     // Calculate fiso rewards
                     if (calculationEpoch >= _settings.FisoStartEpoch)
                     {
                         // Calculate share
-                        List<FisoEpochReward> epochRewards = delegators.Select(d => new FisoEpochReward()
+                        List<FisoEpochReward> epochRewards = new();
+                        foreach (FisoDelegator delegator in delegators)
                         {
-                            EpochNumber = calculationEpoch,
-                            StakeAddress = d.StakeAddress,
-                            PoolId = d.PoolId,
-                            StakeAmount = d.StakeAmount,
-                            SharePercentage = d.StakeAmount / (decimal)totalStakes,
-                            ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * ((decimal)d.StakeAmount <= 100_000_000_000 ?
-                                d.StakeAmount : (decimal)Math.Pow(d.StakeAmount - 100_000_000_000, 0.9) + 100_000_000_000 / totalPoints))
-                        })
-                        .ToList();
+                            decimal points = GetPoints(delegator.StakeAmount);
+                            decimal sharePercentage = points / totalPoints;
 
+                            epochRewards.Add(new()
+                            {
+                                EpochNumber = calculationEpoch,
+                                StakeAddress = delegator.StakeAddress,
+                                PoolId = delegator.PoolId,
+                                StakeAmount = delegator.StakeAmount,
+                                SharePercentage = sharePercentage,
+                                ShareAmount = (ulong)(_settings.FisoRewardPerEpoch * sharePercentage)
+                            });
+                        }
                         _dbContext.FisoEpochRewards.AddRange(epochRewards);
                     }
                 }
@@ -129,5 +132,24 @@ public class FisoEpochRewardReducer : OuraReducerBase
             }
         }
     }
+
+    private static decimal GetAdaValue(ulong lovelace)
+    {
+        return lovelace / 1_000_000;
+    }
+
+    private static decimal GetPoints(ulong stakeAmount)
+    {
+        decimal adaStake = GetAdaValue(stakeAmount);
+        decimal points = adaStake;
+
+        if (points > 100000)
+        {
+            points = (decimal)Math.Pow((double)adaStake - 100000, 0.9) + 100000;
+        }
+
+        return points;
+    }
+
     public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
 }

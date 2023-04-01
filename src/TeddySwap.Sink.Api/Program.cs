@@ -45,11 +45,19 @@ builder.Services.AddDbContextPool<TeddySwapNftSinkDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapNftSink"), pgOptions => pgOptions.EnableRetryOnFailure(3));
 }, 10);
 
+builder.Services.AddDbContextPool<TeddySwapFisoSinkDbContext>(options =>
+{
+    if (builder.Configuration["ASPNETCORE_ENVIRONMENT"]?.ToString() != "Production")
+        options.EnableSensitiveDataLogging(true);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("TeddySwapFisoSink"), pgOptions => pgOptions.EnableRetryOnFailure(3));
+}, 10);
+
 builder.Services.Configure<TeddySwapITNRewardSettings>(options => builder.Configuration.GetSection("TeddySwapITNRewardSettings").Bind(options));
 builder.Services.AddControllers();
 builder.Services.AddScoped<LeaderboardService>();
 builder.Services.AddScoped<AssetService>();
 builder.Services.AddScoped<StakeService>();
+builder.Services.AddScoped<FisoRewardService>();
 builder.Services.AddApiVersioning(options => options.AssumeDefaultVersionWhenUnspecified = true).AddMvc();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
