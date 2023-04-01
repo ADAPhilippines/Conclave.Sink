@@ -82,18 +82,26 @@ public class FisoEpochRewardReducer : OuraReducerBase
 
                 foreach (FisoPool fisoPool in fisoPools)
                 {
-                    var poolDelegatorHistoryReq = await _poolClient.GetDelegatorsHistory(fisoPool.PoolId, calculationEpoch.ToString());
-                    PoolDelegatorHistory[]? poolDelegatorHistory = poolDelegatorHistoryReq.Content;
+                    int offset = 0;
 
-                    if (poolDelegatorHistory is null || poolDelegatorHistory.Length < 1) continue;
-
-                    delegators.AddRange(poolDelegatorHistory.Where(d => d.Amount != null && d.StakeAddress != null).Select(d => new FisoDelegator()
+                    while (true)
                     {
-                        StakeAddress = d.StakeAddress!,
-                        StakeAmount = ulong.Parse(d.Amount!),
-                        PoolId = fisoPool.PoolId,
-                        Epoch = calculationEpoch,
-                    }));
+                        var poolDelegatorHistoryReq = await _poolClient.GetDelegatorsHistory(fisoPool.PoolId, calculationEpoch.ToString(), 1000, offset);
+                        PoolDelegatorHistory[]? poolDelegatorHistory = poolDelegatorHistoryReq.Content;
+
+                        if (poolDelegatorHistory is null || poolDelegatorHistory.Length < 1) continue;
+
+                        delegators.AddRange(poolDelegatorHistory.Where(d => d.Amount != null && d.StakeAddress != null).Select(d => new FisoDelegator()
+                        {
+                            StakeAddress = d.StakeAddress!,
+                            StakeAmount = ulong.Parse(d.Amount!),
+                            PoolId = fisoPool.PoolId,
+                            Epoch = calculationEpoch,
+                        }));
+
+                        if (poolDelegatorHistory.Length < 1000) break;
+                        offset += 1000;
+                    }
                 }
 
                 // save snapshot of delegator stakes
