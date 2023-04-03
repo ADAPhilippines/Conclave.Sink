@@ -19,9 +19,9 @@ public class TeddySwapSinkCoreDbContext : DbContext
     {
         // Primary Keys
         modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
-        modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.Address, txOut.TxHash });
+        modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
+        modelBuilder.Entity<CollateralTxOut>().HasKey(txOut => new { txOut.Address, txOut.TxHash });
         modelBuilder.Entity<CollateralTxIn>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
-        modelBuilder.Entity<CollateralTxOut>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Asset>().HasKey(asset => new { asset.PolicyId, asset.Name, asset.TxOutputHash, asset.TxOutputIndex });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
