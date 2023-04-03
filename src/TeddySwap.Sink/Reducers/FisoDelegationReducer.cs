@@ -128,10 +128,6 @@ public class FisoDelegationReducer : OuraReducerBase
                     var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
                         .Where(fpas => fpas.PoolId == poolId && fpas.EpochNumber == epoch)
                         .FirstOrDefaultAsync();
-                    var bonusFisoPool = await _dbContext.FisoPoolActiveStakes
-                        .Where(fpas => fpas.EpochNumber == epoch)
-                        .OrderBy(fpas => fpas.StakeAmount)
-                        .FirstOrDefaultAsync();
 
                     decimal stake = await GetStakeAddressLiveStakeByBlockAsync(stakeAddress, (int)stakeDelegationEvent.Context.BlockNumber!);
 
@@ -149,31 +145,6 @@ public class FisoDelegationReducer : OuraReducerBase
                             PoolId = poolId,
                             Epoch = epoch
                         });
-                    }
-
-                    if (bonusFisoPool is not null && poolId == bonusFisoPool.PoolId)
-                    {
-                        // check if stake address already has active bonus
-                        var delegatorBonus = await _dbContext.FisoBonusDelegations
-                            .Where(fbd =>
-                                fbd.StakeAddress == stakeAddress &&
-                                fbd.PoolId == poolId &&
-                                fbd.TxHash == stakeDelegationEvent.Context.TxHash &&
-                                fbd.Slot == stakeDelegationEvent.Context.Slot)
-                            .FirstOrDefaultAsync();
-
-                        if (delegatorBonus is null)
-                        {
-                            // create new entry
-                            await _dbContext.FisoBonusDelegations.AddAsync(new FisoBonusDelegation()
-                            {
-                                EpochNumber = epoch,
-                                StakeAddress = stakeAddress,
-                                PoolId = poolId,
-                                TxHash = stakeDelegationEvent.Context.TxHash,
-                                Slot = (ulong)stakeDelegationEvent.Context.Slot
-                            });
-                        }
                     }
                 }
             }
@@ -222,5 +193,8 @@ public class FisoDelegationReducer : OuraReducerBase
 
         return stakeAmount + rewardAmount - withdrawalAmount;
     }
-    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+        using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+    }
 }
