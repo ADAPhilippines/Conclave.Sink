@@ -10,7 +10,7 @@
 <section>
     <MudAppBar Color="Color.Tertiary" Fixed="false">
         <img src="/images/teddy-logo.svg" alt="teddy-logo" class="h-[30px] mr-6" />
-        <div class="pt-[4px] gap-6 hidden lg:flex">
+        <div class="pt-[4px] gap-6 hidden lg:flex items-center">
             <NavLink Href="/leaderboard" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
                 ActiveClass="!text-[var(--mud-palette-text-primary)]">Leaderboard</NavLink>
             <NavLink Href="/rewards" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
@@ -18,6 +18,12 @@
             <NavLink Href="https://fiso.teddyswap.org/" Target="_blank"
                 class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
                 ActiveClass="!text-[var(--mud-palette-text-primary)]">Staking</NavLink>
+            <MudMenu Icon="@Icons.Material.Filled.MoreHoriz" AnchorOrigin="Origin.BottomLeft">
+                <MudMenuItem>
+                    <NavLink Href="/swap" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                        ActiveClass="!text-[var(--mud-palette-text-primary)]">Swap</NavLink>
+                </MudMenuItem>
+            </MudMenu>
         </div>
         <MudSpacer />
         @if (IsWalletConnected)
