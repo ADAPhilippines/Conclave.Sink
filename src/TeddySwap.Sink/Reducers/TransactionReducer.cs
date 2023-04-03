@@ -65,20 +65,6 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 HasCollateralOutput = transaction.HasCollateralOutput
             };
 
-            if (transaction.Withdrawals is not null)
-            {
-                foreach (OuraWithdrawal ouraWithdrawal in transaction.Withdrawals)
-                {
-                    if (ouraWithdrawal.RewardAccount is null) continue;
-                    await _dbContext.Withdrawals.AddAsync(new()
-                    {
-                        Amount = ouraWithdrawal.Coin ?? 0,
-                        StakeAddress = Bech32.Encode(_byteArrayService.HexToByteArray(ouraWithdrawal.RewardAccount), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
-                        Transaction = newTransaction,
-                    });
-                }
-            }
-
             await _dbContext.Transactions.AddAsync(newTransaction);
             await _dbContext.SaveChangesAsync();
         }
