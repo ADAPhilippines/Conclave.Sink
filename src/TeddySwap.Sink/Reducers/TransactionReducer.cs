@@ -65,6 +65,42 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 HasCollateralOutput = transaction.HasCollateralOutput
             };
 
+            // Record collateral input if available
+            if (transaction.CollateralInputs is not null)
+            {
+                List<CollateralTxIn> collateralInputs = new();
+                foreach (OuraTxInput ouraTxInput in transaction.CollateralInputs)
+                {
+                    collateralInputs.Add(new CollateralTxIn()
+                    {
+                        TxHash = transaction.Hash,
+                        Transaction = newTransaction,
+                        TxOutputHash = ouraTxInput.TxHash,
+                        TxOutputIndex = ouraTxInput.Index
+                    });
+                }
+                await _dbContext.CollateralTxIns.AddRangeAsync(collateralInputs);
+            }
+
+            // If Transaction is invalid record, collateral output
+            if (block.InvalidTransactions is not null &&
+                transaction.CollateralOutput is not null &&
+                transaction.CollateralOutput.Address is not null &&
+                block.InvalidTransactions.ToList().Contains((ulong)transaction.Index))
+            {
+                CollateralTxOut collateralOutput = new()
+                {
+                    Transaction = newTransaction,
+                    TxIndex = (ulong)transaction.Index,
+                    TxHash = transaction.Hash,
+                    Index = 0,
+                    Address = transaction.CollateralOutput.Address,
+                    Amount = transaction.CollateralOutput.Amount
+                };
+
+                await _dbContext.CollateralTxOuts.AddAsync(collateralOutput);
+            }
+
             await _dbContext.Transactions.AddAsync(newTransaction);
             await _dbContext.SaveChangesAsync();
         }

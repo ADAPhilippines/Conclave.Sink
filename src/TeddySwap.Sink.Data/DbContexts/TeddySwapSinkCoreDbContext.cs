@@ -7,6 +7,8 @@ public class TeddySwapSinkCoreDbContext : DbContext
 {
     public DbSet<TxInput> TxInputs => Set<TxInput>();
     public DbSet<TxOutput> TxOutputs => Set<TxOutput>();
+    public DbSet<CollateralTxIn> CollateralTxIns => Set<CollateralTxIn>();
+    public DbSet<CollateralTxOut> CollateralTxOuts => Set<CollateralTxOut>();
     public DbSet<Block> Blocks => Set<Block>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Asset> Assets => Set<Asset>();
@@ -17,7 +19,9 @@ public class TeddySwapSinkCoreDbContext : DbContext
     {
         // Primary Keys
         modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
-        modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
+        modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.Address, txOut.TxHash });
+        modelBuilder.Entity<CollateralTxIn>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
+        modelBuilder.Entity<CollateralTxOut>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
         modelBuilder.Entity<Asset>().HasKey(asset => new { asset.PolicyId, asset.Name, asset.TxOutputHash, asset.TxOutputIndex });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
@@ -62,10 +66,20 @@ public class TeddySwapSinkCoreDbContext : DbContext
             .WithMany(tx => tx.Outputs)
             .HasForeignKey(txOutput => txOutput.TxHash);
 
+        modelBuilder.Entity<CollateralTxIn>()
+            .HasOne<Transaction>(txInput => txInput.Transaction)
+            .WithMany(tx => tx.CollateralTxIns)
+            .HasForeignKey(txInput => txInput.TxHash);
+
         modelBuilder.Entity<Asset>()
             .HasOne<TxOutput>(asset => asset.TxOutput)
             .WithMany(txOutput => txOutput.Assets)
             .HasForeignKey(asset => new { asset.TxOutputHash, asset.TxOutputIndex });
+
+        modelBuilder.Entity<CollateralTxOut>()
+            .HasOne<Transaction>(txOutput => txOutput.Transaction)
+            .WithOne(tx => tx.CollateralTxOut)
+            .HasForeignKey<CollateralTxOut>(txOut => txOut.TxHash);
 
         base.OnModelCreating(modelBuilder);
     }

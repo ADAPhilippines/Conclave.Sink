@@ -242,5 +242,8 @@ public class FisoLiveStakeReducer : OuraReducerBase
         return txOut;
     }
 
-    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+
+    }
 }
