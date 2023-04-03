@@ -17,7 +17,7 @@ public class TeddySwapFisoSinkDbContext : TeddySwapSinkCoreDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<FisoBonusDelegation>().HasKey(fbd => new { fbd.EpochNumber, fbd.PoolId, fbd.StakeAddress });
+        modelBuilder.Entity<FisoBonusDelegation>().HasKey(fbd => new { fbd.StakeAddress, fbd.TxHash, fbd.Slot });
         modelBuilder.Entity<FisoEpochReward>().HasKey(fer => new { fer.EpochNumber, fer.StakeAddress });
         modelBuilder.Entity<FisoPoolActiveStake>().HasKey(fpas => new { fpas.EpochNumber, fpas.PoolId });
         modelBuilder.Entity<FisoDelegator>().HasKey(d => new { d.StakeAddress, d.PoolId, d.Epoch });

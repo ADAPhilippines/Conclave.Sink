@@ -104,7 +104,6 @@ public class FisoDelegationReducer : OuraReducerBase
                                 StakeAmount = fisoDelegator.StakeAmount,
                                 PoolId = poolId,
                                 StakeAddress = fisoDelegator.StakeAddress,
-                                HasBonus = fisoDelegator.HasBonus,
                                 Epoch = fisoDelegator.Epoch
 
                             };
@@ -156,7 +155,11 @@ public class FisoDelegationReducer : OuraReducerBase
                     {
                         // check if stake address already has active bonus
                         var delegatorBonus = await _dbContext.FisoBonusDelegations
-                            .Where(fbd => fbd.StakeAddress == stakeAddress && fbd.PoolId == poolId)
+                            .Where(fbd =>
+                                fbd.StakeAddress == stakeAddress &&
+                                fbd.PoolId == poolId &&
+                                fbd.TxHash == stakeDelegationEvent.Context.TxHash &&
+                                fbd.Slot == stakeDelegationEvent.Context.Slot)
                             .FirstOrDefaultAsync();
 
                         if (delegatorBonus is null)
@@ -166,7 +169,9 @@ public class FisoDelegationReducer : OuraReducerBase
                             {
                                 EpochNumber = epoch,
                                 StakeAddress = stakeAddress,
-                                PoolId = poolId
+                                PoolId = poolId,
+                                TxHash = stakeDelegationEvent.Context.TxHash,
+                                Slot = (ulong)stakeDelegationEvent.Context.Slot
                             });
                         }
                     }

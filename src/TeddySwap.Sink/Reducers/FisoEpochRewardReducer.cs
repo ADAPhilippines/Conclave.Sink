@@ -159,5 +159,19 @@ public class FisoEpochRewardReducer : OuraReducerBase
         return points;
     }
 
-    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+        using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        Block? prevBlock = await _dbContext.Blocks
+            .Where(b => b.BlockNumber == rollbackBlock.BlockNumber - 1)
+            .FirstOrDefaultAsync();
+        if (prevBlock is null || rollbackBlock.Epoch <= prevBlock.Epoch) return;
+
+        var fisoEpochRewards = await _dbContext.FisoEpochRewards
+            .Where(fer => fer.EpochNumber == prevBlock.Epoch)
+            .ToListAsync();
+
+        _dbContext.FisoEpochRewards.RemoveRange(fisoEpochRewards);
+        await _dbContext.SaveChangesAsync();
+    }
 }
