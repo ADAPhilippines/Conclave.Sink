@@ -11,16 +11,16 @@ using TeddySwap.Sink.Services;
 namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.StakeDelegation)]
-public class FisoBonusMultiplierReducer : OuraReducerBase
+public class FisoBonusDelegationReducer : OuraReducerBase
 {
-    private readonly ILogger<FisoBonusMultiplierReducer> _logger;
+    private readonly ILogger<FisoBonusDelegationReducer> _logger;
     private readonly IDbContextFactory<TeddySwapFisoSinkDbContext> _dbContextFactory;
     private readonly IDbContextFactory<CardanoDbSyncContext> _cardanoDbSyncContextFactory;
     private readonly CardanoService _cardanoService;
     private readonly TeddySwapSinkSettings _settings;
 
-    public FisoBonusMultiplierReducer(
-        ILogger<FisoBonusMultiplierReducer> logger,
+    public FisoBonusDelegationReducer(
+        ILogger<FisoBonusDelegationReducer> logger,
         IDbContextFactory<TeddySwapFisoSinkDbContext> dbContextFactory,
         IDbContextFactory<CardanoDbSyncContext> cardanoDbSyncContextFactory,
         IOptions<TeddySwapSinkSettings> settings,
@@ -61,11 +61,12 @@ public class FisoBonusMultiplierReducer : OuraReducerBase
             if (transaction.Block.InvalidTransactions is not null &&
                 transaction.Block.InvalidTransactions.Contains(transaction.Index)) return;
 
-            string stakeKeyHash = string.IsNullOrEmpty(stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash) ?
-                stakeDelegationEvent.StakeDelegation.Credential.Scripthash :
-                stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash;
-            string stakeAddress = AddressUtility.GetRewardAddress(Convert.FromHexString(stakeKeyHash), _settings.NetworkType).ToString();
+            string? stakeAddress = _cardanoService.GetStakeAddressFromEvent(stakeDelegationEvent);
+
+            if (stakeAddress is null) return;
+
             string poolId = _cardanoService.PoolHashToBech32(stakeDelegationEvent.StakeDelegation.PoolHash);
+
             List<FisoPool> fisoPools = _settings.FisoPools
                 .Where(fp => fp.JoinEpoch <= epoch)
                 .ToList();
@@ -105,6 +106,7 @@ public class FisoBonusMultiplierReducer : OuraReducerBase
             await _dbContext.SaveChangesAsync();
         }
     }
+
     public async Task RollbackAsync(Block rollbackBlock)
     {
         using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();

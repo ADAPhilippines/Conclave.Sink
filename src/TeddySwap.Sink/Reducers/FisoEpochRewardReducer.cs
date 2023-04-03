@@ -171,7 +171,13 @@ public class FisoEpochRewardReducer : OuraReducerBase
             .Where(fer => fer.EpochNumber == prevBlock.Epoch)
             .ToListAsync();
 
+        var fisoDelegators = await _dbContext.FisoDelegators
+            .Where(fd => fd.Epoch == prevBlock.Epoch)
+            .ToListAsync();
+
         _dbContext.FisoEpochRewards.RemoveRange(fisoEpochRewards);
+        _dbContext.FisoDelegators.RemoveRange(fisoDelegators);
+
         await _dbContext.SaveChangesAsync();
     }
 }
