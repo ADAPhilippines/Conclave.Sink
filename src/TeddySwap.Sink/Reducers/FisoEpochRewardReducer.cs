@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json;
 using CardanoSharp.Koios.Client;
 using Microsoft.EntityFrameworkCore;
@@ -88,6 +89,10 @@ public class FisoEpochRewardReducer : OuraReducerBase
 
                                 success = true;
                             }
+                            else
+                            {
+                                throw new Exception();
+                            }
 
 
                         }
@@ -107,8 +112,9 @@ public class FisoEpochRewardReducer : OuraReducerBase
                 foreach (FisoPool fisoPool in fisoPools)
                 {
                     int offset = 0;
+                    bool done = false;
 
-                    while (true)
+                    while (!done)
                     {
                         bool success = false;
                         int retries = 0;
@@ -133,8 +139,15 @@ public class FisoEpochRewardReducer : OuraReducerBase
                                     }));
 
                                     success = true;
-                                    if (poolDelegatorHistory.Length < 1000) break;
+                                    if (poolDelegatorHistory.Length < 1000)
+                                    {
+                                        done = true;
+                                    }
                                     offset += 1000;
+                                }
+                                else
+                                {
+                                    throw new Exception();
                                 }
                             }
                             catch
@@ -212,15 +225,20 @@ public class FisoEpochRewardReducer : OuraReducerBase
         if (prevBlock is null || rollbackBlock.Epoch <= prevBlock.Epoch) return;
 
         var fisoEpochRewards = await _dbContext.FisoEpochRewards
-            .Where(fer => fer.EpochNumber == prevBlock.Epoch)
+            .Where(fer => fer.EpochNumber == rollbackBlock.Epoch)
             .ToListAsync();
 
         var fisoDelegators = await _dbContext.FisoDelegators
-            .Where(fd => fd.Epoch == prevBlock.Epoch)
+            .Where(fd => fd.Epoch == rollbackBlock.Epoch)
+            .ToListAsync();
+
+        var fisoPoolActiveStakes = await _dbContext.FisoPoolActiveStakes
+            .Where(fpas => fpas.EpochNumber == rollbackBlock.Epoch)
             .ToListAsync();
 
         _dbContext.FisoEpochRewards.RemoveRange(fisoEpochRewards);
         _dbContext.FisoDelegators.RemoveRange(fisoDelegators);
+        _dbContext.FisoPoolActiveStakes.RemoveRange(fisoPoolActiveStakes);
 
         await _dbContext.SaveChangesAsync();
     }
