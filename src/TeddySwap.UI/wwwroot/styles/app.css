@@ -19,6 +19,10 @@ body:has(.mud-drawer--open) {
     background-color: var(--mud-palette-primary-darken);
 }
 
+.swap-input .mud-input-label {
+    background-color: transparent;
+}
+
 .swap-settings-dialog h6 {
     font-weight: bold;
 }

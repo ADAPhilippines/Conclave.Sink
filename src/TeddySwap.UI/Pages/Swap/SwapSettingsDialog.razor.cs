@@ -25,8 +25,9 @@ public partial class SwapSettingsDialog
         }
     }
 
-    private double? _minValue { get; set; } = 1.2;
+    const double MINIMUM_HONEY_VALUE = 1.2;
 
+    private double? _minHoneyValue { get; set; } = MINIMUM_HONEY_VALUE;
 
     protected override void OnInitialized()
     {   
@@ -50,5 +51,5 @@ public partial class SwapSettingsDialog
         };
     }
 
-    private void OnMinimumButtonClicked() => _minValue = 1.2;
+    private void OnMinimumButtonClicked() => _minHoneyValue = MINIMUM_HONEY_VALUE;
 }

@@ -1,11 +1,11 @@
 <MudChip
     OnClick="OpenSelectTokenDialog"
-    Class="absolute"
+    Class="absolute py-[18px] px-[12px]"
     Color="Color.Primary"
     Style="right: 1px; top: 8px"
 >
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 py-[18px]">
         <MudImage Src=@_currentlySelectedToken.Logo Height="24" Width="24" />
-        <MudText>@_currentlySelectedToken.Name</MudText>
+        <MudText class="font-semibold">@_currentlySelectedToken.Name</MudText>
     </div>
 </MudChip>

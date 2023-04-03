@@ -15,6 +15,9 @@ public partial class Swap
     [Inject]
     public AppStateService? AppStateService { get; set; }
 
+    [Inject]
+    protected CardanoWalletService? CardanoWalletService { get; set; }
+
     public double SlippageToleranceValue
     {
         get => AppStateService?.SlippageToleranceValue ?? 3;
@@ -29,6 +32,10 @@ public partial class Swap
     private double _toValue { get; set; }
 
     private IEnumerable<Token>? Tokens { get; set; } = default!;
+
+    private bool _isPanelExpanded { get; set; } = false;
+
+    private void ToggleExpansionPanel() => _isPanelExpanded = !_isPanelExpanded;
 
     
     protected override void OnInitialized()
