@@ -610,6 +610,11 @@ video {
   margin-bottom: 1rem;
 }
 
+.mx-6 {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
 }
@@ -892,6 +897,10 @@ video {
   border-radius: 6px;
 }
 
+.rounded {
+  border-radius: 0.25rem;
+}
+
 .border-\[var\(--mud-palette-warning-darken\)\] {
   border-color: var(--mud-palette-warning-darken);
 }
@@ -1002,6 +1011,11 @@ video {
 .\!py-\[8px\] {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
+}
+
+.\!py-\[3\.5px\] {
+  padding-top: 3.5px !important;
+  padding-bottom: 3.5px !important;
 }
 
 .pb-0 {
