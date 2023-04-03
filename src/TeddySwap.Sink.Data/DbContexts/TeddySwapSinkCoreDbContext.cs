@@ -5,19 +5,14 @@ namespace TeddySwap.Sink.Data;
 
 public class TeddySwapSinkCoreDbContext : DbContext
 {
-
-    #region Core Models
     public DbSet<TxInput> TxInputs => Set<TxInput>();
     public DbSet<TxOutput> TxOutputs => Set<TxOutput>();
+    public DbSet<CollateralTxIn> CollateralTxIns => Set<CollateralTxIn>();
+    public DbSet<CollateralTxOut> CollateralTxOuts => Set<CollateralTxOut>();
     public DbSet<Block> Blocks => Set<Block>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Asset> Assets => Set<Asset>();
-    public DbSet<Withdrawal> Withdrawals => Set<Withdrawal>();
-    #endregion
 
-    #region Other Models
-    public DbSet<WithdrawalByStakeEpoch> WithdrawalByStakeEpoch => Set<WithdrawalByStakeEpoch>();
-    #endregion
     public TeddySwapSinkCoreDbContext(DbContextOptions options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,13 +20,13 @@ public class TeddySwapSinkCoreDbContext : DbContext
         // Primary Keys
         modelBuilder.Entity<TxInput>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
         modelBuilder.Entity<TxOutput>().HasKey(txOut => new { txOut.TxHash, txOut.Index });
+        modelBuilder.Entity<CollateralTxOut>().HasKey(txOut => new { txOut.Address, txOut.TxHash });
+        modelBuilder.Entity<CollateralTxIn>().HasKey(txInput => new { txInput.TxHash, txInput.TxOutputHash, txInput.TxOutputIndex });
         modelBuilder.Entity<Asset>().HasKey(asset => new { asset.PolicyId, asset.Name, asset.TxOutputHash, asset.TxOutputIndex });
         modelBuilder.Entity<Block>().HasKey(block => block.BlockHash);
         modelBuilder.Entity<Transaction>().HasKey(tx => tx.Hash);
         modelBuilder.Entity<Block>().Property(block => block.InvalidTransactions).HasColumnType("jsonb");
         modelBuilder.Entity<Transaction>().Property(tx => tx.Metadata).HasColumnType("jsonb");
-        modelBuilder.Entity<WithdrawalByStakeEpoch>().HasKey(wbse => new { wbse.StakeAddress, wbse.Epoch });
-        modelBuilder.Entity<Withdrawal>().HasKey(w => new { w.TxHash, w.StakeAddress });
 
         modelBuilder.Entity<Block>()
             .HasMany(b => b.Transactions)
@@ -56,11 +51,6 @@ public class TeddySwapSinkCoreDbContext : DbContext
             .HasForeignKey(o => o.TxHash)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Withdrawal>()
-            .HasOne<Transaction>(withdrawal => withdrawal.Transaction)
-            .WithMany(tx => tx.Withdrawals)
-            .HasForeignKey(withdrawal => withdrawal.TxHash);
-
         modelBuilder.Entity<TxInput>()
             .HasOne<TxOutput>(txInput => txInput.TxOutput)
             .WithMany(txOutput => txOutput.Inputs)
@@ -76,10 +66,20 @@ public class TeddySwapSinkCoreDbContext : DbContext
             .WithMany(tx => tx.Outputs)
             .HasForeignKey(txOutput => txOutput.TxHash);
 
+        modelBuilder.Entity<CollateralTxIn>()
+            .HasOne<Transaction>(txInput => txInput.Transaction)
+            .WithMany(tx => tx.CollateralTxIns)
+            .HasForeignKey(txInput => txInput.TxHash);
+
         modelBuilder.Entity<Asset>()
             .HasOne<TxOutput>(asset => asset.TxOutput)
             .WithMany(txOutput => txOutput.Assets)
             .HasForeignKey(asset => new { asset.TxOutputHash, asset.TxOutputIndex });
+
+        modelBuilder.Entity<CollateralTxOut>()
+            .HasOne<Transaction>(txOutput => txOutput.Transaction)
+            .WithOne(tx => tx.CollateralTxOut)
+            .HasForeignKey<CollateralTxOut>(txOut => txOut.TxHash);
 
         base.OnModelCreating(modelBuilder);
     }

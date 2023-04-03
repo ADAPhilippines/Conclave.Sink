@@ -65,18 +65,40 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 HasCollateralOutput = transaction.HasCollateralOutput
             };
 
-            if (transaction.Withdrawals is not null)
+            // Record collateral input if available
+            if (transaction.CollateralInputs is not null)
             {
-                foreach (OuraWithdrawal ouraWithdrawal in transaction.Withdrawals)
+                List<CollateralTxIn> collateralInputs = new();
+                foreach (OuraTxInput ouraTxInput in transaction.CollateralInputs)
                 {
-                    if (ouraWithdrawal.RewardAccount is null) continue;
-                    await _dbContext.Withdrawals.AddAsync(new()
+                    collateralInputs.Add(new CollateralTxIn()
                     {
-                        Amount = ouraWithdrawal.Coin ?? 0,
-                        StakeAddress = Bech32.Encode(_byteArrayService.HexToByteArray(ouraWithdrawal.RewardAccount), AddressUtility.GetPrefix(AddressType.Reward, _settings.NetworkType)),
+                        TxHash = transaction.Hash,
                         Transaction = newTransaction,
+                        TxOutputHash = ouraTxInput.TxHash,
+                        TxOutputIndex = ouraTxInput.Index
                     });
                 }
+                await _dbContext.CollateralTxIns.AddRangeAsync(collateralInputs);
+            }
+
+            // If Transaction is invalid record, collateral output
+            if (block.InvalidTransactions is not null &&
+                transaction.CollateralOutput is not null &&
+                transaction.CollateralOutput.Address is not null &&
+                block.InvalidTransactions.ToList().Contains((ulong)transaction.Index))
+            {
+                CollateralTxOut collateralOutput = new()
+                {
+                    Transaction = newTransaction,
+                    TxIndex = (ulong)transaction.Index,
+                    TxHash = transaction.Hash,
+                    Index = 0,
+                    Address = transaction.CollateralOutput.Address,
+                    Amount = transaction.CollateralOutput.Amount
+                };
+
+                await _dbContext.CollateralTxOuts.AddAsync(collateralOutput);
             }
 
             await _dbContext.Transactions.AddAsync(newTransaction);

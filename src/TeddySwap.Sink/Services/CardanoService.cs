@@ -49,4 +49,15 @@ public class CardanoService
         catch { }
         return null;
     }
+
+    public string? GetStakeAddressFromEvent(OuraStakeDelegationEvent stakeDelegationEvent)
+    {
+        string? stakeKeyHash = string.IsNullOrEmpty(stakeDelegationEvent.StakeDelegation?.Credential?.AddrKeyHash) ?
+                stakeDelegationEvent.StakeDelegation?.Credential?.Scripthash :
+                stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash;
+
+        return stakeKeyHash is not null ?
+            AddressUtility.GetRewardAddress(Convert.FromHexString(stakeKeyHash), _settings.NetworkType).ToString() :
+            null;
+    }
 }

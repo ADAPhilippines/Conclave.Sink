@@ -32,7 +32,7 @@ public class FisoRewardService
     public async Task<FisoRewardBreakdownResponse> GetFisoRewardBreakdownAsync(string stakeAddress)
     {
         List<FisoRewardResponse> rewards = await _dbContext.FisoEpochRewards
-            .Where(fer => fer.StakeAddress == stakeAddress)
+            .Where(fer => fer.StakeAddress == stakeAddress && fer.EpochNumber <= _settings.FisoEndEpoch)
             .OrderBy(fer => fer.EpochNumber)
             .Select(fer => new FisoRewardResponse()
             {
@@ -44,19 +44,30 @@ public class FisoRewardService
             })
             .ToListAsync();
 
-        List<string> poolsWithBonus = new();
+
+        ulong maxEpoch = await _dbContext.FisoPoolActiveStakes
+            .Select(fpas => fpas.EpochNumber)
+            .MaxAsync();
 
         foreach (string poolId in rewards.Select(r => r.PoolId).Distinct())
         {
-            FisoBonusDelegation? bonusPoolDelegation = await _dbContext.FisoBonusDelegations
+            var bonusPoolDelegations = await _dbContext.FisoBonusDelegations
                 .Where(fbd => fbd.StakeAddress == stakeAddress && fbd.PoolId == poolId)
-                .FirstOrDefaultAsync();
+                .OrderBy(r => r.Slot)
+                .ToListAsync();
+
+            var bonusPoolDelegation = bonusPoolDelegations
+                .Where(bpd => rewards.Where(r => r.PoolId == bpd.PoolId && r.Epoch == bpd.EpochNumber + 1).FirstOrDefault() != null)
+                .OrderBy(bpd => bpd.Slot)
+                .FirstOrDefault();
 
             if (bonusPoolDelegation is null) continue;
-            if (rewards.Where(r => r.PoolId == poolId).Count() >= 6) poolsWithBonus.Add(poolId);
-        }
 
-        rewards.ForEach(r => { if (poolsWithBonus.Contains(r.PoolId)) r.BonusReward = (ulong)(r.BaseReward * 0.25); });
+            var filteredRewards = rewards.Where(r => r.PoolId == poolId && r.Epoch > bonusPoolDelegation.EpochNumber).ToList();
+            var epochWithBonusCount = filteredRewards.Count + (int)_settings.FisoEndEpoch - (int)maxEpoch;
+
+            if (epochWithBonusCount >= 6) filteredRewards.ForEach(r => { r.BonusReward = (ulong)(r.BaseReward * 0.25); });
+        }
 
         return new()
         {
@@ -66,4 +77,19 @@ public class FisoRewardService
             TotalBonusReward = (ulong)rewards.Sum(r => (long)r.BonusReward)
         };
     }
+
+
+    // private async  HasBonus(List<FisoRewardResponse> rewards, ulong startEpoch, ulong maxEpoch)
+    // {
+    //     var filteredRewards = rewards.OrderBy(r => r.Epoch).Where(r => r.Epoch >= startEpoch);
+
+    //     if (filteredRewards.Count() == 1)
+
+    //     for (int i = 0; i < filteredRewards.Count(); i++)
+    //     {
+    //         if (filteredRewards[0])
+    //     }
+
+    //     return true;
+    // }
 }

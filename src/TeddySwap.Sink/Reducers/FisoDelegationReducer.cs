@@ -60,118 +60,67 @@ public class FisoDelegationReducer : OuraReducerBase
             if (transaction.Block.InvalidTransactions is not null &&
                 transaction.Block.InvalidTransactions.Contains(transaction.Index)) return;
 
-            string stakeKeyHash = string.IsNullOrEmpty(stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash) ?
-                stakeDelegationEvent.StakeDelegation.Credential.Scripthash :
-                stakeDelegationEvent.StakeDelegation.Credential.AddrKeyHash;
-            string stakeAddress = AddressUtility.GetRewardAddress(Convert.FromHexString(stakeKeyHash), _settings.NetworkType).ToString();
+            string? stakeAddress = _cardanoService.GetStakeAddressFromEvent(stakeDelegationEvent);
+
+            if (stakeAddress is null) return;
+
             string poolId = _cardanoService.PoolHashToBech32(stakeDelegationEvent.StakeDelegation.PoolHash);
-            List<FisoPool> fisoPools = _settings.FisoPools
+
+            List<string> fisoPools = _settings.FisoPools
                 .Where(fp => fp.JoinEpoch <= epoch)
+                .Select(fp => fp.PoolId)
                 .ToList();
 
-            var fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
+            FisoDelegator? fisoDelegator = await _dbContext.FisoDelegators.Where(fd => fd.StakeAddress == stakeAddress && fd.Epoch == epoch).FirstOrDefaultAsync();
 
+            if (fisoDelegator is null && !fisoPools.Contains(poolId)) return;
+
+            decimal delegatorStake = await GetStakeAddressLiveStakeByBlockAsync(stakeAddress, (int)stakeDelegationEvent.Context.BlockNumber!);
+            FisoDelegation newFisoDelegation = new()
+            {
+                EpochNumber = epoch,
+                TxHash = stakeDelegationEvent.Context.TxHash,
+                Slot = (ulong)stakeDelegationEvent.Context.Slot,
+                BlockNumber = (ulong)stakeDelegationEvent.Context.BlockNumber,
+                StakeAddress = stakeAddress,
+                FromPoolId = fisoDelegator?.PoolId,
+                ToPoolId = poolId,
+                LiveStake = (ulong)delegatorStake
+            };
+
+            // deduct from old fiso pool
             if (fisoDelegator is not null)
             {
-                // if fisoDelegator left the pool
-                if (fisoDelegator.PoolId != poolId)
-                {
-                    var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
+                var fromFisoPool = await _dbContext.FisoPoolActiveStakes
                         .Where(fpas => fpas.PoolId == fisoDelegator.PoolId && fpas.EpochNumber == epoch)
                         .FirstOrDefaultAsync();
 
-                    // deduct the stake amount
-                    if (fisoPoolActiveStake is not null)
-                    {
-                        decimal stake = await GetStakeAddressLiveStakeByBlockAsync(stakeAddress, (int)stakeDelegationEvent.Context.BlockNumber!);
-                        fisoPoolActiveStake.StakeAmount -= (ulong)stake;
-                        _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
-                    }
-
-                    // if transferred to another fiso pool
-                    if (fisoPools.Select(fp => fp.PoolId).Contains(poolId))
-                    {
-                        var newFisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
-                            .Where(fpas => fpas.PoolId == poolId && fpas.EpochNumber == epoch)
-                            .FirstOrDefaultAsync();
-
-                        if (newFisoPoolActiveStake is not null)
-                        {
-                            newFisoPoolActiveStake.StakeAmount += fisoDelegator.StakeAmount;
-                            var newFisoDelegator = new FisoDelegator
-                            {
-                                // Copy over all properties except for the primary key
-                                StakeAmount = fisoDelegator.StakeAmount,
-                                PoolId = poolId,
-                                StakeAddress = fisoDelegator.StakeAddress,
-                                HasBonus = fisoDelegator.HasBonus,
-                                Epoch = fisoDelegator.Epoch
-
-                            };
-                            _dbContext.FisoPoolActiveStakes.Update(newFisoPoolActiveStake);
-                            _dbContext.FisoDelegators.Remove(fisoDelegator);
-                            await _dbContext.FisoDelegators.AddAsync(newFisoDelegator);
-                        }
-                    }
-                    else
-                    {
-                        // else remove
-                        _dbContext.FisoDelegators.Remove(fisoDelegator);
-                    }
-
+                // deduct amount
+                if (fromFisoPool is not null)
+                {
+                    fromFisoPool.StakeAmount -= (ulong)delegatorStake;
+                    _dbContext.Update(fromFisoPool);
+                    _dbContext.Remove(fisoDelegator);
                 }
             }
             else
             {
-                // if new delegation
-                if (fisoPools.Select(fp => fp.PoolId).Contains(poolId))
+                // add to new fiso pool
+                if (fisoPools.Contains(poolId))
                 {
-                    var fisoPoolActiveStake = await _dbContext.FisoPoolActiveStakes
+                    var toFisoPool = await _dbContext.FisoPoolActiveStakes
                         .Where(fpas => fpas.PoolId == poolId && fpas.EpochNumber == epoch)
                         .FirstOrDefaultAsync();
-                    var bonusFisoPool = await _dbContext.FisoPoolActiveStakes
-                        .Where(fpas => fpas.EpochNumber == epoch)
-                        .OrderBy(fpas => fpas.StakeAmount)
-                        .FirstOrDefaultAsync();
 
-                    decimal stake = await GetStakeAddressLiveStakeByBlockAsync(stakeAddress, (int)stakeDelegationEvent.Context.BlockNumber!);
-
-                    // update stake amount
-                    if (fisoPoolActiveStake is not null)
+                    if (toFisoPool is not null)
                     {
-                        fisoPoolActiveStake.StakeAmount += (ulong)stake;
-                        _dbContext.FisoPoolActiveStakes.Update(fisoPoolActiveStake);
-
-                        // create new fiso delegator entry 
-                        await _dbContext.FisoDelegators.AddAsync(new FisoDelegator()
-                        {
-                            StakeAddress = stakeAddress,
-                            StakeAmount = (ulong)stake,
-                            PoolId = poolId,
-                            Epoch = epoch
-                        });
-                    }
-
-                    if (bonusFisoPool is not null && poolId == bonusFisoPool.PoolId)
-                    {
-                        // check if stake address already has active bonus
-                        var delegatorBonus = await _dbContext.FisoBonusDelegations
-                            .Where(fbd => fbd.StakeAddress == stakeAddress && fbd.PoolId == poolId)
-                            .FirstOrDefaultAsync();
-
-                        if (delegatorBonus is null)
-                        {
-                            // create new entry
-                            await _dbContext.FisoBonusDelegations.AddAsync(new FisoBonusDelegation()
-                            {
-                                EpochNumber = epoch,
-                                StakeAddress = stakeAddress,
-                                PoolId = poolId
-                            });
-                        }
+                        toFisoPool.StakeAmount += (ulong)delegatorStake;
+                        _dbContext.Update(toFisoPool);
                     }
                 }
             }
+
+            await _dbContext.FisoDelegations.AddAsync(newFisoDelegation);
             await _dbContext.SaveChangesAsync();
         }
     }
@@ -217,5 +166,61 @@ public class FisoDelegationReducer : OuraReducerBase
 
         return stakeAmount + rewardAmount - withdrawalAmount;
     }
-    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+        using TeddySwapFisoSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+        List<FisoDelegation> fisoDelegations = await _dbContext.FisoDelegations
+            .Where(fd => fd.BlockNumber == rollbackBlock.BlockNumber)
+            .ToListAsync();
+
+        List<string?> affectedPools = fisoDelegations.SelectMany(fd => new[] { fd.ToPoolId, fd.FromPoolId })
+            .Where(id => !string.IsNullOrEmpty(id))
+            .Distinct()
+            .ToList();
+
+        List<FisoPoolActiveStake> affectedFisoActiveStakes = await _dbContext.FisoPoolActiveStakes
+            .Where(fpas => affectedPools.Contains(fpas.PoolId))
+            .ToListAsync();
+
+        foreach (FisoDelegation fisoDelegation in fisoDelegations)
+        {
+            FisoPoolActiveStake? affectedFromPool = affectedFisoActiveStakes.Where(fpas => fpas.PoolId == fisoDelegation.FromPoolId).FirstOrDefault();
+            FisoPoolActiveStake? affectedToPool = affectedFisoActiveStakes.Where(fpas => fpas.PoolId == fisoDelegation.ToPoolId).FirstOrDefault();
+
+            if (affectedFromPool is not null && fisoDelegation.FromPoolId is not null)
+            {
+                affectedFromPool.StakeAmount += fisoDelegation.LiveStake;
+
+                FisoDelegator newFisoDelegator = new()
+                {
+                    StakeAddress = fisoDelegation.StakeAddress,
+                    PoolId = fisoDelegation.FromPoolId,
+                    StakeAmount = fisoDelegation.LiveStake,
+                    Epoch = fisoDelegation.EpochNumber
+                };
+
+                await _dbContext.FisoDelegators.AddAsync(newFisoDelegator);
+            }
+
+            if (affectedToPool is not null)
+            {
+                affectedToPool.StakeAmount -= fisoDelegation.LiveStake;
+
+                FisoDelegator? oldFisoDelegator = await _dbContext.FisoDelegators
+                    .Where(fd => fd.StakeAddress == fisoDelegation.StakeAddress && fd.Epoch == fisoDelegation.EpochNumber)
+                    .FirstOrDefaultAsync();
+
+                if (oldFisoDelegator is not null)
+                {
+                    _dbContext.Remove(oldFisoDelegator);
+                }
+            }
+
+            _dbContext.Remove(fisoDelegation);
+        }
+
+        _dbContext.UpdateRange(affectedFisoActiveStakes);
+        await _dbContext.SaveChangesAsync();
+    }
 }

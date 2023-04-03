@@ -10,6 +10,4 @@ public record FisoEpochReward
     public BigInteger StakeAmount { get; init; }
     public decimal SharePercentage { get; init; }
     public ulong ShareAmount { get; init; }
-    public bool HasBonus { get; set; }
-    public ulong BonusAmount { get; set; }
 }
