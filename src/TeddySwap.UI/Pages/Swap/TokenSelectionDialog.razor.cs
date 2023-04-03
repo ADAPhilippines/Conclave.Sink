@@ -15,5 +15,10 @@ public partial class TokenSelectionDialog
     [Parameter]
     public Action<Token> OnSelectedTokenClicked { get; set; } = default!;
     
-    private string SearchValue { get; set; } = string.Empty;
+    private string _searchValue { get; set; } = string.Empty;
+
+    private IEnumerable<Token> _filteredTokens =>
+        string.IsNullOrEmpty(_searchValue)
+            ? Tokens
+            : Tokens.Where(t => t.Name.ToLower().Contains(_searchValue.ToLower())).ToList();
 }

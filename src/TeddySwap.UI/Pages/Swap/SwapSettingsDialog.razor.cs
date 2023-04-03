@@ -1,25 +1,48 @@
 using Microsoft.AspNetCore.Components;
+using TeddySwap.UI.Services;
 using MudBlazor;
+using System.ComponentModel;
 
 namespace TeddySwap.UI.Pages.Swap;
 
 public partial class SwapSettingsDialog
 {
+    [Inject]
+    public AppStateService? AppStateService { get; set; }
+
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
 
     [Parameter]
     public Action<double> OnSlippageValueChanged { get; set; } = default!;
 
-    private double? _slippageValue { get; set; } = 7;
+    public double SlippageToleranceValue
+    {
+        get => AppStateService?.SlippageToleranceValue ?? 3;
+        set
+        {
+            if (AppStateService is not null) AppStateService.SlippageToleranceValue = value;
+        }
+    }
 
     private double? _minValue { get; set; } = 1.2;
 
-    private string _slippageBtnClass = string.Empty;
 
-    private void OnSlippageButtonClicked(int id)
+    protected override void OnInitialized()
+    {   
+         if (AppStateService is not null)
+            AppStateService.PropertyChanged += OnAppStatePropertyChanged;
+        base.OnInitialized();
+    }
+
+    private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        _slippageValue = id switch
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void OnSlippageButtonClicked(int value)
+    {
+       SlippageToleranceValue = value switch
         {
             1 => 1,
             3 => 3,

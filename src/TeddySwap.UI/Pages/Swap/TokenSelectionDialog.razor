@@ -11,16 +11,16 @@
         </MudIconButton>
         <MudTextField
             FullWidth
+            Immediate
             Placeholder="Search"
-            @bind-Value="@SearchValue"
+            @bind-Value="_searchValue"
             Variant="Variant.Outlined"
             Adornment="Adornment.Start"
             AdornmentIcon="@Icons.Material.Filled.Search"
         >
         </MudTextField>
-
         <MudList Clickable="true" Style="overflow-y: auto">
-            @foreach (Token token in Tokens)
+            @foreach (Token token in _filteredTokens)
             {
                 <TokenSelectionDialogItem Token="token" OnSelectedTokenClicked="OnSelectedTokenClicked" />
             }

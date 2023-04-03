@@ -26,7 +26,7 @@
                     DisableElevation
                     OnClick="@(() => OnSlippageButtonClicked(1))"
                     Size="Size.Small"
-                    Class="@(_slippageValue == 1 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Class="@(SlippageToleranceValue == 1 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
                     Style="padding: 6px 16px; height: 36.5px; border-radius: 50px"
                     Color="Color.Transparent"
                     Variant="Variant.Filled">
@@ -36,7 +36,7 @@
                     DisableElevation
                     OnClick="@(() => OnSlippageButtonClicked(3))"
                     Size="Size.Small"
-                    Class="@(_slippageValue == 3 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Class="@(SlippageToleranceValue == 3 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
                     Style="padding: 6px 16px; height: 36.5px; border-radius: 50px"
                     Color="Color.Transparent"
                     Variant="Variant.Filled">
@@ -46,7 +46,7 @@
                     DisableElevation
                     OnClick="@(() => OnSlippageButtonClicked(7))"
                     Size="Size.Small"
-                    Class="@(_slippageValue == 7 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Class="@(SlippageToleranceValue == 7 ? "bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "hover:bg-[rgba(3, 105, 161, 0.08)]")"
                     Style="padding: 6px 16px; height: 36.5px; border-radius: 50px"
                     Color="Color.Transparent"
                     Variant="Variant.Filled">
@@ -54,7 +54,7 @@
                 </MudButton>
                 <MudNumericField
                     HideSpinButtons
-                    @bind-Value="_slippageValue"
+                    @bind-Value="SlippageToleranceValue"
                     Immediate
                     Placeholder="1"
                     Class="slippage-tolerance-input"
@@ -62,11 +62,11 @@
                     Adornment="Adornment.End"
                     AdornmentText="%"
                     Variant="Variant.Outlined"
-                    Min="0"
+                    Min="1"                    
                 />
             </div>
              <div class="mt-4">
-                 @if (_slippageValue == null)
+                 @if (SlippageToleranceValue == 0)
                  {
                     <MudAlert
                         Style="background-color: var(--mud-palette-warning-darken)"
@@ -75,7 +75,7 @@
                             Minimal Slippage is 0.01
                     </MudAlert>
                  }
-                 else if (_slippageValue < 3)
+                 else if (SlippageToleranceValue < 3)
                  {
                     <MudAlert
                         Style="background-color: var(--mud-palette-warning-darken)"
@@ -84,7 +84,7 @@
                             Your transaction may fail
                     </MudAlert>
                  }
-                 else if (_slippageValue > 10)
+                 else if (SlippageToleranceValue > 10)
                  {
                     <MudAlert
                         Style="background-color: var(--mud-palette-warning-darken)"
