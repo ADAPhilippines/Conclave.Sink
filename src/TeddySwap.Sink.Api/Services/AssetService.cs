@@ -111,7 +111,7 @@ public class AssetService
             .ToListAsync();
 
         Dictionary<string, AssetMetadataResponse> metadataDictionary = new();
-        metadata.ForEach(m => metadataDictionary.Add(m.PolicyId + m.TokenName, m));
+        metadata.ForEach(m => { metadataDictionary.Add(m.PolicyId + m.TokenName, m); });
         return metadataDictionary;
     }
 }
