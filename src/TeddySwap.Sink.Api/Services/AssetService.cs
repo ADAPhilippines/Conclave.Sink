@@ -56,6 +56,33 @@ public class AssetService
         };
     }
 
+    public async Task<PaginatedAssetResponse> GetNftOwnersAsync(int offset, int limit, List<string> addresses, string policyId)
+    {
+        var nftOwnerQuery = _dbContext.NftOwners
+            .Where(no => addresses.Contains(no.Address) && no.PolicyId == policyId.ToLower());
+
+        var totalNfts = await nftOwnerQuery.CountAsync();
+
+        List<AssetResponse> paginatedNfts = await nftOwnerQuery
+            .Skip(offset)
+            .Take(limit)
+            .Select(no => new AssetResponse()
+            {
+                Name = no.TokenName,
+                AsciiName = Encoding.ASCII.GetString(Convert.FromHexString(no.TokenName)),
+                Amount = 1
+            })
+            .ToListAsync();
+
+        return new()
+        {
+            TotalCount = totalNfts,
+            PolicyId = policyId,
+            Result = paginatedNfts,
+            Address = addresses.FirstOrDefault() ?? ""
+        };
+    }
+
     public async Task<AssetMetadataResponse?> GetNftMetadataAsync(string policyId, string tokenName)
     {
         return await _dbContext.MintTransactions
@@ -70,9 +97,9 @@ public class AssetService
             .FirstOrDefaultAsync();
     }
 
-    public async Task<List<AssetMetadataResponse>?> GetNftMetadataAsync(List<string> assets)
+    public async Task<Dictionary<string, AssetMetadataResponse>?> GetNftMetadataAsync(List<string> assets)
     {
-        return await _dbContext.MintTransactions
+        var metadata = await _dbContext.MintTransactions
             .Where(mtx => assets.Contains(mtx.PolicyId + mtx.TokenName))
             .Select(m => new AssetMetadataResponse()
             {
@@ -82,5 +109,9 @@ public class AssetService
                 Metadata = m.Metadata
             })
             .ToListAsync();
+
+        Dictionary<string, AssetMetadataResponse> metadataDictionary = new();
+        metadata.ForEach(m => metadataDictionary.Add(m.PolicyId + m.TokenName, m));
+        return metadataDictionary;
     }
 }
