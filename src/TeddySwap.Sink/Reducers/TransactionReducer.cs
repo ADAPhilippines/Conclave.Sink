@@ -54,6 +54,17 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 
             if (existingTransaction is not null) return;
 
+            string? metadata = null;
+
+            try
+            {
+                metadata = JsonSerializer.Serialize(transaction.Metadata).Replace("\u0000", "\uFFFF");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.Message);
+            }
+
             Transaction newTransaction = new()
             {
                 Hash = transaction.Hash,
@@ -61,7 +72,7 @@ public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
                 Index = (ulong)transaction.Index,
                 Block = block,
                 Blockhash = block.BlockHash,
-                Metadata = JsonSerializer.Serialize(transaction.Metadata),
+                Metadata = metadata,
                 HasCollateralOutput = transaction.HasCollateralOutput
             };
 
