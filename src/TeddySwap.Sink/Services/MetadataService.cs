@@ -46,7 +46,9 @@ public class MetadataService
         List<AssetClass> assets = new();
         if (transaction.Metadata is not null)
         {
-            List<Metadatum>? metadata = JsonSerializer.Deserialize<IEnumerable<Metadatum>>(transaction.Metadata)?.ToList();
+            byte[] metadataBytes = Convert.FromBase64String(transaction.Metadata);
+            string stringMetadata = Encoding.UTF8.GetString(metadataBytes);
+            List<Metadatum>? metadata = JsonSerializer.Deserialize<IEnumerable<Metadatum>>(stringMetadata)?.ToList();
 
             if (metadata is not null)
             {
