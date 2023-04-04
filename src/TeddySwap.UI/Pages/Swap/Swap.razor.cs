@@ -13,23 +13,10 @@ public partial class Swap
     private IDialogService DialogService { get; set; } = default!;
 
     [Inject]
-    public AppStateService? AppStateService { get; set; }
+    protected new AppStateService AppStateService { get; set; } = default!;
 
     [Inject]
     protected CardanoWalletService? CardanoWalletService { get; set; }
-
-    public double SlippageToleranceValue
-    {
-        get => AppStateService?.SlippageToleranceValue ?? 3;
-        set
-        {
-            if (AppStateService is not null) AppStateService.SlippageToleranceValue = value;
-        }
-    }
-
-    private double _fromValue { get; set; }
-
-    private double _toValue { get; set; }
 
     private IEnumerable<Token>? Tokens { get; set; } = default!;
 
@@ -37,7 +24,6 @@ public partial class Swap
 
     private void ToggleExpansionPanel() => _isPanelExpanded = !_isPanelExpanded;
 
-    
     protected override void OnInitialized()
     {
         if (AppStateService is not null)
@@ -46,21 +32,15 @@ public partial class Swap
         string tokensJson = File.ReadAllText("./wwwroot/tokens.json");
         ArgumentException.ThrowIfNullOrEmpty(tokensJson);
         Tokens = JsonSerializer.Deserialize<IEnumerable<Token>>(tokensJson);
-        base.OnInitialized();
     }
 
     private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        await InvokeAsync(StateHasChanged);
-    }
+        => await InvokeAsync(StateHasChanged);
     
     private void OpenSwapSettingsDialog()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
         var parameters = new DialogParameters();
-        parameters.Add("OnSlippageValueChanged", (double value) => HandleSlippageValueChange(value));
         DialogService.Show<SwapSettingsDialog>("Swap Settings", parameters, options);
     }
-
-    private void HandleSlippageValueChange(double value) => SlippageToleranceValue = value;
 }

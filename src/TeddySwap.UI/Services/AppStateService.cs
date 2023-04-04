@@ -17,6 +17,42 @@ public class AppStateService : INotifyPropertyChanged
         }
     }
 
+    private double _minimumHoneyValue;
+
+    public double MinimumHoneyValue
+    {
+        get => _minimumHoneyValue;
+        set
+        {
+            _minimumHoneyValue = value;
+             OnPropertyChanged();
+        }
+    }
+
+    private double _fromValue;
+
+    public double FromValue
+    {
+        get => _fromValue;
+        set
+        {
+            _fromValue = value;
+             OnPropertyChanged();
+        }
+    }
+
+    private double _toValue;
+
+    public double ToValue
+    {
+        get => _toValue;
+        set
+        {
+            _toValue = value;
+             OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? name = null)

@@ -26,7 +26,7 @@
                 <div class="relative">
                     <MudNumericField
                         HideSpinButtons
-                        @bind-Value="_fromValue"
+                        @bind-Value="AppStateService.FromValue"
                         Placeholder="0.0"
                         Label="From"
                         Variant="Variant.Outlined"
@@ -35,7 +35,7 @@
                     />
                     <TokenChip Tokens="Tokens" />
                 </div>
-                <div class="flex justify-between mt-2">
+                <div class="flex justify-between mt-2 text-[12px]">
                     <span>0 ADA</span>
                     <span>Balance: 17,000</span>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="relative">
                     <MudNumericField
                         HideSpinButtons
-                        @bind-Value="_toValue"
+                        @bind-Value="AppStateService.ToValue"
                         Placeholder="0.0"
                         Label="To"
                         Variant="Variant.Outlined"
@@ -53,7 +53,7 @@
                     />
                     <TokenChip Tokens="Tokens" />
                 </div>
-                <div class="flex justify-between mt-2">
+                <div class="flex justify-between mt-2 text-[12px]">
                     <span>0 ADA</span>
                     <span>Balance: 17,000</span>
                 </div>
@@ -93,7 +93,7 @@
             <MudListItem Class="!pt-0 !pb-[4px]">
                 <div class="flex justify-between items-center text-[12px]">
                     <div>Slippage tolerance:</div>
-                    <div>@SlippageToleranceValue %</div>
+                    <div>@AppStateService.SlippageToleranceValue %</div>
                 </div>
             </MudListItem>
             <MudListItem Class="!pt-0 !pb-[4px]">
