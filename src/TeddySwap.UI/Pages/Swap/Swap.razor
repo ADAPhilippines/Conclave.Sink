@@ -21,8 +21,8 @@
         </div>
     </MudCardHeader>
     <MudCardContent Class="p-0">
-        <div class="flex flex-col gap-4">
-            <div>
+        <div class="flex flex-col gap-4 relative h-[256px]">
+            <div class="absolute left-0 w-full transition-all duration-500 @(_areInputsSwapped ? "bottom-0" : "top-0")">
                 <div class="relative">
                     <MudNumericField
                         HideSpinButtons
@@ -33,14 +33,17 @@
                         Min="0.0"
                         Class="swap-input"
                     />
-                    <TokenChip Tokens="Tokens" />
+                    <TokenChip Tokens="Tokens" Id="1" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
                 </div>
                 <div class="flex justify-between mt-2 text-[12px]">
                     <span>0 ADA</span>
                     <span>Balance: 17,000</span>
                 </div>
             </div>
-            <div>
+            
+            <MudIconButton OnClick="SwapInputs" Class="w-fit m-auto" Icon="@Icons.Material.Filled.SwapVert" aria-label="reverse"></MudIconButton>
+
+            <div class="absolute left-0 w-full transition-all duration-500 @(_areInputsSwapped ? "top-0" : "bottom-0")">
                 <div class="relative">
                     <MudNumericField
                         HideSpinButtons
@@ -51,7 +54,7 @@
                         Min="0.0"
                         Class="swap-input"
                     />
-                    <TokenChip Tokens="Tokens" />
+                    <TokenChip Tokens="Tokens" Id="2" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
                 </div>
                 <div class="flex justify-between mt-2 text-[12px]">
                     <span>0 ADA</span>
@@ -62,7 +65,7 @@
     </MudCardContent>
     
     <MudCardActions Class="p-0">
-        @if (!string.IsNullOrEmpty(CardanoWalletService?.ConnectedAddress))
+        @* @if (!string.IsNullOrEmpty(CardanoWalletService?.ConnectedAddress))
         {
             <MudButton
                 FullWidth
@@ -83,8 +86,17 @@
             >
                 Connect wallet
             </MudButton>
-        }
+        } *@
 
+        <MudButton
+            FullWidth
+            OnClick="OpenConfirmSwapDialog"
+            Class="!rounded-xl text-[20px] py-[8px] font-bold"
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+        >
+            Swap
+        </MudButton>
     </MudCardActions>
 
     <MudCardContent Class="!bg-[#1e3b4b] p-[12px] rounded-[6px]">

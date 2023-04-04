@@ -117,7 +117,7 @@
                 <MudNumericField
                     HideSpinButtons
                     Placeholder="0"
-                    @bind-Value="AppStateService.MinimumHoneyValue"
+                    @bind-Value="AppStateService.HoneyValue"
                     Immediate
                     Class="honey-input"
                     Adornment="Adornment.End"
@@ -130,7 +130,7 @@
         <div class="mt-2 text-[12px]">
             Execution Fee Range 2 - 2.4 ADA
         </div>
-        @if (AppStateService.MinimumHoneyValue < MINIMUM_HONEY_VALUE)
+        @if (AppStateService.HoneyValue < MINIMUM_HONEY_VALUE)
         {
             <MudAlert Dense Class="mt-4" Variant="Variant.Filled" Severity="Severity.Error">Minimal Honey value is 1.2</MudAlert>
         }

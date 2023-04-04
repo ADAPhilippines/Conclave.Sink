@@ -22,16 +22,24 @@ public partial class Swap
 
     private bool _isPanelExpanded { get; set; } = false;
 
+    private bool _areInputsSwapped { get; set; } = false;
+
+    private void SwapInputs() => _areInputsSwapped = !_areInputsSwapped;
+
     private void ToggleExpansionPanel() => _isPanelExpanded = !_isPanelExpanded;
 
     protected override void OnInitialized()
-    {
-        if (AppStateService is not null)
-            AppStateService.PropertyChanged += OnAppStatePropertyChanged;
-        
+    { 
         string tokensJson = File.ReadAllText("./wwwroot/tokens.json");
         ArgumentException.ThrowIfNullOrEmpty(tokensJson);
         Tokens = JsonSerializer.Deserialize<IEnumerable<Token>>(tokensJson);
+
+        if (AppStateService is not null)
+        {
+            AppStateService.PropertyChanged += OnAppStatePropertyChanged;
+            AppStateService.FromCurrentlySelectedToken = Tokens?.ElementAt(0);
+            AppStateService.ToCurrentlySelectedToken = Tokens?.ElementAt(2);
+        }
     }
 
     private async void OnAppStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -40,7 +48,12 @@ public partial class Swap
     private void OpenSwapSettingsDialog()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        var parameters = new DialogParameters();
-        DialogService.Show<SwapSettingsDialog>("Swap Settings", parameters, options);
+        DialogService.Show<SwapSettingsDialog>("Swap Settings",  options);
+    }
+
+    private void OpenConfirmSwapDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<ConfirmSwapDialog>("Confirm swap", options);
     }
 }

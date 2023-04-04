@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using TeddySwap.UI.Models;
+using TeddySwap.UI.Services;
 
 namespace TeddySwap.UI.Pages.Swap;
 
@@ -9,12 +10,22 @@ public partial class TokenChip
     [Inject]
     IDialogService DialogService { get; set; } = default!;
 
+    [Inject]
+    protected new AppStateService AppStateService { get; set; } = default!;
+
     [Parameter]
     public IEnumerable<Token> Tokens { get; set; } = default!;
 
-    private Token _currentlySelectedToken { get; set; } = default!;
+    [Parameter]
+    public Token CurrentlySelectedToken { get; set; } = default!;
 
-    protected override void OnInitialized() =>  _currentlySelectedToken = Tokens.ElementAt(0);
+    [Parameter]
+    public EventCallback<Token> OnSelectedTokenClicked { get; set; } = default!;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    // protected override void OnInitialized() =>  AppStateService.CurrentlySelectedToken = Tokens.ElementAt(0);
 
     private void OpenSelectTokenDialog()
     {
@@ -25,5 +36,9 @@ public partial class TokenChip
         DialogService.Show<TokenSelectionDialog>("Select Token", parameters, options);
     }
 
-    private void HandleSelectedToken(Token token) => _currentlySelectedToken = token;
+    private void HandleSelectedToken(Token token)
+    {
+        if (Id == "1") AppStateService.FromCurrentlySelectedToken = token;
+        if (Id == "2") AppStateService.ToCurrentlySelectedToken = token;
+    }
 }

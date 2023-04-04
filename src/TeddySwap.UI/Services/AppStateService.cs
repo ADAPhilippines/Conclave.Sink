@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TeddySwap.UI.Models;
 
 namespace TeddySwap.UI.Services;
 
@@ -17,14 +18,14 @@ public class AppStateService : INotifyPropertyChanged
         }
     }
 
-    private double _minimumHoneyValue;
+    private double _honeyValue;
 
-    public double MinimumHoneyValue
+    public double HoneyValue
     {
-        get => _minimumHoneyValue;
+        get => _honeyValue;
         set
         {
-            _minimumHoneyValue = value;
+            _honeyValue = value;
              OnPropertyChanged();
         }
     }
@@ -49,6 +50,30 @@ public class AppStateService : INotifyPropertyChanged
         set
         {
             _toValue = value;
+             OnPropertyChanged();
+        }
+    }
+
+    private Token? _fromCurrentlySelectedToken;
+
+    public Token? FromCurrentlySelectedToken
+    {
+        get => _fromCurrentlySelectedToken;
+        set
+        {
+            _fromCurrentlySelectedToken = value;
+             OnPropertyChanged();
+        }
+    }
+
+    private Token? _toCurrentlySelectedToken;
+
+    public Token? ToCurrentlySelectedToken
+    {
+        get => _toCurrentlySelectedToken;
+        set
+        {
+            _toCurrentlySelectedToken = value;
              OnPropertyChanged();
         }
     }

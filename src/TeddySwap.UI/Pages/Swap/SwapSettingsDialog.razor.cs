@@ -20,7 +20,7 @@ public partial class SwapSettingsDialog
         if (AppStateService is not null)
         {
             AppStateService.PropertyChanged += OnAppStatePropertyChanged;
-            AppStateService.MinimumHoneyValue = MINIMUM_HONEY_VALUE;
+            AppStateService.HoneyValue = MINIMUM_HONEY_VALUE;
         }
 
     }
@@ -40,5 +40,5 @@ public partial class SwapSettingsDialog
         };
     }
 
-    private void OnMinimumButtonClicked() => AppStateService.MinimumHoneyValue = MINIMUM_HONEY_VALUE;
+    private void OnMinimumButtonClicked() => AppStateService.HoneyValue = MINIMUM_HONEY_VALUE;
 }
