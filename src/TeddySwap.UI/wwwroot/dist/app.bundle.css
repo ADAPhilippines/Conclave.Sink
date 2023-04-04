@@ -575,6 +575,22 @@ video {
   top: -56px;
 }
 
+.right-px {
+  right: 1px;
+}
+
+.top-\[8px\] {
+  top: 8px;
+}
+
+.top-\[7px\] {
+  top: 7px;
+}
+
+.top-\[6px\] {
+  top: 6px;
+}
+
 .z-\[10\] {
   z-index: 10;
 }
@@ -702,6 +718,10 @@ video {
   height: 30px;
 }
 
+.h-\[36\.5px\] {
+  height: 36.5px;
+}
+
 .h-\[36px\] {
   height: 36px;
 }
@@ -712,6 +732,10 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.h-\[469px\] {
+  height: 469px;
 }
 
 .max-h-\[45px\] {
@@ -744,6 +768,18 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[600px\] {
+  width: 600px;
+}
+
+.max-w-\[200px\] {
+  max-width: 200px;
+}
+
+.max-w-\[448px\] {
+  max-width: 448px;
 }
 
 .shrink-0 {
@@ -859,8 +895,16 @@ video {
   overflow-x: hidden;
 }
 
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
 .\!rounded-xl {
   border-radius: 0.75rem !important;
+}
+
+.rounded-\[50px\] {
+  border-radius: 50px;
 }
 
 .rounded-\[6px\] {
@@ -899,6 +943,10 @@ video {
 
 .bg-\[var\(--mud-palette-surface\)\] {
   background-color: var(--mud-palette-surface);
+}
+
+.bg-\[var\(--mud-palette-warning-darken\)\] {
+  background-color: var(--mud-palette-warning-darken);
 }
 
 .bg-\[url\(\'\/images\/bear-with-balloons\.png\'\)\] {
@@ -963,6 +1011,11 @@ video {
   padding-right: 12px;
 }
 
+.px-\[16px\] {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 .py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
@@ -976,6 +1029,11 @@ video {
 .py-\[18px\] {
   padding-top: 18px;
   padding-bottom: 18px;
+}
+
+.py-\[6px\] {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .py-\[8px\] {
@@ -1009,6 +1067,10 @@ video {
 
 .pt-\[4px\] {
   padding-top: 4px;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .text-center {
@@ -1144,6 +1206,8 @@ body:has(.mud-drawer--open) {
 .slippage-tolerance-input input,
 .honey-input input {
   text-align: right !important;
+  padding: 0 !important;
+  height: 33px !important;
 }
 
 .honey-input,

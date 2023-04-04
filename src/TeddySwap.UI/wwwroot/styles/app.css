@@ -34,6 +34,8 @@ body:has(.mud-drawer--open) {
 .slippage-tolerance-input input,
 .honey-input input {
     text-align: right !important;
+    padding: 0 !important;
+    height: 33px !important;
 }
 
 .honey-input,
