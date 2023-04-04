@@ -1,0 +1,19 @@
+<MudDialog Class="w-[343px] relative overflow-hidden pb-4 rounded-[16px]">
+    <DialogContent>
+        <MudIconButton
+            OnClick="@(() => MudDialog.Close())"
+            Class="absolute top-[-28px] right-[7px] z-[10]"
+            Icon="@Icons.Material.Filled.Close"
+            aria-label="close"
+        >
+        </MudIconButton>
+        <div class="w-full flex justify-center mt-[15px]">
+            <MudProgressCircular Class="m-auto !h-[80px] !w-[80px]" Color="Color.Primary" Indeterminate="true" />
+        </div>
+        <div class="text-center w-full mt-8">
+            <h3 class="font-semibold text-[20px]">Waiting for confirmation</h3>
+            <p class="text-[14px]">Swapping 12 TEDYt for 16.826001 iUSDt</p>
+            <p class="text-[14px]">Confirm this transaction in your wallet</p>
+        </div>
+    </DialogContent>
+</MudDialog>

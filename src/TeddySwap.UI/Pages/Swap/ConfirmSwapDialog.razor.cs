@@ -11,4 +11,16 @@ public partial class ConfirmSwapDialog
 
     [Inject]
     public IconsService IconsService { get; set; } = default!;
+
+    [Inject]
+    IDialogService DialogService { get; set; } = default!;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    private void OpenWaitingConfirmationDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<WaitingConfirmationDialog>("", options);
+    }
 }

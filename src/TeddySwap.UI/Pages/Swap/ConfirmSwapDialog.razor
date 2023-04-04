@@ -91,7 +91,7 @@
         <div class="px-[16px] w-full">
             <MudButton
                 FullWidth
-                OnClick="Cancel"
+                OnClick="OpenWaitingConfirmationDialog"
                 Class="!rounded-xl text-[20px] py-[8px] font-bold"
                 Variant="Variant.Filled"
                 Color="Color.Primary"
@@ -101,9 +101,3 @@
         </div>
     </DialogActions>
 </MudDialog>
-@code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
-
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
-    void Cancel() => MudDialog.Cancel();
-}
