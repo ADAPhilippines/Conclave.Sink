@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using TeddySwap.Common.Services;
 using TeddySwap.UI.Services;
@@ -8,6 +9,9 @@ public class TeddySwapBasePage : ComponentBase, IAsyncDisposable
 {
     [Inject]
     protected HeartBeatService? HeartBeatService { get; set; }
+
+    [Inject]
+    protected AppStateService? AppStateService { get; set; }
 
     private bool IsHeartBeatEventAttached { get; set; }
 
