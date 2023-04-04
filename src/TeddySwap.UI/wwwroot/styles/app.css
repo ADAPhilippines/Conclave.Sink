@@ -6,6 +6,20 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
+.others-submenu .mud-button-label {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--mud-palette-text-secondary);
+    text-transform: capitalize;
+    text-align: left;
+}
+
+.others-submenu button {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 8px 0 8px 28px
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }

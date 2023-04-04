@@ -571,20 +571,12 @@ video {
   right: 10px;
 }
 
-.top-\[-56px\] {
-  top: -56px;
-}
-
 .right-px {
   right: 1px;
 }
 
-.top-\[8px\] {
-  top: 8px;
-}
-
-.top-\[7px\] {
-  top: 7px;
+.top-\[-56px\] {
+  top: -56px;
 }
 
 .top-\[6px\] {
@@ -726,16 +718,16 @@ video {
   height: 36px;
 }
 
+.h-\[469px\] {
+  height: 469px;
+}
+
 .h-\[527px\] {
   height: 527px;
 }
 
 .h-full {
   height: 100%;
-}
-
-.h-\[469px\] {
-  height: 469px;
 }
 
 .max-h-\[45px\] {
@@ -766,12 +758,12 @@ video {
   width: 200px;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-\[600px\] {
   width: 600px;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .max-w-\[200px\] {
@@ -1176,6 +1168,20 @@ video {
 
 body:has(.mud-drawer--open) {
   height: 100vh;
+}
+
+.others-submenu .mud-button-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--mud-palette-text-secondary);
+  text-transform: capitalize;
+  text-align: left;
+}
+
+.others-submenu button {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 8px 0 8px 28px
 }
 
 ::-webkit-scrollbar {

@@ -121,6 +121,12 @@
         <MudNavLink Href="https://fiso.teddyswap.org/" Target="_blank"
             ActiveClass="!text-[var(--mud-palette-text-primary)]"
             Class="!font-bold text-[var(--mud-palette-text-secondary)]">Staking</MudNavLink>
+        <MudMenu Label="Others" AnchorOrigin="Origin.BottomLeft" Class="others-submenu w-full">
+            <MudMenuItem>
+                <NavLink Href="/swap" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                    ActiveClass="!text-[var(--mud-palette-text-primary)]">Swap</NavLink>
+            </MudMenuItem>
+        </MudMenu>
     </MudNavMenu>
     <div class="flex justify-center mt-4">
         <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
