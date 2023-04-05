@@ -7,6 +7,7 @@ public record TeddySwapITNRewardSettings
     public int UserReward { get; init; }
     public ulong ItnEndSlot { get; init; }
     public ulong FisoEndEpoch { get; init; }
+    public decimal FisoRewardPerEpoch { get; init; }
     public string TbcPolicyId { get; init; } = string.Empty;
 
 }

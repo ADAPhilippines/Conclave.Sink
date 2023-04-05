@@ -39,7 +39,7 @@ public class FisoRewardService
                 PoolId = fer.PoolId,
                 Epoch = fer.EpochNumber,
                 ActiveStake = (ulong)fer.StakeAmount,
-                BaseReward = fer.ShareAmount,
+                BaseReward = (double)_settings.FisoRewardPerEpoch * (double)fer.SharePercentage,
                 BonusReward = 0
             })
             .ToListAsync();
@@ -49,6 +49,8 @@ public class FisoRewardService
             .Select(fpas => fpas.EpochNumber)
             .MaxAsync();
 
+        List<ulong> epochsWithReward = new();
+
         foreach (string poolId in rewards.Select(r => r.PoolId).Distinct())
         {
             var bonusPoolDelegations = await _dbContext.FisoBonusDelegations
@@ -57,39 +59,87 @@ public class FisoRewardService
                 .ToListAsync();
 
             var bonusPoolDelegation = bonusPoolDelegations
-                .Where(bpd => rewards.Where(r => r.PoolId == bpd.PoolId && r.Epoch == bpd.EpochNumber + 1).FirstOrDefault() != null)
+                .Where(bpd => rewards.Where(r => r.PoolId == bpd.PoolId).FirstOrDefault() != null)
                 .OrderBy(bpd => bpd.Slot)
                 .FirstOrDefault();
 
             if (bonusPoolDelegation is null) continue;
 
-            var filteredRewards = rewards.Where(r => r.PoolId == poolId && r.Epoch > bonusPoolDelegation.EpochNumber).ToList();
-            var epochWithBonusCount = filteredRewards.Count + (int)_settings.FisoEndEpoch - (int)maxEpoch;
+            List<FisoRewardResponse> filteredRewards = rewards
+                .Where(r => r.PoolId == poolId && r.Epoch > bonusPoolDelegation.EpochNumber && r.ActiveStake > 0)
+                .OrderBy(r => r.Epoch)
+                .ToList();
 
-            if (epochWithBonusCount >= 6) filteredRewards.ForEach(r => { r.BonusReward = (ulong)(r.BaseReward * 0.25); });
+            if (filteredRewards.Count <= 0) continue;
+
+            epochsWithReward.AddRange(GroupConsecutiveEpochs(filteredRewards, maxEpoch));
         }
+
+        rewards.ForEach(r =>
+        {
+            if (epochsWithReward.Contains(r.Epoch))
+            {
+                r.BonusReward = r.BaseReward * (double)0.25;
+            }
+        });
 
         return new()
         {
             FisoRewards = rewards,
             StakeAddress = stakeAddress,
-            TotalBaseReward = (ulong)rewards.Sum(r => (long)r.BaseReward),
-            TotalBonusReward = (ulong)rewards.Sum(r => (long)r.BonusReward)
+            TotalBaseReward = rewards.Sum(r => r.BaseReward),
+            TotalBonusReward = rewards.Sum(r => r.BonusReward)
         };
     }
 
+    private List<ulong> GroupConsecutiveEpochs(IEnumerable<FisoRewardResponse> rewards, ulong currentMaxEpoch)
+    {
+        List<ulong> epochs = rewards.OrderBy(r => r.Epoch).Select(r => r.Epoch).ToList();
+        List<List<ulong>> ranges = new();
+        List<ulong> currentRange = new() { epochs[0] };
+        ranges.Add(currentRange);
 
-    // private async  HasBonus(List<FisoRewardResponse> rewards, ulong startEpoch, ulong maxEpoch)
-    // {
-    //     var filteredRewards = rewards.OrderBy(r => r.Epoch).Where(r => r.Epoch >= startEpoch);
+        for (int i = 1; i < epochs.Count; i++)
+        {
 
-    //     if (filteredRewards.Count() == 1)
+            if (epochs[i] == epochs[i - 1] + 1)
+            {
+                currentRange.Add(epochs[i]);
+            }
+            else
+            {
+                currentRange = new List<ulong> { epochs[i] };
+                ranges.Add(currentRange);
+            }
+        }
 
-    //     for (int i = 0; i < filteredRewards.Count(); i++)
-    //     {
-    //         if (filteredRewards[0])
-    //     }
+        List<List<ulong>> filteredRanges = ranges
+            .Where(range =>
+                {
+                    ulong start = range.First();
+                    ulong end = range.Last();
+                    if (end == currentMaxEpoch)
+                    {
+                        end = _settings.FisoEndEpoch;
+                    }
+                    return end - start + 1 >= 6;
+                })
+            .ToList();
 
-    //     return true;
-    // }
+        List<ulong> flattenedEpochs = filteredRanges
+            .SelectMany(range =>
+            {
+                ulong start = range.First();
+                ulong end = range.Last();
+                if (end == currentMaxEpoch)
+                {
+                    end = _settings.FisoEndEpoch;
+                }
+                return Enumerable.Range((int)start, (int)(end - start + 1)).Select(i => (ulong)i);
+            })
+            .Distinct()
+            .ToList();
+
+        return flattenedEpochs;
+    }
 }
