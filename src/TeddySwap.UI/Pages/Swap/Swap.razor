@@ -26,6 +26,7 @@
                 <div class="relative">
                     <MudNumericField
                         HideSpinButtons
+                        Immediate
                         @bind-Value="AppStateService.FromValue"
                         Placeholder="0.0"
                         Label="From"
@@ -47,6 +48,7 @@
                 <div class="relative">
                     <MudNumericField
                         HideSpinButtons
+                        Immediate
                         @bind-Value="AppStateService.ToValue"
                         Placeholder="0.0"
                         Label="To"
@@ -88,15 +90,31 @@
             </MudButton>
         } *@
 
-        <MudButton
+        @if (AppStateService.FromValue <= 0)
+        {
+            <MudButton
+            FullWidth
+            Disabled
+            OnClick="OpenConfirmSwapDialog"
+            Class="!rounded-xl text-[20px] py-[8px] font-bold normal-case"
+            Variant="Variant.Filled"
+            
+            >
+                Enter an amount
+            </MudButton>
+        }
+        else
+        {
+            <MudButton
             FullWidth
             OnClick="OpenConfirmSwapDialog"
             Class="!rounded-xl text-[20px] py-[8px] font-bold"
             Variant="Variant.Filled"
             Color="Color.Primary"
-        >
-            Swap
-        </MudButton>
+            >
+                Swap
+            </MudButton>
+        }        
     </MudCardActions>
 
     <MudCardContent Class="!bg-[#1e3b4b] p-[12px] rounded-[6px]">
