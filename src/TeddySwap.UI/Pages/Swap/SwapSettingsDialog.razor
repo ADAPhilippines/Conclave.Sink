@@ -1,6 +1,6 @@
 @inherits TeddySwapBasePage
 
-<MudDialog Class="swap-settings-dialog">
+<MudDialog Class="swap-settings-dialog w-[92%] max-w-[500px]">
     <DialogContent>
         <MudIconButton
             OnClick="@(() => MudDialog.Close())"
@@ -105,7 +105,7 @@
                     </TooltipContent>
                 </MudTooltip>
             </div>
-            <div class="flex gap-4 items-center mt-2">
+            <div class="flex gap-2 md:gap-4 items-center mt-2">
                 <MudButton
                     OnClick="OnMinimumButtonClicked"
                     Class="!normal-case"
