@@ -6,6 +6,10 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
+.test .mud-popover .mud-popover-open:hover {
+    opacity: 1;
+}
+
 .others-submenu .mud-button-label {
     font-weight: 700;
     font-size: 14px;

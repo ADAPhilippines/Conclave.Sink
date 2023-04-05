@@ -24,6 +24,10 @@ public partial class Swap
 
     private bool _areInputsSwapped { get; set; } = false;
 
+    private bool _isChartButtonClicked { get; set; } = false;
+
+    private void ToggleChart() => _isChartButtonClicked = !_isChartButtonClicked;
+
     private void SwapInputs() => _areInputsSwapped = !_areInputsSwapped;
 
     private void ToggleExpansionPanel() => _isPanelExpanded = !_isPanelExpanded;
