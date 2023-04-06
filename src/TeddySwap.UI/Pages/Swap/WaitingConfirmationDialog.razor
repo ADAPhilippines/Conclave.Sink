@@ -1,3 +1,6 @@
+@using TeddySwap.UI.Services
+@inject AppStateService AppStateService
+
 <MudDialog Class="w-[343px] relative overflow-hidden pb-4 rounded-[16px]">
     <DialogContent>
         <MudIconButton
@@ -12,7 +15,7 @@
         </div>
         <div class="text-center w-full mt-8">
             <h3 class="font-semibold text-[20px]">Waiting for confirmation</h3>
-            <p class="text-[14px]">Swapping 12 TEDYt for 16.826001 iUSDt</p>
+            <p class="text-[14px]">Swapping @AppStateService.FromValue @AppStateService?.FromCurrentlySelectedToken?.Name for @AppStateService?.ToValue @AppStateService?.ToCurrentlySelectedToken?.Name</p>
             <p class="text-[14px]">Confirm this transaction in your wallet</p>
         </div>
     </DialogContent>

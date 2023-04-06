@@ -40,7 +40,9 @@
                             Min="0.0"
                             Class="swap-input"
                         />
-                        <TokenChip Tokens="Tokens" Id="1" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
+                        <div class="absolute right-[8px] top-[12px]">
+                            <TokenChip Tokens="Tokens" Id="1" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
+                        </div>
                     </div>
                     <div class="flex justify-between mt-2 text-[12px]">
                         <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") ADA</span>
@@ -62,7 +64,9 @@
                             Min="0.0"
                             Class="swap-input"
                         />
-                        <TokenChip Tokens="Tokens" Id="2" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
+                        <div class="absolute right-[8px] top-[12px]">
+                            <TokenChip Tokens="Tokens" Id="2" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
+                        </div>
                     </div>
                     <div class="flex justify-between mt-2 text-[12px]">
                         <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") ADA</span>

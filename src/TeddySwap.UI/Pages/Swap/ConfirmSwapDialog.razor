@@ -9,63 +9,47 @@
         </MudIconButton>
 
         <MudPaper Class="flex justify-between items-center p-4 rounded-[12px]">
-            <div class="font-semibold text-[24px]">@AppStateService.FromValue.ToString("N")</div>
-            <MudChip
-                Class=""
-                Color="Color.Primary"
-                Label="true"
-                Variant="Variant.Filled"
-            >
-                <div class="flex items-center gap-2 py-[18px]">
-                    <MudImage Src=@AppStateService?.FromCurrentlySelectedToken?.Logo Height="24" Width="24" />
-                    <MudText class="font-semibold">@AppStateService?.FromCurrentlySelectedToken?.Name</MudText>
-                </div>
-            </MudChip>
+            <div class="font-semibold text-[16px]">@AppStateService.FromValue</div>
+            <div class="confirm-swap-dialog-token-chip">
+                <TokenChip Disabled="true" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
+            </div>
         </MudPaper>
 
         <MudPaper Class="flex justify-between items-center p-4 rounded-[12px] mt-2">
-            <div class="font-semibold text-[24px]">@AppStateService.ToValue.ToString("N")</div>
-            <MudChip
-                Class=""
-                Color="Color.Primary"
-                Label="true"
-                Variant="Variant.Filled"
-            >
-                <div class="flex items-center gap-2 py-[18px]">
-                    <MudImage Src=@AppStateService?.ToCurrentlySelectedToken?.Logo Height="24" Width="24" />
-                    <MudText class="font-semibold">@AppStateService?.ToCurrentlySelectedToken?.Name</MudText>
-                </div>
-            </MudChip>
+            <div class="font-semibold text-[16px]">@AppStateService.ToValue</div>
+            <div class="confirm-swap-dialog-token-chip">
+                <TokenChip Disabled="true" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
+            </div>
         </MudPaper>
 
         <MudPaper Class="flex justify-between items-center p-4 rounded-[12px] mt-6">
             <MudList Class="w-full" DisableGutters>
                 <MudListItem Class="flex justify-between items-center py-0">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center text-[12px]">
                         <div>Slippage tolerance:</div>
                         <div class="font-semibold">@AppStateService.SlippageToleranceValue%</div>
                     </div>
                 </MudListItem>
                 <MudListItem Class="flex justify-between items-center py-0">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center text-[12px]">
                         <div>Honey:</div>
                         <div class="font-semibold">@AppStateService.HoneyValue</div>
                     </div>
                 </MudListItem>
                 <MudListItem Class="flex justify-between items-center py-0">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center text-[12px]">
                         <div>Estimated output:</div>
                         <div class="font-semibold">15.725234 - 31.450468 @AppStateService?.ToCurrentlySelectedToken?.Name</div>
                     </div>
                 </MudListItem>
                 <MudListItem Class="flex justify-between items-center py-0">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center text-[12px]">
                         <div>Refundable deposit:</div>
                         <div class="font-semibold">2 ADA</div>
                     </div>
                 </MudListItem>
                 <MudListItem Class="flex justify-between items-center py-0">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center text-[12px]">
                         <div class="flex">
                             <div>Total Fees</div>
                             <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
@@ -88,11 +72,11 @@
         </MudPaper>
     </DialogContent>
     <DialogActions>
-        <div class="px-[16px] w-full">
+        <div class="px-[16px] w-full mt-2">
             <MudButton
                 FullWidth
                 OnClick="OpenWaitingConfirmationDialog"
-                Class="!rounded-xl text-[20px] py-[8px] font-bold"
+                Class="!rounded-xl text-[20px] py-[6px] font-medium normal-case"
                 Variant="Variant.Filled"
                 Color="Color.Primary"
             >

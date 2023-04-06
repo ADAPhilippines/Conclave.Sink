@@ -6,8 +6,9 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
-.test .mud-popover .mud-popover-open:hover {
+.confirm-swap-dialog-token-chip > .mud-chip.mud-disabled {
     opacity: 1;
+    /* background-color: var(--mud-palette-secondary-darken) !important; */
 }
 
 .others-submenu .mud-button-label {

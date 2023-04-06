@@ -25,7 +25,8 @@ public partial class TokenChip
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    // protected override void OnInitialized() =>  AppStateService.CurrentlySelectedToken = Tokens.ElementAt(0);
+    [Parameter]
+    public bool Disabled { get; set; } = false;
 
     private void OpenSelectTokenDialog()
     {
