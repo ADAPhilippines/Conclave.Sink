@@ -6,6 +6,10 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
+.mud-badge.mud-badge-top.right.token-name-badge {
+    inset: auto;
+}
+
 .confirm-swap-dialog-token-chip > .mud-chip.mud-disabled {
     opacity: 1;
     /* background-color: var(--mud-palette-secondary-darken) !important; */
@@ -47,7 +51,7 @@ body:has(.mud-drawer--open) {
 }
 
 .select-token-dialog > .mud-list.mud-list-padding {
-    height: 330px !important;
+    height: 288px !important;
 }
 
 .slippage-tolerance-input input,

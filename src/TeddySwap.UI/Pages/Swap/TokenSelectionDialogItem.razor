@@ -1,18 +1,14 @@
 <MudListItem OnClick="HandleItemClicked">
     <div class="flex items-center gap-6">
-        <MudBadge Icon="@Icons.Material.Filled.Verified" Color="Color.Primary" Overlap BadgeClass="!py-[3.5px]">
-            <MudImage Class="rounded-full" Src=@Token.Logo Alt="Teddy swap logo" Height="32" Width="32" />
-        </MudBadge>
-        <div class="flex w-full">
-            <div class="flex flex-col">
-                <h4 class="text-[20px] font-semibold">@Token.Name</h4>
-                <span class="text-[12px]">@Token.Name</span>
-            </div>
-    
-            <div class="flex flex-col w-full justify-end text-right">
+        <MudImage Class="rounded-full" Src=@Token.Logo Alt="Teddy swap logo" Height="32" Width="32" />
+        <div class="w-full">
+            <div class="flex justify-between">
+                <MudBadge Icon="@Icons.Material.Filled.Verified" Color="Color.Primary" BadgeClass="!py-[3px] !absolute !right-[-24px] !top-[4px] token-name-badge">
+                    <h4 class="text-[20px] font-semibold">@Token.Name</h4>
+                </MudBadge>
                 <span class="text-[16px] font-semibold">0</span>
-                <span class="text-[12px]">~</span>
             </div>
+            <div class="text-[12px]">Lorem ipsum dolor sit amet consectetur.</div>
         </div>
     </div>
 </MudListItem>
