@@ -29,6 +29,7 @@ builder.Services.AddSingleton<QueryService>();
 builder.Services.AddScoped<AppStateService>();
 builder.Services.AddScoped<CardanoWalletService>();
 builder.Services.AddScoped<IconsService>();
+builder.Services.AddScoped<SwapCalculatorService>();
 
 var app = builder.Build();
 

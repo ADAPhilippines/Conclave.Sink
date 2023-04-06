@@ -758,12 +758,16 @@ video {
   height: 527px;
 }
 
+.h-\[714px\] {
+  height: 714px;
+}
+
 .h-full {
   height: 100%;
 }
 
-.h-\[714px\] {
-  height: 714px;
+.\!h-\[33px\] {
+  height: 33px !important;
 }
 
 .max-h-\[45px\] {
@@ -813,14 +817,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-0 {
-  width: 0px;
-}
-
-.w-\[69\.14\%\] {
-  width: 69.14%;
 }
 
 .max-w-\[200px\] {
@@ -1115,6 +1111,11 @@ video {
   padding-bottom: 8px;
 }
 
+.\!py-\[4\.5px\] {
+  padding-top: 4.5px !important;
+  padding-bottom: 4.5px !important;
+}
+
 .\!pb-\[4px\] {
   padding-bottom: 4px !important;
 }
@@ -1145,6 +1146,14 @@ video {
 
 .pt-\[4px\] {
   padding-top: 4px;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .text-left {
@@ -1181,14 +1190,6 @@ video {
 
 .text-\[24px\] {
   font-size: 24px;
-}
-
-.text-\[30px\] {
-  font-size: 30px;
-}
-
-.text-\[100px\] {
-  font-size: 100px;
 }
 
 .text-\[40px\] {
@@ -1260,16 +1261,16 @@ video {
   transition-duration: 150ms;
 }
 
+.duration-300 {
+  transition-duration: 300ms;
+}
+
 .duration-500 {
   transition-duration: 500ms;
 }
 
 .duration-700 {
   transition-duration: 700ms;
-}
-
-.duration-300 {
-  transition-duration: 300ms;
 }
 
 .ease-in-out {
@@ -1483,8 +1484,8 @@ body:has(.mud-drawer--open) {
     flex-direction: row;
   }
 
-  .lg\:text-\[100px\] {
-    font-size: 100px;
+  .lg\:text-\[90px\] {
+    font-size: 90px;
   }
 }
 

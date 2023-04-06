@@ -3,6 +3,7 @@
 @inherits TeddySwapBasePage
 @using TeddySwap.UI.Services
 @inject IconsService IconsService
+@inject SwapCalculatorService SwapCalculatorService
 
 <PageTitle>TeddySwap | Cardano | Swap</PageTitle>
 
@@ -42,8 +43,8 @@
                         <TokenChip Tokens="Tokens" Id="1" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
                     </div>
                     <div class="flex justify-between mt-2 text-[12px]">
-                        <span>0 ADA</span>
-                        <span>Balance: 17,000</span>
+                        <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") ADA</span>
+                        <span>Balance: 17,000 (<MudLink>Max</MudLink>)</span>
                     </div>
                 </div>
     
@@ -64,7 +65,7 @@
                         <TokenChip Tokens="Tokens" Id="2" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
                     </div>
                     <div class="flex justify-between mt-2 text-[12px]">
-                        <span>0 ADA</span>
+                        <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") ADA</span>
                         <span>Balance: 17,000</span>
                     </div>
                 </div>
@@ -124,19 +125,21 @@
     
         <MudCardContent Class="!bg-[#1e3b4b] p-[12px] rounded-[6px]">
             <MudText Class="font-semibold text-[12px]">
-                1 @AppStateService?.FromCurrentlySelectedToken?.Name = 0.038750 @AppStateService?.ToCurrentlySelectedToken?.Name
+                1 @AppStateService?.FromCurrentlySelectedToken?.Name = @SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") @AppStateService?.ToCurrentlySelectedToken?.Name
             </MudText>
-            <MudList Clickable DisableGutters>
+            <MudList DisableGutters>
                 <MudListItem Class="!pt-0 !pb-[4px]">
                     <div class="flex justify-between items-center text-[12px]">
                         <div>Slippage tolerance:</div>
-                        <div>@AppStateService.SlippageToleranceValue %</div>
+                        <div>@AppStateService.SlippageToleranceValue%</div>
                     </div>
                 </MudListItem>
                 <MudListItem Class="!pt-0 !pb-[4px]">
                     <div class="flex justify-between items-center text-[12px]">
                         <div>Price impact:</div>
-                        <div>0%</div>
+                        <div class="@GetPriceImpactValueClass()">
+                            @Math.Round(PriceImpactValue, 2)%
+                        </div>
                     </div>
                 </MudListItem>
                 <MudListItem Class="!pt-0 !pb-[4px]">
@@ -235,7 +238,7 @@
                     <MudListItem Class="!pt-0 !pb-[4px] text-[var(--mud-palette-text-primary)]">
                         <div class="flex justify-between items-center text-[12px]">
                             <div>Total fees:</div>
-                            <div>3 ADA - 3.4 ADA</div>
+                            <div>3 ADA - 5 ADA</div>
                         </div>
                     </MudListItem>
                 </div>

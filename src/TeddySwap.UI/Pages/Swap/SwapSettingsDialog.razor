@@ -1,6 +1,6 @@
 @inherits TeddySwapBasePage
 
-<MudDialog Class="swap-settings-dialog w-[92%] max-w-[500px]">
+<MudDialog Class="swap-settings-dialog w-[92%] max-w-[500px] rounded-[16px] pb-2">
     <DialogContent>
         <MudIconButton
             OnClick="@(() => MudDialog.Close())"
@@ -27,7 +27,7 @@
                 <MudButton
                     DisableElevation
                     OnClick="@(() => OnSlippageButtonClicked(1))"
-                    Size="Size.Small"
+                    Size="Size.Large"
                     Class="@(AppStateService.SlippageToleranceValue == 1 ? "py-[6px] px-[16px] h-[36.5px] rounded-[50px] bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "py-[6px] px-[16px] h-[36.5px] rounded-[50px] hover:bg-[rgba(3, 105, 161, 0.08)]")"
                     Color="Color.Transparent"
                     Variant="Variant.Filled">
@@ -36,7 +36,7 @@
                 <MudButton 
                     DisableElevation
                     OnClick="@(() => OnSlippageButtonClicked(3))"
-                    Size="Size.Small"
+                    Size="Size.Large"
                     Class="@(AppStateService.SlippageToleranceValue == 3 ? "py-[6px] px-[16px] h-[36.5px] rounded-[50px] bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "py-[6px] px-[16px] h-[36.5px] rounded-[50px] hover:bg-[rgba(3, 105, 161, 0.08)]")"
                     Color="Color.Transparent"
                     Variant="Variant.Filled">
@@ -45,7 +45,7 @@
                 <MudButton
                     DisableElevation
                     OnClick="@(() => OnSlippageButtonClicked(7))"
-                    Size="Size.Small"
+                    Size="Size.Large"
                      Class="@(AppStateService.SlippageToleranceValue == 7 ? "py-[6px] px-[16px] h-[36.5px] rounded-[50px] bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "py-[6px] px-[16px] h-[36.5px] rounded-[50px] hover:bg-[rgba(3, 105, 161, 0.08)]")"
                     Color="Color.Transparent"
                     Variant="Variant.Filled">
@@ -108,8 +108,8 @@
             <div class="flex gap-2 md:gap-4 items-center mt-2">
                 <MudButton
                     OnClick="OnMinimumButtonClicked"
-                    Class="!normal-case"
-                    Size="Size.Small"
+                    Class="!normal-case !h-[33px]"
+                    Size="Size.Large"
                     Variant="Variant.Filled"
                     Color="Color.Primary">
                         Minimum

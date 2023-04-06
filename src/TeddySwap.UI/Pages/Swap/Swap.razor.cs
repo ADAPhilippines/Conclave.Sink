@@ -20,17 +20,19 @@ public partial class Swap
 
     private IEnumerable<Token>? Tokens { get; set; } = default!;
 
+    private double _priceImpactValue;
+
+    private double PriceImpactValue
+    {
+        get => SwapCalculatorService.CalculatePriceImpact(AppStateService.FromValue);
+        set => _priceImpactValue = value;
+    }
+
     private bool _isPanelExpanded { get; set; } = false;
 
     private bool _areInputsSwapped { get; set; } = false;
 
     private bool _isChartButtonClicked { get; set; } = false;
-
-    private void ToggleChart() => _isChartButtonClicked = !_isChartButtonClicked;
-
-    private void SwapInputs() => _areInputsSwapped = !_areInputsSwapped;
-
-    private void ToggleExpansionPanel() => _isPanelExpanded = !_isPanelExpanded;
 
     protected override void OnInitialized()
     { 
@@ -59,5 +61,18 @@ public partial class Swap
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
         DialogService.Show<ConfirmSwapDialog>("Confirm swap", options);
+    }
+
+    private void ToggleChart() => _isChartButtonClicked = !_isChartButtonClicked;
+
+    private void SwapInputs() => _areInputsSwapped = !_areInputsSwapped;
+
+    private void ToggleExpansionPanel() => _isPanelExpanded = !_isPanelExpanded;
+
+    private string GetPriceImpactValueClass()
+    {
+        if (PriceImpactValue < 3) return "text-[var(--mud-palette-success)]";
+        if (PriceImpactValue < 5) return "text-[var(--mud-palette-warning)]";
+        return "text-[var(--mud-palette-error)]";
     }
 }
