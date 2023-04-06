@@ -2,6 +2,7 @@
 
 @inherits TeddySwapBasePage
 @using TeddySwap.UI.Services
+@using System.Globalization
 @inject IconsService IconsService
 @inject SwapCalculatorService SwapCalculatorService
 
@@ -27,86 +28,73 @@
             </div>
         </MudCardHeader>
         <MudCardContent Class="p-0">
-            <div class="flex flex-col gap-4 relative h-[256px]">
-                <div class="absolute left-0 w-full transition-all duration-500 @(_areInputsSwapped ? "bottom-0" : "top-0")">
+            <div class="flex flex-col relative h-[180px]">
+                <div class="absolute left-0 w-full transition-top duration-500 @(_areInputsSwapped ? "top-[93px]" : "top-0")">
                     <div class="relative">
                         <MudNumericField
                             HideSpinButtons
                             Immediate
                             @bind-Value="AppStateService.FromValue"
                             Placeholder="0.0"
-                            Label="From"
+                            Label="@(_areInputsSwapped ? "To" : "From")"
                             Variant="Variant.Outlined"
                             Min="0.0"
                             Class="swap-input"
+                            Culture=@CultureInfo.GetCultureInfo("en-US")
+                            T="double"
                         />
                         <div class="absolute right-[8px] top-[12px]">
                             <TokenChip Tokens="Tokens" Id="1" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
                         </div>
-                    </div>
-                    <div class="flex justify-between mt-2 text-[12px]">
-                        <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") ADA</span>
-                        <span>Balance: 17,000 (<MudLink>Max</MudLink>)</span>
+                        <div class="flex justify-between text-[12px] absolute w-full bottom-[13px] px-[14px]">
+                            <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N2") ADA</span>
+                            <span>Balance: 17,228 <span class="@(_areInputsSwapped ? "hidden" : "inline")">(<MudLink Underline="Underline.None" Class="text-[12px] cursor-pointer">Max</MudLink>)</span></span>
+                        </div>
                     </div>
                 </div>
+                <MudIconButton
+                    OnClick="SwapInputs"
+                    Class="w-fit !rounded-full m-auto absolute translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] z-[100]"
+                    Icon="@Icons.Material.Filled.SwapVert"
+                    aria-label="reverse"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                >
+                </MudIconButton>
     
-                <MudIconButton OnClick="SwapInputs" Class="w-fit m-auto" Icon="@Icons.Material.Filled.SwapVert" aria-label="reverse"></MudIconButton>
-    
-                <div class="absolute left-0 w-full transition-all duration-500 @(_areInputsSwapped ? "top-0" : "bottom-0")">
+                <div class="absolute left-0 w-full transition-bottom duration-500 @(_areInputsSwapped ? "bottom-[93px]" : "bottom-0")">
                     <div class="relative">
                         <MudNumericField
                             HideSpinButtons
                             Immediate
                             @bind-Value="AppStateService.ToValue"
                             Placeholder="0.0"
-                            Label="To"
+                            Label="@(_areInputsSwapped ? "From" : "To")"
                             Variant="Variant.Outlined"
                             Min="0.0"
                             Class="swap-input"
+                            Culture=@CultureInfo.GetCultureInfo("en-US")
+                            T="double"
                         />
                         <div class="absolute right-[8px] top-[12px]">
                             <TokenChip Tokens="Tokens" Id="2" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
                         </div>
                     </div>
-                    <div class="flex justify-between mt-2 text-[12px]">
-                        <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") ADA</span>
-                        <span>Balance: 17,000</span>
+                    <div class="flex justify-between mt-2 text-[12px] absolute w-full bottom-[13px] px-[14px]">
+                        <span>~@SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N2") ADA</span>
+                        <span>Balance: 9,456 <span class="@(_areInputsSwapped ? "inline" : "hidden")">(<MudLink Underline="Underline.None" Class="text-[12px] cursor-pointer">Max</MudLink>)</span></span>
                     </div>
                 </div>
             </div>
         </MudCardContent>
-    
         <MudCardActions Class="p-0">
-            @* @if (!string.IsNullOrEmpty(CardanoWalletService?.ConnectedAddress))
-            {
-                <MudButton
-                    FullWidth
-                    Class="rounded-xl text-[20px] py-[8px] font-bold"
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                >
-                    Swap
-                </MudButton>
-            }
-            else
-            {
-                <MudButton
-                    FullWidth
-                    Class="!rounded-xl text-[20px] py-[8px] font-bold"
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                >
-                    Connect wallet
-                </MudButton>
-            } *@
-    
             @if (AppStateService.FromValue <= 0)
             {
                 <MudButton
                 FullWidth
                 Disabled
                 OnClick="OpenConfirmSwapDialog"
-                Class="!rounded-xl text-[20px] py-[8px] font-bold normal-case"
+                Class="!rounded-xl text-[20px] py-[6px] font-medium normal-case"
                 Variant="Variant.Filled"
     
                 >
@@ -118,7 +106,7 @@
                 <MudButton
                 FullWidth
                 OnClick="OpenConfirmSwapDialog"
-                Class="!rounded-xl text-[20px] py-[8px] font-bold"
+                Class="!rounded-xl text-[20px] py-[6px] font-medium normal-case"
                 Variant="Variant.Filled"
                 Color="Color.Primary"
                 >
@@ -126,10 +114,9 @@
                 </MudButton>
             }
         </MudCardActions>
-    
-        <MudCardContent Class="!bg-[#1e3b4b] p-[12px] rounded-[6px]">
+        <MudCardContent Class="!bg-[var(--mud-palette-drawer-background)] pt-[20px] px-[12px] pb-1 rounded-[6px]">
             <MudText Class="font-semibold text-[12px]">
-                1 @AppStateService?.FromCurrentlySelectedToken?.Name = @SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N") @AppStateService?.ToCurrentlySelectedToken?.Name
+                1 @AppStateService?.FromCurrentlySelectedToken?.Name = @SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N2") @AppStateService?.ToCurrentlySelectedToken?.Name
             </MudText>
             <MudList DisableGutters>
                 <MudListItem Class="!pt-0 !pb-[4px]">
@@ -152,15 +139,15 @@
                         <div>0.036215 @AppStateService?.ToCurrentlySelectedToken?.Name</div>
                     </div>
                 </MudListItem>
-                <MudListItem Class="!pt-0 !pb-[4px] mb-[10px]">
+                <MudListItem Class="!pt-0 !pb-[4px]">
                     <div class="flex justify-between items-center text-[12px]">
                         <div>Maximum receivable:</div>
                         <div>0.043458 @AppStateService?.ToCurrentlySelectedToken?.Name</div>
                     </div>
                 </MudListItem>
     
-                <div class="text-[var(--mud-palette-text-secondary)] overflow-hidden transition-all ease-in-out duration-700 @(_isPanelExpanded ? "block opacity-100" : "hidden opacity-0")">
-                    <MudDivider Class="border-[var(--mud-palette-warning-darken)]" />
+                <div class="text-[var(--mud-palette-text-secondary)] overflow-hidden transition-height ease-in-out duration-500 @(_isPanelExpanded ? "h-[161px] opacity-100" : "h-0 opacity-0")">
+                    <MudDivider Class="" />
                     <MudListItem Class="!pt-0 !pb-[4px] mt-[10px]">
                         <div class="flex justify-between items-center text-[12px]">
                             <div class="flex">
@@ -246,30 +233,16 @@
                         </div>
                     </MudListItem>
                 </div>
-                @if (_isPanelExpanded)
-                {
-                    <MudIconButton
-                        OnClick="ToggleExpansionPanel"
-                        Class="m-auto block"
-                        Icon="@Icons.Material.Filled.KeyboardArrowUp"
-                        aria-label="expand"
-                    >
-                    </MudIconButton>
-                }
-                else
-                {
-                    <MudIconButton
-                        OnClick="ToggleExpansionPanel"
-                        Class="m-auto block"
-                        Icon="@Icons.Material.Filled.KeyboardArrowDown"
-                        aria-label="expand"
-                    >
-                    </MudIconButton>
-                }
+                <MudIconButton
+                    OnClick="ToggleExpansionPanel"
+                    Class="@((_isPanelExpanded ? "rotate-180" : "rotate-0") + " m-auto block transition-transform duration-500 ease-linear")"
+                    Icon="@Icons.Material.Filled.KeyboardArrowDown"
+                    aria-label="expand"
+                >
+                </MudIconButton>
             </MudList>
         </MudCardContent>
     </MudCard>
-
     <div class="grow transition-all duration-300 @(_isChartButtonClicked ? "block" : "hidden")">
         <SwapChart />
     </div>

@@ -43,7 +43,15 @@ body:has(.mud-drawer--open) {
 }
 
 .swap-input .mud-input-label {
-    background-color: transparent;
+    /* background-color: var(--mud-palette-surface); */
+    /* background-color: transparent; */
+    /* backdrop-filter: blur(24px) !important; */
+    border-radius: 5px;
+    color: white !important;
+}
+
+.swap-input .mud-input.mud-input-outlined {
+    padding-bottom: 25px;
 }
 
 .swap-settings-dialog h6 {
