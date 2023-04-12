@@ -18,10 +18,18 @@
             <NavLink Href="https://fiso.teddyswap.org/" Target="_blank"
                 class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
                 ActiveClass="!text-[var(--mud-palette-text-primary)]">Staking</NavLink>
-            <MudMenu Icon="@Icons.Material.Filled.MoreHoriz" AnchorOrigin="Origin.BottomLeft">
+            <MudMenu FullWidth Class="w-[150px]" Icon="@Icons.Material.Filled.MoreHoriz" AnchorOrigin="Origin.BottomLeft">
                 <MudMenuItem>
                     <NavLink Href="/swap" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
                         ActiveClass="!text-[var(--mud-palette-text-primary)]">Swap</NavLink>
+                </MudMenuItem>
+                <MudMenuItem>
+                    <NavLink Href="/liquidity" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                        ActiveClass="!text-[var(--mud-palette-text-primary)]">Liquidity</NavLink>
+                </MudMenuItem>
+                <MudMenuItem>
+                    <NavLink Href="/orders" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                        ActiveClass="!text-[var(--mud-palette-text-primary)]">Orders</NavLink>
                 </MudMenuItem>
             </MudMenu>
         </div>
@@ -121,10 +129,24 @@
         <MudNavLink Href="https://fiso.teddyswap.org/" Target="_blank"
             ActiveClass="!text-[var(--mud-palette-text-primary)]"
             Class="!font-bold text-[var(--mud-palette-text-secondary)]">Staking</MudNavLink>
-        <MudMenu Label="Others" AnchorOrigin="Origin.BottomLeft" Class="others-submenu w-full">
-            <MudMenuItem>
+        <MudMenu
+            FullWidth
+            Label="Others" 
+            Class="others-submenu w-full"
+            AnchorOrigin="Origin.BottomLeft"
+            PopoverClass="!rounded-0"
+        >
+            <MudMenuItem Class="!pl-[28px]">
                 <NavLink Href="/swap" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
                     ActiveClass="!text-[var(--mud-palette-text-primary)]">Swap</NavLink>
+            </MudMenuItem>
+            <MudMenuItem Class="!pl-[28px]">
+                <NavLink Href="/liquidity" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                    ActiveClass="!text-[var(--mud-palette-text-primary)]">Liquidity</NavLink>
+            </MudMenuItem>
+            <MudMenuItem Class="!pl-[28px]">
+                <NavLink Href="/orders" class="font-bold text-[16px] text-[var(--mud-palette-text-secondary)]"
+                    ActiveClass="!text-[var(--mud-palette-text-primary)]">Orders</NavLink>
             </MudMenuItem>
         </MudMenu>
     </MudNavMenu>
@@ -133,3 +155,14 @@
             Class="!normal-case !text-[16px] !font-bold !px-4">Connect Wallet</MudButton>
     </div>
 </MudDrawer>
+
+<div class="flex gap-2 fixed bottom-[24px] left-[24px]">
+    <div class="grid content-center">
+        <span class="relative flex h-3 w-3">
+            <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0FC43B] opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-[#0FC43B]"></span>
+        </span>
+    </div>
+    <MudText Class="font-bold !text-[#0FC43B]">@HeartBeatService?.LatestBlockNo</MudText>
+</div>

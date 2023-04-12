@@ -25,7 +25,7 @@ public partial class Swap
     private double PriceImpactValue
     {
         get => SwapCalculatorService.CalculatePriceImpact(AppStateService.FromValue);
-        set => _priceImpactValue = value;
+        set =>  _priceImpactValue = value;
     }
 
     private bool _isPanelExpanded { get; set; } = false;

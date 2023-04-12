@@ -6,13 +6,13 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
-.mud-badge.mud-badge-top.right.token-name-badge {
-    inset: auto;
+.mud-tooltip.mud-tooltip-default {
+    background-color: var(--mud-palette-surface) !important;
+    backdrop-filter: blur(100px);
 }
 
 .confirm-swap-dialog-token-chip > .mud-chip.mud-disabled {
     opacity: 1;
-    /* background-color: var(--mud-palette-secondary-darken) !important; */
 }
 
 .others-submenu .mud-button-label {
@@ -43,9 +43,6 @@ body:has(.mud-drawer--open) {
 }
 
 .swap-input .mud-input-label {
-    /* background-color: var(--mud-palette-surface); */
-    /* background-color: transparent; */
-    /* backdrop-filter: blur(24px) !important; */
     border-radius: 5px;
     color: white !important;
 }
