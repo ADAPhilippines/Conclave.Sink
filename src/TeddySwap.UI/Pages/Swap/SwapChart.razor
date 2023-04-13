@@ -1,13 +1,7 @@
-<MudPaper Class="flex items-center justify-center !h-[600px] lg:h-full rounded-[12px] text-center">
-    <div class="font-bold text-[40px] lg:text-[90px]">Chart Here</div>
-</MudPaper>
+<MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="100%"></MudChart>
 
-@* <div>
-    <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
-</div> *@
-
-@* @code {
-    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
+@code {
+    private int Index = -1;
 
     public List<ChartSeries> Series = new List<ChartSeries>()
     {
@@ -32,4 +26,4 @@
         Series = new_series;
         StateHasChanged();
     }
-} *@
+}

@@ -130,7 +130,7 @@
                 <MudListItem Class="!pt-0 !pb-[4px]">
                     <div class="flex justify-between items-center text-[12px]">
                         <div>Price impact:</div>
-                        <div class="@GetPriceImpactValueClass()">
+                        <div class="@(GetPriceImpactValueClass())">
                             @Math.Round(PriceImpactValue, 2)%
                         </div>
                     </div>
@@ -221,8 +221,8 @@
             </MudList>
         </MudCardContent>
     </MudCard>
-    
-    <MudPaper class="@((_isChartButtonClicked ? "block" : "hidden") + " h-[600px] lg:h-inherit flex items-center justify-center md:w-[448px] lg:w-full m-auto transition-width duration-300 ease-linear")" >
-        <MudText>Chart Here</MudText>
+
+    <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100" : "w-0 opacity-0") + " overflow-hidden transition-all duration-300 px-2 h-fit rounded-xl")">
+        <SwapChart />
     </MudPaper>
 </div>
