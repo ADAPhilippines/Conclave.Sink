@@ -31,4 +31,4 @@ jobs:
           tags: clarkteddyswap/teddy-message-verifier:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          context: "src/TeddySwap.MessageVerifyApi"
+          context: "/src/TeddySwap.MessageVerifyApi"
