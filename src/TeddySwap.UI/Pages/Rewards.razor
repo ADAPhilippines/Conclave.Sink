@@ -10,7 +10,7 @@
             <MudSpacer />
             <div class="flex gap-4 ">
                 <div class="grid content-center">
-                    <MudButton Disabled="true" Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small"
+                    <MudButton OnClick="OnClaimClicked" Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small"
                         Class="w-[100px] h-[36px] normal-case font-bold">
                         CLAIM
                     </MudButton>
@@ -250,3 +250,19 @@
         </div>
     </div>
 </div>
+
+<MudDialog @bind-IsVisible="IsClaimDialogShown" Class="w-[400px]"> 
+    <TitleContent>
+        <MudText Typo="Typo.h6" Class="!hidden md:!block font-bold">Link Mainnet Wallet</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" Label="Enter mainnet address..." @bind-Value="MainnetAddress"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="() => IsClaimDialogShown = false">Cancel</MudButton>
+        <MudButton OnClick="OnClaimSubmit" Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small"
+            Class="w-[100px] h-[36px] normal-case font-bold">
+            Link
+        </MudButton>
+    </DialogActions>
+</MudDialog>
