@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
+using TeddySwap.Common.Models;
 using TeddySwap.UI.Models;
 
 namespace TeddySwap.UI.Services;
@@ -56,6 +57,12 @@ public class CardanoWalletService
     {
         ArgumentNullException.ThrowIfNull(_jsRuntime);
         return await _jsRuntime.InvokeAsync<string[]>("CardanoWalletService.getUsedAddressesAsync");
+    }
+
+    public async Task<CardanoSignedMessage> SignMessage(string message)
+    {
+        ArgumentNullException.ThrowIfNull(_jsRuntime);
+        return await _jsRuntime.InvokeAsync<CardanoSignedMessage>("CardanoWalletService.signMessageAsync", message);
     }
 
     public async Task DisconnectAsync()

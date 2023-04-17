@@ -1,6 +1,10 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
+using TeddySwap.Common.Models;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Common.Services;
+using TeddySwap.Common.Utils;
+using TeddySwap.UI.Models;
 using TeddySwap.UI.Services;
 
 namespace TeddySwap.UI.Pages;
@@ -21,6 +25,8 @@ public partial class Rewards : IAsyncDisposable
     protected decimal TotalRewards => LeaderBoardResponse.BaseReward;
 
     protected bool IsTestnetRewardsLoaded { get; set; }
+    protected bool IsClaimDialogShown { get; set; }
+    protected string MainnetAddress { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,7 +77,56 @@ public partial class Rewards : IAsyncDisposable
         }
 
         IsTestnetRewardsLoaded = true;
+
         await InvokeAsync(StateHasChanged);
+    }
+
+    public async void OnClaimClicked()
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(CardanoWalletService);
+            ArgumentNullException.ThrowIfNull(QueryService);
+
+            IsClaimDialogShown = true;
+            await InvokeAsync(StateHasChanged);
+
+        }
+        catch
+        {
+            // @TODO: Push error to analytics
+        }
+    }
+
+    public async void OnClaimSubmit()
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(CardanoWalletService);
+            ArgumentNullException.ThrowIfNull(QueryService);
+            string[] addresses = await QueryService.Query($"CardanoWalletService.GetUsedAddressesAsync:{CardanoWalletService.SessionId}", async () =>
+            {
+                return await CardanoWalletService.GetUsedAddressesAsync();
+            });
+
+            if (CardanoWalletService is not null)
+            {
+                string messageJson = JsonSerializer.Serialize(new LinkAddressPayload
+                {
+                    MainnetAddress = MainnetAddress,
+                    TestnetAddresses = addresses
+                });
+
+                CardanoSignedMessage signedMessage = await CardanoWalletService.SignMessage(messageJson.ToHex());
+            }
+
+            IsClaimDialogShown = false;
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            // @TODO: Push error to analytics
+        }
     }
 
     new public async ValueTask DisposeAsync()
