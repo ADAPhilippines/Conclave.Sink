@@ -1,4 +1,6 @@
 using TeddySwap.Common.Enums;
+using TeddySwap.Common.Models;
+using TeddySwap.Common.Models.Request;
 using TeddySwap.Common.Models.Response;
 
 namespace TeddySwap.UI.Services;
@@ -44,5 +46,36 @@ public class SinkService
         HttpResponseMessage resp = await httpClient
                 .PostAsJsonAsync($"{_configService.SinkApiUrl}/api/v1/leaderboard/users/addresses", new { addresses });
         return await resp.Content.ReadFromJsonAsync<PaginatedLeaderBoardResponse>() ?? throw new HttpRequestException("Bad response from GetRewardFromAddressesAsync.");
+    }
+
+    public async Task<string> GetMainnetAddressFromTestnetAddressAsync(string testnetAddress)
+    {
+        using HttpClient httpClient = _clientFactory.CreateClient();
+        return await httpClient.GetStringAsync($"{_configService.SinkApiUrl}/api/v1/link/{testnetAddress}");
+    }
+
+    public async Task LinkMainnetAddressAsync(string signerAddress, string payload, CardanoSignedMessage signedMessage)
+    {
+        using HttpClient httpClient = _clientFactory.CreateClient();
+        await httpClient.PostAsJsonAsync($"{_configService.SinkApiUrl}/api/v1/link", new LinkAddressRequest()
+        {
+            Address = signerAddress,
+            Payload = payload,
+            SignedMessage = signedMessage
+        });
+    }
+
+    public async Task<int> GetNftCountByAddressPolicyAsync(string address, string policyId)
+    {
+        using HttpClient httpClient = _clientFactory.CreateClient();
+        PaginatedAssetResponse? resp = await httpClient.GetFromJsonAsync<PaginatedAssetResponse>($"{_configService.SinkApiUrl}/api/v1/Assets/policy/{policyId}/address/{address}");
+        return resp?.TotalCount ?? 0;
+    }
+
+    public async Task<double> GetFisoRewardByStakeAddressAsync(string stakeAddress)
+    {
+        using HttpClient httpClient = _clientFactory.CreateClient();
+        FisoRewardBreakdownResponse? resp = await httpClient.GetFromJsonAsync<FisoRewardBreakdownResponse>($"{_configService.SinkApiUrl}/api/v1/FisoRewards/address/{stakeAddress}");
+        return resp?.TotalBaseReward ?? 0d;
     }
 }

@@ -65,6 +65,18 @@ public class CardanoWalletService
         return await _jsRuntime.InvokeAsync<CardanoSignedMessage>("CardanoWalletService.signMessageAsync", message);
     }
 
+    public async Task<string> GetAddressAsync()
+    {
+        ArgumentNullException.ThrowIfNull(_jsRuntime);
+        return await _jsRuntime.InvokeAsync<string>("CardanoWalletService.getAddressAsync");
+    }
+
+    public async Task<string> GetStakeAddressAsync()
+    {
+        ArgumentNullException.ThrowIfNull(_jsRuntime);
+        return await _jsRuntime.InvokeAsync<string>("CardanoWalletService.getStakeAddressAsync");
+    }
+
     public async Task DisconnectAsync()
     {
         ArgumentNullException.ThrowIfNull(_jsRuntime);
@@ -72,11 +84,5 @@ public class CardanoWalletService
         await _jsRuntime.InvokeVoidAsync("CardanoWalletService.disconnect");
         await _localStorage.RemoveItemAsync("ConnectedWallet");
         ConnectionStateChange?.Invoke(this, EventArgs.Empty);
-    }
-
-    public async Task<string> GetAddressAsync()
-    {
-        ArgumentNullException.ThrowIfNull(_jsRuntime);
-        return await _jsRuntime.InvokeAsync<string>("CardanoWalletService.getAddressAsync");
     }
 }

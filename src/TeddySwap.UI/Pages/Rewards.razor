@@ -17,7 +17,7 @@
                 </div>
                 <div class="flex flex-col">
                     <MudText>Total Rewards</MudText>
-                    <MudText Color="Color.Success" Class="font-bold">@(TotalRewards.ToString("N2")) $TEDY</MudText>
+                    <MudText Color="Color.Success" Class="font-bold">@(TotalRewards.ToString("#,##0.00")) $TEDY</MudText>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                         <MudDivider Class="my-4" />
                         <MudText Typo="Typo.caption">Base Reward</MudText>
                         <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">
-                            @LeaderBoardResponse.BaseReward.ToString("N2") $TEDY</MudText>
+                            @LeaderBoardResponse.BaseReward.ToString("#,##0.00") $TEDY</MudText>
                     </MudCardContent>
                 </MudCard>
                 <MudCard Elevation="6" Class="grid content-center">
@@ -85,13 +85,13 @@
                 <MudCard Elevation="6">
                     <MudCardContent>
                         <MudText Typo="Typo.caption">Total NFTs</MudText>
-                        <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">0</MudText>
+                        <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold"> @(TotalRoundOneNft + TotalRoundTwoNft) </MudText>
                         <MudDivider Class="my-4" />
                         <MudText Typo="Typo.caption">NFT Bonus</MudText>
-                        <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">0%</MudText>
+                        <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@(TotalRoundOneItnNftBonus + TotalRoundTwoItnNftBonus) %</MudText>
                         <MudDivider Class="my-4" />
                         <MudText Typo="Typo.caption">Bonus Tokens</MudText>
-                        <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">0 $TEDY</MudText>
+                        <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@TotalItnNftBonus.ToString("F2") $TEDY</MudText>
                     </MudCardContent>
                 </MudCard>
             }
@@ -108,36 +108,36 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2 text-center">
             <MudCard Elevation="6">
-                <MudCardContent Class="grid content-center h-[100px]">
-                    <MudText>Coming soon...</MudText>
-                    @* <MudText Typo="Typo.caption">Total Stake</MudText>
-                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">127,312,879.62 ₳</MudText>
-                    <MudText Typo="Typo.caption">All Time</MudText>
+                <MudCardContent Class="grid content-center">
+                    <MudText Typo="Typo.caption">Total Rewards</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@TotalFisoRewards.ToString("#,##0.00") $TEDY</MudText>
+                    <MudText Typo="Typo.caption">Includes NFT Bonus</MudText>
                     <MudDivider Class="my-4" />
-                    <MudText Typo="Typo.caption">Total Growth Since</MudText>
-                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">86,494,729.22 ₳</MudText> *@
+                    <MudText Typo="Typo.caption">Base Reward</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@BaseFisoRewards.ToString("#,##0.00") $TEDY</MudText>
+                    <MudText Typo="Typo.caption">Includes Small Pool Bonus</MudText>
                 </MudCardContent>
             </MudCard>
             <MudCard Elevation="6">
-                <MudCardContent Class="grid content-center h-[100px]">
-                    <MudText>Coming soon...</MudText>
-                    @* <MudText Typo="Typo.caption">Total Growth</MudText>
-                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">2,755,847.25 ₳</MudText>
-                    <MudText Typo="Typo.caption">last 24 hours</MudText>
+                <MudCardContent Class="grid content-center">
+                    <MudText Typo="Typo.caption">Total Round 1 Bonus</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@((BaseFisoRewards * TotalRoundOneNft * 0.05M).ToString("#,##0.00")) $TEDY</MudText>
+                    <MudText Typo="Typo.caption">5% per NFT Bonus</MudText>
                     <MudDivider Class="my-4" />
-                    <MudText Typo="Typo.caption">Total Delegators</MudText>
-                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">8104</MudText> *@
+                    <MudText Typo="Typo.caption">Total Round 2 Bonus</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@((BaseFisoRewards * TotalRoundTwoNft * 0.02M).ToString("#,##0.00")) $TEDY</MudText>
+                    <MudText Typo="Typo.caption">2% per NFT Bonus</MudText>
                 </MudCardContent>
             </MudCard>
             <MudCard Elevation="6">
-                <MudCardContent Class="grid content-center h-[100px]">
-                    <MudText>Coming soon...</MudText>
-                    @* <MudText Typo="Typo.caption">Total Growth</MudText>
-                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">2,755,847.25 ₳</MudText>
-                    <MudText Typo="Typo.caption">last hour</MudText>
+                <MudCardContent Class="grid content-center">
+                    <MudText Typo="Typo.caption">Total Round 1 Bonus</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@TotalRoundOneItnNftBonus %</MudText>
+                    <MudText Typo="Typo.caption">5% per NFT Bonus</MudText>
                     <MudDivider Class="my-4" />
-                    <MudText Typo="Typo.caption">Total Growth Live</MudText>
-                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">-2,843.33 ₳</MudText> *@
+                    <MudText Typo="Typo.caption">Total Round 2 Bonus</MudText>
+                    <MudText Typo="Typo.h5" Color="Color.Success" Class="font-bold">@TotalRoundTwoItnNftBonus %</MudText>
+                    <MudText Typo="Typo.caption">2% per NFT Bonus</MudText>
                 </MudCardContent>
             </MudCard>
         </div>
