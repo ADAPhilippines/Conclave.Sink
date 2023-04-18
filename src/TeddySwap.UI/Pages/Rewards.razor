@@ -102,7 +102,14 @@
         </div>
         <div class="flex mt-6">
             <div class="grid content-center">
-                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowRight" />
+                @if (IsTestnetRewardsLoaded)
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowRight" />
+                }
+                else
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.Refresh" Class="animate-spin" />
+                }
             </div>
             <MudText Typo="Typo.h6" Class="!block font-bold">Staking</MudText>
         </div>
