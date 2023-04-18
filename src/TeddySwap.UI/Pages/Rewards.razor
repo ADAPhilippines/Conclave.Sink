@@ -10,7 +10,7 @@
             <MudSpacer />
             <div class="flex gap-4 ">
                 <div class="grid content-center">
-                    <MudButton OnClick="OnClaimClicked" Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small"
+                    <MudButton Disabled=@(string.IsNullOrEmpty(CardanoWalletService?.ConnectedAddress)) OnClick="OnClaimClicked" Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Small"
                         Class="w-[100px] h-[36px] normal-case font-bold">
                         CLAIM
                     </MudButton>
