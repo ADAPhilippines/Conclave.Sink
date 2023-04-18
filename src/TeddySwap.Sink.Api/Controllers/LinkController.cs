@@ -59,7 +59,7 @@ public class LinkController : ControllerBase
                 string stakeAddress = new Address(testnetAddress).GetStakeAddress().ToString();
                 if (stakeAddress == linkAddressReq.Address)
                 {
-                    await _addressVerificationService.AddVerificationAsync(testnetAddress, linkAddressPayload.MainnetAddress!, linkAddressReq.Payload);
+                    await _addressVerificationService.AddVerificationAsync(testnetAddress, linkAddressPayload.MainnetAddress!, JsonSerializer.Serialize(linkAddressReq).ToHex());
                 }
             }
 
