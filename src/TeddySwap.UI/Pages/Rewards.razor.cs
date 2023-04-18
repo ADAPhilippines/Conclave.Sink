@@ -1,5 +1,8 @@
 using System.Text.Json;
+using CardanoSharp.Wallet.Extensions.Models;
+using CardanoSharp.Wallet.Models.Addresses;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using TeddySwap.Common.Models;
 using TeddySwap.Common.Models.Response;
 using TeddySwap.Common.Services;
@@ -20,13 +23,23 @@ public partial class Rewards : IAsyncDisposable
     [Inject]
     protected QueryService? QueryService { get; set; }
 
+    [Inject]
+    protected ISnackbar? Snackbar { get; set; }
+
     protected LeaderBoardResponse LeaderBoardResponse { get; set; } = new LeaderBoardResponse();
 
-    protected decimal TotalRewards => LeaderBoardResponse.BaseReward;
+    protected decimal TotalRewards => LeaderBoardResponse.BaseReward + TotalItnNftBonus + TotalFisoRewards;
 
     protected bool IsTestnetRewardsLoaded { get; set; }
     protected bool IsClaimDialogShown { get; set; }
     protected string MainnetAddress { get; set; } = string.Empty;
+    protected int TotalRoundOneNft { get; set; }
+    protected int TotalRoundTwoNft { get; set; }
+    protected decimal TotalRoundOneItnNftBonus { get; set; }
+    protected decimal TotalRoundTwoItnNftBonus { get; set; }
+    protected decimal TotalItnNftBonus { get; set; }
+    protected decimal BaseFisoRewards { get; set; }
+    protected decimal TotalFisoRewards { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,6 +68,7 @@ public partial class Rewards : IAsyncDisposable
         ArgumentNullException.ThrowIfNull(SinkService);
         ArgumentNullException.ThrowIfNull(CardanoWalletService);
         ArgumentNullException.ThrowIfNull(QueryService);
+
         if (!string.IsNullOrEmpty(CardanoWalletService.ConnectedAddress))
         {
             try
@@ -68,7 +82,35 @@ public partial class Rewards : IAsyncDisposable
                 {
                     return await SinkService.GetRewardFromAddressesAsync(addresses);
                 });
+
                 LeaderBoardResponse = response.Result.FirstOrDefault() ?? LeaderBoardResponse;
+
+                MainnetAddress = await QueryService.Query($"SinkService.GetMainnetAddressFromTestnetAddressAsync:{CardanoWalletService.ConnectedAddress}", async () =>
+                {
+                    return await SinkService.GetMainnetAddressFromTestnetAddressAsync(CardanoWalletService.ConnectedAddress);
+                });
+
+                TotalRoundOneNft = await QueryService.Query($"SinkService.GetNftCountByAddressPolicy:{MainnetAddress}:ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87", async () =>
+                {
+                    return await SinkService.GetNftCountByAddressPolicyAsync(MainnetAddress, "ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87");
+                });
+
+                TotalRoundTwoNft = await QueryService.Query($"SinkService.GetNftCountByAddressPolicy:{MainnetAddress}:da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c", async () =>
+                {
+                    return await SinkService.GetNftCountByAddressPolicyAsync(MainnetAddress, "da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c");
+                });
+
+                string mainnetStakeAddress = new Address(MainnetAddress).GetStakeAddress().ToString();
+                BaseFisoRewards = await QueryService.Query($"SinkService.GetFisoRewardByStakeAddressAsync:{mainnetStakeAddress}", async () =>
+                {
+                    return (decimal)await SinkService.GetFisoRewardByStakeAddressAsync(new Address(MainnetAddress).GetStakeAddress().ToString());
+                });
+
+                TotalFisoRewards = BaseFisoRewards + (BaseFisoRewards * TotalRoundOneNft * 0.05M) + (BaseFisoRewards * TotalRoundTwoNft * 0.02M);
+                TotalRoundOneItnNftBonus = TotalRoundOneNft * 5;
+                TotalRoundTwoItnNftBonus = TotalRoundTwoNft * 2;
+                TotalItnNftBonus = (TotalRoundOneItnNftBonus + TotalRoundTwoItnNftBonus) / 100 * LeaderBoardResponse.BaseReward;
+                await InvokeAsync(StateHasChanged);
             }
             catch (Exception ex)
             {
@@ -103,25 +145,28 @@ public partial class Rewards : IAsyncDisposable
         try
         {
             ArgumentNullException.ThrowIfNull(CardanoWalletService);
+            ArgumentNullException.ThrowIfNull(SinkService);
             ArgumentNullException.ThrowIfNull(QueryService);
+            ArgumentNullException.ThrowIfNull(Snackbar);
+
             string[] addresses = await QueryService.Query($"CardanoWalletService.GetUsedAddressesAsync:{CardanoWalletService.SessionId}", async () =>
             {
                 return await CardanoWalletService.GetUsedAddressesAsync();
             });
 
-            if (CardanoWalletService is not null)
+            string messageJson = JsonSerializer.Serialize(new LinkAddressPayload
             {
-                string messageJson = JsonSerializer.Serialize(new LinkAddressPayload
-                {
-                    MainnetAddress = MainnetAddress,
-                    TestnetAddresses = addresses
-                });
+                MainnetAddress = MainnetAddress,
+                TestnetAddresses = addresses
+            });
 
-                CardanoSignedMessage signedMessage = await CardanoWalletService.SignMessage(messageJson.ToHex());
-            }
+            CardanoSignedMessage signedMessage = await CardanoWalletService.SignMessage(messageJson.ToHex());
+            await SinkService.LinkMainnetAddressAsync(await CardanoWalletService.GetStakeAddressAsync(), messageJson.ToHex(), signedMessage);
 
+            await RefreshDataAsync();
             IsClaimDialogShown = false;
             await InvokeAsync(StateHasChanged);
+            Snackbar.Add("You have succesfully linked your mainnet address! 🎊", Severity.Success);
         }
         catch
         {
