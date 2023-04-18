@@ -1,4 +1,4 @@
-name: Teddy Sink API Image
+name: Teddy Sink Images
 
 on:
   push:
