@@ -28,7 +28,7 @@ public partial class Rewards : IAsyncDisposable
 
     protected LeaderBoardResponse LeaderBoardResponse { get; set; } = new LeaderBoardResponse();
 
-    protected decimal TotalRewards => LeaderBoardResponse.BaseReward + TotalItnNftBonus;
+    protected decimal TotalRewards => LeaderBoardResponse.BaseReward + TotalItnNftBonus + TotalFisoRewards;
 
     protected bool IsTestnetRewardsLoaded { get; set; }
     protected bool IsClaimDialogShown { get; set; }
