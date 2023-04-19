@@ -56,6 +56,34 @@ public class AssetService
         };
     }
 
+    public async Task<PaginatedAssetResponse> GetNftOwnerByStakeAddressAsync(int offset, int limit, string stakeAddress, string policyId)
+    {
+        var nftOwnerQuery = _dbContext.NftOwners
+            .Where(no => !string.IsNullOrEmpty(no.StakeAddress))
+            .Where(no => no.StakeAddress == stakeAddress && no.PolicyId == policyId.ToLower());
+
+        var totalNfts = await nftOwnerQuery.CountAsync();
+
+        List<AssetResponse> paginatedNfts = await nftOwnerQuery
+            .Skip(offset)
+            .Take(limit)
+            .Select(no => new AssetResponse()
+            {
+                Name = no.TokenName,
+                AsciiName = Encoding.ASCII.GetString(Convert.FromHexString(no.TokenName)),
+                Amount = 1
+            })
+            .ToListAsync();
+
+        return new()
+        {
+            TotalCount = totalNfts,
+            PolicyId = policyId,
+            Result = paginatedNfts,
+            Address = stakeAddress
+        };
+    }
+
     public async Task<PaginatedAssetResponse> GetNftOwnersAsync(int offset, int limit, List<string> addresses, string policyId)
     {
         var nftOwnerQuery = _dbContext.NftOwners
