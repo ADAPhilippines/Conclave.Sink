@@ -36,6 +36,20 @@ public class AssetService
 
         var totalNfts = await nftOwnerQuery.CountAsync();
 
+        var mintTransactions = _dbContext.MintTransactions
+            .Where(mtx => mtx.PolicyId == policyId)
+            .Include(mtx => mtx.Transaction)
+            .ThenInclude(tx => tx.Block)
+            .OrderBy(mtx => mtx.Transaction.Block.Slot)
+            .ThenBy(mtx => mtx.Transaction.Index)
+            .Select(mtx => mtx.TokenName)
+            .ToList()
+            .Select(selector: (tn, i) => new
+            {
+                RowNumber = i + 1,
+                TokenName = tn
+            });
+
         List<AssetResponse> paginatedNfts = await nftOwnerQuery
             .Skip(offset)
             .Take(limit)
@@ -46,6 +60,12 @@ public class AssetService
                 Amount = 1
             })
             .ToListAsync();
+
+        var filteredMintTransactions = mintTransactions
+            .Where(mtx => paginatedNfts.Select(pn => pn.Name).ToList().Contains(mtx.TokenName))
+            .ToList();
+
+        paginatedNfts.ForEach(pn => pn.MintOrder = filteredMintTransactions.FirstOrDefault(fmtx => fmtx.TokenName == pn.Name)!.RowNumber);
 
         return new()
         {
