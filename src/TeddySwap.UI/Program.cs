@@ -26,6 +26,7 @@ builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<HeartBeatService>();
 builder.Services.AddSingleton<SinkService>();
 builder.Services.AddSingleton<QueryService>();
+builder.Services.AddScoped<IconsService>();
 builder.Services.AddScoped<CardanoWalletService>();
 
 var app = builder.Build();
