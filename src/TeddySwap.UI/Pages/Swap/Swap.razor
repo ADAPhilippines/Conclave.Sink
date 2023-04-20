@@ -29,7 +29,7 @@
         </MudCardHeader>
         <MudCardContent Class="p-0">
             <div class="flex flex-col relative h-[180px]">
-                <div class="absolute left-0 w-full transition-top duration-300 @(_areInputsSwapped ? "top-[93px]" : "top-0")">
+                <div class="absolute left-0 w-full transition-top duration-200 ease-in-out @(_areInputsSwapped ? "top-[93px]" : "top-0")">
                     <div class="relative">
                         <MudNumericField
                             HideSpinButtons
@@ -56,7 +56,7 @@
 
                 <MudIconButton
                     OnClick="SwapInputs"
-                    Class="@((_areInputsSwapped ? "rotate-180" : "rotate-0") + " transition-transform duration-300 ease-linear w-fit !rounded-full m-auto absolute translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] z-[100]" )"
+                    Class="@((_areInputsSwapped ? "rotate-180" : "rotate-0") + " transition-transform duration-200 ease-in-out w-fit !rounded-full m-auto absolute translate-x-[-50%] translate-y-[-50%] left-[50%] top-[50%] z-[100]" )"
                     Icon="@Icons.Material.Filled.SwapVert"
                     aria-label="reverse"
                     Variant="Variant.Filled"
@@ -64,7 +64,7 @@
                 >
                 </MudIconButton>
     
-                <div class="absolute left-0 w-full transition-bottom duration-300 @(_areInputsSwapped ? "bottom-[93px]" : "bottom-0")">
+                <div class="absolute left-0 w-full transition-bottom duration-200 ease-in-out @(_areInputsSwapped ? "bottom-[93px]" : "bottom-0")">
                     <div class="relative">
                         <MudNumericField
                             HideSpinButtons
@@ -75,6 +75,7 @@
                             Variant="Variant.Outlined"
                             Min="0.0"
                             Class="swap-input"
+                            Format="N2"
                             Culture=@CultureInfo.GetCultureInfo("en-US")
                             T="double"
                         />
@@ -98,7 +99,6 @@
                     OnClick="OpenConfirmSwapDialog"
                     Class="!rounded-xl text-[20px] py-[6px] font-medium normal-case"
                     Variant="Variant.Filled"
-        
                     >
                         Enter an amount
                 </MudButton>
@@ -116,7 +116,7 @@
                 </MudButton>
             }
         </MudCardActions>
-        <MudCardContent Class="!bg-[var(--mud-palette-drawer-background)] pt-[20px] px-[12px] pb-1 rounded-[6px]">
+        <MudCardContent Class="!bg-[var(--mud-palette-drawer-background)] pt-[20px] px-[12px] !pb-0 !rounded-xl">
             <MudText Class="font-semibold text-[12px]">
                 1 @AppStateService?.FromCurrentlySelectedToken?.Name = @SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N2") @AppStateService?.ToCurrentlySelectedToken?.Name
             </MudText>
@@ -148,64 +148,86 @@
                     </div>
                 </MudListItem>
     
-                <div class="@(_isPanelExpanded ? "overflow-visible" : "overflow-hidden") text-[var(--mud-palette-text-secondary)] transition-height ease-in-out duration-300 @(_isPanelExpanded ? "h-[161px] opacity-100" : "h-0 opacity-0")">
+                <div class="text-[var(--mud-palette-text-secondary)] transition-height ease-in-out duration-200 overflow-y-hidden @(_isPanelExpanded ? "h-[161px] opacity-100" : "h-0 opacity-0")">
                     <MudDivider />
                     <MudListItem Class="!pt-0 !pb-[4px] mt-[10px]">
                         <div class="flex items-center justify-between text-[12px]">
-                            <div class="relative">
+                            <div class="relative flex gap-1">
                                 <div>Protocol fee</div>
-                                <Tooltip Icon=@IconsService.OutlinedQuestionMark ColonVisible="true">
-                                    <MudText Typo="Typo.caption">
-                                        <div>0.01% or a minium 1.2 ADA goes to the TeddySwap Protocol Treasury</div>
-                                        <MudLink Class="text-[12px]" Target="_blank" Href="https://docs.cardano.org/plutus/collateral-mechanism/">Read more</MudLink>
-                                    </MudText>
-                                </Tooltip>
+                                <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
+                                    <ChildContent>
+                                        <MudIcon Class="w-[14px] cursor-pointer" Icon="@IconsService.OutlinedQuestionMark" Size="Size.Small" />
+                                    </ChildContent>
+                                    <TooltipContent>
+                                        <MudText Typo="Typo.caption">
+                                            0.01% or a minium 1.2 ADA goes to the TeddySwap Protocol Treasury
+                                        </MudText>
+                                    </TooltipContent>
+                                </MudTooltip>
+                                <span>:</span>
                             </div>
                             <div>1 ADA</div>
                         </div>
                     </MudListItem>
                     <MudListItem Class="!pt-0 !pb-[4px]">
                         <div class="flex justify-between items-center text-[12px]">
-                            <div class="relative">
+                            <div class="relative flex gap-1">
                                 <div>Execution fee</div>
-                                <Tooltip Icon=@IconsService.OutlinedQuestionMark ColonVisible="true">
-                                    <MudText Typo="Typo.caption">
-                                        Will be charged by off-chain execution bots and distributed among validators.
-                                    </MudText>
-                                </Tooltip>
+                                <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
+                                    <ChildContent>
+                                        <MudIcon Class="w-[14px] cursor-pointer" Icon="@IconsService.OutlinedQuestionMark" Size="Size.Small" />
+                                    </ChildContent>
+                                    <TooltipContent>
+                                        <MudText Typo="Typo.caption">
+                                             Will be charged by off-chain execution bots and distributed among validators.
+                                        </MudText>
+                                    </TooltipContent>
+                                </MudTooltip>
+                                <span>:</span>
                             </div>
                             <div>2 ADA - 2.4 ADA</div>
                         </div>
                     </MudListItem>
                     <MudListItem Class="!pt-0 !pb-[4px]">
                         <div class="flex justify-between items-center text-[12px]">
-                            <div class="relative">
+                            <div class="relative flex gap-1">
                                 <div>Transaction fee</div>
-                                <Tooltip Icon=@IconsService.OutlinedQuestionMark ColonVisible="true">
-                                    <MudText Typo="Typo.caption">
-                                         A small amount of ADA charged by Cardano blockchain.
-                                    </MudText>
-                                </Tooltip>
+                                <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
+                                    <ChildContent>
+                                        <MudIcon Class="w-[14px] cursor-pointer" Icon="@IconsService.OutlinedQuestionMark" Size="Size.Small" />
+                                    </ChildContent>
+                                    <TooltipContent>
+                                        <MudText Typo="Typo.caption">
+                                            A small amount of ADA charged by Cardano blockchain.
+                                        </MudText>
+                                    </TooltipContent>
+                                </MudTooltip>
+                                <span>:</span>
                             </div>
                             <div>1 ADA</div>
                         </div>
                     </MudListItem>
                     <MudListItem Class="!pt-0 !pb-[4px]">
                         <div class="flex justify-between items-center text-[12px]">
-                            <div class="relative">
+                            <div class="relative flex gap-1">
                                 <div>Refundable deposit</div>
-                                <Tooltip Icon=@IconsService.OutlinedQuestionMark ColonVisible="true">
-                                    <MudText Typo="Typo.caption">
-                                        <div>This amount of ADA will be held to construct the transaction and will be returned when your order is executed or cancelled.</div>
-                                        <MudLink Class="text-[12px]" Target="_blank" Href="https://docs.cardano.org/plutus/collateral-mechanism/">Read more</MudLink>
-                                    </MudText>
-                                </Tooltip>
+                                <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
+                                    <ChildContent>
+                                        <MudIcon Class="w-[14px] cursor-pointer" Icon="@IconsService.OutlinedQuestionMark" Size="Size.Small" />
+                                    </ChildContent>
+                                    <TooltipContent>
+                                        <MudText Typo="Typo.caption">
+                                            This amount of ADA will be held to construct the transaction and will be returned when your order is executed or cancelled.
+                                        </MudText>
+                                    </TooltipContent>
+                                </MudTooltip>
+                                <span>:</span>
                             </div>
                             <div>2 ADA</div>
                         </div>
                     </MudListItem>
-                    <MudListItem Class="!pt-0 !pb-[4px] text-[var(--mud-palette-text-primary)]">
-                        <div class="flex justify-between items-center text-[12px]">
+                    <MudListItem Class="!pt-0 text-[var(--mud-palette-text-primary)]">
+                        <div class="flex justify-between items-center text-[12px] font-bold">
                             <div>Total fees:</div>
                             <div>3 ADA - 5 ADA</div>
                         </div>
@@ -213,9 +235,10 @@
                 </div>
                 <MudIconButton
                     OnClick="ToggleExpansionPanel"
-                    Class="@((_isPanelExpanded ? "rotate-180" : "rotate-0") + " m-auto block transition-transform duration-500 ease-linear")"
+                    Class="@((_isPanelExpanded ? "rotate-180" : "rotate-0") + " !p-[8px] m-auto block transition-transform duration-200 ease-in-out")"
                     Icon="@Icons.Material.Filled.KeyboardArrowDown"
                     aria-label="expand"
+                    Size="Size.Small"
                 >
                 </MudIconButton>
             </MudList>

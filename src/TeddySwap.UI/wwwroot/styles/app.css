@@ -71,6 +71,10 @@ body:has(.mud-drawer--open) {
     margin-top: 0 !important;
 }
 
+.mud-input-label-outlined {
+    background-color: var(--mud-palette-primary) !important;
+}
+
 .mud-drawer.mud-drawer--open {
     position: fixed;
 }

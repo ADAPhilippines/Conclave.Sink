@@ -14,7 +14,7 @@ public class AppStateService : INotifyPropertyChanged
         set
         {
             _slippageToleranceValue = value;
-             OnPropertyChanged();
+            OnPropertyChanged();
         }
     }
 
@@ -26,7 +26,7 @@ public class AppStateService : INotifyPropertyChanged
         set
         {
             _honeyValue = value;
-             OnPropertyChanged();
+            OnPropertyChanged();
         }
     }
 
@@ -38,7 +38,7 @@ public class AppStateService : INotifyPropertyChanged
         set
         {
             _fromValue = value;
-             OnPropertyChanged();
+            OnPropertyChanged();
         }
     }
 
@@ -50,7 +50,7 @@ public class AppStateService : INotifyPropertyChanged
         set
         {
             _toValue = value;
-             OnPropertyChanged();
+            OnPropertyChanged();
         }
     }
 
@@ -62,7 +62,7 @@ public class AppStateService : INotifyPropertyChanged
         set
         {
             _fromCurrentlySelectedToken = value;
-             OnPropertyChanged();
+            OnPropertyChanged();
         }
     }
 
@@ -74,7 +74,7 @@ public class AppStateService : INotifyPropertyChanged
         set
         {
             _toCurrentlySelectedToken = value;
-             OnPropertyChanged();
+            OnPropertyChanged();
         }
     }
 
