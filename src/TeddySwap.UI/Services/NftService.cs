@@ -22,16 +22,16 @@ public class NftService
         RoundTwoNfts = JsonSerializer.Deserialize<IEnumerable<TbcNft>>(await File.ReadAllTextAsync(Path.Combine("./wwwroot", "teddybearsclub2.json")));
     }
 
-    public TbcNft? GetRoundOneNftAsync(string nftName) => RoundOneNfts?.Where(nft => nft.AssetName == nftName).FirstOrDefault();
+    public TbcNft? GetRoundOneNft(string nftName) => RoundOneNfts?.Where(nft => nft.AssetName == nftName).FirstOrDefault();
 
-    public TbcNft? GetRoundTwoNftAsync(string nftName) => RoundTwoNfts?.Where(nft => nft.AssetName == nftName).FirstOrDefault();
+    public TbcNft? GetRoundTwoNft(string nftName) => RoundTwoNfts?.Where(nft => nft.AssetName == nftName).FirstOrDefault();
 
-    public TbcNft? GetNftAsync(string policyId, string nftName)
+    public TbcNft? GetNft(string policyId, string nftName)
     {
         return policyId switch 
         {
-            ROUND_ONE_POLICY_ID => GetRoundOneNftAsync(nftName),
-            ROUND_TWO_POLICY_ID => GetRoundTwoNftAsync(nftName),
+            ROUND_ONE_POLICY_ID => GetRoundOneNft(nftName),
+            ROUND_TWO_POLICY_ID => GetRoundTwoNft(nftName),
             _ => throw new ArgumentException("Invalid Policy ID")
         };
     }

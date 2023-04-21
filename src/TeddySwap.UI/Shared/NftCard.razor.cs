@@ -11,11 +11,11 @@ public partial class NftCard
     [Inject]
     protected NftService? NftService { get; set; }
 
-    [Parameter, EditorRequired]
-    public AssetResponse NftDetails { get; set; } = new AssetResponse();
+    [Inject]
+    protected RewardService? RewardService { get; set; }
 
     [Parameter, EditorRequired]
-    public RewardsBreakdown Rewards { get; set; } = new RewardsBreakdown();
+    public AssetResponse NftDetails { get; set; } = new AssetResponse();
 
     [Parameter, EditorRequired]
     public string PolicyId { get; set; } = string.Empty;
@@ -25,7 +25,16 @@ public partial class NftCard
         get
         {
             ArgumentNullException.ThrowIfNull(NftService);
-            return NftService.GetNftAsync(PolicyId, NftDetails.AsciiName);
+            return NftService.GetNft(PolicyId, NftDetails.AsciiName);
+        }
+    }
+
+    public NftRewardBreakdown RewardBreakdown
+    {
+        get
+        {
+            ArgumentNullException.ThrowIfNull(RewardService);
+            return RewardService.CalculateNfTReward(PolicyId, NftDetails.AsciiName, NftDetails.MintOrder);
         }
     }
 }

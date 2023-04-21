@@ -27,8 +27,8 @@ builder.Services.AddSingleton<HeartBeatService>();
 builder.Services.AddSingleton<SinkService>();
 builder.Services.AddSingleton<QueryService>();
 builder.Services.AddSingleton<NftService>();
+builder.Services.AddSingleton<RewardService>();
 builder.Services.AddScoped<IconsService>();
-builder.Services.AddScoped<RewardService>();
 builder.Services.AddScoped<CardanoWalletService>();
 
 var app = builder.Build();

@@ -1,3 +1,5 @@
+using TeddySwap.Common.Models;
+
 namespace TeddySwap.UI.Services;
 
 public class RewardService
@@ -5,47 +7,69 @@ public class RewardService
     private const double ROUND_ONE_MULTIPLIER = 2.75;
     private const int EFFECTIVE_NFTS = 4_246;
     private const int AVAILABLE_REWARDS = 33_453_000;
-    private const string ROUND_ONE_POLICY_ID = "a";
-    private const string ROUND_TWO_POLICY_ID = "s";
+    private const string ROUND_ONE_POLICY_ID = "ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87";
+    private const string ROUND_TWO_POLICY_ID = "da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c";
+    private readonly NftService _nftService;
 
-    public double CalculateNfTRewardAsync(string policyId, string nftName) 
+    public RewardService(NftService nftService) 
+    {
+        _nftService = nftService;
+    }
+
+    public NftRewardBreakdown CalculateNfTReward(string policyId, string nftName, int mintOrder = 0) 
     {
         return policyId switch
         {
-            ROUND_ONE_POLICY_ID => CalculateRoundOneNftRewardAsync(nftName),
-            ROUND_TWO_POLICY_ID => CalculateRoundTwoNftRewardAsync(nftName),
+            ROUND_ONE_POLICY_ID => CalculateRoundOneNftReward(nftName),
+            ROUND_TWO_POLICY_ID => CalculateRoundTwoNftReward(nftName, mintOrder),
             _ => throw new ArgumentException("Invalid Policy ID")
         };
     }
 
-    public double CalculateRoundOneNftRewardAsync(string nftName) 
+    public NftRewardBreakdown CalculateRoundOneNftReward(string nftName) 
     {
-        int rank = 1; // @TODO: Replace with actual rank
+        TbcNft? nft = _nftService.GetNft(ROUND_ONE_POLICY_ID, nftName);
+        int rank = int.Parse(nft?.RarityRank ?? "0");
         int baseReward = GetRoundOneBaseReward(rank);
-        double roundBonusReward = baseReward * 0.10;
-        double rtrPoolReward = AVAILABLE_REWARDS * (ROUND_ONE_MULTIPLIER / EFFECTIVE_NFTS * 100);
-        return baseReward + roundBonusReward + rtrPoolReward;
+        decimal bonusReward = baseReward * (decimal)0.10;
+        decimal earlySupporterBonus = AVAILABLE_REWARDS * ((decimal)ROUND_ONE_MULTIPLIER / EFFECTIVE_NFTS);
+        
+        return new() 
+        {
+            BaseReward = baseReward,
+            BonusReward = bonusReward,
+            EarlySupporterBonus = earlySupporterBonus,
+            TotalReward = baseReward + bonusReward + earlySupporterBonus
+        };
     }
 
-    public double CalculateRoundTwoNftRewardAsync(string nftName) 
+    public NftRewardBreakdown CalculateRoundTwoNftReward(string nftName, int mintOrder) 
     {
-        int mintOrder = 1;
-        int rank = 1;
+        TbcNft? nft = _nftService.GetNft(ROUND_TWO_POLICY_ID, nftName);
+        int rank = int.Parse(nft?.RarityRank ?? "0");
         int baseReward = GetRoundTwoBaseReward(rank);
-        double roundBonusReward = GetRoundTwoBonus(mintOrder);
-        double rtrPoolReward = 1 / EFFECTIVE_NFTS * AVAILABLE_REWARDS;
-        return baseReward + roundBonusReward +rtrPoolReward;
+        decimal bonusReward = GetRoundTwoBonus(mintOrder);
+        decimal earlySupporterBonus = AVAILABLE_REWARDS * ((decimal)1.0 / EFFECTIVE_NFTS);
+
+        return new() 
+        {
+            BaseReward = baseReward,
+            BonusReward = bonusReward,
+            EarlySupporterBonus = earlySupporterBonus,
+            TotalReward = baseReward + bonusReward + earlySupporterBonus
+        };
     }
 
     private int GetRoundOneBaseReward(int rank) 
     {
         return rank switch 
         {
-            (< 16)    => 28_000,
-            (< 101)   => 17_500,
-            (< 251)   => 12_600,
-            (< 501)   => 11_200,
-            (> 500)   => 10_500
+            (<= 0)            => 0,
+            (>= 1) and (< 16) => 28_000,
+            (< 101)           => 17_500,
+            (< 251)           => 12_600,
+            (< 501)           => 11_200,
+            (> 500)           => 10_500,
         }; 
     }
 
@@ -53,11 +77,12 @@ public class RewardService
     {
         return rank switch 
         {
-            (< 24)    => 7_000,
-            (< 222)   => 6_000,
-            (< 665)   => 5_000,
-            (< 1328)  => 4_500,
-            (> 1327)  => 4_200
+            (<= 0)              => 0,
+            (>= 1) and (< 24)   => 7_000,
+            (< 222)             => 6_000,
+            (< 665)             => 5_000,
+            (< 1328)            => 4_500,
+            (> 1327)            => 4_200
         }; 
     }
 
@@ -65,12 +90,13 @@ public class RewardService
     {
         return mintOrder switch
         {
-            (<= 1_200) => 10_733,
-            (<= 1_400) => 9_733,
-            (<= 1_600) => 8_400,
-            (<= 1_800) => 6_400,
+            (<= 0)                    => 0,
+            (>= 1) and (<= 1_200)     => 10_733,
+            (<= 1_400)                => 9_733,
+            (<= 1_600)                => 8_400,
+            (<= 1_800)                => 6_400,
             (>= 1_800) and (<= 2_000) => 8_400,
-            (> 2_000) => 4_000
+            (> 2_000)                 => 4_000
         };
     }
 }

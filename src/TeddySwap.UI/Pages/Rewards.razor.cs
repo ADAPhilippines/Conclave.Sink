@@ -14,6 +14,9 @@ namespace TeddySwap.UI.Pages;
 
 public partial class Rewards : IAsyncDisposable
 {
+    private const string ROUND_ONE_POLICY_ID = "ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87";
+    private const string ROUND_TWO_POLICY_ID = "da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c";
+
     [Inject]
     protected CardanoWalletService? CardanoWalletService { get; set; }
 
@@ -34,7 +37,30 @@ public partial class Rewards : IAsyncDisposable
 
     protected LeaderBoardResponse LeaderBoardResponse { get; set; } = new LeaderBoardResponse();
 
-    protected decimal TotalRewards => LeaderBoardResponse.BaseReward + TotalItnNftBonus + TotalFisoRewards;
+    protected decimal TotalRewards
+    {
+        get
+        {
+            ArgumentNullException.ThrowIfNull(RewardService);
+
+            decimal roundOneSum = 0;
+            decimal roundTwoSum = 0;
+
+            RoundOneAssets?.Result.ToList().ForEach(a =>
+            {
+                NftRewardBreakdown nrb = RewardService.CalculateNfTReward(ROUND_ONE_POLICY_ID, a.AsciiName, a.MintOrder);
+                roundOneSum += nrb.TotalReward;
+            });
+
+
+            RoundTwoAssets?.Result.ToList().ForEach(a =>
+            {
+                NftRewardBreakdown nrb = RewardService.CalculateNfTReward(ROUND_TWO_POLICY_ID, a.AsciiName, a.MintOrder);
+                roundTwoSum += nrb.TotalReward;
+            });
+            return LeaderBoardResponse.BaseReward + TotalItnNftBonus + TotalFisoRewards + roundOneSum + roundTwoSum;
+        }
+    }
 
     protected bool IsTestnetRewardsLoaded { get; set; }
     protected bool IsClaimDialogShown { get; set; }
@@ -50,13 +76,11 @@ public partial class Rewards : IAsyncDisposable
     protected PaginatedAssetResponse? RoundOneAssets { get; set; }
     protected PaginatedAssetResponse? RoundTwoAssets { get; set; }
     protected int RoundOnePage { get; set; } = 1;
-    protected int RoundTwoPage { get; set; } = 2;
+    protected int RoundTwoPage { get; set; } = 1;
 
     protected List<NftDetails> _nfts1 { get; set; } = default!;
 
     protected List<NftDetails> _nfts2 { get; set; } = default!;
-
-    protected RewardsBreakdown _rewards { get; set; } = default!;
 
     private double? totalBonus { get; set; }
 
@@ -70,14 +94,6 @@ public partial class Rewards : IAsyncDisposable
         ArgumentNullException.ThrowIfNull(NftService);
         CardanoWalletService.ConnectionStateChange += OnConnectionStateChanged;
         await NftService.InitializeNftDataAsync();
-        
-        _rewards = new()
-        {
-            BaseReward = 28_000,
-            RoundTwoShare = 21_666.45,
-            Bonus = 2_800,
-            TotalReward = 52_466.45,
-        };
 
         await RefreshDataAsync();
         await base.OnInitializedAsync();
@@ -147,12 +163,12 @@ public partial class Rewards : IAsyncDisposable
 
                 TotalRoundOneNft = await QueryService.Query($"SinkService.GetNftCountByAddressPolicy:{CardanoWalletService.SessionId}:{queryAddress}:ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87:{HeartBeatService.LatestSlotNo}", async () =>
                 {
-                    return await SinkService.GetNftCountByStakeAddressPolicyAsync(queryAddress, "ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87");
+                    return await SinkService.GetNftCountByStakeAddressPolicyAsync(queryAddress, ROUND_ONE_POLICY_ID);
                 });
 
                 TotalRoundTwoNft = await QueryService.Query($"SinkService.GetNftCountByAddressPolicy:{CardanoWalletService.SessionId}:{queryAddress}:da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c:{HeartBeatService.LatestSlotNo}", async () =>
                 {
-                    return await SinkService.GetNftCountByStakeAddressPolicyAsync(queryAddress, "da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c");
+                    return await SinkService.GetNftCountByStakeAddressPolicyAsync(queryAddress, ROUND_TWO_POLICY_ID);
                 });
 
                 TotalRoundOneItnNftBonus = TotalRoundOneNft * 5;
@@ -194,7 +210,7 @@ public partial class Rewards : IAsyncDisposable
                 RoundOneAssets =
                     await SinkService.GetPolicyAssetsByStakeAddressAsync(
                         queryAddress,
-                        "ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87",
+                        ROUND_ONE_POLICY_ID,
                         10_000,
                         0
                     );
@@ -202,7 +218,7 @@ public partial class Rewards : IAsyncDisposable
                 RoundTwoAssets =
                     await SinkService.GetPolicyAssetsByStakeAddressAsync(
                         queryAddress,
-                        "da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c",
+                        ROUND_TWO_POLICY_ID,
                         10_000,
                         0
                     );
