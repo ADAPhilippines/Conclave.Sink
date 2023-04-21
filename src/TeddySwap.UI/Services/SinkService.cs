@@ -57,18 +57,19 @@ public class SinkService
     public async Task LinkMainnetAddressAsync(string signerAddress, string payload, CardanoSignedMessage signedMessage)
     {
         using HttpClient httpClient = _clientFactory.CreateClient();
-        await httpClient.PostAsJsonAsync($"{_configService.SinkApiUrl}/api/v1/link", new LinkAddressRequest()
+        HttpResponseMessage resp = await httpClient.PostAsJsonAsync($"{_configService.SinkApiUrl}/api/v1/link", new LinkAddressRequest()
         {
             Address = signerAddress,
             Payload = payload,
             SignedMessage = signedMessage
         });
+        Console.WriteLine(await resp.Content.ReadAsStringAsync());
     }
 
-    public async Task<int> GetNftCountByAddressPolicyAsync(string address, string policyId)
+    public async Task<int> GetNftCountByStakeAddressPolicyAsync(string address, string policyId)
     {
         using HttpClient httpClient = _clientFactory.CreateClient();
-        PaginatedAssetResponse? resp = await httpClient.GetFromJsonAsync<PaginatedAssetResponse>($"{_configService.SinkApiUrl}/api/v1/Assets/policy/{policyId}/address/{address}");
+        PaginatedAssetResponse? resp = await httpClient.GetFromJsonAsync<PaginatedAssetResponse>($"{_configService.SinkApiUrl}/api/v1/Assets/policy/{policyId}/stakeaddress/{address}");
         return resp?.TotalCount ?? 0;
     }
 

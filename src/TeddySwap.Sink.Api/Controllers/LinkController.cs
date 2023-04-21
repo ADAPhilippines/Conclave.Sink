@@ -56,8 +56,7 @@ public class LinkController : ControllerBase
 
             foreach (string testnetAddress in linkAddressPayload?.TestnetAddresses!)
             {
-                string stakeAddress = new Address(testnetAddress).GetStakeAddress().ToString();
-                if (stakeAddress == linkAddressReq.Address)
+                if (testnetAddress == linkAddressReq.Address)
                 {
                     await _addressVerificationService.AddVerificationAsync(testnetAddress, linkAddressPayload.MainnetAddress!, JsonSerializer.Serialize(linkAddressReq).ToHex());
                 }
