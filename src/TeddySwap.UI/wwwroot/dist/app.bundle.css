@@ -977,6 +977,10 @@ video {
   font-size: 24px;
 }
 
+.text-\[19px\] {
+  font-size: 19px;
+}
+
 .\!font-bold {
   font-weight: 700 !important;
 }
@@ -1146,6 +1150,10 @@ body:has(.mud-drawer--open) {
 }
 
 @media (min-width: 768px) {
+  .md\:order-1 {
+    order: 1;
+  }
+
   .md\:\!block {
     display: block !important;
   }
@@ -1184,12 +1192,12 @@ body:has(.mud-drawer--open) {
     display: flex;
   }
 
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
