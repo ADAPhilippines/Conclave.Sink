@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using TeddySwap.UI.Models;
 
-namespace TeddySwap.UI.Components;
+namespace TeddySwap.UI.Shared;
 
 public partial class NftCard
 {

@@ -14,13 +14,13 @@
             <MudListItem Class="!p-0">
                 <div class="flex justify-between items-center text-[12px] text-[var(--mud-palette-text-primary)]">
                     <div>Base reward:</div>
-                    <div>@Rewards.BaseReward.ToString("N0") TEDY</div>
+                    <div>@Rewards.BaseReward.ToString("#,##0.00") $TEDY</div>
                 </div>
             </MudListItem>
             <MudListItem Class="!p-0">
                 <div class="flex justify-between items-center text-[12px] text-[var(--mud-palette-text-primary)]">
                     <div>Round 2 share:</div>
-                    <div>@Rewards.RoundTwoShare.ToString("N0") TEDY</div>
+                    <div>@Rewards.RoundTwoShare.ToString("#,##0.00") $TEDY</div>
                 </div>
             </MudListItem>
             <MudListItem Class="!p-0">
@@ -39,13 +39,13 @@
                         </MudTooltip>
                         <div>:</div>
                     </div>
-                    <div>@Rewards.Bonus.ToString("N0") TEDY</div>
+                    <div>@Rewards.Bonus.ToString("#,##0.00") $TEDY</div>
                 </div>
             </MudListItem>
             <MudListItem Class="!p-0">
                 <div class="flex justify-between items-center text-[12px] text-[var(--mud-palette-text-primary)] font-bold">
                     <div>Total reward:</div>
-                    <div>@Rewards.TotalReward.ToString("N0") TEDY</div>
+                    <div>@Rewards.TotalReward.ToString("#,##0.00") $TEDY</div>
                 </div>
             </MudListItem>
         </MudList>
