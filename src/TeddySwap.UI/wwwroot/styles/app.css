@@ -7,8 +7,8 @@ body:has(.mud-drawer--open) {
 }
 
 .nft-rarity {
-    height: 22px;
-    width: 22px;
+    height: 42px;
+    width: 42px;
     font-weight: 600;
 }
 

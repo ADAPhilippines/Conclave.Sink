@@ -67,13 +67,13 @@ public partial class Rewards : IAsyncDisposable
             {
                 Image = "https://images.cnft.tools/ipfs/QmYQJ2ZbyNCJYcd8xoWP7oMsRK74RpZcPHRo825nNMZHmW",
                 Name = "Teddy Bears Club #869",
-                RarityRank = "1"
+                RarityRank = "5555"
             },
             new()
             {
                 Image = "https://images.cnft.tools/ipfs/QmQvU95vhKcKhsoEVTw14jJJj7fLfVgf3tF64xWkchSKzP",
                 Name = "Teddy Bears Club #909",
-                RarityRank = "2"
+                RarityRank = "99"
             },
             new()
             {
