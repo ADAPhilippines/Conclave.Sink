@@ -149,7 +149,7 @@ public partial class Rewards : IAsyncDisposable
             ArgumentNullException.ThrowIfNull(SinkService);
             ArgumentNullException.ThrowIfNull(QueryService);
             ArgumentNullException.ThrowIfNull(Snackbar);
-
+            
             string[] addresses = await QueryService.Query($"CardanoWalletService.GetUsedAddressesAsync:{CardanoWalletService.SessionId}", async () =>
             {
                 return await CardanoWalletService.GetUsedAddressesAsync();
