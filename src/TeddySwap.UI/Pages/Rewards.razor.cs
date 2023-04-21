@@ -24,6 +24,9 @@ public partial class Rewards : IAsyncDisposable
     protected QueryService? QueryService { get; set; }
 
     [Inject]
+    protected NftService? NftService { get; set; }
+
+    [Inject]
     protected ISnackbar? Snackbar { get; set; }
 
     protected LeaderBoardResponse LeaderBoardResponse { get; set; } = new LeaderBoardResponse();
@@ -41,80 +44,30 @@ public partial class Rewards : IAsyncDisposable
     protected decimal TotalItnNftBonus { get; set; }
     protected decimal BaseFisoRewards { get; set; }
     protected decimal TotalFisoRewards { get; set; }
+    protected PaginatedAssetResponse? RoundOneAssets { get; set; }
+    protected PaginatedAssetResponse? RoundTwoAssets { get; set; }
+    protected int RoundOnePage { get; set; } = 1;
+    protected int RoundTwoPage { get; set; } = 2;
 
-    private List<NftDetails> _nfts1 { get; set; } = default!;
+    protected List<NftDetails> _nfts1 { get; set; } = default!;
 
-    private List<NftDetails> _nfts2 { get; set; } = default!;
+    protected List<NftDetails> _nfts2 { get; set; } = default!;
 
-    private RewardsBreakdown _rewards { get; set; } = default!;
+    protected RewardsBreakdown _rewards { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(CardanoWalletService);
+        ArgumentNullException.ThrowIfNull(NftService);
         CardanoWalletService.ConnectionStateChange += OnConnectionStateChanged;
-
+        await NftService.InitializeNftDataAsync();
+        
         _rewards = new()
         {
             BaseReward = 28_000,
             RoundTwoShare = 21_666.45,
             Bonus = 2_800,
             TotalReward = 52_466.45,
-        };
-
-        _nfts1 = new()
-        {
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmYQJ2ZbyNCJYcd8xoWP7oMsRK74RpZcPHRo825nNMZHmW",
-                Name = "Teddy Bears Club #869",
-                RarityRank = "5555"
-            },
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmQvU95vhKcKhsoEVTw14jJJj7fLfVgf3tF64xWkchSKzP",
-                Name = "Teddy Bears Club #909",
-                RarityRank = "99"
-            },
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmURiqtVSVYa34GQrNAGkMHb4SSGXxkzhs5WzCteomPMtz",
-                Name = "Teddy Bears Club #1413",
-                RarityRank = "3"
-            },
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmNfeeLJzXAGtxbLBfw61UoTG5ZNodGdPbzWoX8vgAw8Mi",
-                Name = "Teddy Bears Club #5591",
-                RarityRank = "4"
-            }
-        };
-
-        _nfts2 = new()
-        {
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmTgUEKZ9fqTPJyTqeqWzgL1HVjfPWmkGXLtrjZvVepoq6",
-                Name = "Teddy Bears Club #2661",
-                RarityRank = "1"
-            },
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmcrMSZeeyFAV8HnD9MjWkpdev2RoaL3Te1g82qsZhV4hf",
-                Name = "Teddy Bears Club #7361",
-                RarityRank = "2"
-            },
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmVgaJ7ksNsbAzjg3C9eLNUVyxMNqJofKnwb6xRJ83EpDk",
-                Name = "Teddy Bears Club #49",
-                RarityRank = "3"
-            },
-            new()
-            {
-                Image = "https://images.cnft.tools/ipfs/QmeL4bk5f4KoLsTcBFxVFXT82fBjzpUEx7ktAKQVegcnFm",
-                Name = "Teddy Bears Club #1454",
-                RarityRank = "4"
-            }
         };
 
         await RefreshDataAsync();
@@ -224,6 +177,32 @@ public partial class Rewards : IAsyncDisposable
                 TotalFisoRewards = 0;
                 // @TODO: Push error to analytics
             }
+
+            try
+            {
+                string queryAddress = new Address(IsMainnet ? CardanoWalletService.ConnectedAddress : MainnetAddress).GetStakeAddress().ToString();
+
+                RoundOneAssets =
+                    await SinkService.GetPolicyAssetsByStakeAddressAsync(
+                        queryAddress,
+                        "ab182ed76b669b49ee54a37dee0d0064ad4208a859cc4fdf3f906d87",
+                        10_000,
+                        0
+                    );
+
+                RoundTwoAssets =
+                    await SinkService.GetPolicyAssetsByStakeAddressAsync(
+                        queryAddress,
+                        "da3562fad43b7759f679970fb4e0ec07ab5bebe5c703043acda07a3c",
+                        10_000,
+                        0
+                    );
+
+            }
+            catch (Exception ex)
+            {
+                // @TODO: Push error to analytics
+            }
         }
 
         IsTestnetRewardsLoaded = true;
@@ -285,6 +264,12 @@ public partial class Rewards : IAsyncDisposable
         {
             // @TODO: Push error to analytics
         }
+    }
+
+    protected void OnRoundOnePaginationChanged(int page)
+    {
+        RoundOnePage = page;
+        StateHasChanged();
     }
 
     new public async ValueTask DisposeAsync()

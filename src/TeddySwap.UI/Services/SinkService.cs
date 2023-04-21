@@ -1,3 +1,4 @@
+using System.Text.Json;
 using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models;
 using TeddySwap.Common.Models.Request;
@@ -68,9 +69,14 @@ public class SinkService
 
     public async Task<int> GetNftCountByStakeAddressPolicyAsync(string address, string policyId)
     {
-        using HttpClient httpClient = _clientFactory.CreateClient();
-        PaginatedAssetResponse? resp = await httpClient.GetFromJsonAsync<PaginatedAssetResponse>($"{_configService.SinkApiUrl}/api/v1/Assets/policy/{policyId}/stakeaddress/{address}");
+        PaginatedAssetResponse? resp = await GetPolicyAssetsByStakeAddressAsync(address, policyId);
         return resp?.TotalCount ?? 0;
+    }
+
+    public async Task<PaginatedAssetResponse?> GetPolicyAssetsByStakeAddressAsync(string address, string policyId, int limit = 10, int offset = 0)
+    {
+        using HttpClient httpClient = _clientFactory.CreateClient();
+        return await httpClient.GetFromJsonAsync<PaginatedAssetResponse>($"{_configService.SinkApiUrl}/api/v1/Assets/policy/{policyId}/stakeaddress/{address}?limit={limit}&offset={offset}");
     }
 
     public async Task<double> GetFisoRewardByStakeAddressAsync(string stakeAddress)
