@@ -41,10 +41,115 @@ public partial class Rewards : IAsyncDisposable
     protected decimal BaseFisoRewards { get; set; }
     protected decimal TotalFisoRewards { get; set; }
 
+    private List<NftDetails> _nfts1 { get; set; } = default!;
+
+    private List<NftDetails> _nfts2 { get; set; } = default!;
+
+    private NftDetails _testNft { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
         ArgumentNullException.ThrowIfNull(CardanoWalletService);
         CardanoWalletService.ConnectionStateChange += OnConnectionStateChanged;
+
+        _testNft = new()
+        {
+            Image = "https://images.cnft.tools/ipfs/QmYQJ2ZbyNCJYcd8xoWP7oMsRK74RpZcPHRo825nNMZHmW",
+            Name = "Teddy Bears Club #869",
+            BaseReward = 28_000,
+            RoundTwoShare = 21_666.45,
+            Bonus = 2_800,
+            TotalReward = 52_466.45,
+            Rarity = 1
+        };
+
+        _nfts1 = new()
+        {
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmYQJ2ZbyNCJYcd8xoWP7oMsRK74RpZcPHRo825nNMZHmW",
+                Name = "Teddy Bears Club #869",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 1
+            },
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmQvU95vhKcKhsoEVTw14jJJj7fLfVgf3tF64xWkchSKzP",
+                Name = "Teddy Bears Club #909",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 2
+            },
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmURiqtVSVYa34GQrNAGkMHb4SSGXxkzhs5WzCteomPMtz",
+                Name = "Teddy Bears Club #1413",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 3
+            },
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmNfeeLJzXAGtxbLBfw61UoTG5ZNodGdPbzWoX8vgAw8Mi",
+                Name = "Teddy Bears Club #5591",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 4
+            }
+        };
+
+        _nfts2 = new()
+        {
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmTgUEKZ9fqTPJyTqeqWzgL1HVjfPWmkGXLtrjZvVepoq6",
+                Name = "Teddy Bears Club #2661",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 1
+            },
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmcrMSZeeyFAV8HnD9MjWkpdev2RoaL3Te1g82qsZhV4hf",
+                Name = "Teddy Bears Club #7361",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 2
+            },
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmVgaJ7ksNsbAzjg3C9eLNUVyxMNqJofKnwb6xRJ83EpDk",
+                Name = "Teddy Bears Club #49",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 3
+            },
+            new()
+            {
+                Image = "https://images.cnft.tools/ipfs/QmeL4bk5f4KoLsTcBFxVFXT82fBjzpUEx7ktAKQVegcnFm",
+                Name = "Teddy Bears Club #1454",
+                BaseReward = 28_000,
+                RoundTwoShare = 21_666.45,
+                Bonus = 2_800,
+                TotalReward = 52_466.45,
+                Rarity = 4
+            }
+        };
 
         await RefreshDataAsync();
         await base.OnInitializedAsync();

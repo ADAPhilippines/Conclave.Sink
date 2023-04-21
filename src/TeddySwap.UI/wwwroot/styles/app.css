@@ -6,6 +6,12 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
+.nft-rarity {
+    height: 22px;
+    width: 22px;
+    font-weight: 600;
+}
+
 .mud-drawer.mud-drawer--open {
     position: fixed;
 }
