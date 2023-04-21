@@ -6,13 +6,5 @@ public class NftDetails
 
     public string Name { get; set; } = string.Empty;
 
-    public double BaseReward { get; set; }
-
-    public double RoundTwoShare { get; set; }
-
-    public double Bonus { get; set; }
-
-    public double TotalReward { get; set; }
-
-    public int Rarity { get; set; }
+    public string RarityRank { get; set; } = string.Empty;
 }
