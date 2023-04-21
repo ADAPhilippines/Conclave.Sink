@@ -26,6 +26,9 @@ public partial class Rewards : IAsyncDisposable
     [Inject]
     protected ISnackbar? Snackbar { get; set; }
 
+    [Inject]
+    private RewardService? RewardService { get; set; }
+
     protected LeaderBoardResponse LeaderBoardResponse { get; set; } = new LeaderBoardResponse();
 
     protected decimal TotalRewards => LeaderBoardResponse.BaseReward + TotalItnNftBonus + TotalFisoRewards;
@@ -46,6 +49,12 @@ public partial class Rewards : IAsyncDisposable
     private List<NftDetails> _nfts2 { get; set; } = default!;
 
     private RewardsBreakdown _rewards { get; set; } = default!;
+
+    private double? totalBonus { get; set; }
+
+    private int? bonus { get; set; }
+
+    public int? baseReward { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
