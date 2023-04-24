@@ -106,18 +106,6 @@
 
 <MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
     <MudDrawerHeader Class="pl-[16px] pr-[8px] py-[8px]">
-        <div class="grid content-center relative">
-            <div class="flex gap-2">
-                <div class="grid content-center">
-                    <span class="relative flex h-3 w-3">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0FC43B] opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-3 w-3 bg-[#0FC43B]"></span>
-                    </span>
-                </div>
-                <MudText Class="font-bold !text-[#0FC43B]">@HeartBeatService?.LatestBlockNo</MudText>
-            </div>
-        </div>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
     </MudDrawerHeader>
