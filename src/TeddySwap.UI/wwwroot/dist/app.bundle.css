@@ -1120,6 +1120,10 @@ video {
   border-radius: 0.75rem;
 }
 
+.rounded-\[12px\] {
+  border-radius: 12px;
+}
+
 .\!bg-\[var\(--mud-palette-drawer-background\)\] {
   background-color: var(--mud-palette-drawer-background) !important;
 }
@@ -1185,6 +1189,10 @@ video {
 
 .p-\[24px\] {
   padding: 24px;
+}
+
+.p-5 {
+  padding: 1.25rem;
 }
 
 .\!px-4 {
@@ -1255,6 +1263,11 @@ video {
 .py-\[8px\] {
   padding-top: 8px;
   padding-bottom: 8px;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .\!pb-0 {
