@@ -17,7 +17,8 @@
                     <MudIconButton
                         OnClick="ToggleChart"
                         Icon="@Icons.Material.Filled.ShowChart"
-                        aria-label="show chart"
+                        aria-label="toggle chart"
+                        Class="hidden lg:block"
                     />
                     <MudIconButton
                         OnClick="OpenSwapSettingsDialog"
@@ -245,7 +246,11 @@
         </MudCardContent>
     </MudCard>
 
-    <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100" : "w-0 opacity-0") + " overflow-hidden transition-all duration-300 px-2 h-fit rounded-xl")">
+    <MudButton OnClick="ToggleChart" Class="!rounded-xl !bg-[var(--mud-palette-surface)] !normal-case lg:hidden" StartIcon="@Icons.Material.Filled.ShowChart">
+       @(_isChartButtonClicked ? "Hide Chart" : "Show Chart")
+    </MudButton>
+
+    <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100" : "w-0 opacity-0") + " overflow-hidden transition-all duration-300 px-2 h-fit !rounded-xl")">
         <SwapChart />
     </MudPaper>
 </div>
