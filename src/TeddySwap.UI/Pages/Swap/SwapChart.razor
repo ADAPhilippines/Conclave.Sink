@@ -1,32 +1,85 @@
 @using TeddySwap.UI.Services
 @inject AppStateService AppStateService
 
+<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-3">
+    <div class="flex items-center justify-between md:justify-start gap-4">
+        <div class="flex items-center">
+            <div class="flex relative mr-[35px] w-[30px] h-[30px] md:w-[40px] md:h-[40px]">
+                <MudImage Src="@AppStateService?.FromCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-[25px] z-[2]" : "left-0 z-[1]") + " absolute w-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
+                <MudImage Src="@AppStateService?.ToCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-0 z[1]" : "left-[25px] z-[2]") + " absolute w-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
+            </div>
+            <div class="font-semibold mr-2 flex items-center md:text-[16px]">
+                <div class="@(_areTokensSwapped ? "order-3" : "order-1")">
+                    @AppStateService?.FromCurrentlySelectedToken?.Name.Remove(AppStateService.FromCurrentlySelectedToken.Name.Length - 1)
+                </div>
+                <div class="order-2">-</div>
+                <div class="@(_areTokensSwapped ? "order-1" : "order-3")">
+                    @AppStateService?.ToCurrentlySelectedToken?.Name.Remove(AppStateService.ToCurrentlySelectedToken.Name.Length - 1)
+                </div>
+            </div>
+            <MudTooltip Placement="Placement.Right">
+                <ChildContent>
+                    <MudIconButton Class="!p-0" Size="Size.Small" Icon="@Icons.Material.Filled.Verified" />
+                </ChildContent>
+                <TooltipContent>
+                    <MudText Typo="Typo.caption">This pair is verified.</MudText>
+                </TooltipContent>
+            </MudTooltip>
+        </div>
+
+        <div>
+            <MudIconButton
+                Class="!rounded-full !p-[3px]"
+                Variant="Variant.Outlined"
+                Icon="@Icons.Material.Filled.SwapHoriz"
+                OnClick="SwapTokens"
+            >
+            </MudIconButton>
+        </div>
+    </div>
+
+    <div class="w-fit">
+        <MudButton
+            OnClick="@(() => AppStateService.SelectedTimeRange = TimeRange.OneDay)"
+            Class="@((@AppStateService.SelectedTimeRange == TimeRange.OneDay ? "time-range-btn-active" : "!font-normal !text-[var(--mud-palette-text-secondary)]") + " !text-[14px] !py-[4px] !px-[10px] !min-w-fit")"
+        >
+            1D
+        </MudButton>
+        <MudButton
+            OnClick="@(() => AppStateService.SelectedTimeRange = TimeRange.OneWeek)"
+            Class="@((@AppStateService.SelectedTimeRange == TimeRange.OneWeek ? "time-range-btn-active" : "!font-normal !text-[var(--mud-palette-text-secondary)]") + " !text-[14px] !py-[4px] !px-[10px] !min-w-fit")"
+        >
+            1W
+        </MudButton>
+        <MudButton
+            OnClick="@(() => AppStateService.SelectedTimeRange = TimeRange.OneMonth)"
+            Class="@((@AppStateService.SelectedTimeRange == TimeRange.OneMonth ? "time-range-btn-active" : "!font-normal !text-[var(--mud-palette-text-secondary)]") + " !text-[14px] !py-[4px] !px-[10px] !min-w-fit")"
+        >
+            1M
+        </MudButton>
+        <MudButton
+            OnClick="@(() => AppStateService.SelectedTimeRange = TimeRange.SixMonths)"
+            Class="@((@AppStateService.SelectedTimeRange == TimeRange.SixMonths ? "time-range-btn-active" : "!font-normal !text-[var(--mud-palette-text-secondary)]") + " !text-[14px] !py-[4px] !px-[10px] !min-w-fit")"
+        >
+            6M
+        </MudButton>
+        <MudButton
+            OnClick="@(() => AppStateService.SelectedTimeRange = TimeRange.OneYear)"
+            Class="@((@AppStateService.SelectedTimeRange == TimeRange.OneYear ? "time-range-btn-active" : "!font-normal !text-[var(--mud-palette-text-secondary)]") + " !text-[14px] !py-[4px] !px-[10px] !min-w-fit")"
+        >
+            1Y
+        </MudButton>
+    </div>
+</div>
+
+<div class="mb-20">
+    <p class="font-bold text-[18px] md:text-[24px]">
+        0.088253 ADA
+    </p>
+
+    <p class="text-[12px] md:text-[16px] text-[var(--mud-palette-text-secondary)]">
+        @DateTime.Now.ToString("MMM dd yyyy HH:mm")
+    </p>
+</div>
+
 <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="100%"></MudChart>
-
-@code {
-    private int Index = -1;
-
-    public List<ChartSeries> Series = new List<ChartSeries>()
-    {
-        new ChartSeries() { Name = "Series 1", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
-        new ChartSeries() { Name = "Series 2", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
-    };
-    public string[] XAxisLabels = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
-
-    Random random = new Random();
-    public void RandomizeData()
-    {
-        var new_series = new List<ChartSeries>()
-        {
-            new ChartSeries() { Name = "Series 1", Data = new double[9] },
-            new ChartSeries() { Name = "Series 2", Data = new double[9] },
-        };
-        for (int i = 0; i < 9; i++)
-        {
-            new_series[0].Data[i] = random.NextDouble() * 100;
-            new_series[1].Data[i] = random.NextDouble() * 100;
-        }
-        Series = new_series;
-        StateHasChanged();
-    }
-}

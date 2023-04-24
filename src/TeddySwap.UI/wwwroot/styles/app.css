@@ -6,6 +6,12 @@ body:has(.mud-drawer--open) {
     height: 100vh;
 }
 
+.time-range-btn-active {
+    color: white !important;
+    font-weight: 600 !important;
+    background-color: var(--mud-palette-drawer-background) !important;
+}
+
 .mud-tooltip.mud-tooltip-default {
     background-color: var(--mud-palette-surface) !important;
     backdrop-filter: blur(100px);
