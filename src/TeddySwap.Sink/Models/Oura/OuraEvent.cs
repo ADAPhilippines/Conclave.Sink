@@ -5,11 +5,11 @@ namespace TeddySwap.Sink.Models.Oura;
 
 public record OuraEvent : IOuraEvent
 {
-    public OuraContext? Context { get; init; }
+    public OuraContext? Context { get; set; }
     public string? Fingerprint { get; init; }
 
     [JsonConverter(typeof(OuraVariantJsonConverter))]
-    public OuraVariant? Variant { get; init; }
+    public OuraVariant? Variant { get; set; }
 
     public ulong? Timestamp { get; init; }
 }

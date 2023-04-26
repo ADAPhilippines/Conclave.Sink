@@ -13,18 +13,14 @@
             "program": "${workspaceFolder}/bin/Debug/net7.0/TeddySwap.UI.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "SINKAPIURL": "https://3000-tasteful-customer-6rzwsc.us1.demeter.run"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
-            }
+            },
+            "console": "integratedTerminal"
         },
         {
             "name": ".NET Core Attach",

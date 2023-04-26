@@ -11,13 +11,13 @@ namespace TeddySwap.Sink.Api.Services;
 public class LeaderboardService
 {
     private readonly ILogger<LeaderboardService> _logger;
-    private readonly TeddySwapSinkDbContext _dbContext;
+    private readonly TeddySwapOrderSinkDbContext _dbContext;
     private readonly TeddySwapITNRewardSettings _settings;
     private readonly AssetService _assetService;
 
     public LeaderboardService(
         ILogger<LeaderboardService> logger,
-        TeddySwapSinkDbContext dbContext,
+        TeddySwapOrderSinkDbContext dbContext,
         AssetService assetService,
         IOptions<TeddySwapITNRewardSettings> settings)
     {
@@ -406,7 +406,7 @@ public class LeaderboardService
             })
             .ToList();
 
-        if (users is null) return null;
+        if (users is null || users.Count <= 0) return null;
 
         LeaderBoardResponse combinedRewards = new()
         {
