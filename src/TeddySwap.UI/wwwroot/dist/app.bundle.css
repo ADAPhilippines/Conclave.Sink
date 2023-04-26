@@ -841,6 +841,10 @@ video {
   height: 33px !important;
 }
 
+.\!h-\[6px\] {
+  height: 6px !important;
+}
+
 .\!h-\[80px\] {
   height: 80px !important;
 }
@@ -906,12 +910,12 @@ video {
   height: 100%;
 }
 
-.h-\[6px\] {
-  height: 6px;
-}
-
 .max-h-\[45px\] {
   max-height: 45px;
+}
+
+.\!w-\[6px\] {
+  width: 6px !important;
 }
 
 .\!w-\[80px\] {
@@ -962,6 +966,10 @@ video {
   width: 46px;
 }
 
+.w-\[86\%\] {
+  width: 86%;
+}
+
 .w-\[92\%\] {
   width: 92%;
 }
@@ -973,26 +981,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-\[90\%\] {
-  width: 90%;
-}
-
-.w-\[95\%\] {
-  width: 95%;
-}
-
-.w-\[89\%\] {
-  width: 89%;
-}
-
-.w-\[86\%\] {
-  width: 86%;
-}
-
-.w-\[6px\] {
-  width: 6px;
 }
 
 .\!min-w-fit {
@@ -1210,20 +1198,16 @@ video {
   background-color: var(--mud-palette-primary);
 }
 
+.bg-\[var\(--mud-palette-success\)\] {
+  background-color: var(--mud-palette-success);
+}
+
 .bg-\[var\(--mud-palette-surface\)\] {
   background-color: var(--mud-palette-surface);
 }
 
 .bg-\[var\(--mud-palette-warning-darken\)\] {
   background-color: var(--mud-palette-warning-darken);
-}
-
-.\!bg-\[var\(--mud-palette-primary\)\] {
-  background-color: var(--mud-palette-primary) !important;
-}
-
-.bg-\[var\(--mud-palette-success\)\] {
-  background-color: var(--mud-palette-success);
 }
 
 .bg-\[url\(\'\/images\/bear-with-balloons\.png\'\)\] {
@@ -1280,10 +1264,6 @@ video {
   padding: 24px;
 }
 
-.\!p-\[16px\] {
-  padding: 16px !important;
-}
-
 .p-\[8px\] {
   padding: 8px;
 }
@@ -1333,6 +1313,11 @@ video {
   padding-right: 16px;
 }
 
+.px-\[24px\] {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 .px-\[8px\] {
   padding-left: 8px;
   padding-right: 8px;
@@ -1366,21 +1351,6 @@ video {
 .py-\[8px\] {
   padding-top: 8px;
   padding-bottom: 8px;
-}
-
-.\!px-\[16px\] {
-  padding-left: 16px !important;
-  padding-right: 16px !important;
-}
-
-.\!py-\[6px\] {
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
-}
-
-.px-\[24px\] {
-  padding-left: 24px;
-  padding-right: 24px;
 }
 
 .\!pb-0 {
@@ -1455,6 +1425,10 @@ video {
   font-size: 16px !important;
 }
 
+.\!text-\[20px\] {
+  font-size: 20px !important;
+}
+
 .text-\[10px\] {
   font-size: 10px;
 }
@@ -1481,10 +1455,6 @@ video {
 
 .text-\[24px\] {
   font-size: 24px;
-}
-
-.\!text-\[20px\] {
-  font-size: 20px !important;
 }
 
 .\!font-bold {
@@ -1793,30 +1763,9 @@ body:has(.mud-drawer--open) {
   }
 }
 
-.before\:text-\[var\(--mud-palette-text-primary\)\]::before {
-  content: var(--tw-content);
-  color: var(--mud-palette-text-primary);
-}
-
 .before\:\!text-\[var\(--mud-palette-text-primary\)\]::before {
   content: var(--tw-content);
   color: var(--mud-palette-text-primary) !important;
-}
-
-.first\:\!ml-\[8pxs\]:first-child {
-  margin-left: 8pxs !important;
-}
-
-.first\:\!ml-\[8px\]:first-child {
-  margin-left: 8px !important;
-}
-
-.first\:\!pl-\[8px\]:first-child {
-  padding-left: 8px !important;
-}
-
-.first\:\!pl-\[24px\]:first-child {
-  padding-left: 24px !important;
 }
 
 .hover\:block:hover {

@@ -7,10 +7,10 @@ namespace TeddySwap.UI.Pages.Swap;
 public partial class TokenSelectionDialog
 {
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = default!;
+    MudDialogInstance? MudDialog { get; set; }
 
     [Parameter]
-    public IEnumerable<Token> Tokens { get; set; } = default!;
+    public IEnumerable<Token> Tokens { get; set; } = new List<Token>();
 
     [Parameter]
     public Action<Token> OnSelectedTokenClicked { get; set; } = default!;

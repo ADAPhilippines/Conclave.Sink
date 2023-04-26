@@ -5,18 +5,16 @@
     <div class="flex items-center justify-between md:justify-start gap-4">
         <div class="flex items-center">
             <div class="flex relative mr-[35px] w-[30px] h-[30px] md:w-[40px] md:h-[40px]">
-                <MudImage Src="@AppStateService?.FromCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-[25px] z-[2]" : "left-0 z-[1]") + " absolute w-[30px] h-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
-                <MudImage Src="@AppStateService?.ToCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-0 z[1]" : "left-[25px] z-[2]") + " absolute w-[30px] h-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
+                <MudImage Src="@FromCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-[25px] z-[2]" : "left-0 z-[1]") + " absolute w-[30px] h-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
+                <MudImage Src="@ToCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-0 z[1]" : "left-[25px] z-[2]") + " absolute w-[30px] h-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
             </div>
             <div class="font-semibold mr-2 flex items-center md:text-[16px]">
                 <div class="@(_areTokensSwapped ? "order-3" : "order-1")">
-                    @AppStateService?.FromCurrentlySelectedToken?.Name
-                    @* @AppStateService?.FromCurrentlySelectedToken?.Name.Remove(AppStateService.FromCurrentlySelectedToken.Name.Length - 1) *@
+                    @FromCurrentlySelectedToken?.Name
                 </div>
                 <div class="order-2">-</div>
                 <div class="@(_areTokensSwapped ? "order-1" : "order-3")">
-                    @AppStateService?.ToCurrentlySelectedToken?.Name
-                    @* @AppStateService?.ToCurrentlySelectedToken?.Name.Remove(AppStateService.ToCurrentlySelectedToken.Name.Length - 1) *@
+                    @ToCurrentlySelectedToken?.Name
                 </div>
             </div>
             <MudTooltip Placement="Placement.Right">
