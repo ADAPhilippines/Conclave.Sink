@@ -13,11 +13,16 @@ public class TeddySwapBasePage : ComponentBase, IAsyncDisposable
     [Inject]
     protected AppStateService? AppStateService { get; set; }
 
+    [Inject]
+    protected ILogger<TeddySwapBasePage>? Logger { get; set; }
+
     private bool IsHeartBeatEventAttached { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
-        if (HeartBeatService is not null && !IsHeartBeatEventAttached)
+        Console.WriteLine("initialized");
+        ArgumentNullException.ThrowIfNull(HeartBeatService);
+        if (!IsHeartBeatEventAttached)
         {
             HeartBeatService.Hearbeat += OnHeartBeatEvent;
             IsHeartBeatEventAttached = true;
@@ -26,18 +31,14 @@ public class TeddySwapBasePage : ComponentBase, IAsyncDisposable
 
     protected virtual void OnHeartBeatEvent(object? sender, EventArgs e)
     {
-        if (HeartBeatService is not null)
-        {
-            Console.WriteLine($"Blockchain Heartbeat Received: {HeartBeatService.LatestBlockNo}");
-        }
+        ArgumentNullException.ThrowIfNull(HeartBeatService);
+        Logger?.LogInformation($"Blockchain Heartbeat Received: {HeartBeatService.LatestBlockNo}");
     }
-    
+
     public async ValueTask DisposeAsync()
     {
-        if (HeartBeatService is not null)
-        {
-            HeartBeatService.Hearbeat -= OnHeartBeatEvent;
-            IsHeartBeatEventAttached = false;
-        }
+        ArgumentNullException.ThrowIfNull(HeartBeatService);
+        HeartBeatService.Hearbeat -= OnHeartBeatEvent;
+        IsHeartBeatEventAttached = false;
     }
 }
