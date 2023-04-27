@@ -9,7 +9,7 @@
 <PageTitle>TeddySwap | Cardano | Swap</PageTitle>
 
 <div class="flex flex-col lg:flex-row gap-4">
-    <MudCard Elevation="6" Class="!rounded-xl p-[24px] flex flex-col gap-[25px] max-w-[448px] mx-auto grow w-full h-fit">
+    <MudCard Elevation="6" Class="!rounded-xl p-[24px] flex flex-col gap-[25px] max-w-[448px] mx-auto grow w-full h-fit lg:order-1">
         <MudCardHeader Class="p-0">
             <div class="flex justify-between items-center w-full">
                 <div class="font-bold text-[20px]">Swap</div>
@@ -254,13 +254,19 @@
        @(_isChartButtonClicked ? "Hide" : "Show") Chart
     </MudButton>
 
-    <div class="@((_isChartButtonClicked ? "w-full opacity-100" : "w-0 opacity-0") + " overflow-hidden transition-all duration-150 h-fit !rounded-xl flex flex-col gap-5")">
-        <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100 !p-[24px]" : "w-0 opacity-0 !p-0") + " overflow-hidden transition-all duration-300 h-fit !rounded-xl")">
-            <SwapChart
-                FromCurrentlySelectedToken="@AppStateService?.FromCurrentlySelectedToken"
-                ToCurrentlySelectedToken="@AppStateService?.ToCurrentlySelectedToken"
-            />
-        </MudPaper>
-        <TradingHistory />
+    <div class="@((_isChartButtonClicked ? "w-full opacity-100" : "w-0 opacity-0") + " overflow-hidden transition-all duration-150 h-fit flex flex-col gap-5 !rounded-xl swap-chart")">
+        <MudTabs Elevation="6" ApplyEffectsToContainer="true">
+            <MudTabPanel Text="Chart">
+                <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100 !p-[24px]" : "w-0 opacity-0 !p-0") + " overflow-hidden transition-all duration-150 h-fit !rounded-none")">
+                    <SwapChart
+                        FromCurrentlySelectedToken="@AppStateService?.FromCurrentlySelectedToken"
+                        ToCurrentlySelectedToken="@AppStateService?.ToCurrentlySelectedToken"
+                    />
+                </MudPaper>
+            </MudTabPanel>
+            <MudTabPanel Text="Order Book">
+                <TradingHistory />
+            </MudTabPanel>
+        </MudTabs>
     </div>
 </div>
