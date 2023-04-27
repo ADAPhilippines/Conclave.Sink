@@ -37,7 +37,7 @@
         @if (IsWalletConnected)
         {
             <MudChip OnClick="OnWalletDisconnect" Size="Size.Medium"
-            Class="!px-4 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
+            Class=" hidden lg:block !px-4 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
                 <div class="flex gap-1">
                     <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="24" height="24"
                         alt="connected-wallet-logo" />
@@ -105,7 +105,28 @@
 <div class="bg-[url('/images/bear-with-balloons.png')] w-[384[x] h-[527px] bg-cover fixed bottom-0 right-20 w-96" />
 
 <MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
-    <MudDrawerHeader Class="pl-[16px] pr-[8px] py-[8px]">
+    <MudDrawerHeader Class="pl-[16px] pr-[8px] py-[8px] flex items-center">
+        @if (IsWalletConnected)
+        {
+            <MudChip OnClick="OnWalletDisconnect" Size="Size.Medium"
+            Class="lg:hidden !px-4 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl">
+                <div class="flex gap-1">
+                    <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="20" height="20"
+                        alt="connected-wallet-logo" />
+                    <div class="grid content-center">
+                        <!-- SUPER WEIRD I DONT KNOW WHY I NEED TO CHECK THIS AGAIN LOL -->
+                        @if (!string.IsNullOrEmpty(ConnectedAddress))
+                        {
+                            <span>
+                                @ConnectedAddress.Substring(0, 4)
+                                ...
+                                @ConnectedAddress.Substring(ConnectedAddress.Length - 4)
+                            </span>
+                        }
+                    </div>
+                </div>
+            </MudChip>
+        }
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
     </MudDrawerHeader>
@@ -139,8 +160,15 @@
         </MudMenu>
     </MudNavMenu>
     <div class="flex justify-center mt-4">
-        <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Secondary"
-            Class="!normal-case !text-[16px] !font-bold !px-4">Connect Wallet</MudButton>
+        <MudButton
+            Variant="Variant.Filled"
+            Size="Size.Small"
+            Color="Color.Secondary"
+            Class="!normal-case !text-[16px] !font-bold !px-4 w-[86%]"
+            OnClick="() => OnConnectWalletShowClicked()"
+        >
+            Connect Wallet
+        </MudButton>
     </div>
 </MudDrawer>
 

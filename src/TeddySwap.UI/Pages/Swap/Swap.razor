@@ -246,11 +246,21 @@
         </MudCardContent>
     </MudCard>
 
-    <MudButton OnClick="ToggleChart" Class="!rounded-xl !bg-[var(--mud-palette-surface)] !normal-case lg:hidden md:w-[448px] md:m-auto" StartIcon="@Icons.Material.Filled.ShowChart">
-       @(_isChartButtonClicked ? "Hide Chart" : "Show Chart")
+    <MudButton
+        OnClick="ToggleChart"
+        Class="!rounded-xl !bg-[var(--mud-palette-surface)] !normal-case lg:hidden md:w-[448px] md:m-auto !text-[20px]"
+        StartIcon="@Icons.Material.Filled.BarChart"
+    >
+       @(_isChartButtonClicked ? "Hide" : "Show") Chart
     </MudButton>
 
-    <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100 !p-[24px]" : "w-0 opacity-0 !p-0") + " overflow-hidden transition-all duration-300 h-fit !rounded-xl")">
-        <SwapChart />
-    </MudPaper>
+    <div class="@((_isChartButtonClicked ? "w-full opacity-100" : "w-0 opacity-0") + " overflow-hidden transition-all duration-150 h-fit !rounded-xl flex flex-col gap-5")">
+        <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100 !p-[24px]" : "w-0 opacity-0 !p-0") + " overflow-hidden transition-all duration-300 h-fit !rounded-xl")">
+            <SwapChart
+                FromCurrentlySelectedToken="@AppStateService?.FromCurrentlySelectedToken"
+                ToCurrentlySelectedToken="@AppStateService?.ToCurrentlySelectedToken"
+            />
+        </MudPaper>
+        <TradingHistory />
+    </div>
 </div>
