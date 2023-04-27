@@ -14,10 +14,6 @@ body:has(.mud-drawer--open) {
     padding-bottom: 15px;
 }
 
-.swap-chart .mud-tabs-toolbar {
-    padding-top: 13px;
-}
-
 .swap-chart .mud-tabs-scroll-button {
     display: none;
 }

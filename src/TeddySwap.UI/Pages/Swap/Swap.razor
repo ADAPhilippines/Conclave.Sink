@@ -8,8 +8,8 @@
 
 <PageTitle>TeddySwap | Cardano | Swap</PageTitle>
 
-<div class="flex flex-col lg:flex-row gap-4">
-    <MudCard Elevation="6" Class="!rounded-xl p-[24px] flex flex-col gap-[25px] max-w-[448px] mx-auto grow w-full h-fit lg:order-1">
+<div class="flex flex-col lg:flex-row gap-4 relative">
+    <MudCard Elevation="6" Class="!rounded-xl p-[24px] flex flex-col gap-[25px] max-w-[448px] mx-auto grow w-full h-fit lg:order-1 z-[100]">
         <MudCardHeader Class="p-0">
             <div class="flex justify-between items-center w-full">
                 <div class="font-bold text-[20px]">Swap</div>
@@ -248,16 +248,16 @@
 
     <MudButton
         OnClick="ToggleChart"
-        Class="!rounded-xl !bg-[var(--mud-palette-surface)] !normal-case lg:hidden md:w-[448px] md:m-auto !text-[20px]"
+        Class="!rounded-xl !bg-[var(--mud-palette-surface)] !normal-case lg:hidden md:w-[448px] md:m-auto !text-[20px] relative z-[100]"
         StartIcon="@Icons.Material.Filled.BarChart"
     >
        @(_isChartButtonClicked ? "Hide" : "Show") Chart
     </MudButton>
 
-    <div class="@((_isChartButtonClicked ? "w-full opacity-100" : "w-0 opacity-0") + " overflow-hidden transition-all duration-150 h-fit flex flex-col gap-5 !rounded-xl swap-chart")">
+    <div class="@((_isChartButtonClicked ?  "translate-y-0 lg:translate-x-0 relative opacity-100" : "translate-y-[-2%] lg:translate-y-0 lg:translate-x-[300px] absolute opacity-0") + " w-full max-w-[1040.4px] overflow-hidden transition-all duration-150 h-fit flex flex-col gap-5 !rounded-xl swap-chart")">
         <MudTabs Elevation="6" ApplyEffectsToContainer="true">
             <MudTabPanel Text="Chart">
-                <MudPaper Class="@((_isChartButtonClicked ? "w-full opacity-100 !p-[24px]" : "w-0 opacity-0 !p-0") + " overflow-hidden transition-all duration-150 h-fit !rounded-none")">
+                <MudPaper Class="@((_isChartButtonClicked ? "!p-[24px]" : "!p-[24px]") + " rounded-none")">
                     <SwapChart
                         FromCurrentlySelectedToken="@AppStateService?.FromCurrentlySelectedToken"
                         ToCurrentlySelectedToken="@AppStateService?.ToCurrentlySelectedToken"

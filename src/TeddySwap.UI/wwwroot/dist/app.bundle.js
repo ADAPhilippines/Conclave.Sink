@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -17,7 +8,78 @@
   \********************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lucid_cardano__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lucid-cardano */ \"./node_modules/lucid-cardano/esm/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([lucid_cardano__WEBPACK_IMPORTED_MODULE_0__]);\nlucid_cardano__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\nvar __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\n\nconst getWallets = () => {\n    const result = [];\n    const cardano = window.cardano;\n    for (const i in cardano) {\n        const p = cardano[i];\n        if (p.apiVersion != null && p.icon != null && p.name != null && i !== 'ccvault') {\n            result.push({\n                apiVersion: p.apiVersion,\n                icon: p.icon,\n                name: p.name,\n                id: i.toString()\n            });\n        }\n    }\n    return result;\n};\nconst enableAsync = (walletId) => __awaiter(void 0, void 0, void 0, function* () {\n    try {\n        const cardano = window.cardano;\n        const walletApi = yield cardano[walletId].enable();\n        window.CardanoWalletService.lucid = yield lucid_cardano__WEBPACK_IMPORTED_MODULE_0__.Lucid[\"new\"](new lucid_cardano__WEBPACK_IMPORTED_MODULE_0__.Kupmios('https://kupo-preview-api-teddy-swap-preview-414e80.us1.demeter.run', 'wss://ogmios-preview-api-teddy-swap-preview-414e80.us1.demeter.run'), \"Preview\");\n        window.CardanoWalletService.lucid.selectWallet(walletApi);\n        window.CardanoWalletService.walletApi = walletApi;\n    }\n    catch (ex) {\n        console.error(ex);\n    }\n    finally {\n        return window.CardanoWalletService.lucid != undefined;\n    }\n});\nconst getAddressAsync = () => __awaiter(void 0, void 0, void 0, function* () {\n    var _a;\n    return yield ((_a = window.CardanoWalletService.lucid) === null || _a === void 0 ? void 0 : _a.wallet.address());\n});\nconst getUsedAddressesAsync = () => __awaiter(void 0, void 0, void 0, function* () {\n    if (window.CardanoWalletService.walletApi != null) {\n        const cborAddresses = yield window.CardanoWalletService.walletApi.getUsedAddresses();\n        const addresses = cborAddresses.map(cA => { var _a; return (_a = window.CardanoWalletService.lucid) === null || _a === void 0 ? void 0 : _a.utils.getAddressDetails(cA).address.bech32; }).filter(cA => cA);\n        return addresses;\n    }\n    else\n        return [];\n});\nconst disconnect = () => {\n    delete window.CardanoWalletService.lucid;\n    delete window.CardanoWalletService.walletApi;\n};\nwindow.CardanoWalletService = {\n    enableAsync,\n    disconnect,\n    getWallets,\n    getAddressAsync,\n    getUsedAddressesAsync\n};\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./wwwroot/scripts/App.ts?");
+__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lucid_cardano__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lucid-cardano */ "./node_modules/lucid-cardano/esm/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([lucid_cardano__WEBPACK_IMPORTED_MODULE_0__]);
+lucid_cardano__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
+const getWallets = () => {
+    const result = [];
+    const cardano = window.cardano;
+    for (const i in cardano) {
+        const p = cardano[i];
+        if (p.apiVersion != null && p.icon != null && p.name != null && i !== 'ccvault') {
+            result.push({
+                apiVersion: p.apiVersion,
+                icon: p.icon,
+                name: p.name,
+                id: i.toString()
+            });
+        }
+    }
+    return result;
+};
+const enableAsync = async (walletId) => {
+    try {
+        const cardano = window.cardano;
+        const walletApi = await cardano[walletId].enable();
+        window.CardanoWalletService.lucid = await lucid_cardano__WEBPACK_IMPORTED_MODULE_0__.Lucid["new"](new lucid_cardano__WEBPACK_IMPORTED_MODULE_0__.Kupmios('https://kupo-preview-api-teddy-swap-preview-414e80.us1.demeter.run', 'wss://ogmios-preview-api-teddy-swap-preview-414e80.us1.demeter.run'), "Preview");
+        window.CardanoWalletService.lucid.selectWallet(walletApi);
+        window.CardanoWalletService.walletApi = walletApi;
+    }
+    catch (ex) {
+        console.error(ex);
+    }
+    finally {
+        return window.CardanoWalletService.lucid != undefined;
+    }
+};
+const getAddressAsync = async () => {
+    return await window.CardanoWalletService.lucid?.wallet.address();
+};
+const getUsedAddressesAsync = async () => {
+    if (window.CardanoWalletService.walletApi != null) {
+        const cborAddresses = await window.CardanoWalletService.walletApi.getUsedAddresses();
+        const addresses = cborAddresses.map(cA => window.CardanoWalletService.lucid?.utils.getAddressDetails(cA).address.bech32).filter(cA => cA);
+        return addresses;
+    }
+    else
+        return [];
+};
+const signMessageAsync = async (messageHex) => {
+    const rewardAddress = await getStakeAddressAsync();
+    return await window.CardanoWalletService.lucid?.wallet.signMessage(rewardAddress, messageHex);
+};
+const getStakeAddressAsync = async () => {
+    return await window.CardanoWalletService.lucid?.wallet.rewardAddress();
+};
+const disconnect = () => {
+    delete window.CardanoWalletService.lucid;
+    delete window.CardanoWalletService.walletApi;
+};
+window.CardanoWalletService = {
+    enableAsync,
+    disconnect,
+    getWallets,
+    getAddressAsync,
+    getUsedAddressesAsync,
+    signMessageAsync,
+    getStakeAddressAsync
+};
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -27,7 +89,7 @@ eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__
   \**************************************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"076fbae3fe7e20fe3173.wasm\";\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_message_signing_web/cardano_message_signing_bg.wasm?");
+module.exports = __webpack_require__.p + "076fbae3fe7e20fe3173.wasm";
 
 /***/ }),
 
@@ -37,7 +99,7 @@ eval("module.exports = __webpack_require__.p + \"076fbae3fe7e20fe3173.wasm\";\n\
   \******************************************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"b575e92051802f01a358.wasm\";\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib_bg.wasm?");
+module.exports = __webpack_require__.p + "b575e92051802f01a358.wasm";
 
 /***/ }),
 
@@ -47,7 +109,117 @@ eval("module.exports = __webpack_require__.p + \"b575e92051802f01a358.wasm\";\n\
   \***********************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"decode\": () => (/* binding */ decode),\n/* harmony export */   \"decodeString\": () => (/* binding */ decodeString),\n/* harmony export */   \"decodedLen\": () => (/* binding */ decodedLen),\n/* harmony export */   \"encode\": () => (/* binding */ encode),\n/* harmony export */   \"encodeToString\": () => (/* binding */ encodeToString),\n/* harmony export */   \"encodedLen\": () => (/* binding */ encodedLen),\n/* harmony export */   \"errInvalidByte\": () => (/* binding */ errInvalidByte),\n/* harmony export */   \"errLength\": () => (/* binding */ errLength)\n/* harmony export */ });\n// Ported from Go\n// https://github.com/golang/go/blob/go1.12.5/src/encoding/hex/hex.go\n// Copyright 2009 The Go Authors. All rights reserved.\n// Use of this source code is governed by a BSD-style\n// license that can be found in the LICENSE file.\n// Copyright 2018-2021 the Deno authors. All rights reserved. MIT license.\nconst hexTable = new TextEncoder().encode(\"0123456789abcdef\");\n/**\n * ErrInvalidByte takes an invalid byte and returns an Error.\n * @param byte\n */\nfunction errInvalidByte(byte) {\n    return new Error(\"encoding/hex: invalid byte: \" +\n        new TextDecoder().decode(new Uint8Array([byte])));\n}\n/** ErrLength returns an error about odd string length. */\nfunction errLength() {\n    return new Error(\"encoding/hex: odd length hex string\");\n}\n// fromHexChar converts a hex character into its value.\nfunction fromHexChar(byte) {\n    // '0' <= byte && byte <= '9'\n    if (48 <= byte && byte <= 57)\n        return byte - 48;\n    // 'a' <= byte && byte <= 'f'\n    if (97 <= byte && byte <= 102)\n        return byte - 97 + 10;\n    // 'A' <= byte && byte <= 'F'\n    if (65 <= byte && byte <= 70)\n        return byte - 65 + 10;\n    throw errInvalidByte(byte);\n}\n/**\n * EncodedLen returns the length of an encoding of n source bytes. Specifically,\n * it returns n * 2.\n * @param n\n */\nfunction encodedLen(n) {\n    return n * 2;\n}\n/**\n * Encode encodes `src` into `encodedLen(src.length)` bytes.\n * @param src\n */\nfunction encode(src) {\n    const dst = new Uint8Array(encodedLen(src.length));\n    for (let i = 0; i < dst.length; i++) {\n        const v = src[i];\n        dst[i * 2] = hexTable[v >> 4];\n        dst[i * 2 + 1] = hexTable[v & 0x0f];\n    }\n    return dst;\n}\n/**\n * EncodeToString returns the hexadecimal encoding of `src`.\n * @param src\n */\nfunction encodeToString(src) {\n    return new TextDecoder().decode(encode(src));\n}\n/**\n * Decode decodes `src` into `decodedLen(src.length)` bytes\n * If the input is malformed an error will be thrown\n * the error.\n * @param src\n */\nfunction decode(src) {\n    const dst = new Uint8Array(decodedLen(src.length));\n    for (let i = 0; i < dst.length; i++) {\n        const a = fromHexChar(src[i * 2]);\n        const b = fromHexChar(src[i * 2 + 1]);\n        dst[i] = (a << 4) | b;\n    }\n    if (src.length % 2 == 1) {\n        // Check for invalid char before reporting bad length,\n        // since the invalid char (if present) is an earlier problem.\n        fromHexChar(src[dst.length * 2]);\n        throw errLength();\n    }\n    return dst;\n}\n/**\n * DecodedLen returns the length of decoding `x` source bytes.\n * Specifically, it returns `x / 2`.\n * @param x\n */\nfunction decodedLen(x) {\n    return x >>> 1;\n}\n/**\n * DecodeString returns the bytes represented by the hexadecimal string `s`.\n * DecodeString expects that src contains only hexadecimal characters and that\n * src has even length.\n * If the input is malformed, DecodeString will throw an error.\n * @param s the `string` to decode to `Uint8Array`\n */\nfunction decodeString(s) {\n    return decode(new TextEncoder().encode(s));\n}\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/deps/deno.land/std@0.100.0/encoding/hex.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "decode": () => (/* binding */ decode),
+/* harmony export */   "decodeString": () => (/* binding */ decodeString),
+/* harmony export */   "decodedLen": () => (/* binding */ decodedLen),
+/* harmony export */   "encode": () => (/* binding */ encode),
+/* harmony export */   "encodeToString": () => (/* binding */ encodeToString),
+/* harmony export */   "encodedLen": () => (/* binding */ encodedLen),
+/* harmony export */   "errInvalidByte": () => (/* binding */ errInvalidByte),
+/* harmony export */   "errLength": () => (/* binding */ errLength)
+/* harmony export */ });
+// Ported from Go
+// https://github.com/golang/go/blob/go1.12.5/src/encoding/hex/hex.go
+// Copyright 2009 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+// Copyright 2018-2021 the Deno authors. All rights reserved. MIT license.
+const hexTable = new TextEncoder().encode("0123456789abcdef");
+/**
+ * ErrInvalidByte takes an invalid byte and returns an Error.
+ * @param byte
+ */
+function errInvalidByte(byte) {
+    return new Error("encoding/hex: invalid byte: " +
+        new TextDecoder().decode(new Uint8Array([byte])));
+}
+/** ErrLength returns an error about odd string length. */
+function errLength() {
+    return new Error("encoding/hex: odd length hex string");
+}
+// fromHexChar converts a hex character into its value.
+function fromHexChar(byte) {
+    // '0' <= byte && byte <= '9'
+    if (48 <= byte && byte <= 57)
+        return byte - 48;
+    // 'a' <= byte && byte <= 'f'
+    if (97 <= byte && byte <= 102)
+        return byte - 97 + 10;
+    // 'A' <= byte && byte <= 'F'
+    if (65 <= byte && byte <= 70)
+        return byte - 65 + 10;
+    throw errInvalidByte(byte);
+}
+/**
+ * EncodedLen returns the length of an encoding of n source bytes. Specifically,
+ * it returns n * 2.
+ * @param n
+ */
+function encodedLen(n) {
+    return n * 2;
+}
+/**
+ * Encode encodes `src` into `encodedLen(src.length)` bytes.
+ * @param src
+ */
+function encode(src) {
+    const dst = new Uint8Array(encodedLen(src.length));
+    for (let i = 0; i < dst.length; i++) {
+        const v = src[i];
+        dst[i * 2] = hexTable[v >> 4];
+        dst[i * 2 + 1] = hexTable[v & 0x0f];
+    }
+    return dst;
+}
+/**
+ * EncodeToString returns the hexadecimal encoding of `src`.
+ * @param src
+ */
+function encodeToString(src) {
+    return new TextDecoder().decode(encode(src));
+}
+/**
+ * Decode decodes `src` into `decodedLen(src.length)` bytes
+ * If the input is malformed an error will be thrown
+ * the error.
+ * @param src
+ */
+function decode(src) {
+    const dst = new Uint8Array(decodedLen(src.length));
+    for (let i = 0; i < dst.length; i++) {
+        const a = fromHexChar(src[i * 2]);
+        const b = fromHexChar(src[i * 2 + 1]);
+        dst[i] = (a << 4) | b;
+    }
+    if (src.length % 2 == 1) {
+        // Check for invalid char before reporting bad length,
+        // since the invalid char (if present) is an earlier problem.
+        fromHexChar(src[dst.length * 2]);
+        throw errLength();
+    }
+    return dst;
+}
+/**
+ * DecodedLen returns the length of decoding `x` source bytes.
+ * Specifically, it returns `x / 2`.
+ * @param x
+ */
+function decodedLen(x) {
+    return x >>> 1;
+}
+/**
+ * DecodeString returns the bytes represented by the hexadecimal string `s`.
+ * DecodeString expects that src contains only hexadecimal characters and that
+ * src has even length.
+ * If the input is malformed, DecodeString will throw an error.
+ * @param s the `string` to decode to `Uint8Array`
+ */
+function decodeString(s) {
+    return decode(new TextEncoder().encode(s));
+}
+
 
 /***/ }),
 
@@ -57,7 +229,60 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***********************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"equals\": () => (/* binding */ equals),\n/* harmony export */   \"equals32Bit\": () => (/* binding */ equals32Bit),\n/* harmony export */   \"equalsNaive\": () => (/* binding */ equalsNaive)\n/* harmony export */ });\n// Copyright 2018-2022 the Deno authors. All rights reserved. MIT license.\n// This module is browser compatible.\n/** Check whether binary arrays are equal to each other using 8-bit comparisons.\n * @private\n * @param a first array to check equality\n * @param b second array to check equality\n */\nfunction equalsNaive(a, b) {\n    if (a.length !== b.length)\n        return false;\n    for (let i = 0; i < b.length; i++) {\n        if (a[i] !== b[i])\n            return false;\n    }\n    return true;\n}\n/** Check whether binary arrays are equal to each other using 32-bit comparisons.\n * @private\n * @param a first array to check equality\n * @param b second array to check equality\n */\nfunction equals32Bit(a, b) {\n    if (a.length !== b.length)\n        return false;\n    const len = a.length;\n    const compressable = Math.floor(len / 4);\n    const compressedA = new Uint32Array(a.buffer, 0, compressable);\n    const compressedB = new Uint32Array(b.buffer, 0, compressable);\n    for (let i = compressable * 4; i < len; i++) {\n        if (a[i] !== b[i])\n            return false;\n    }\n    for (let i = 0; i < compressedA.length; i++) {\n        if (compressedA[i] !== compressedB[i])\n            return false;\n    }\n    return true;\n}\n/** Check whether binary arrays are equal to each other.\n * @param a first array to check equality\n * @param b second array to check equality\n */\nfunction equals(a, b) {\n    if (a.length < 1000)\n        return equalsNaive(a, b);\n    return equals32Bit(a, b);\n}\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/deps/deno.land/std@0.148.0/bytes/equals.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "equals": () => (/* binding */ equals),
+/* harmony export */   "equals32Bit": () => (/* binding */ equals32Bit),
+/* harmony export */   "equalsNaive": () => (/* binding */ equalsNaive)
+/* harmony export */ });
+// Copyright 2018-2022 the Deno authors. All rights reserved. MIT license.
+// This module is browser compatible.
+/** Check whether binary arrays are equal to each other using 8-bit comparisons.
+ * @private
+ * @param a first array to check equality
+ * @param b second array to check equality
+ */
+function equalsNaive(a, b) {
+    if (a.length !== b.length)
+        return false;
+    for (let i = 0; i < b.length; i++) {
+        if (a[i] !== b[i])
+            return false;
+    }
+    return true;
+}
+/** Check whether binary arrays are equal to each other using 32-bit comparisons.
+ * @private
+ * @param a first array to check equality
+ * @param b second array to check equality
+ */
+function equals32Bit(a, b) {
+    if (a.length !== b.length)
+        return false;
+    const len = a.length;
+    const compressable = Math.floor(len / 4);
+    const compressedA = new Uint32Array(a.buffer, 0, compressable);
+    const compressedB = new Uint32Array(b.buffer, 0, compressable);
+    for (let i = compressable * 4; i < len; i++) {
+        if (a[i] !== b[i])
+            return false;
+    }
+    for (let i = 0; i < compressedA.length; i++) {
+        if (compressedA[i] !== compressedB[i])
+            return false;
+    }
+    return true;
+}
+/** Check whether binary arrays are equal to each other.
+ * @param a first array to check equality
+ * @param b second array to check equality
+ */
+function equals(a, b) {
+    if (a.length < 1000)
+        return equalsNaive(a, b);
+    return equals32Bit(a, b);
+}
+
 
 /***/ }),
 
@@ -67,7 +292,261 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \********************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"concat\": () => (/* binding */ concat),\n/* harmony export */   \"copy\": () => (/* binding */ copy),\n/* harmony export */   \"endsWith\": () => (/* binding */ endsWith),\n/* harmony export */   \"equals\": () => (/* reexport safe */ _equals_js__WEBPACK_IMPORTED_MODULE_0__.equals),\n/* harmony export */   \"includesNeedle\": () => (/* binding */ includesNeedle),\n/* harmony export */   \"indexOfNeedle\": () => (/* binding */ indexOfNeedle),\n/* harmony export */   \"lastIndexOfNeedle\": () => (/* binding */ lastIndexOfNeedle),\n/* harmony export */   \"repeat\": () => (/* binding */ repeat),\n/* harmony export */   \"startsWith\": () => (/* binding */ startsWith)\n/* harmony export */ });\n/* harmony import */ var _equals_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./equals.js */ \"./node_modules/lucid-cardano/esm/deps/deno.land/std@0.148.0/bytes/equals.js\");\n// Copyright 2018-2022 the Deno authors. All rights reserved. MIT license.\n// This module is browser compatible.\n/**\n * Provides helper functions to manipulate `Uint8Array` byte slices that are not\n * included on the `Uint8Array` prototype.\n *\n * @module\n */\n/** Returns the index of the first occurrence of the needle array in the source\n * array, or -1 if it is not present.\n *\n * A start index can be specified as the third argument that begins the search\n * at that given index. The start index defaults to the start of the array.\n *\n * The complexity of this function is O(source.lenth * needle.length).\n *\n * ```ts\n * import { indexOfNeedle } from \"./mod.ts\";\n * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);\n * const needle = new Uint8Array([1, 2]);\n * console.log(indexOfNeedle(source, needle)); // 1\n * console.log(indexOfNeedle(source, needle, 2)); // 3\n * ```\n */\nfunction indexOfNeedle(source, needle, start = 0) {\n    if (start >= source.length) {\n        return -1;\n    }\n    if (start < 0) {\n        start = Math.max(0, source.length + start);\n    }\n    const s = needle[0];\n    for (let i = start; i < source.length; i++) {\n        if (source[i] !== s)\n            continue;\n        const pin = i;\n        let matched = 1;\n        let j = i;\n        while (matched < needle.length) {\n            j++;\n            if (source[j] !== needle[j - pin]) {\n                break;\n            }\n            matched++;\n        }\n        if (matched === needle.length) {\n            return pin;\n        }\n    }\n    return -1;\n}\n/** Returns the index of the last occurrence of the needle array in the source\n * array, or -1 if it is not present.\n *\n * A start index can be specified as the third argument that begins the search\n * at that given index. The start index defaults to the end of the array.\n *\n * The complexity of this function is O(source.lenth * needle.length).\n *\n * ```ts\n * import { lastIndexOfNeedle } from \"./mod.ts\";\n * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);\n * const needle = new Uint8Array([1, 2]);\n * console.log(lastIndexOfNeedle(source, needle)); // 5\n * console.log(lastIndexOfNeedle(source, needle, 4)); // 3\n * ```\n */\nfunction lastIndexOfNeedle(source, needle, start = source.length - 1) {\n    if (start < 0) {\n        return -1;\n    }\n    if (start >= source.length) {\n        start = source.length - 1;\n    }\n    const e = needle[needle.length - 1];\n    for (let i = start; i >= 0; i--) {\n        if (source[i] !== e)\n            continue;\n        const pin = i;\n        let matched = 1;\n        let j = i;\n        while (matched < needle.length) {\n            j--;\n            if (source[j] !== needle[needle.length - 1 - (pin - j)]) {\n                break;\n            }\n            matched++;\n        }\n        if (matched === needle.length) {\n            return pin - needle.length + 1;\n        }\n    }\n    return -1;\n}\n/** Returns true if the prefix array appears at the start of the source array,\n * false otherwise.\n *\n * The complexity of this function is O(prefix.length).\n *\n * ```ts\n * import { startsWith } from \"./mod.ts\";\n * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);\n * const prefix = new Uint8Array([0, 1, 2]);\n * console.log(startsWith(source, prefix)); // true\n * ```\n */\nfunction startsWith(source, prefix) {\n    for (let i = 0, max = prefix.length; i < max; i++) {\n        if (source[i] !== prefix[i])\n            return false;\n    }\n    return true;\n}\n/** Returns true if the suffix array appears at the end of the source array,\n * false otherwise.\n *\n * The complexity of this function is O(suffix.length).\n *\n * ```ts\n * import { endsWith } from \"./mod.ts\";\n * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);\n * const suffix = new Uint8Array([1, 2, 3]);\n * console.log(endsWith(source, suffix)); // true\n * ```\n */\nfunction endsWith(source, suffix) {\n    for (let srci = source.length - 1, sfxi = suffix.length - 1; sfxi >= 0; srci--, sfxi--) {\n        if (source[srci] !== suffix[sfxi])\n            return false;\n    }\n    return true;\n}\n/** Returns a new Uint8Array composed of `count` repetitions of the `source`\n * array.\n *\n * If `count` is negative, a `RangeError` is thrown.\n *\n * ```ts\n * import { repeat } from \"./mod.ts\";\n * const source = new Uint8Array([0, 1, 2]);\n * console.log(repeat(source, 3)); // [0, 1, 2, 0, 1, 2, 0, 1, 2]\n * console.log(repeat(source, 0)); // []\n * console.log(repeat(source, -1)); // RangeError\n * ```\n */\nfunction repeat(source, count) {\n    if (count === 0) {\n        return new Uint8Array();\n    }\n    if (count < 0) {\n        throw new RangeError(\"bytes: negative repeat count\");\n    }\n    else if ((source.length * count) / count !== source.length) {\n        throw new Error(\"bytes: repeat count causes overflow\");\n    }\n    const int = Math.floor(count);\n    if (int !== count) {\n        throw new Error(\"bytes: repeat count must be an integer\");\n    }\n    const nb = new Uint8Array(source.length * count);\n    let bp = copy(source, nb);\n    for (; bp < nb.length; bp *= 2) {\n        copy(nb.slice(0, bp), nb, bp);\n    }\n    return nb;\n}\n/** Concatenate the given arrays into a new Uint8Array.\n *\n * ```ts\n * import { concat } from \"./mod.ts\";\n * const a = new Uint8Array([0, 1, 2]);\n * const b = new Uint8Array([3, 4, 5]);\n * console.log(concat(a, b)); // [0, 1, 2, 3, 4, 5]\n */\nfunction concat(...buf) {\n    let length = 0;\n    for (const b of buf) {\n        length += b.length;\n    }\n    const output = new Uint8Array(length);\n    let index = 0;\n    for (const b of buf) {\n        output.set(b, index);\n        index += b.length;\n    }\n    return output;\n}\n/** Returns true if the source array contains the needle array, false otherwise.\n *\n * A start index can be specified as the third argument that begins the search\n * at that given index. The start index defaults to the beginning of the array.\n *\n * The complexity of this function is O(source.length * needle.length).\n *\n * ```ts\n * import { includesNeedle } from \"./mod.ts\";\n * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);\n * const needle = new Uint8Array([1, 2]);\n * console.log(includesNeedle(source, needle)); // true\n * console.log(includesNeedle(source, needle, 6)); // false\n * ```\n */\nfunction includesNeedle(source, needle, start = 0) {\n    return indexOfNeedle(source, needle, start) !== -1;\n}\n/** Copy bytes from the `src` array to the `dst` array. Returns the number of\n * bytes copied.\n *\n * If the `src` array is larger than what the `dst` array can hold, only the\n * amount of bytes that fit in the `dst` array are copied.\n *\n * An offset can be specified as the third argument that begins the copy at\n * that given index in the `dst` array. The offset defaults to the beginning of\n * the array.\n *\n * ```ts\n * import { copy } from \"./mod.ts\";\n * const src = new Uint8Array([9, 8, 7]);\n * const dst = new Uint8Array([0, 1, 2, 3, 4, 5]);\n * console.log(copy(src, dst)); // 3\n * console.log(dst); // [9, 8, 7, 3, 4, 5]\n * ```\n *\n * ```ts\n * import { copy } from \"./mod.ts\";\n * const src = new Uint8Array([1, 1, 1, 1]);\n * const dst = new Uint8Array([0, 0, 0, 0]);\n * console.log(copy(src, dst, 1)); // 3\n * console.log(dst); // [0, 1, 1, 1]\n * ```\n */\nfunction copy(src, dst, off = 0) {\n    off = Math.max(0, Math.min(off, dst.byteLength));\n    const dstBytesAvailable = dst.byteLength - off;\n    if (src.byteLength > dstBytesAvailable) {\n        src = src.subarray(0, dstBytesAvailable);\n    }\n    dst.set(src, off);\n    return src.byteLength;\n}\n\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/deps/deno.land/std@0.148.0/bytes/mod.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "concat": () => (/* binding */ concat),
+/* harmony export */   "copy": () => (/* binding */ copy),
+/* harmony export */   "endsWith": () => (/* binding */ endsWith),
+/* harmony export */   "equals": () => (/* reexport safe */ _equals_js__WEBPACK_IMPORTED_MODULE_0__.equals),
+/* harmony export */   "includesNeedle": () => (/* binding */ includesNeedle),
+/* harmony export */   "indexOfNeedle": () => (/* binding */ indexOfNeedle),
+/* harmony export */   "lastIndexOfNeedle": () => (/* binding */ lastIndexOfNeedle),
+/* harmony export */   "repeat": () => (/* binding */ repeat),
+/* harmony export */   "startsWith": () => (/* binding */ startsWith)
+/* harmony export */ });
+/* harmony import */ var _equals_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./equals.js */ "./node_modules/lucid-cardano/esm/deps/deno.land/std@0.148.0/bytes/equals.js");
+// Copyright 2018-2022 the Deno authors. All rights reserved. MIT license.
+// This module is browser compatible.
+/**
+ * Provides helper functions to manipulate `Uint8Array` byte slices that are not
+ * included on the `Uint8Array` prototype.
+ *
+ * @module
+ */
+/** Returns the index of the first occurrence of the needle array in the source
+ * array, or -1 if it is not present.
+ *
+ * A start index can be specified as the third argument that begins the search
+ * at that given index. The start index defaults to the start of the array.
+ *
+ * The complexity of this function is O(source.lenth * needle.length).
+ *
+ * ```ts
+ * import { indexOfNeedle } from "./mod.ts";
+ * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);
+ * const needle = new Uint8Array([1, 2]);
+ * console.log(indexOfNeedle(source, needle)); // 1
+ * console.log(indexOfNeedle(source, needle, 2)); // 3
+ * ```
+ */
+function indexOfNeedle(source, needle, start = 0) {
+    if (start >= source.length) {
+        return -1;
+    }
+    if (start < 0) {
+        start = Math.max(0, source.length + start);
+    }
+    const s = needle[0];
+    for (let i = start; i < source.length; i++) {
+        if (source[i] !== s)
+            continue;
+        const pin = i;
+        let matched = 1;
+        let j = i;
+        while (matched < needle.length) {
+            j++;
+            if (source[j] !== needle[j - pin]) {
+                break;
+            }
+            matched++;
+        }
+        if (matched === needle.length) {
+            return pin;
+        }
+    }
+    return -1;
+}
+/** Returns the index of the last occurrence of the needle array in the source
+ * array, or -1 if it is not present.
+ *
+ * A start index can be specified as the third argument that begins the search
+ * at that given index. The start index defaults to the end of the array.
+ *
+ * The complexity of this function is O(source.lenth * needle.length).
+ *
+ * ```ts
+ * import { lastIndexOfNeedle } from "./mod.ts";
+ * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);
+ * const needle = new Uint8Array([1, 2]);
+ * console.log(lastIndexOfNeedle(source, needle)); // 5
+ * console.log(lastIndexOfNeedle(source, needle, 4)); // 3
+ * ```
+ */
+function lastIndexOfNeedle(source, needle, start = source.length - 1) {
+    if (start < 0) {
+        return -1;
+    }
+    if (start >= source.length) {
+        start = source.length - 1;
+    }
+    const e = needle[needle.length - 1];
+    for (let i = start; i >= 0; i--) {
+        if (source[i] !== e)
+            continue;
+        const pin = i;
+        let matched = 1;
+        let j = i;
+        while (matched < needle.length) {
+            j--;
+            if (source[j] !== needle[needle.length - 1 - (pin - j)]) {
+                break;
+            }
+            matched++;
+        }
+        if (matched === needle.length) {
+            return pin - needle.length + 1;
+        }
+    }
+    return -1;
+}
+/** Returns true if the prefix array appears at the start of the source array,
+ * false otherwise.
+ *
+ * The complexity of this function is O(prefix.length).
+ *
+ * ```ts
+ * import { startsWith } from "./mod.ts";
+ * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);
+ * const prefix = new Uint8Array([0, 1, 2]);
+ * console.log(startsWith(source, prefix)); // true
+ * ```
+ */
+function startsWith(source, prefix) {
+    for (let i = 0, max = prefix.length; i < max; i++) {
+        if (source[i] !== prefix[i])
+            return false;
+    }
+    return true;
+}
+/** Returns true if the suffix array appears at the end of the source array,
+ * false otherwise.
+ *
+ * The complexity of this function is O(suffix.length).
+ *
+ * ```ts
+ * import { endsWith } from "./mod.ts";
+ * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);
+ * const suffix = new Uint8Array([1, 2, 3]);
+ * console.log(endsWith(source, suffix)); // true
+ * ```
+ */
+function endsWith(source, suffix) {
+    for (let srci = source.length - 1, sfxi = suffix.length - 1; sfxi >= 0; srci--, sfxi--) {
+        if (source[srci] !== suffix[sfxi])
+            return false;
+    }
+    return true;
+}
+/** Returns a new Uint8Array composed of `count` repetitions of the `source`
+ * array.
+ *
+ * If `count` is negative, a `RangeError` is thrown.
+ *
+ * ```ts
+ * import { repeat } from "./mod.ts";
+ * const source = new Uint8Array([0, 1, 2]);
+ * console.log(repeat(source, 3)); // [0, 1, 2, 0, 1, 2, 0, 1, 2]
+ * console.log(repeat(source, 0)); // []
+ * console.log(repeat(source, -1)); // RangeError
+ * ```
+ */
+function repeat(source, count) {
+    if (count === 0) {
+        return new Uint8Array();
+    }
+    if (count < 0) {
+        throw new RangeError("bytes: negative repeat count");
+    }
+    else if ((source.length * count) / count !== source.length) {
+        throw new Error("bytes: repeat count causes overflow");
+    }
+    const int = Math.floor(count);
+    if (int !== count) {
+        throw new Error("bytes: repeat count must be an integer");
+    }
+    const nb = new Uint8Array(source.length * count);
+    let bp = copy(source, nb);
+    for (; bp < nb.length; bp *= 2) {
+        copy(nb.slice(0, bp), nb, bp);
+    }
+    return nb;
+}
+/** Concatenate the given arrays into a new Uint8Array.
+ *
+ * ```ts
+ * import { concat } from "./mod.ts";
+ * const a = new Uint8Array([0, 1, 2]);
+ * const b = new Uint8Array([3, 4, 5]);
+ * console.log(concat(a, b)); // [0, 1, 2, 3, 4, 5]
+ */
+function concat(...buf) {
+    let length = 0;
+    for (const b of buf) {
+        length += b.length;
+    }
+    const output = new Uint8Array(length);
+    let index = 0;
+    for (const b of buf) {
+        output.set(b, index);
+        index += b.length;
+    }
+    return output;
+}
+/** Returns true if the source array contains the needle array, false otherwise.
+ *
+ * A start index can be specified as the third argument that begins the search
+ * at that given index. The start index defaults to the beginning of the array.
+ *
+ * The complexity of this function is O(source.length * needle.length).
+ *
+ * ```ts
+ * import { includesNeedle } from "./mod.ts";
+ * const source = new Uint8Array([0, 1, 2, 1, 2, 1, 2, 3]);
+ * const needle = new Uint8Array([1, 2]);
+ * console.log(includesNeedle(source, needle)); // true
+ * console.log(includesNeedle(source, needle, 6)); // false
+ * ```
+ */
+function includesNeedle(source, needle, start = 0) {
+    return indexOfNeedle(source, needle, start) !== -1;
+}
+/** Copy bytes from the `src` array to the `dst` array. Returns the number of
+ * bytes copied.
+ *
+ * If the `src` array is larger than what the `dst` array can hold, only the
+ * amount of bytes that fit in the `dst` array are copied.
+ *
+ * An offset can be specified as the third argument that begins the copy at
+ * that given index in the `dst` array. The offset defaults to the beginning of
+ * the array.
+ *
+ * ```ts
+ * import { copy } from "./mod.ts";
+ * const src = new Uint8Array([9, 8, 7]);
+ * const dst = new Uint8Array([0, 1, 2, 3, 4, 5]);
+ * console.log(copy(src, dst)); // 3
+ * console.log(dst); // [9, 8, 7, 3, 4, 5]
+ * ```
+ *
+ * ```ts
+ * import { copy } from "./mod.ts";
+ * const src = new Uint8Array([1, 1, 1, 1]);
+ * const dst = new Uint8Array([0, 0, 0, 0]);
+ * console.log(copy(src, dst, 1)); // 3
+ * console.log(dst); // [0, 1, 1, 1]
+ * ```
+ */
+function copy(src, dst, off = 0) {
+    off = Math.max(0, Math.min(off, dst.byteLength));
+    const dstBytesAvailable = dst.byteLength - off;
+    if (src.byteLength > dstBytesAvailable) {
+        src = src.subarray(0, dstBytesAvailable);
+    }
+    dst.set(src, off);
+    return src.byteLength;
+}
+
+
 
 /***/ }),
 
@@ -77,7 +556,631 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"HmacSha256\": () => (/* binding */ HmacSha256),\n/* harmony export */   \"Sha256\": () => (/* binding */ Sha256)\n/* harmony export */ });\n// Copyright 2018-2022 the Deno authors. All rights reserved. MIT license.\n// This module is browser compatible.\nvar __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {\n    if (kind === \"m\") throw new TypeError(\"Private method is not writable\");\n    if (kind === \"a\" && !f) throw new TypeError(\"Private accessor was defined without a setter\");\n    if (typeof state === \"function\" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError(\"Cannot write private member to an object whose class did not declare it\");\n    return (kind === \"a\" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;\n};\nvar __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, state, kind, f) {\n    if (kind === \"a\" && !f) throw new TypeError(\"Private accessor was defined without a getter\");\n    if (typeof state === \"function\" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError(\"Cannot read private member from an object whose class did not declare it\");\n    return kind === \"m\" ? f : kind === \"a\" ? f.call(receiver) : f ? f.value : state.get(receiver);\n};\nvar _Sha256_block, _Sha256_blocks, _Sha256_bytes, _Sha256_finalized, _Sha256_first, _Sha256_h0, _Sha256_h1, _Sha256_h2, _Sha256_h3, _Sha256_h4, _Sha256_h5, _Sha256_h6, _Sha256_h7, _Sha256_hashed, _Sha256_hBytes, _Sha256_is224, _Sha256_lastByteIndex, _Sha256_start, _HmacSha256_inner, _HmacSha256_is224, _HmacSha256_oKeyPad, _HmacSha256_sharedMemory;\nconst HEX_CHARS = \"0123456789abcdef\".split(\"\");\nconst EXTRA = [-2147483648, 8388608, 32768, 128];\nconst SHIFT = [24, 16, 8, 0];\nconst K = [\n    0x428a2f98,\n    0x71374491,\n    0xb5c0fbcf,\n    0xe9b5dba5,\n    0x3956c25b,\n    0x59f111f1,\n    0x923f82a4,\n    0xab1c5ed5,\n    0xd807aa98,\n    0x12835b01,\n    0x243185be,\n    0x550c7dc3,\n    0x72be5d74,\n    0x80deb1fe,\n    0x9bdc06a7,\n    0xc19bf174,\n    0xe49b69c1,\n    0xefbe4786,\n    0x0fc19dc6,\n    0x240ca1cc,\n    0x2de92c6f,\n    0x4a7484aa,\n    0x5cb0a9dc,\n    0x76f988da,\n    0x983e5152,\n    0xa831c66d,\n    0xb00327c8,\n    0xbf597fc7,\n    0xc6e00bf3,\n    0xd5a79147,\n    0x06ca6351,\n    0x14292967,\n    0x27b70a85,\n    0x2e1b2138,\n    0x4d2c6dfc,\n    0x53380d13,\n    0x650a7354,\n    0x766a0abb,\n    0x81c2c92e,\n    0x92722c85,\n    0xa2bfe8a1,\n    0xa81a664b,\n    0xc24b8b70,\n    0xc76c51a3,\n    0xd192e819,\n    0xd6990624,\n    0xf40e3585,\n    0x106aa070,\n    0x19a4c116,\n    0x1e376c08,\n    0x2748774c,\n    0x34b0bcb5,\n    0x391c0cb3,\n    0x4ed8aa4a,\n    0x5b9cca4f,\n    0x682e6ff3,\n    0x748f82ee,\n    0x78a5636f,\n    0x84c87814,\n    0x8cc70208,\n    0x90befffa,\n    0xa4506ceb,\n    0xbef9a3f7,\n    0xc67178f2,\n];\nconst blocks = [];\nclass Sha256 {\n    constructor(is224 = false, sharedMemory = false) {\n        _Sha256_block.set(this, void 0);\n        _Sha256_blocks.set(this, void 0);\n        _Sha256_bytes.set(this, void 0);\n        _Sha256_finalized.set(this, void 0);\n        _Sha256_first.set(this, void 0);\n        _Sha256_h0.set(this, void 0);\n        _Sha256_h1.set(this, void 0);\n        _Sha256_h2.set(this, void 0);\n        _Sha256_h3.set(this, void 0);\n        _Sha256_h4.set(this, void 0);\n        _Sha256_h5.set(this, void 0);\n        _Sha256_h6.set(this, void 0);\n        _Sha256_h7.set(this, void 0);\n        _Sha256_hashed.set(this, void 0);\n        _Sha256_hBytes.set(this, void 0);\n        _Sha256_is224.set(this, void 0);\n        _Sha256_lastByteIndex.set(this, 0);\n        _Sha256_start.set(this, void 0);\n        this.init(is224, sharedMemory);\n    }\n    init(is224, sharedMemory) {\n        if (sharedMemory) {\n            blocks[0] =\n                blocks[16] =\n                    blocks[1] =\n                        blocks[2] =\n                            blocks[3] =\n                                blocks[4] =\n                                    blocks[5] =\n                                        blocks[6] =\n                                            blocks[7] =\n                                                blocks[8] =\n                                                    blocks[9] =\n                                                        blocks[10] =\n                                                            blocks[11] =\n                                                                blocks[12] =\n                                                                    blocks[13] =\n                                                                        blocks[14] =\n                                                                            blocks[15] =\n                                                                                0;\n            __classPrivateFieldSet(this, _Sha256_blocks, blocks, \"f\");\n        }\n        else {\n            __classPrivateFieldSet(this, _Sha256_blocks, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], \"f\");\n        }\n        if (is224) {\n            __classPrivateFieldSet(this, _Sha256_h0, 0xc1059ed8, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h1, 0x367cd507, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h2, 0x3070dd17, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h3, 0xf70e5939, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h4, 0xffc00b31, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h5, 0x68581511, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h6, 0x64f98fa7, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h7, 0xbefa4fa4, \"f\");\n        }\n        else {\n            // 256\n            __classPrivateFieldSet(this, _Sha256_h0, 0x6a09e667, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h1, 0xbb67ae85, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h2, 0x3c6ef372, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h3, 0xa54ff53a, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h4, 0x510e527f, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h5, 0x9b05688c, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h6, 0x1f83d9ab, \"f\");\n            __classPrivateFieldSet(this, _Sha256_h7, 0x5be0cd19, \"f\");\n        }\n        __classPrivateFieldSet(this, _Sha256_block, __classPrivateFieldSet(this, _Sha256_start, __classPrivateFieldSet(this, _Sha256_bytes, __classPrivateFieldSet(this, _Sha256_hBytes, 0, \"f\"), \"f\"), \"f\"), \"f\");\n        __classPrivateFieldSet(this, _Sha256_finalized, __classPrivateFieldSet(this, _Sha256_hashed, false, \"f\"), \"f\");\n        __classPrivateFieldSet(this, _Sha256_first, true, \"f\");\n        __classPrivateFieldSet(this, _Sha256_is224, is224, \"f\");\n    }\n    /** Update hash\n     *\n     * @param message The message you want to hash.\n     */\n    update(message) {\n        if (__classPrivateFieldGet(this, _Sha256_finalized, \"f\")) {\n            return this;\n        }\n        let msg;\n        if (message instanceof ArrayBuffer) {\n            msg = new Uint8Array(message);\n        }\n        else {\n            msg = message;\n        }\n        let index = 0;\n        const length = msg.length;\n        const blocks = __classPrivateFieldGet(this, _Sha256_blocks, \"f\");\n        while (index < length) {\n            let i;\n            if (__classPrivateFieldGet(this, _Sha256_hashed, \"f\")) {\n                __classPrivateFieldSet(this, _Sha256_hashed, false, \"f\");\n                blocks[0] = __classPrivateFieldGet(this, _Sha256_block, \"f\");\n                blocks[16] =\n                    blocks[1] =\n                        blocks[2] =\n                            blocks[3] =\n                                blocks[4] =\n                                    blocks[5] =\n                                        blocks[6] =\n                                            blocks[7] =\n                                                blocks[8] =\n                                                    blocks[9] =\n                                                        blocks[10] =\n                                                            blocks[11] =\n                                                                blocks[12] =\n                                                                    blocks[13] =\n                                                                        blocks[14] =\n                                                                            blocks[15] =\n                                                                                0;\n            }\n            if (typeof msg !== \"string\") {\n                for (i = __classPrivateFieldGet(this, _Sha256_start, \"f\"); index < length && i < 64; ++index) {\n                    blocks[i >> 2] |= msg[index] << SHIFT[i++ & 3];\n                }\n            }\n            else {\n                for (i = __classPrivateFieldGet(this, _Sha256_start, \"f\"); index < length && i < 64; ++index) {\n                    let code = msg.charCodeAt(index);\n                    if (code < 0x80) {\n                        blocks[i >> 2] |= code << SHIFT[i++ & 3];\n                    }\n                    else if (code < 0x800) {\n                        blocks[i >> 2] |= (0xc0 | (code >> 6)) << SHIFT[i++ & 3];\n                        blocks[i >> 2] |= (0x80 | (code & 0x3f)) << SHIFT[i++ & 3];\n                    }\n                    else if (code < 0xd800 || code >= 0xe000) {\n                        blocks[i >> 2] |= (0xe0 | (code >> 12)) << SHIFT[i++ & 3];\n                        blocks[i >> 2] |= (0x80 | ((code >> 6) & 0x3f)) << SHIFT[i++ & 3];\n                        blocks[i >> 2] |= (0x80 | (code & 0x3f)) << SHIFT[i++ & 3];\n                    }\n                    else {\n                        code = 0x10000 +\n                            (((code & 0x3ff) << 10) | (msg.charCodeAt(++index) & 0x3ff));\n                        blocks[i >> 2] |= (0xf0 | (code >> 18)) << SHIFT[i++ & 3];\n                        blocks[i >> 2] |= (0x80 | ((code >> 12) & 0x3f)) << SHIFT[i++ & 3];\n                        blocks[i >> 2] |= (0x80 | ((code >> 6) & 0x3f)) << SHIFT[i++ & 3];\n                        blocks[i >> 2] |= (0x80 | (code & 0x3f)) << SHIFT[i++ & 3];\n                    }\n                }\n            }\n            __classPrivateFieldSet(this, _Sha256_lastByteIndex, i, \"f\");\n            __classPrivateFieldSet(this, _Sha256_bytes, __classPrivateFieldGet(this, _Sha256_bytes, \"f\") + (i - __classPrivateFieldGet(this, _Sha256_start, \"f\")), \"f\");\n            if (i >= 64) {\n                __classPrivateFieldSet(this, _Sha256_block, blocks[16], \"f\");\n                __classPrivateFieldSet(this, _Sha256_start, i - 64, \"f\");\n                this.hash();\n                __classPrivateFieldSet(this, _Sha256_hashed, true, \"f\");\n            }\n            else {\n                __classPrivateFieldSet(this, _Sha256_start, i, \"f\");\n            }\n        }\n        if (__classPrivateFieldGet(this, _Sha256_bytes, \"f\") > 4294967295) {\n            __classPrivateFieldSet(this, _Sha256_hBytes, __classPrivateFieldGet(this, _Sha256_hBytes, \"f\") + ((__classPrivateFieldGet(this, _Sha256_bytes, \"f\") / 4294967296) << 0), \"f\");\n            __classPrivateFieldSet(this, _Sha256_bytes, __classPrivateFieldGet(this, _Sha256_bytes, \"f\") % 4294967296, \"f\");\n        }\n        return this;\n    }\n    finalize() {\n        if (__classPrivateFieldGet(this, _Sha256_finalized, \"f\")) {\n            return;\n        }\n        __classPrivateFieldSet(this, _Sha256_finalized, true, \"f\");\n        const blocks = __classPrivateFieldGet(this, _Sha256_blocks, \"f\");\n        const i = __classPrivateFieldGet(this, _Sha256_lastByteIndex, \"f\");\n        blocks[16] = __classPrivateFieldGet(this, _Sha256_block, \"f\");\n        blocks[i >> 2] |= EXTRA[i & 3];\n        __classPrivateFieldSet(this, _Sha256_block, blocks[16], \"f\");\n        if (i >= 56) {\n            if (!__classPrivateFieldGet(this, _Sha256_hashed, \"f\")) {\n                this.hash();\n            }\n            blocks[0] = __classPrivateFieldGet(this, _Sha256_block, \"f\");\n            blocks[16] =\n                blocks[1] =\n                    blocks[2] =\n                        blocks[3] =\n                            blocks[4] =\n                                blocks[5] =\n                                    blocks[6] =\n                                        blocks[7] =\n                                            blocks[8] =\n                                                blocks[9] =\n                                                    blocks[10] =\n                                                        blocks[11] =\n                                                            blocks[12] =\n                                                                blocks[13] =\n                                                                    blocks[14] =\n                                                                        blocks[15] =\n                                                                            0;\n        }\n        blocks[14] = (__classPrivateFieldGet(this, _Sha256_hBytes, \"f\") << 3) | (__classPrivateFieldGet(this, _Sha256_bytes, \"f\") >>> 29);\n        blocks[15] = __classPrivateFieldGet(this, _Sha256_bytes, \"f\") << 3;\n        this.hash();\n    }\n    hash() {\n        let a = __classPrivateFieldGet(this, _Sha256_h0, \"f\");\n        let b = __classPrivateFieldGet(this, _Sha256_h1, \"f\");\n        let c = __classPrivateFieldGet(this, _Sha256_h2, \"f\");\n        let d = __classPrivateFieldGet(this, _Sha256_h3, \"f\");\n        let e = __classPrivateFieldGet(this, _Sha256_h4, \"f\");\n        let f = __classPrivateFieldGet(this, _Sha256_h5, \"f\");\n        let g = __classPrivateFieldGet(this, _Sha256_h6, \"f\");\n        let h = __classPrivateFieldGet(this, _Sha256_h7, \"f\");\n        const blocks = __classPrivateFieldGet(this, _Sha256_blocks, \"f\");\n        let s0;\n        let s1;\n        let maj;\n        let t1;\n        let t2;\n        let ch;\n        let ab;\n        let da;\n        let cd;\n        let bc;\n        for (let j = 16; j < 64; ++j) {\n            // rightrotate\n            t1 = blocks[j - 15];\n            s0 = ((t1 >>> 7) | (t1 << 25)) ^ ((t1 >>> 18) | (t1 << 14)) ^ (t1 >>> 3);\n            t1 = blocks[j - 2];\n            s1 = ((t1 >>> 17) | (t1 << 15)) ^ ((t1 >>> 19) | (t1 << 13)) ^\n                (t1 >>> 10);\n            blocks[j] = (blocks[j - 16] + s0 + blocks[j - 7] + s1) << 0;\n        }\n        bc = b & c;\n        for (let j = 0; j < 64; j += 4) {\n            if (__classPrivateFieldGet(this, _Sha256_first, \"f\")) {\n                if (__classPrivateFieldGet(this, _Sha256_is224, \"f\")) {\n                    ab = 300032;\n                    t1 = blocks[0] - 1413257819;\n                    h = (t1 - 150054599) << 0;\n                    d = (t1 + 24177077) << 0;\n                }\n                else {\n                    ab = 704751109;\n                    t1 = blocks[0] - 210244248;\n                    h = (t1 - 1521486534) << 0;\n                    d = (t1 + 143694565) << 0;\n                }\n                __classPrivateFieldSet(this, _Sha256_first, false, \"f\");\n            }\n            else {\n                s0 = ((a >>> 2) | (a << 30)) ^\n                    ((a >>> 13) | (a << 19)) ^\n                    ((a >>> 22) | (a << 10));\n                s1 = ((e >>> 6) | (e << 26)) ^\n                    ((e >>> 11) | (e << 21)) ^\n                    ((e >>> 25) | (e << 7));\n                ab = a & b;\n                maj = ab ^ (a & c) ^ bc;\n                ch = (e & f) ^ (~e & g);\n                t1 = h + s1 + ch + K[j] + blocks[j];\n                t2 = s0 + maj;\n                h = (d + t1) << 0;\n                d = (t1 + t2) << 0;\n            }\n            s0 = ((d >>> 2) | (d << 30)) ^\n                ((d >>> 13) | (d << 19)) ^\n                ((d >>> 22) | (d << 10));\n            s1 = ((h >>> 6) | (h << 26)) ^\n                ((h >>> 11) | (h << 21)) ^\n                ((h >>> 25) | (h << 7));\n            da = d & a;\n            maj = da ^ (d & b) ^ ab;\n            ch = (h & e) ^ (~h & f);\n            t1 = g + s1 + ch + K[j + 1] + blocks[j + 1];\n            t2 = s0 + maj;\n            g = (c + t1) << 0;\n            c = (t1 + t2) << 0;\n            s0 = ((c >>> 2) | (c << 30)) ^\n                ((c >>> 13) | (c << 19)) ^\n                ((c >>> 22) | (c << 10));\n            s1 = ((g >>> 6) | (g << 26)) ^\n                ((g >>> 11) | (g << 21)) ^\n                ((g >>> 25) | (g << 7));\n            cd = c & d;\n            maj = cd ^ (c & a) ^ da;\n            ch = (g & h) ^ (~g & e);\n            t1 = f + s1 + ch + K[j + 2] + blocks[j + 2];\n            t2 = s0 + maj;\n            f = (b + t1) << 0;\n            b = (t1 + t2) << 0;\n            s0 = ((b >>> 2) | (b << 30)) ^\n                ((b >>> 13) | (b << 19)) ^\n                ((b >>> 22) | (b << 10));\n            s1 = ((f >>> 6) | (f << 26)) ^\n                ((f >>> 11) | (f << 21)) ^\n                ((f >>> 25) | (f << 7));\n            bc = b & c;\n            maj = bc ^ (b & d) ^ cd;\n            ch = (f & g) ^ (~f & h);\n            t1 = e + s1 + ch + K[j + 3] + blocks[j + 3];\n            t2 = s0 + maj;\n            e = (a + t1) << 0;\n            a = (t1 + t2) << 0;\n        }\n        __classPrivateFieldSet(this, _Sha256_h0, (__classPrivateFieldGet(this, _Sha256_h0, \"f\") + a) << 0, \"f\");\n        __classPrivateFieldSet(this, _Sha256_h1, (__classPrivateFieldGet(this, _Sha256_h1, \"f\") + b) << 0, \"f\");\n        __classPrivateFieldSet(this, _Sha256_h2, (__classPrivateFieldGet(this, _Sha256_h2, \"f\") + c) << 0, \"f\");\n        __classPrivateFieldSet(this, _Sha256_h3, (__classPrivateFieldGet(this, _Sha256_h3, \"f\") + d) << 0, \"f\");\n        __classPrivateFieldSet(this, _Sha256_h4, (__classPrivateFieldGet(this, _Sha256_h4, \"f\") + e) << 0, \"f\");\n        __classPrivateFieldSet(this, _Sha256_h5, (__classPrivateFieldGet(this, _Sha256_h5, \"f\") + f) << 0, \"f\");\n        __classPrivateFieldSet(this, _Sha256_h6, (__classPrivateFieldGet(this, _Sha256_h6, \"f\") + g) << 0, \"f\");\n        __classPrivateFieldSet(this, _Sha256_h7, (__classPrivateFieldGet(this, _Sha256_h7, \"f\") + h) << 0, \"f\");\n    }\n    /** Return hash in hex string. */\n    hex() {\n        this.finalize();\n        const h0 = __classPrivateFieldGet(this, _Sha256_h0, \"f\");\n        const h1 = __classPrivateFieldGet(this, _Sha256_h1, \"f\");\n        const h2 = __classPrivateFieldGet(this, _Sha256_h2, \"f\");\n        const h3 = __classPrivateFieldGet(this, _Sha256_h3, \"f\");\n        const h4 = __classPrivateFieldGet(this, _Sha256_h4, \"f\");\n        const h5 = __classPrivateFieldGet(this, _Sha256_h5, \"f\");\n        const h6 = __classPrivateFieldGet(this, _Sha256_h6, \"f\");\n        const h7 = __classPrivateFieldGet(this, _Sha256_h7, \"f\");\n        let hex = HEX_CHARS[(h0 >> 28) & 0x0f] +\n            HEX_CHARS[(h0 >> 24) & 0x0f] +\n            HEX_CHARS[(h0 >> 20) & 0x0f] +\n            HEX_CHARS[(h0 >> 16) & 0x0f] +\n            HEX_CHARS[(h0 >> 12) & 0x0f] +\n            HEX_CHARS[(h0 >> 8) & 0x0f] +\n            HEX_CHARS[(h0 >> 4) & 0x0f] +\n            HEX_CHARS[h0 & 0x0f] +\n            HEX_CHARS[(h1 >> 28) & 0x0f] +\n            HEX_CHARS[(h1 >> 24) & 0x0f] +\n            HEX_CHARS[(h1 >> 20) & 0x0f] +\n            HEX_CHARS[(h1 >> 16) & 0x0f] +\n            HEX_CHARS[(h1 >> 12) & 0x0f] +\n            HEX_CHARS[(h1 >> 8) & 0x0f] +\n            HEX_CHARS[(h1 >> 4) & 0x0f] +\n            HEX_CHARS[h1 & 0x0f] +\n            HEX_CHARS[(h2 >> 28) & 0x0f] +\n            HEX_CHARS[(h2 >> 24) & 0x0f] +\n            HEX_CHARS[(h2 >> 20) & 0x0f] +\n            HEX_CHARS[(h2 >> 16) & 0x0f] +\n            HEX_CHARS[(h2 >> 12) & 0x0f] +\n            HEX_CHARS[(h2 >> 8) & 0x0f] +\n            HEX_CHARS[(h2 >> 4) & 0x0f] +\n            HEX_CHARS[h2 & 0x0f] +\n            HEX_CHARS[(h3 >> 28) & 0x0f] +\n            HEX_CHARS[(h3 >> 24) & 0x0f] +\n            HEX_CHARS[(h3 >> 20) & 0x0f] +\n            HEX_CHARS[(h3 >> 16) & 0x0f] +\n            HEX_CHARS[(h3 >> 12) & 0x0f] +\n            HEX_CHARS[(h3 >> 8) & 0x0f] +\n            HEX_CHARS[(h3 >> 4) & 0x0f] +\n            HEX_CHARS[h3 & 0x0f] +\n            HEX_CHARS[(h4 >> 28) & 0x0f] +\n            HEX_CHARS[(h4 >> 24) & 0x0f] +\n            HEX_CHARS[(h4 >> 20) & 0x0f] +\n            HEX_CHARS[(h4 >> 16) & 0x0f] +\n            HEX_CHARS[(h4 >> 12) & 0x0f] +\n            HEX_CHARS[(h4 >> 8) & 0x0f] +\n            HEX_CHARS[(h4 >> 4) & 0x0f] +\n            HEX_CHARS[h4 & 0x0f] +\n            HEX_CHARS[(h5 >> 28) & 0x0f] +\n            HEX_CHARS[(h5 >> 24) & 0x0f] +\n            HEX_CHARS[(h5 >> 20) & 0x0f] +\n            HEX_CHARS[(h5 >> 16) & 0x0f] +\n            HEX_CHARS[(h5 >> 12) & 0x0f] +\n            HEX_CHARS[(h5 >> 8) & 0x0f] +\n            HEX_CHARS[(h5 >> 4) & 0x0f] +\n            HEX_CHARS[h5 & 0x0f] +\n            HEX_CHARS[(h6 >> 28) & 0x0f] +\n            HEX_CHARS[(h6 >> 24) & 0x0f] +\n            HEX_CHARS[(h6 >> 20) & 0x0f] +\n            HEX_CHARS[(h6 >> 16) & 0x0f] +\n            HEX_CHARS[(h6 >> 12) & 0x0f] +\n            HEX_CHARS[(h6 >> 8) & 0x0f] +\n            HEX_CHARS[(h6 >> 4) & 0x0f] +\n            HEX_CHARS[h6 & 0x0f];\n        if (!__classPrivateFieldGet(this, _Sha256_is224, \"f\")) {\n            hex += HEX_CHARS[(h7 >> 28) & 0x0f] +\n                HEX_CHARS[(h7 >> 24) & 0x0f] +\n                HEX_CHARS[(h7 >> 20) & 0x0f] +\n                HEX_CHARS[(h7 >> 16) & 0x0f] +\n                HEX_CHARS[(h7 >> 12) & 0x0f] +\n                HEX_CHARS[(h7 >> 8) & 0x0f] +\n                HEX_CHARS[(h7 >> 4) & 0x0f] +\n                HEX_CHARS[h7 & 0x0f];\n        }\n        return hex;\n    }\n    /** Return hash in hex string. */\n    toString() {\n        return this.hex();\n    }\n    /** Return hash in integer array. */\n    digest() {\n        this.finalize();\n        const h0 = __classPrivateFieldGet(this, _Sha256_h0, \"f\");\n        const h1 = __classPrivateFieldGet(this, _Sha256_h1, \"f\");\n        const h2 = __classPrivateFieldGet(this, _Sha256_h2, \"f\");\n        const h3 = __classPrivateFieldGet(this, _Sha256_h3, \"f\");\n        const h4 = __classPrivateFieldGet(this, _Sha256_h4, \"f\");\n        const h5 = __classPrivateFieldGet(this, _Sha256_h5, \"f\");\n        const h6 = __classPrivateFieldGet(this, _Sha256_h6, \"f\");\n        const h7 = __classPrivateFieldGet(this, _Sha256_h7, \"f\");\n        const arr = [\n            (h0 >> 24) & 0xff,\n            (h0 >> 16) & 0xff,\n            (h0 >> 8) & 0xff,\n            h0 & 0xff,\n            (h1 >> 24) & 0xff,\n            (h1 >> 16) & 0xff,\n            (h1 >> 8) & 0xff,\n            h1 & 0xff,\n            (h2 >> 24) & 0xff,\n            (h2 >> 16) & 0xff,\n            (h2 >> 8) & 0xff,\n            h2 & 0xff,\n            (h3 >> 24) & 0xff,\n            (h3 >> 16) & 0xff,\n            (h3 >> 8) & 0xff,\n            h3 & 0xff,\n            (h4 >> 24) & 0xff,\n            (h4 >> 16) & 0xff,\n            (h4 >> 8) & 0xff,\n            h4 & 0xff,\n            (h5 >> 24) & 0xff,\n            (h5 >> 16) & 0xff,\n            (h5 >> 8) & 0xff,\n            h5 & 0xff,\n            (h6 >> 24) & 0xff,\n            (h6 >> 16) & 0xff,\n            (h6 >> 8) & 0xff,\n            h6 & 0xff,\n        ];\n        if (!__classPrivateFieldGet(this, _Sha256_is224, \"f\")) {\n            arr.push((h7 >> 24) & 0xff, (h7 >> 16) & 0xff, (h7 >> 8) & 0xff, h7 & 0xff);\n        }\n        return arr;\n    }\n    /** Return hash in integer array. */\n    array() {\n        return this.digest();\n    }\n    /** Return hash in ArrayBuffer. */\n    arrayBuffer() {\n        this.finalize();\n        const buffer = new ArrayBuffer(__classPrivateFieldGet(this, _Sha256_is224, \"f\") ? 28 : 32);\n        const dataView = new DataView(buffer);\n        dataView.setUint32(0, __classPrivateFieldGet(this, _Sha256_h0, \"f\"));\n        dataView.setUint32(4, __classPrivateFieldGet(this, _Sha256_h1, \"f\"));\n        dataView.setUint32(8, __classPrivateFieldGet(this, _Sha256_h2, \"f\"));\n        dataView.setUint32(12, __classPrivateFieldGet(this, _Sha256_h3, \"f\"));\n        dataView.setUint32(16, __classPrivateFieldGet(this, _Sha256_h4, \"f\"));\n        dataView.setUint32(20, __classPrivateFieldGet(this, _Sha256_h5, \"f\"));\n        dataView.setUint32(24, __classPrivateFieldGet(this, _Sha256_h6, \"f\"));\n        if (!__classPrivateFieldGet(this, _Sha256_is224, \"f\")) {\n            dataView.setUint32(28, __classPrivateFieldGet(this, _Sha256_h7, \"f\"));\n        }\n        return buffer;\n    }\n}\n_Sha256_block = new WeakMap(), _Sha256_blocks = new WeakMap(), _Sha256_bytes = new WeakMap(), _Sha256_finalized = new WeakMap(), _Sha256_first = new WeakMap(), _Sha256_h0 = new WeakMap(), _Sha256_h1 = new WeakMap(), _Sha256_h2 = new WeakMap(), _Sha256_h3 = new WeakMap(), _Sha256_h4 = new WeakMap(), _Sha256_h5 = new WeakMap(), _Sha256_h6 = new WeakMap(), _Sha256_h7 = new WeakMap(), _Sha256_hashed = new WeakMap(), _Sha256_hBytes = new WeakMap(), _Sha256_is224 = new WeakMap(), _Sha256_lastByteIndex = new WeakMap(), _Sha256_start = new WeakMap();\nclass HmacSha256 extends Sha256 {\n    constructor(secretKey, is224 = false, sharedMemory = false) {\n        super(is224, sharedMemory);\n        _HmacSha256_inner.set(this, void 0);\n        _HmacSha256_is224.set(this, void 0);\n        _HmacSha256_oKeyPad.set(this, void 0);\n        _HmacSha256_sharedMemory.set(this, void 0);\n        let key;\n        if (typeof secretKey === \"string\") {\n            const bytes = [];\n            const length = secretKey.length;\n            let index = 0;\n            for (let i = 0; i < length; ++i) {\n                let code = secretKey.charCodeAt(i);\n                if (code < 0x80) {\n                    bytes[index++] = code;\n                }\n                else if (code < 0x800) {\n                    bytes[index++] = 0xc0 | (code >> 6);\n                    bytes[index++] = 0x80 | (code & 0x3f);\n                }\n                else if (code < 0xd800 || code >= 0xe000) {\n                    bytes[index++] = 0xe0 | (code >> 12);\n                    bytes[index++] = 0x80 | ((code >> 6) & 0x3f);\n                    bytes[index++] = 0x80 | (code & 0x3f);\n                }\n                else {\n                    code = 0x10000 +\n                        (((code & 0x3ff) << 10) | (secretKey.charCodeAt(++i) & 0x3ff));\n                    bytes[index++] = 0xf0 | (code >> 18);\n                    bytes[index++] = 0x80 | ((code >> 12) & 0x3f);\n                    bytes[index++] = 0x80 | ((code >> 6) & 0x3f);\n                    bytes[index++] = 0x80 | (code & 0x3f);\n                }\n            }\n            key = bytes;\n        }\n        else {\n            if (secretKey instanceof ArrayBuffer) {\n                key = new Uint8Array(secretKey);\n            }\n            else {\n                key = secretKey;\n            }\n        }\n        if (key.length > 64) {\n            key = new Sha256(is224, true).update(key).array();\n        }\n        const oKeyPad = [];\n        const iKeyPad = [];\n        for (let i = 0; i < 64; ++i) {\n            const b = key[i] || 0;\n            oKeyPad[i] = 0x5c ^ b;\n            iKeyPad[i] = 0x36 ^ b;\n        }\n        this.update(iKeyPad);\n        __classPrivateFieldSet(this, _HmacSha256_oKeyPad, oKeyPad, \"f\");\n        __classPrivateFieldSet(this, _HmacSha256_inner, true, \"f\");\n        __classPrivateFieldSet(this, _HmacSha256_is224, is224, \"f\");\n        __classPrivateFieldSet(this, _HmacSha256_sharedMemory, sharedMemory, \"f\");\n    }\n    finalize() {\n        super.finalize();\n        if (__classPrivateFieldGet(this, _HmacSha256_inner, \"f\")) {\n            __classPrivateFieldSet(this, _HmacSha256_inner, false, \"f\");\n            const innerHash = this.array();\n            super.init(__classPrivateFieldGet(this, _HmacSha256_is224, \"f\"), __classPrivateFieldGet(this, _HmacSha256_sharedMemory, \"f\"));\n            this.update(__classPrivateFieldGet(this, _HmacSha256_oKeyPad, \"f\"));\n            this.update(innerHash);\n            super.finalize();\n        }\n    }\n}\n_HmacSha256_inner = new WeakMap(), _HmacSha256_is224 = new WeakMap(), _HmacSha256_oKeyPad = new WeakMap(), _HmacSha256_sharedMemory = new WeakMap();\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/deps/deno.land/std@0.153.0/hash/sha256.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HmacSha256": () => (/* binding */ HmacSha256),
+/* harmony export */   "Sha256": () => (/* binding */ Sha256)
+/* harmony export */ });
+// Copyright 2018-2022 the Deno authors. All rights reserved. MIT license.
+// This module is browser compatible.
+var __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _Sha256_block, _Sha256_blocks, _Sha256_bytes, _Sha256_finalized, _Sha256_first, _Sha256_h0, _Sha256_h1, _Sha256_h2, _Sha256_h3, _Sha256_h4, _Sha256_h5, _Sha256_h6, _Sha256_h7, _Sha256_hashed, _Sha256_hBytes, _Sha256_is224, _Sha256_lastByteIndex, _Sha256_start, _HmacSha256_inner, _HmacSha256_is224, _HmacSha256_oKeyPad, _HmacSha256_sharedMemory;
+const HEX_CHARS = "0123456789abcdef".split("");
+const EXTRA = [-2147483648, 8388608, 32768, 128];
+const SHIFT = [24, 16, 8, 0];
+const K = [
+    0x428a2f98,
+    0x71374491,
+    0xb5c0fbcf,
+    0xe9b5dba5,
+    0x3956c25b,
+    0x59f111f1,
+    0x923f82a4,
+    0xab1c5ed5,
+    0xd807aa98,
+    0x12835b01,
+    0x243185be,
+    0x550c7dc3,
+    0x72be5d74,
+    0x80deb1fe,
+    0x9bdc06a7,
+    0xc19bf174,
+    0xe49b69c1,
+    0xefbe4786,
+    0x0fc19dc6,
+    0x240ca1cc,
+    0x2de92c6f,
+    0x4a7484aa,
+    0x5cb0a9dc,
+    0x76f988da,
+    0x983e5152,
+    0xa831c66d,
+    0xb00327c8,
+    0xbf597fc7,
+    0xc6e00bf3,
+    0xd5a79147,
+    0x06ca6351,
+    0x14292967,
+    0x27b70a85,
+    0x2e1b2138,
+    0x4d2c6dfc,
+    0x53380d13,
+    0x650a7354,
+    0x766a0abb,
+    0x81c2c92e,
+    0x92722c85,
+    0xa2bfe8a1,
+    0xa81a664b,
+    0xc24b8b70,
+    0xc76c51a3,
+    0xd192e819,
+    0xd6990624,
+    0xf40e3585,
+    0x106aa070,
+    0x19a4c116,
+    0x1e376c08,
+    0x2748774c,
+    0x34b0bcb5,
+    0x391c0cb3,
+    0x4ed8aa4a,
+    0x5b9cca4f,
+    0x682e6ff3,
+    0x748f82ee,
+    0x78a5636f,
+    0x84c87814,
+    0x8cc70208,
+    0x90befffa,
+    0xa4506ceb,
+    0xbef9a3f7,
+    0xc67178f2,
+];
+const blocks = [];
+class Sha256 {
+    constructor(is224 = false, sharedMemory = false) {
+        _Sha256_block.set(this, void 0);
+        _Sha256_blocks.set(this, void 0);
+        _Sha256_bytes.set(this, void 0);
+        _Sha256_finalized.set(this, void 0);
+        _Sha256_first.set(this, void 0);
+        _Sha256_h0.set(this, void 0);
+        _Sha256_h1.set(this, void 0);
+        _Sha256_h2.set(this, void 0);
+        _Sha256_h3.set(this, void 0);
+        _Sha256_h4.set(this, void 0);
+        _Sha256_h5.set(this, void 0);
+        _Sha256_h6.set(this, void 0);
+        _Sha256_h7.set(this, void 0);
+        _Sha256_hashed.set(this, void 0);
+        _Sha256_hBytes.set(this, void 0);
+        _Sha256_is224.set(this, void 0);
+        _Sha256_lastByteIndex.set(this, 0);
+        _Sha256_start.set(this, void 0);
+        this.init(is224, sharedMemory);
+    }
+    init(is224, sharedMemory) {
+        if (sharedMemory) {
+            blocks[0] =
+                blocks[16] =
+                    blocks[1] =
+                        blocks[2] =
+                            blocks[3] =
+                                blocks[4] =
+                                    blocks[5] =
+                                        blocks[6] =
+                                            blocks[7] =
+                                                blocks[8] =
+                                                    blocks[9] =
+                                                        blocks[10] =
+                                                            blocks[11] =
+                                                                blocks[12] =
+                                                                    blocks[13] =
+                                                                        blocks[14] =
+                                                                            blocks[15] =
+                                                                                0;
+            __classPrivateFieldSet(this, _Sha256_blocks, blocks, "f");
+        }
+        else {
+            __classPrivateFieldSet(this, _Sha256_blocks, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "f");
+        }
+        if (is224) {
+            __classPrivateFieldSet(this, _Sha256_h0, 0xc1059ed8, "f");
+            __classPrivateFieldSet(this, _Sha256_h1, 0x367cd507, "f");
+            __classPrivateFieldSet(this, _Sha256_h2, 0x3070dd17, "f");
+            __classPrivateFieldSet(this, _Sha256_h3, 0xf70e5939, "f");
+            __classPrivateFieldSet(this, _Sha256_h4, 0xffc00b31, "f");
+            __classPrivateFieldSet(this, _Sha256_h5, 0x68581511, "f");
+            __classPrivateFieldSet(this, _Sha256_h6, 0x64f98fa7, "f");
+            __classPrivateFieldSet(this, _Sha256_h7, 0xbefa4fa4, "f");
+        }
+        else {
+            // 256
+            __classPrivateFieldSet(this, _Sha256_h0, 0x6a09e667, "f");
+            __classPrivateFieldSet(this, _Sha256_h1, 0xbb67ae85, "f");
+            __classPrivateFieldSet(this, _Sha256_h2, 0x3c6ef372, "f");
+            __classPrivateFieldSet(this, _Sha256_h3, 0xa54ff53a, "f");
+            __classPrivateFieldSet(this, _Sha256_h4, 0x510e527f, "f");
+            __classPrivateFieldSet(this, _Sha256_h5, 0x9b05688c, "f");
+            __classPrivateFieldSet(this, _Sha256_h6, 0x1f83d9ab, "f");
+            __classPrivateFieldSet(this, _Sha256_h7, 0x5be0cd19, "f");
+        }
+        __classPrivateFieldSet(this, _Sha256_block, __classPrivateFieldSet(this, _Sha256_start, __classPrivateFieldSet(this, _Sha256_bytes, __classPrivateFieldSet(this, _Sha256_hBytes, 0, "f"), "f"), "f"), "f");
+        __classPrivateFieldSet(this, _Sha256_finalized, __classPrivateFieldSet(this, _Sha256_hashed, false, "f"), "f");
+        __classPrivateFieldSet(this, _Sha256_first, true, "f");
+        __classPrivateFieldSet(this, _Sha256_is224, is224, "f");
+    }
+    /** Update hash
+     *
+     * @param message The message you want to hash.
+     */
+    update(message) {
+        if (__classPrivateFieldGet(this, _Sha256_finalized, "f")) {
+            return this;
+        }
+        let msg;
+        if (message instanceof ArrayBuffer) {
+            msg = new Uint8Array(message);
+        }
+        else {
+            msg = message;
+        }
+        let index = 0;
+        const length = msg.length;
+        const blocks = __classPrivateFieldGet(this, _Sha256_blocks, "f");
+        while (index < length) {
+            let i;
+            if (__classPrivateFieldGet(this, _Sha256_hashed, "f")) {
+                __classPrivateFieldSet(this, _Sha256_hashed, false, "f");
+                blocks[0] = __classPrivateFieldGet(this, _Sha256_block, "f");
+                blocks[16] =
+                    blocks[1] =
+                        blocks[2] =
+                            blocks[3] =
+                                blocks[4] =
+                                    blocks[5] =
+                                        blocks[6] =
+                                            blocks[7] =
+                                                blocks[8] =
+                                                    blocks[9] =
+                                                        blocks[10] =
+                                                            blocks[11] =
+                                                                blocks[12] =
+                                                                    blocks[13] =
+                                                                        blocks[14] =
+                                                                            blocks[15] =
+                                                                                0;
+            }
+            if (typeof msg !== "string") {
+                for (i = __classPrivateFieldGet(this, _Sha256_start, "f"); index < length && i < 64; ++index) {
+                    blocks[i >> 2] |= msg[index] << SHIFT[i++ & 3];
+                }
+            }
+            else {
+                for (i = __classPrivateFieldGet(this, _Sha256_start, "f"); index < length && i < 64; ++index) {
+                    let code = msg.charCodeAt(index);
+                    if (code < 0x80) {
+                        blocks[i >> 2] |= code << SHIFT[i++ & 3];
+                    }
+                    else if (code < 0x800) {
+                        blocks[i >> 2] |= (0xc0 | (code >> 6)) << SHIFT[i++ & 3];
+                        blocks[i >> 2] |= (0x80 | (code & 0x3f)) << SHIFT[i++ & 3];
+                    }
+                    else if (code < 0xd800 || code >= 0xe000) {
+                        blocks[i >> 2] |= (0xe0 | (code >> 12)) << SHIFT[i++ & 3];
+                        blocks[i >> 2] |= (0x80 | ((code >> 6) & 0x3f)) << SHIFT[i++ & 3];
+                        blocks[i >> 2] |= (0x80 | (code & 0x3f)) << SHIFT[i++ & 3];
+                    }
+                    else {
+                        code = 0x10000 +
+                            (((code & 0x3ff) << 10) | (msg.charCodeAt(++index) & 0x3ff));
+                        blocks[i >> 2] |= (0xf0 | (code >> 18)) << SHIFT[i++ & 3];
+                        blocks[i >> 2] |= (0x80 | ((code >> 12) & 0x3f)) << SHIFT[i++ & 3];
+                        blocks[i >> 2] |= (0x80 | ((code >> 6) & 0x3f)) << SHIFT[i++ & 3];
+                        blocks[i >> 2] |= (0x80 | (code & 0x3f)) << SHIFT[i++ & 3];
+                    }
+                }
+            }
+            __classPrivateFieldSet(this, _Sha256_lastByteIndex, i, "f");
+            __classPrivateFieldSet(this, _Sha256_bytes, __classPrivateFieldGet(this, _Sha256_bytes, "f") + (i - __classPrivateFieldGet(this, _Sha256_start, "f")), "f");
+            if (i >= 64) {
+                __classPrivateFieldSet(this, _Sha256_block, blocks[16], "f");
+                __classPrivateFieldSet(this, _Sha256_start, i - 64, "f");
+                this.hash();
+                __classPrivateFieldSet(this, _Sha256_hashed, true, "f");
+            }
+            else {
+                __classPrivateFieldSet(this, _Sha256_start, i, "f");
+            }
+        }
+        if (__classPrivateFieldGet(this, _Sha256_bytes, "f") > 4294967295) {
+            __classPrivateFieldSet(this, _Sha256_hBytes, __classPrivateFieldGet(this, _Sha256_hBytes, "f") + ((__classPrivateFieldGet(this, _Sha256_bytes, "f") / 4294967296) << 0), "f");
+            __classPrivateFieldSet(this, _Sha256_bytes, __classPrivateFieldGet(this, _Sha256_bytes, "f") % 4294967296, "f");
+        }
+        return this;
+    }
+    finalize() {
+        if (__classPrivateFieldGet(this, _Sha256_finalized, "f")) {
+            return;
+        }
+        __classPrivateFieldSet(this, _Sha256_finalized, true, "f");
+        const blocks = __classPrivateFieldGet(this, _Sha256_blocks, "f");
+        const i = __classPrivateFieldGet(this, _Sha256_lastByteIndex, "f");
+        blocks[16] = __classPrivateFieldGet(this, _Sha256_block, "f");
+        blocks[i >> 2] |= EXTRA[i & 3];
+        __classPrivateFieldSet(this, _Sha256_block, blocks[16], "f");
+        if (i >= 56) {
+            if (!__classPrivateFieldGet(this, _Sha256_hashed, "f")) {
+                this.hash();
+            }
+            blocks[0] = __classPrivateFieldGet(this, _Sha256_block, "f");
+            blocks[16] =
+                blocks[1] =
+                    blocks[2] =
+                        blocks[3] =
+                            blocks[4] =
+                                blocks[5] =
+                                    blocks[6] =
+                                        blocks[7] =
+                                            blocks[8] =
+                                                blocks[9] =
+                                                    blocks[10] =
+                                                        blocks[11] =
+                                                            blocks[12] =
+                                                                blocks[13] =
+                                                                    blocks[14] =
+                                                                        blocks[15] =
+                                                                            0;
+        }
+        blocks[14] = (__classPrivateFieldGet(this, _Sha256_hBytes, "f") << 3) | (__classPrivateFieldGet(this, _Sha256_bytes, "f") >>> 29);
+        blocks[15] = __classPrivateFieldGet(this, _Sha256_bytes, "f") << 3;
+        this.hash();
+    }
+    hash() {
+        let a = __classPrivateFieldGet(this, _Sha256_h0, "f");
+        let b = __classPrivateFieldGet(this, _Sha256_h1, "f");
+        let c = __classPrivateFieldGet(this, _Sha256_h2, "f");
+        let d = __classPrivateFieldGet(this, _Sha256_h3, "f");
+        let e = __classPrivateFieldGet(this, _Sha256_h4, "f");
+        let f = __classPrivateFieldGet(this, _Sha256_h5, "f");
+        let g = __classPrivateFieldGet(this, _Sha256_h6, "f");
+        let h = __classPrivateFieldGet(this, _Sha256_h7, "f");
+        const blocks = __classPrivateFieldGet(this, _Sha256_blocks, "f");
+        let s0;
+        let s1;
+        let maj;
+        let t1;
+        let t2;
+        let ch;
+        let ab;
+        let da;
+        let cd;
+        let bc;
+        for (let j = 16; j < 64; ++j) {
+            // rightrotate
+            t1 = blocks[j - 15];
+            s0 = ((t1 >>> 7) | (t1 << 25)) ^ ((t1 >>> 18) | (t1 << 14)) ^ (t1 >>> 3);
+            t1 = blocks[j - 2];
+            s1 = ((t1 >>> 17) | (t1 << 15)) ^ ((t1 >>> 19) | (t1 << 13)) ^
+                (t1 >>> 10);
+            blocks[j] = (blocks[j - 16] + s0 + blocks[j - 7] + s1) << 0;
+        }
+        bc = b & c;
+        for (let j = 0; j < 64; j += 4) {
+            if (__classPrivateFieldGet(this, _Sha256_first, "f")) {
+                if (__classPrivateFieldGet(this, _Sha256_is224, "f")) {
+                    ab = 300032;
+                    t1 = blocks[0] - 1413257819;
+                    h = (t1 - 150054599) << 0;
+                    d = (t1 + 24177077) << 0;
+                }
+                else {
+                    ab = 704751109;
+                    t1 = blocks[0] - 210244248;
+                    h = (t1 - 1521486534) << 0;
+                    d = (t1 + 143694565) << 0;
+                }
+                __classPrivateFieldSet(this, _Sha256_first, false, "f");
+            }
+            else {
+                s0 = ((a >>> 2) | (a << 30)) ^
+                    ((a >>> 13) | (a << 19)) ^
+                    ((a >>> 22) | (a << 10));
+                s1 = ((e >>> 6) | (e << 26)) ^
+                    ((e >>> 11) | (e << 21)) ^
+                    ((e >>> 25) | (e << 7));
+                ab = a & b;
+                maj = ab ^ (a & c) ^ bc;
+                ch = (e & f) ^ (~e & g);
+                t1 = h + s1 + ch + K[j] + blocks[j];
+                t2 = s0 + maj;
+                h = (d + t1) << 0;
+                d = (t1 + t2) << 0;
+            }
+            s0 = ((d >>> 2) | (d << 30)) ^
+                ((d >>> 13) | (d << 19)) ^
+                ((d >>> 22) | (d << 10));
+            s1 = ((h >>> 6) | (h << 26)) ^
+                ((h >>> 11) | (h << 21)) ^
+                ((h >>> 25) | (h << 7));
+            da = d & a;
+            maj = da ^ (d & b) ^ ab;
+            ch = (h & e) ^ (~h & f);
+            t1 = g + s1 + ch + K[j + 1] + blocks[j + 1];
+            t2 = s0 + maj;
+            g = (c + t1) << 0;
+            c = (t1 + t2) << 0;
+            s0 = ((c >>> 2) | (c << 30)) ^
+                ((c >>> 13) | (c << 19)) ^
+                ((c >>> 22) | (c << 10));
+            s1 = ((g >>> 6) | (g << 26)) ^
+                ((g >>> 11) | (g << 21)) ^
+                ((g >>> 25) | (g << 7));
+            cd = c & d;
+            maj = cd ^ (c & a) ^ da;
+            ch = (g & h) ^ (~g & e);
+            t1 = f + s1 + ch + K[j + 2] + blocks[j + 2];
+            t2 = s0 + maj;
+            f = (b + t1) << 0;
+            b = (t1 + t2) << 0;
+            s0 = ((b >>> 2) | (b << 30)) ^
+                ((b >>> 13) | (b << 19)) ^
+                ((b >>> 22) | (b << 10));
+            s1 = ((f >>> 6) | (f << 26)) ^
+                ((f >>> 11) | (f << 21)) ^
+                ((f >>> 25) | (f << 7));
+            bc = b & c;
+            maj = bc ^ (b & d) ^ cd;
+            ch = (f & g) ^ (~f & h);
+            t1 = e + s1 + ch + K[j + 3] + blocks[j + 3];
+            t2 = s0 + maj;
+            e = (a + t1) << 0;
+            a = (t1 + t2) << 0;
+        }
+        __classPrivateFieldSet(this, _Sha256_h0, (__classPrivateFieldGet(this, _Sha256_h0, "f") + a) << 0, "f");
+        __classPrivateFieldSet(this, _Sha256_h1, (__classPrivateFieldGet(this, _Sha256_h1, "f") + b) << 0, "f");
+        __classPrivateFieldSet(this, _Sha256_h2, (__classPrivateFieldGet(this, _Sha256_h2, "f") + c) << 0, "f");
+        __classPrivateFieldSet(this, _Sha256_h3, (__classPrivateFieldGet(this, _Sha256_h3, "f") + d) << 0, "f");
+        __classPrivateFieldSet(this, _Sha256_h4, (__classPrivateFieldGet(this, _Sha256_h4, "f") + e) << 0, "f");
+        __classPrivateFieldSet(this, _Sha256_h5, (__classPrivateFieldGet(this, _Sha256_h5, "f") + f) << 0, "f");
+        __classPrivateFieldSet(this, _Sha256_h6, (__classPrivateFieldGet(this, _Sha256_h6, "f") + g) << 0, "f");
+        __classPrivateFieldSet(this, _Sha256_h7, (__classPrivateFieldGet(this, _Sha256_h7, "f") + h) << 0, "f");
+    }
+    /** Return hash in hex string. */
+    hex() {
+        this.finalize();
+        const h0 = __classPrivateFieldGet(this, _Sha256_h0, "f");
+        const h1 = __classPrivateFieldGet(this, _Sha256_h1, "f");
+        const h2 = __classPrivateFieldGet(this, _Sha256_h2, "f");
+        const h3 = __classPrivateFieldGet(this, _Sha256_h3, "f");
+        const h4 = __classPrivateFieldGet(this, _Sha256_h4, "f");
+        const h5 = __classPrivateFieldGet(this, _Sha256_h5, "f");
+        const h6 = __classPrivateFieldGet(this, _Sha256_h6, "f");
+        const h7 = __classPrivateFieldGet(this, _Sha256_h7, "f");
+        let hex = HEX_CHARS[(h0 >> 28) & 0x0f] +
+            HEX_CHARS[(h0 >> 24) & 0x0f] +
+            HEX_CHARS[(h0 >> 20) & 0x0f] +
+            HEX_CHARS[(h0 >> 16) & 0x0f] +
+            HEX_CHARS[(h0 >> 12) & 0x0f] +
+            HEX_CHARS[(h0 >> 8) & 0x0f] +
+            HEX_CHARS[(h0 >> 4) & 0x0f] +
+            HEX_CHARS[h0 & 0x0f] +
+            HEX_CHARS[(h1 >> 28) & 0x0f] +
+            HEX_CHARS[(h1 >> 24) & 0x0f] +
+            HEX_CHARS[(h1 >> 20) & 0x0f] +
+            HEX_CHARS[(h1 >> 16) & 0x0f] +
+            HEX_CHARS[(h1 >> 12) & 0x0f] +
+            HEX_CHARS[(h1 >> 8) & 0x0f] +
+            HEX_CHARS[(h1 >> 4) & 0x0f] +
+            HEX_CHARS[h1 & 0x0f] +
+            HEX_CHARS[(h2 >> 28) & 0x0f] +
+            HEX_CHARS[(h2 >> 24) & 0x0f] +
+            HEX_CHARS[(h2 >> 20) & 0x0f] +
+            HEX_CHARS[(h2 >> 16) & 0x0f] +
+            HEX_CHARS[(h2 >> 12) & 0x0f] +
+            HEX_CHARS[(h2 >> 8) & 0x0f] +
+            HEX_CHARS[(h2 >> 4) & 0x0f] +
+            HEX_CHARS[h2 & 0x0f] +
+            HEX_CHARS[(h3 >> 28) & 0x0f] +
+            HEX_CHARS[(h3 >> 24) & 0x0f] +
+            HEX_CHARS[(h3 >> 20) & 0x0f] +
+            HEX_CHARS[(h3 >> 16) & 0x0f] +
+            HEX_CHARS[(h3 >> 12) & 0x0f] +
+            HEX_CHARS[(h3 >> 8) & 0x0f] +
+            HEX_CHARS[(h3 >> 4) & 0x0f] +
+            HEX_CHARS[h3 & 0x0f] +
+            HEX_CHARS[(h4 >> 28) & 0x0f] +
+            HEX_CHARS[(h4 >> 24) & 0x0f] +
+            HEX_CHARS[(h4 >> 20) & 0x0f] +
+            HEX_CHARS[(h4 >> 16) & 0x0f] +
+            HEX_CHARS[(h4 >> 12) & 0x0f] +
+            HEX_CHARS[(h4 >> 8) & 0x0f] +
+            HEX_CHARS[(h4 >> 4) & 0x0f] +
+            HEX_CHARS[h4 & 0x0f] +
+            HEX_CHARS[(h5 >> 28) & 0x0f] +
+            HEX_CHARS[(h5 >> 24) & 0x0f] +
+            HEX_CHARS[(h5 >> 20) & 0x0f] +
+            HEX_CHARS[(h5 >> 16) & 0x0f] +
+            HEX_CHARS[(h5 >> 12) & 0x0f] +
+            HEX_CHARS[(h5 >> 8) & 0x0f] +
+            HEX_CHARS[(h5 >> 4) & 0x0f] +
+            HEX_CHARS[h5 & 0x0f] +
+            HEX_CHARS[(h6 >> 28) & 0x0f] +
+            HEX_CHARS[(h6 >> 24) & 0x0f] +
+            HEX_CHARS[(h6 >> 20) & 0x0f] +
+            HEX_CHARS[(h6 >> 16) & 0x0f] +
+            HEX_CHARS[(h6 >> 12) & 0x0f] +
+            HEX_CHARS[(h6 >> 8) & 0x0f] +
+            HEX_CHARS[(h6 >> 4) & 0x0f] +
+            HEX_CHARS[h6 & 0x0f];
+        if (!__classPrivateFieldGet(this, _Sha256_is224, "f")) {
+            hex += HEX_CHARS[(h7 >> 28) & 0x0f] +
+                HEX_CHARS[(h7 >> 24) & 0x0f] +
+                HEX_CHARS[(h7 >> 20) & 0x0f] +
+                HEX_CHARS[(h7 >> 16) & 0x0f] +
+                HEX_CHARS[(h7 >> 12) & 0x0f] +
+                HEX_CHARS[(h7 >> 8) & 0x0f] +
+                HEX_CHARS[(h7 >> 4) & 0x0f] +
+                HEX_CHARS[h7 & 0x0f];
+        }
+        return hex;
+    }
+    /** Return hash in hex string. */
+    toString() {
+        return this.hex();
+    }
+    /** Return hash in integer array. */
+    digest() {
+        this.finalize();
+        const h0 = __classPrivateFieldGet(this, _Sha256_h0, "f");
+        const h1 = __classPrivateFieldGet(this, _Sha256_h1, "f");
+        const h2 = __classPrivateFieldGet(this, _Sha256_h2, "f");
+        const h3 = __classPrivateFieldGet(this, _Sha256_h3, "f");
+        const h4 = __classPrivateFieldGet(this, _Sha256_h4, "f");
+        const h5 = __classPrivateFieldGet(this, _Sha256_h5, "f");
+        const h6 = __classPrivateFieldGet(this, _Sha256_h6, "f");
+        const h7 = __classPrivateFieldGet(this, _Sha256_h7, "f");
+        const arr = [
+            (h0 >> 24) & 0xff,
+            (h0 >> 16) & 0xff,
+            (h0 >> 8) & 0xff,
+            h0 & 0xff,
+            (h1 >> 24) & 0xff,
+            (h1 >> 16) & 0xff,
+            (h1 >> 8) & 0xff,
+            h1 & 0xff,
+            (h2 >> 24) & 0xff,
+            (h2 >> 16) & 0xff,
+            (h2 >> 8) & 0xff,
+            h2 & 0xff,
+            (h3 >> 24) & 0xff,
+            (h3 >> 16) & 0xff,
+            (h3 >> 8) & 0xff,
+            h3 & 0xff,
+            (h4 >> 24) & 0xff,
+            (h4 >> 16) & 0xff,
+            (h4 >> 8) & 0xff,
+            h4 & 0xff,
+            (h5 >> 24) & 0xff,
+            (h5 >> 16) & 0xff,
+            (h5 >> 8) & 0xff,
+            h5 & 0xff,
+            (h6 >> 24) & 0xff,
+            (h6 >> 16) & 0xff,
+            (h6 >> 8) & 0xff,
+            h6 & 0xff,
+        ];
+        if (!__classPrivateFieldGet(this, _Sha256_is224, "f")) {
+            arr.push((h7 >> 24) & 0xff, (h7 >> 16) & 0xff, (h7 >> 8) & 0xff, h7 & 0xff);
+        }
+        return arr;
+    }
+    /** Return hash in integer array. */
+    array() {
+        return this.digest();
+    }
+    /** Return hash in ArrayBuffer. */
+    arrayBuffer() {
+        this.finalize();
+        const buffer = new ArrayBuffer(__classPrivateFieldGet(this, _Sha256_is224, "f") ? 28 : 32);
+        const dataView = new DataView(buffer);
+        dataView.setUint32(0, __classPrivateFieldGet(this, _Sha256_h0, "f"));
+        dataView.setUint32(4, __classPrivateFieldGet(this, _Sha256_h1, "f"));
+        dataView.setUint32(8, __classPrivateFieldGet(this, _Sha256_h2, "f"));
+        dataView.setUint32(12, __classPrivateFieldGet(this, _Sha256_h3, "f"));
+        dataView.setUint32(16, __classPrivateFieldGet(this, _Sha256_h4, "f"));
+        dataView.setUint32(20, __classPrivateFieldGet(this, _Sha256_h5, "f"));
+        dataView.setUint32(24, __classPrivateFieldGet(this, _Sha256_h6, "f"));
+        if (!__classPrivateFieldGet(this, _Sha256_is224, "f")) {
+            dataView.setUint32(28, __classPrivateFieldGet(this, _Sha256_h7, "f"));
+        }
+        return buffer;
+    }
+}
+_Sha256_block = new WeakMap(), _Sha256_blocks = new WeakMap(), _Sha256_bytes = new WeakMap(), _Sha256_finalized = new WeakMap(), _Sha256_first = new WeakMap(), _Sha256_h0 = new WeakMap(), _Sha256_h1 = new WeakMap(), _Sha256_h2 = new WeakMap(), _Sha256_h3 = new WeakMap(), _Sha256_h4 = new WeakMap(), _Sha256_h5 = new WeakMap(), _Sha256_h6 = new WeakMap(), _Sha256_h7 = new WeakMap(), _Sha256_hashed = new WeakMap(), _Sha256_hBytes = new WeakMap(), _Sha256_is224 = new WeakMap(), _Sha256_lastByteIndex = new WeakMap(), _Sha256_start = new WeakMap();
+class HmacSha256 extends Sha256 {
+    constructor(secretKey, is224 = false, sharedMemory = false) {
+        super(is224, sharedMemory);
+        _HmacSha256_inner.set(this, void 0);
+        _HmacSha256_is224.set(this, void 0);
+        _HmacSha256_oKeyPad.set(this, void 0);
+        _HmacSha256_sharedMemory.set(this, void 0);
+        let key;
+        if (typeof secretKey === "string") {
+            const bytes = [];
+            const length = secretKey.length;
+            let index = 0;
+            for (let i = 0; i < length; ++i) {
+                let code = secretKey.charCodeAt(i);
+                if (code < 0x80) {
+                    bytes[index++] = code;
+                }
+                else if (code < 0x800) {
+                    bytes[index++] = 0xc0 | (code >> 6);
+                    bytes[index++] = 0x80 | (code & 0x3f);
+                }
+                else if (code < 0xd800 || code >= 0xe000) {
+                    bytes[index++] = 0xe0 | (code >> 12);
+                    bytes[index++] = 0x80 | ((code >> 6) & 0x3f);
+                    bytes[index++] = 0x80 | (code & 0x3f);
+                }
+                else {
+                    code = 0x10000 +
+                        (((code & 0x3ff) << 10) | (secretKey.charCodeAt(++i) & 0x3ff));
+                    bytes[index++] = 0xf0 | (code >> 18);
+                    bytes[index++] = 0x80 | ((code >> 12) & 0x3f);
+                    bytes[index++] = 0x80 | ((code >> 6) & 0x3f);
+                    bytes[index++] = 0x80 | (code & 0x3f);
+                }
+            }
+            key = bytes;
+        }
+        else {
+            if (secretKey instanceof ArrayBuffer) {
+                key = new Uint8Array(secretKey);
+            }
+            else {
+                key = secretKey;
+            }
+        }
+        if (key.length > 64) {
+            key = new Sha256(is224, true).update(key).array();
+        }
+        const oKeyPad = [];
+        const iKeyPad = [];
+        for (let i = 0; i < 64; ++i) {
+            const b = key[i] || 0;
+            oKeyPad[i] = 0x5c ^ b;
+            iKeyPad[i] = 0x36 ^ b;
+        }
+        this.update(iKeyPad);
+        __classPrivateFieldSet(this, _HmacSha256_oKeyPad, oKeyPad, "f");
+        __classPrivateFieldSet(this, _HmacSha256_inner, true, "f");
+        __classPrivateFieldSet(this, _HmacSha256_is224, is224, "f");
+        __classPrivateFieldSet(this, _HmacSha256_sharedMemory, sharedMemory, "f");
+    }
+    finalize() {
+        super.finalize();
+        if (__classPrivateFieldGet(this, _HmacSha256_inner, "f")) {
+            __classPrivateFieldSet(this, _HmacSha256_inner, false, "f");
+            const innerHash = this.array();
+            super.init(__classPrivateFieldGet(this, _HmacSha256_is224, "f"), __classPrivateFieldGet(this, _HmacSha256_sharedMemory, "f"));
+            this.update(__classPrivateFieldGet(this, _HmacSha256_oKeyPad, "f"));
+            this.update(innerHash);
+            super.finalize();
+        }
+    }
+}
+_HmacSha256_inner = new WeakMap(), _HmacSha256_is224 = new WeakMap(), _HmacSha256_oKeyPad = new WeakMap(), _HmacSha256_sharedMemory = new WeakMap();
+
 
 /***/ }),
 
@@ -87,7 +1190,399 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \****************************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Hint\": () => (/* binding */ Hint),\n/* harmony export */   \"Kind\": () => (/* binding */ Kind),\n/* harmony export */   \"Modifier\": () => (/* binding */ Modifier),\n/* harmony export */   \"Type\": () => (/* binding */ Type),\n/* harmony export */   \"TypeBuilder\": () => (/* binding */ TypeBuilder)\n/* harmony export */ });\n/*--------------------------------------------------------------------------\n\r\n@sinclair/typebox\n\r\nThe MIT License (MIT)\n\r\nCopyright (c) 2022 Haydn Paterson (sinclair) <haydn.developer@gmail.com>\n\r\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\r\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n\r\n---------------------------------------------------------------------------*/\n// --------------------------------------------------------------------------\n// Symbols\n// --------------------------------------------------------------------------\nconst Kind = Symbol.for('TypeBox.Kind');\nconst Hint = Symbol.for('TypeBox.Hint');\nconst Modifier = Symbol.for('TypeBox.Modifier');\n// --------------------------------------------------------------------------\n// TypeBuilder\n// --------------------------------------------------------------------------\nlet TypeOrdinal = 0;\nclass TypeBuilder {\n    // ----------------------------------------------------------------------\n    // Modifiers\n    // ----------------------------------------------------------------------\n    /** Creates a readonly optional property */\n    ReadonlyOptional(item) {\n        return { [Modifier]: 'ReadonlyOptional', ...item };\n    }\n    /** Creates a readonly property */\n    Readonly(item) {\n        return { [Modifier]: 'Readonly', ...item };\n    }\n    /** Creates a optional property */\n    Optional(item) {\n        return { [Modifier]: 'Optional', ...item };\n    }\n    // ----------------------------------------------------------------------\n    // Types\n    // ----------------------------------------------------------------------\n    /** `Standard` Creates a any type */\n    Any(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Any' });\n    }\n    /** `Standard` Creates a array type */\n    Array(items, options = {}) {\n        return this.Create({ ...options, [Kind]: 'Array', type: 'array', items });\n    }\n    /** `Standard` Creates a boolean type */\n    Boolean(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Boolean', type: 'boolean' });\n    }\n    /** `Extended` Creates a tuple type from this constructors parameters */\n    ConstructorParameters(schema, options = {}) {\n        return this.Tuple([...schema.parameters], { ...options });\n    }\n    /** `Extended` Creates a constructor type */\n    Constructor(parameters, returns, options = {}) {\n        if (parameters[Kind] === 'Tuple') {\n            const inner = parameters.items === undefined ? [] : parameters.items;\n            return this.Create({ ...options, [Kind]: 'Constructor', type: 'object', instanceOf: 'Constructor', parameters: inner, returns });\n        }\n        else if (globalThis.Array.isArray(parameters)) {\n            return this.Create({ ...options, [Kind]: 'Constructor', type: 'object', instanceOf: 'Constructor', parameters, returns });\n        }\n        else {\n            throw new Error('TypeBuilder.Constructor: Invalid parameters');\n        }\n    }\n    /** `Extended` Creates a Date type */\n    Date(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Date', type: 'object', instanceOf: 'Date' });\n    }\n    /** `Standard` Creates a enum type */\n    Enum(item, options = {}) {\n        const values = Object.keys(item)\n            .filter((key) => isNaN(key))\n            .map((key) => item[key]);\n        const anyOf = values.map((value) => (typeof value === 'string' ? { [Kind]: 'Literal', type: 'string', const: value } : { [Kind]: 'Literal', type: 'number', const: value }));\n        return this.Create({ ...options, [Kind]: 'Union', [Hint]: 'Enum', anyOf });\n    }\n    /** `Extended` Creates a function type */\n    Function(parameters, returns, options = {}) {\n        if (parameters[Kind] === 'Tuple') {\n            const inner = parameters.items === undefined ? [] : parameters.items;\n            return this.Create({ ...options, [Kind]: 'Function', type: 'object', instanceOf: 'Function', parameters: inner, returns });\n        }\n        else if (globalThis.Array.isArray(parameters)) {\n            return this.Create({ ...options, [Kind]: 'Function', type: 'object', instanceOf: 'Function', parameters, returns });\n        }\n        else {\n            throw new Error('TypeBuilder.Function: Invalid parameters');\n        }\n    }\n    /** `Extended` Creates a type from this constructors instance type */\n    InstanceType(schema, options = {}) {\n        return { ...options, ...this.Clone(schema.returns) };\n    }\n    /** `Standard` Creates a integer type */\n    Integer(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Integer', type: 'integer' });\n    }\n    /** `Standard` Creates a intersect type. */\n    Intersect(objects, options = {}) {\n        const isOptional = (schema) => (schema[Modifier] && schema[Modifier] === 'Optional') || schema[Modifier] === 'ReadonlyOptional';\n        const [required, optional] = [new Set(), new Set()];\n        for (const object of objects) {\n            for (const [key, schema] of Object.entries(object.properties)) {\n                if (isOptional(schema))\n                    optional.add(key);\n            }\n        }\n        for (const object of objects) {\n            for (const key of Object.keys(object.properties)) {\n                if (!optional.has(key))\n                    required.add(key);\n            }\n        }\n        const properties = {};\n        for (const object of objects) {\n            for (const [key, schema] of Object.entries(object.properties)) {\n                properties[key] = properties[key] === undefined ? schema : { [Kind]: 'Union', anyOf: [properties[key], { ...schema }] };\n            }\n        }\n        if (required.size > 0) {\n            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties, required: [...required] });\n        }\n        else {\n            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties });\n        }\n    }\n    /** `Standard` Creates a keyof type */\n    KeyOf(object, options = {}) {\n        const items = Object.keys(object.properties).map((key) => this.Create({ ...options, [Kind]: 'Literal', type: 'string', const: key }));\n        return this.Create({ ...options, [Kind]: 'Union', [Hint]: 'KeyOf', anyOf: items });\n    }\n    /** `Standard` Creates a literal type. */\n    Literal(value, options = {}) {\n        return this.Create({ ...options, [Kind]: 'Literal', const: value, type: typeof value });\n    }\n    /** `Standard` Creates a never type */\n    Never(options = {}) {\n        return this.Create({\n            ...options,\n            [Kind]: 'Never',\n            allOf: [\n                { type: 'boolean', const: false },\n                { type: 'boolean', const: true },\n            ],\n        });\n    }\n    /** `Standard` Creates a null type */\n    Null(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Null', type: 'null' });\n    }\n    /** `Standard` Creates a number type */\n    Number(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Number', type: 'number' });\n    }\n    /** `Standard` Creates an object type */\n    Object(properties, options = {}) {\n        const property_names = Object.keys(properties);\n        const optional = property_names.filter((name) => {\n            const property = properties[name];\n            const modifier = property[Modifier];\n            return modifier && (modifier === 'Optional' || modifier === 'ReadonlyOptional');\n        });\n        const required = property_names.filter((name) => !optional.includes(name));\n        if (required.length > 0) {\n            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties, required });\n        }\n        else {\n            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties });\n        }\n    }\n    /** `Standard` Creates a new object type whose keys are omitted from the given source type */\n    Omit(schema, keys, options = {}) {\n        const select = keys[Kind] === 'Union' ? keys.anyOf.map((schema) => schema.const) : keys;\n        const next = { ...this.Clone(schema), ...options, [Hint]: 'Omit' };\n        if (next.required) {\n            next.required = next.required.filter((key) => !select.includes(key));\n            if (next.required.length === 0)\n                delete next.required;\n        }\n        for (const key of Object.keys(next.properties)) {\n            if (select.includes(key))\n                delete next.properties[key];\n        }\n        return this.Create(next);\n    }\n    /** `Extended` Creates a tuple type from this functions parameters */\n    Parameters(schema, options = {}) {\n        return Type.Tuple(schema.parameters, { ...options });\n    }\n    /** `Standard` Creates an object type whose properties are all optional */\n    Partial(schema, options = {}) {\n        const next = { ...this.Clone(schema), ...options, [Hint]: 'Partial' };\n        delete next.required;\n        for (const key of Object.keys(next.properties)) {\n            const property = next.properties[key];\n            const modifer = property[Modifier];\n            switch (modifer) {\n                case 'ReadonlyOptional':\n                    property[Modifier] = 'ReadonlyOptional';\n                    break;\n                case 'Readonly':\n                    property[Modifier] = 'ReadonlyOptional';\n                    break;\n                case 'Optional':\n                    property[Modifier] = 'Optional';\n                    break;\n                default:\n                    property[Modifier] = 'Optional';\n                    break;\n            }\n        }\n        return this.Create(next);\n    }\n    /** `Standard` Creates a new object type whose keys are picked from the given source type */\n    Pick(schema, keys, options = {}) {\n        const select = keys[Kind] === 'Union' ? keys.anyOf.map((schema) => schema.const) : keys;\n        const next = { ...this.Clone(schema), ...options, [Hint]: 'Pick' };\n        if (next.required) {\n            next.required = next.required.filter((key) => select.includes(key));\n            if (next.required.length === 0)\n                delete next.required;\n        }\n        for (const key of Object.keys(next.properties)) {\n            if (!select.includes(key))\n                delete next.properties[key];\n        }\n        return this.Create(next);\n    }\n    /** `Extended` Creates a Promise type */\n    Promise(item, options = {}) {\n        return this.Create({ ...options, [Kind]: 'Promise', type: 'object', instanceOf: 'Promise', item });\n    }\n    /** `Standard` Creates a record type */\n    Record(key, value, options = {}) {\n        // If string literal union return TObject with properties extracted from union.\n        if (key[Kind] === 'Union') {\n            return this.Object(key.anyOf.reduce((acc, literal) => {\n                return { ...acc, [literal.const]: value };\n            }, {}), { ...options, [Hint]: 'Record' });\n        }\n        // otherwise return TRecord with patternProperties\n        const pattern = ['Integer', 'Number'].includes(key[Kind]) ? '^(0|[1-9][0-9]*)$' : key[Kind] === 'String' && key.pattern ? key.pattern : '^.*$';\n        return this.Create({\n            ...options,\n            [Kind]: 'Record',\n            type: 'object',\n            patternProperties: { [pattern]: value },\n            additionalProperties: false,\n        });\n    }\n    /** `Standard` Creates recursive type */\n    Recursive(callback, options = {}) {\n        if (options.$id === undefined)\n            options.$id = `T${TypeOrdinal++}`;\n        const self = callback({ [Kind]: 'Self', $ref: `${options.$id}` });\n        self.$id = options.$id;\n        return this.Create({ ...options, ...self });\n    }\n    /** `Standard` Creates a reference type. The referenced type must contain a $id. */\n    Ref(schema, options = {}) {\n        if (schema.$id === undefined)\n            throw Error('TypeBuilder.Ref: Referenced schema must specify an $id');\n        return this.Create({ ...options, [Kind]: 'Ref', $ref: schema.$id });\n    }\n    /** `Standard` Creates a string type from a regular expression */\n    RegEx(regex, options = {}) {\n        return this.Create({ ...options, [Kind]: 'String', type: 'string', pattern: regex.source });\n    }\n    /** `Standard` Creates an object type whose properties are all required */\n    Required(schema, options = {}) {\n        const next = { ...this.Clone(schema), ...options, [Hint]: 'Required' };\n        next.required = Object.keys(next.properties);\n        for (const key of Object.keys(next.properties)) {\n            const property = next.properties[key];\n            const modifier = property[Modifier];\n            switch (modifier) {\n                case 'ReadonlyOptional':\n                    property[Modifier] = 'Readonly';\n                    break;\n                case 'Readonly':\n                    property[Modifier] = 'Readonly';\n                    break;\n                case 'Optional':\n                    delete property[Modifier];\n                    break;\n                default:\n                    delete property[Modifier];\n                    break;\n            }\n        }\n        return this.Create(next);\n    }\n    /** `Extended` Creates a type from this functions return type */\n    ReturnType(schema, options = {}) {\n        return { ...options, ...this.Clone(schema.returns) };\n    }\n    /** Removes Kind and Modifier symbol property keys from this schema */\n    Strict(schema) {\n        return JSON.parse(JSON.stringify(schema));\n    }\n    /** `Standard` Creates a string type */\n    String(options = {}) {\n        return this.Create({ ...options, [Kind]: 'String', type: 'string' });\n    }\n    /** `Standard` Creates a tuple type */\n    Tuple(items, options = {}) {\n        const additionalItems = false;\n        const minItems = items.length;\n        const maxItems = items.length;\n        const schema = (items.length > 0 ? { ...options, [Kind]: 'Tuple', type: 'array', items, additionalItems, minItems, maxItems } : { ...options, [Kind]: 'Tuple', type: 'array', minItems, maxItems });\n        return this.Create(schema);\n    }\n    /** `Extended` Creates a undefined type */\n    Undefined(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Undefined', type: 'null', typeOf: 'Undefined' });\n    }\n    /** `Standard` Creates a union type */\n    Union(items, options = {}) {\n        return items.length === 0 ? Type.Never({ ...options }) : this.Create({ ...options, [Kind]: 'Union', anyOf: items });\n    }\n    /** `Extended` Creates a Uint8Array type */\n    Uint8Array(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Uint8Array', type: 'object', instanceOf: 'Uint8Array' });\n    }\n    /** `Standard` Creates an unknown type */\n    Unknown(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Unknown' });\n    }\n    /** `Standard` Creates a user defined schema that infers as type T  */\n    Unsafe(options = {}) {\n        return this.Create({ ...options, [Kind]: options[Kind] || 'Unsafe' });\n    }\n    /** `Extended` Creates a void type */\n    Void(options = {}) {\n        return this.Create({ ...options, [Kind]: 'Void', type: 'null', typeOf: 'Void' });\n    }\n    /** Use this function to return TSchema with static and params omitted */\n    Create(schema) {\n        return schema;\n    }\n    /** Clones the given value */\n    Clone(value) {\n        const isObject = (object) => typeof object === 'object' && object !== null && !Array.isArray(object);\n        const isArray = (object) => typeof object === 'object' && object !== null && Array.isArray(object);\n        if (isObject(value)) {\n            return Object.keys(value).reduce((acc, key) => ({\n                ...acc,\n                [key]: this.Clone(value[key]),\n            }), Object.getOwnPropertySymbols(value).reduce((acc, key) => ({\n                ...acc,\n                [key]: this.Clone(value[key]),\n            }), {}));\n        }\n        else if (isArray(value)) {\n            return value.map((item) => this.Clone(item));\n        }\n        else {\n            return value;\n        }\n    }\n}\n/** JSON Schema Type Builder with Static Type Resolution for TypeScript */\nconst Type = new TypeBuilder();\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/deps/deno.land/x/typebox@0.25.13/src/typebox.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Hint": () => (/* binding */ Hint),
+/* harmony export */   "Kind": () => (/* binding */ Kind),
+/* harmony export */   "Modifier": () => (/* binding */ Modifier),
+/* harmony export */   "Type": () => (/* binding */ Type),
+/* harmony export */   "TypeBuilder": () => (/* binding */ TypeBuilder)
+/* harmony export */ });
+/*--------------------------------------------------------------------------
+
+@sinclair/typebox
+
+The MIT License (MIT)
+
+Copyright (c) 2022 Haydn Paterson (sinclair) <haydn.developer@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+---------------------------------------------------------------------------*/
+// --------------------------------------------------------------------------
+// Symbols
+// --------------------------------------------------------------------------
+const Kind = Symbol.for('TypeBox.Kind');
+const Hint = Symbol.for('TypeBox.Hint');
+const Modifier = Symbol.for('TypeBox.Modifier');
+// --------------------------------------------------------------------------
+// TypeBuilder
+// --------------------------------------------------------------------------
+let TypeOrdinal = 0;
+class TypeBuilder {
+    // ----------------------------------------------------------------------
+    // Modifiers
+    // ----------------------------------------------------------------------
+    /** Creates a readonly optional property */
+    ReadonlyOptional(item) {
+        return { [Modifier]: 'ReadonlyOptional', ...item };
+    }
+    /** Creates a readonly property */
+    Readonly(item) {
+        return { [Modifier]: 'Readonly', ...item };
+    }
+    /** Creates a optional property */
+    Optional(item) {
+        return { [Modifier]: 'Optional', ...item };
+    }
+    // ----------------------------------------------------------------------
+    // Types
+    // ----------------------------------------------------------------------
+    /** `Standard` Creates a any type */
+    Any(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Any' });
+    }
+    /** `Standard` Creates a array type */
+    Array(items, options = {}) {
+        return this.Create({ ...options, [Kind]: 'Array', type: 'array', items });
+    }
+    /** `Standard` Creates a boolean type */
+    Boolean(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Boolean', type: 'boolean' });
+    }
+    /** `Extended` Creates a tuple type from this constructors parameters */
+    ConstructorParameters(schema, options = {}) {
+        return this.Tuple([...schema.parameters], { ...options });
+    }
+    /** `Extended` Creates a constructor type */
+    Constructor(parameters, returns, options = {}) {
+        if (parameters[Kind] === 'Tuple') {
+            const inner = parameters.items === undefined ? [] : parameters.items;
+            return this.Create({ ...options, [Kind]: 'Constructor', type: 'object', instanceOf: 'Constructor', parameters: inner, returns });
+        }
+        else if (globalThis.Array.isArray(parameters)) {
+            return this.Create({ ...options, [Kind]: 'Constructor', type: 'object', instanceOf: 'Constructor', parameters, returns });
+        }
+        else {
+            throw new Error('TypeBuilder.Constructor: Invalid parameters');
+        }
+    }
+    /** `Extended` Creates a Date type */
+    Date(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Date', type: 'object', instanceOf: 'Date' });
+    }
+    /** `Standard` Creates a enum type */
+    Enum(item, options = {}) {
+        const values = Object.keys(item)
+            .filter((key) => isNaN(key))
+            .map((key) => item[key]);
+        const anyOf = values.map((value) => (typeof value === 'string' ? { [Kind]: 'Literal', type: 'string', const: value } : { [Kind]: 'Literal', type: 'number', const: value }));
+        return this.Create({ ...options, [Kind]: 'Union', [Hint]: 'Enum', anyOf });
+    }
+    /** `Extended` Creates a function type */
+    Function(parameters, returns, options = {}) {
+        if (parameters[Kind] === 'Tuple') {
+            const inner = parameters.items === undefined ? [] : parameters.items;
+            return this.Create({ ...options, [Kind]: 'Function', type: 'object', instanceOf: 'Function', parameters: inner, returns });
+        }
+        else if (globalThis.Array.isArray(parameters)) {
+            return this.Create({ ...options, [Kind]: 'Function', type: 'object', instanceOf: 'Function', parameters, returns });
+        }
+        else {
+            throw new Error('TypeBuilder.Function: Invalid parameters');
+        }
+    }
+    /** `Extended` Creates a type from this constructors instance type */
+    InstanceType(schema, options = {}) {
+        return { ...options, ...this.Clone(schema.returns) };
+    }
+    /** `Standard` Creates a integer type */
+    Integer(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Integer', type: 'integer' });
+    }
+    /** `Standard` Creates a intersect type. */
+    Intersect(objects, options = {}) {
+        const isOptional = (schema) => (schema[Modifier] && schema[Modifier] === 'Optional') || schema[Modifier] === 'ReadonlyOptional';
+        const [required, optional] = [new Set(), new Set()];
+        for (const object of objects) {
+            for (const [key, schema] of Object.entries(object.properties)) {
+                if (isOptional(schema))
+                    optional.add(key);
+            }
+        }
+        for (const object of objects) {
+            for (const key of Object.keys(object.properties)) {
+                if (!optional.has(key))
+                    required.add(key);
+            }
+        }
+        const properties = {};
+        for (const object of objects) {
+            for (const [key, schema] of Object.entries(object.properties)) {
+                properties[key] = properties[key] === undefined ? schema : { [Kind]: 'Union', anyOf: [properties[key], { ...schema }] };
+            }
+        }
+        if (required.size > 0) {
+            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties, required: [...required] });
+        }
+        else {
+            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties });
+        }
+    }
+    /** `Standard` Creates a keyof type */
+    KeyOf(object, options = {}) {
+        const items = Object.keys(object.properties).map((key) => this.Create({ ...options, [Kind]: 'Literal', type: 'string', const: key }));
+        return this.Create({ ...options, [Kind]: 'Union', [Hint]: 'KeyOf', anyOf: items });
+    }
+    /** `Standard` Creates a literal type. */
+    Literal(value, options = {}) {
+        return this.Create({ ...options, [Kind]: 'Literal', const: value, type: typeof value });
+    }
+    /** `Standard` Creates a never type */
+    Never(options = {}) {
+        return this.Create({
+            ...options,
+            [Kind]: 'Never',
+            allOf: [
+                { type: 'boolean', const: false },
+                { type: 'boolean', const: true },
+            ],
+        });
+    }
+    /** `Standard` Creates a null type */
+    Null(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Null', type: 'null' });
+    }
+    /** `Standard` Creates a number type */
+    Number(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Number', type: 'number' });
+    }
+    /** `Standard` Creates an object type */
+    Object(properties, options = {}) {
+        const property_names = Object.keys(properties);
+        const optional = property_names.filter((name) => {
+            const property = properties[name];
+            const modifier = property[Modifier];
+            return modifier && (modifier === 'Optional' || modifier === 'ReadonlyOptional');
+        });
+        const required = property_names.filter((name) => !optional.includes(name));
+        if (required.length > 0) {
+            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties, required });
+        }
+        else {
+            return this.Create({ ...options, [Kind]: 'Object', type: 'object', properties });
+        }
+    }
+    /** `Standard` Creates a new object type whose keys are omitted from the given source type */
+    Omit(schema, keys, options = {}) {
+        const select = keys[Kind] === 'Union' ? keys.anyOf.map((schema) => schema.const) : keys;
+        const next = { ...this.Clone(schema), ...options, [Hint]: 'Omit' };
+        if (next.required) {
+            next.required = next.required.filter((key) => !select.includes(key));
+            if (next.required.length === 0)
+                delete next.required;
+        }
+        for (const key of Object.keys(next.properties)) {
+            if (select.includes(key))
+                delete next.properties[key];
+        }
+        return this.Create(next);
+    }
+    /** `Extended` Creates a tuple type from this functions parameters */
+    Parameters(schema, options = {}) {
+        return Type.Tuple(schema.parameters, { ...options });
+    }
+    /** `Standard` Creates an object type whose properties are all optional */
+    Partial(schema, options = {}) {
+        const next = { ...this.Clone(schema), ...options, [Hint]: 'Partial' };
+        delete next.required;
+        for (const key of Object.keys(next.properties)) {
+            const property = next.properties[key];
+            const modifer = property[Modifier];
+            switch (modifer) {
+                case 'ReadonlyOptional':
+                    property[Modifier] = 'ReadonlyOptional';
+                    break;
+                case 'Readonly':
+                    property[Modifier] = 'ReadonlyOptional';
+                    break;
+                case 'Optional':
+                    property[Modifier] = 'Optional';
+                    break;
+                default:
+                    property[Modifier] = 'Optional';
+                    break;
+            }
+        }
+        return this.Create(next);
+    }
+    /** `Standard` Creates a new object type whose keys are picked from the given source type */
+    Pick(schema, keys, options = {}) {
+        const select = keys[Kind] === 'Union' ? keys.anyOf.map((schema) => schema.const) : keys;
+        const next = { ...this.Clone(schema), ...options, [Hint]: 'Pick' };
+        if (next.required) {
+            next.required = next.required.filter((key) => select.includes(key));
+            if (next.required.length === 0)
+                delete next.required;
+        }
+        for (const key of Object.keys(next.properties)) {
+            if (!select.includes(key))
+                delete next.properties[key];
+        }
+        return this.Create(next);
+    }
+    /** `Extended` Creates a Promise type */
+    Promise(item, options = {}) {
+        return this.Create({ ...options, [Kind]: 'Promise', type: 'object', instanceOf: 'Promise', item });
+    }
+    /** `Standard` Creates a record type */
+    Record(key, value, options = {}) {
+        // If string literal union return TObject with properties extracted from union.
+        if (key[Kind] === 'Union') {
+            return this.Object(key.anyOf.reduce((acc, literal) => {
+                return { ...acc, [literal.const]: value };
+            }, {}), { ...options, [Hint]: 'Record' });
+        }
+        // otherwise return TRecord with patternProperties
+        const pattern = ['Integer', 'Number'].includes(key[Kind]) ? '^(0|[1-9][0-9]*)$' : key[Kind] === 'String' && key.pattern ? key.pattern : '^.*$';
+        return this.Create({
+            ...options,
+            [Kind]: 'Record',
+            type: 'object',
+            patternProperties: { [pattern]: value },
+            additionalProperties: false,
+        });
+    }
+    /** `Standard` Creates recursive type */
+    Recursive(callback, options = {}) {
+        if (options.$id === undefined)
+            options.$id = `T${TypeOrdinal++}`;
+        const self = callback({ [Kind]: 'Self', $ref: `${options.$id}` });
+        self.$id = options.$id;
+        return this.Create({ ...options, ...self });
+    }
+    /** `Standard` Creates a reference type. The referenced type must contain a $id. */
+    Ref(schema, options = {}) {
+        if (schema.$id === undefined)
+            throw Error('TypeBuilder.Ref: Referenced schema must specify an $id');
+        return this.Create({ ...options, [Kind]: 'Ref', $ref: schema.$id });
+    }
+    /** `Standard` Creates a string type from a regular expression */
+    RegEx(regex, options = {}) {
+        return this.Create({ ...options, [Kind]: 'String', type: 'string', pattern: regex.source });
+    }
+    /** `Standard` Creates an object type whose properties are all required */
+    Required(schema, options = {}) {
+        const next = { ...this.Clone(schema), ...options, [Hint]: 'Required' };
+        next.required = Object.keys(next.properties);
+        for (const key of Object.keys(next.properties)) {
+            const property = next.properties[key];
+            const modifier = property[Modifier];
+            switch (modifier) {
+                case 'ReadonlyOptional':
+                    property[Modifier] = 'Readonly';
+                    break;
+                case 'Readonly':
+                    property[Modifier] = 'Readonly';
+                    break;
+                case 'Optional':
+                    delete property[Modifier];
+                    break;
+                default:
+                    delete property[Modifier];
+                    break;
+            }
+        }
+        return this.Create(next);
+    }
+    /** `Extended` Creates a type from this functions return type */
+    ReturnType(schema, options = {}) {
+        return { ...options, ...this.Clone(schema.returns) };
+    }
+    /** Removes Kind and Modifier symbol property keys from this schema */
+    Strict(schema) {
+        return JSON.parse(JSON.stringify(schema));
+    }
+    /** `Standard` Creates a string type */
+    String(options = {}) {
+        return this.Create({ ...options, [Kind]: 'String', type: 'string' });
+    }
+    /** `Standard` Creates a tuple type */
+    Tuple(items, options = {}) {
+        const additionalItems = false;
+        const minItems = items.length;
+        const maxItems = items.length;
+        const schema = (items.length > 0 ? { ...options, [Kind]: 'Tuple', type: 'array', items, additionalItems, minItems, maxItems } : { ...options, [Kind]: 'Tuple', type: 'array', minItems, maxItems });
+        return this.Create(schema);
+    }
+    /** `Extended` Creates a undefined type */
+    Undefined(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Undefined', type: 'null', typeOf: 'Undefined' });
+    }
+    /** `Standard` Creates a union type */
+    Union(items, options = {}) {
+        return items.length === 0 ? Type.Never({ ...options }) : this.Create({ ...options, [Kind]: 'Union', anyOf: items });
+    }
+    /** `Extended` Creates a Uint8Array type */
+    Uint8Array(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Uint8Array', type: 'object', instanceOf: 'Uint8Array' });
+    }
+    /** `Standard` Creates an unknown type */
+    Unknown(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Unknown' });
+    }
+    /** `Standard` Creates a user defined schema that infers as type T  */
+    Unsafe(options = {}) {
+        return this.Create({ ...options, [Kind]: options[Kind] || 'Unsafe' });
+    }
+    /** `Extended` Creates a void type */
+    Void(options = {}) {
+        return this.Create({ ...options, [Kind]: 'Void', type: 'null', typeOf: 'Void' });
+    }
+    /** Use this function to return TSchema with static and params omitted */
+    Create(schema) {
+        return schema;
+    }
+    /** Clones the given value */
+    Clone(value) {
+        const isObject = (object) => typeof object === 'object' && object !== null && !Array.isArray(object);
+        const isArray = (object) => typeof object === 'object' && object !== null && Array.isArray(object);
+        if (isObject(value)) {
+            return Object.keys(value).reduce((acc, key) => ({
+                ...acc,
+                [key]: this.Clone(value[key]),
+            }), Object.getOwnPropertySymbols(value).reduce((acc, key) => ({
+                ...acc,
+                [key]: this.Clone(value[key]),
+            }), {}));
+        }
+        else if (isArray(value)) {
+            return value.map((item) => this.Clone(item));
+        }
+        else {
+            return value;
+        }
+    }
+}
+/** JSON Schema Type Builder with Static Type Resolution for TypeScript */
+const Type = new TypeBuilder();
+
 
 /***/ }),
 
@@ -97,7 +1592,64 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***********************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Blockfrost\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Blockfrost),\n/* harmony export */   \"C\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.C),\n/* harmony export */   \"Constr\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Constr),\n/* harmony export */   \"Data\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Data),\n/* harmony export */   \"Emulator\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Emulator),\n/* harmony export */   \"Kupmios\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Kupmios),\n/* harmony export */   \"Lucid\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Lucid),\n/* harmony export */   \"M\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.M),\n/* harmony export */   \"MerkleTree\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.MerkleTree),\n/* harmony export */   \"PROTOCOL_PARAMETERS_DEFAULT\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.PROTOCOL_PARAMETERS_DEFAULT),\n/* harmony export */   \"SLOT_CONFIG_NETWORK\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.SLOT_CONFIG_NETWORK),\n/* harmony export */   \"Tx\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Tx),\n/* harmony export */   \"TxComplete\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.TxComplete),\n/* harmony export */   \"TxSigned\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.TxSigned),\n/* harmony export */   \"Utils\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Utils),\n/* harmony export */   \"applyDoubleCborEncoding\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.applyDoubleCborEncoding),\n/* harmony export */   \"applyParamsToScript\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.applyParamsToScript),\n/* harmony export */   \"assetsToValue\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.assetsToValue),\n/* harmony export */   \"combineHash\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.combineHash),\n/* harmony export */   \"concat\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.concat),\n/* harmony export */   \"coreToUtxo\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.coreToUtxo),\n/* harmony export */   \"createCostModels\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.createCostModels),\n/* harmony export */   \"datumJsonToCbor\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.datumJsonToCbor),\n/* harmony export */   \"equals\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals),\n/* harmony export */   \"fromHex\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex),\n/* harmony export */   \"fromLabel\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromLabel),\n/* harmony export */   \"fromScriptRef\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromScriptRef),\n/* harmony export */   \"fromText\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromText),\n/* harmony export */   \"fromUnit\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromUnit),\n/* harmony export */   \"generatePrivateKey\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.generatePrivateKey),\n/* harmony export */   \"generateSeedPhrase\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.generateSeedPhrase),\n/* harmony export */   \"getAddressDetails\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.getAddressDetails),\n/* harmony export */   \"nativeScriptFromJson\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.nativeScriptFromJson),\n/* harmony export */   \"networkToId\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.networkToId),\n/* harmony export */   \"paymentCredentialOf\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.paymentCredentialOf),\n/* harmony export */   \"sha256\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.sha256),\n/* harmony export */   \"slotToBeginUnixTime\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.slotToBeginUnixTime),\n/* harmony export */   \"stakeCredentialOf\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.stakeCredentialOf),\n/* harmony export */   \"toHex\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex),\n/* harmony export */   \"toLabel\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toLabel),\n/* harmony export */   \"toPublicKey\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toPublicKey),\n/* harmony export */   \"toScriptRef\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toScriptRef),\n/* harmony export */   \"toText\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toText),\n/* harmony export */   \"toUnit\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toUnit),\n/* harmony export */   \"unixTimeToEnclosingSlot\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.unixTimeToEnclosingSlot),\n/* harmony export */   \"utxoToCore\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.utxoToCore),\n/* harmony export */   \"valueToAssets\": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.valueToAssets)\n/* harmony export */ });\n/* harmony import */ var _src_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/mod.js */ \"./node_modules/lucid-cardano/esm/src/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_src_mod_js__WEBPACK_IMPORTED_MODULE_0__]);\n_src_mod_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/mod.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Blockfrost": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Blockfrost),
+/* harmony export */   "C": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.C),
+/* harmony export */   "Constr": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Constr),
+/* harmony export */   "Data": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Data),
+/* harmony export */   "Emulator": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Emulator),
+/* harmony export */   "Kupmios": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Kupmios),
+/* harmony export */   "Lucid": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Lucid),
+/* harmony export */   "M": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.M),
+/* harmony export */   "MerkleTree": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.MerkleTree),
+/* harmony export */   "PROTOCOL_PARAMETERS_DEFAULT": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.PROTOCOL_PARAMETERS_DEFAULT),
+/* harmony export */   "SLOT_CONFIG_NETWORK": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.SLOT_CONFIG_NETWORK),
+/* harmony export */   "Tx": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Tx),
+/* harmony export */   "TxComplete": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.TxComplete),
+/* harmony export */   "TxSigned": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.TxSigned),
+/* harmony export */   "Utils": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.Utils),
+/* harmony export */   "applyDoubleCborEncoding": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.applyDoubleCborEncoding),
+/* harmony export */   "applyParamsToScript": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.applyParamsToScript),
+/* harmony export */   "assetsToValue": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.assetsToValue),
+/* harmony export */   "combineHash": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.combineHash),
+/* harmony export */   "concat": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.concat),
+/* harmony export */   "coreToUtxo": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.coreToUtxo),
+/* harmony export */   "createCostModels": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.createCostModels),
+/* harmony export */   "datumJsonToCbor": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.datumJsonToCbor),
+/* harmony export */   "equals": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals),
+/* harmony export */   "fromHex": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex),
+/* harmony export */   "fromLabel": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromLabel),
+/* harmony export */   "fromScriptRef": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromScriptRef),
+/* harmony export */   "fromText": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromText),
+/* harmony export */   "fromUnit": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromUnit),
+/* harmony export */   "generatePrivateKey": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.generatePrivateKey),
+/* harmony export */   "generateSeedPhrase": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.generateSeedPhrase),
+/* harmony export */   "getAddressDetails": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.getAddressDetails),
+/* harmony export */   "nativeScriptFromJson": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.nativeScriptFromJson),
+/* harmony export */   "networkToId": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.networkToId),
+/* harmony export */   "paymentCredentialOf": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.paymentCredentialOf),
+/* harmony export */   "sha256": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.sha256),
+/* harmony export */   "slotToBeginUnixTime": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.slotToBeginUnixTime),
+/* harmony export */   "stakeCredentialOf": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.stakeCredentialOf),
+/* harmony export */   "toHex": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex),
+/* harmony export */   "toLabel": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toLabel),
+/* harmony export */   "toPublicKey": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toPublicKey),
+/* harmony export */   "toScriptRef": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toScriptRef),
+/* harmony export */   "toText": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toText),
+/* harmony export */   "toUnit": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.toUnit),
+/* harmony export */   "unixTimeToEnclosingSlot": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.unixTimeToEnclosingSlot),
+/* harmony export */   "utxoToCore": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.utxoToCore),
+/* harmony export */   "valueToAssets": () => (/* reexport safe */ _src_mod_js__WEBPACK_IMPORTED_MODULE_0__.valueToAssets)
+/* harmony export */ });
+/* harmony import */ var _src_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/mod.js */ "./node_modules/lucid-cardano/esm/src/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_src_mod_js__WEBPACK_IMPORTED_MODULE_0__]);
+_src_mod_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -107,7 +1659,19 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({\n    \"name\": \"lucid-cardano\",\n    \"version\": \"0.9.4\",\n    \"license\": \"MIT\",\n    \"author\": \"Alessandro Konrad\",\n    \"description\": \"Lucid is a library, which allows you to create Cardano transactions and off-chain code for your Plutus contracts in JavaScript, Deno and Node.js.\",\n    \"repository\": \"https://github.com/spacebudz/lucid\"\n});\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/package.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+    "name": "lucid-cardano",
+    "version": "0.9.4",
+    "license": "MIT",
+    "author": "Alessandro Konrad",
+    "description": "Lucid is a library, which allows you to create Cardano transactions and off-chain code for your Plutus contracts in JavaScript, Deno and Node.js.",
+    "repository": "https://github.com/spacebudz/lucid"
+});
+
 
 /***/ }),
 
@@ -117,7 +1681,80 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"C\": () => (/* binding */ C),\n/* harmony export */   \"M\": () => (/* binding */ M)\n/* harmony export */ });\n// dnt-shim-ignore\nconst isNode = typeof window === \"undefined\";\nif (isNode) {\n    const fetch = await import(/* webpackIgnore: true */ \"node-fetch\");\n    const { Crypto } = await import(\n    /* webpackIgnore: true */ \"@peculiar/webcrypto\");\n    const { WebSocket } = await import(\n    /* webpackIgnore: true */ \"ws\");\n    // @ts-ignore : global\n    if (!global.WebSocket)\n        global.WebSocket = WebSocket;\n    // @ts-ignore : global\n    if (!global.crypto)\n        global.crypto = new Crypto();\n    // @ts-ignore : global\n    if (!global.fetch)\n        global.fetch = fetch.default;\n    // @ts-ignore : global\n    if (!global.Headers)\n        global.Headers = fetch.Headers;\n    // @ts-ignore : global\n    if (!global.Request)\n        global.Request = fetch.Request;\n    // @ts-ignore : global\n    if (!global.Response)\n        global.Response = fetch.Response;\n}\nasync function importForEnvironmentCore() {\n    try {\n        if (isNode) {\n            return (await import(\n            /* webpackIgnore: true */\n            \"./wasm_modules/cardano_multiplatform_lib_nodejs/cardano_multiplatform_lib.js\"));\n        }\n        const pkg = await __webpack_require__.e(/*! import() */ \"vendors-node_modules_lucid-cardano_esm_src_core_wasm_modules_cardano_multiplatform_lib_web_ca-d40d81\").then(__webpack_require__.bind(__webpack_require__, /*! ./wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib.js */ \"./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib.js\"));\n        await pkg.default(await fetch(new URL(/* asset import */ __webpack_require__(/*! ./wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib_bg.wasm */ \"./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib_bg.wasm\"), __webpack_require__.b)));\n        return pkg;\n    }\n    catch (_e) {\n        // This only ever happens during SSR rendering\n        return null;\n    }\n}\nasync function importForEnvironmentMessage() {\n    try {\n        if (isNode) {\n            return (await import(\n            /* webpackIgnore: true */\n            \"./wasm_modules/cardano_message_signing_nodejs/cardano_message_signing.js\"));\n        }\n        const pkg = await __webpack_require__.e(/*! import() */ \"vendors-node_modules_lucid-cardano_esm_src_core_wasm_modules_cardano_message_signing_web_card-b04946\").then(__webpack_require__.bind(__webpack_require__, /*! ./wasm_modules/cardano_message_signing_web/cardano_message_signing.js */ \"./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_message_signing_web/cardano_message_signing.js\"));\n        await pkg.default(await fetch(new URL(/* asset import */ __webpack_require__(/*! ./wasm_modules/cardano_message_signing_web/cardano_message_signing_bg.wasm */ \"./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_message_signing_web/cardano_message_signing_bg.wasm\"), __webpack_require__.b)));\n        return pkg;\n    }\n    catch (_e) {\n        // This only ever happens during SSR rendering\n        return null;\n    }\n}\nconst [resolvedCore, resolvedMessage] = await Promise.all([\n    importForEnvironmentCore(),\n    importForEnvironmentMessage(),\n]);\nconst C = resolvedCore;\nconst M = resolvedMessage;\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } }, 1);\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/core/core.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "C": () => (/* binding */ C),
+/* harmony export */   "M": () => (/* binding */ M)
+/* harmony export */ });
+// dnt-shim-ignore
+const isNode = typeof window === "undefined";
+if (isNode) {
+    const fetch = await import(/* webpackIgnore: true */ "node-fetch");
+    const { Crypto } = await import(
+    /* webpackIgnore: true */ "@peculiar/webcrypto");
+    const { WebSocket } = await import(
+    /* webpackIgnore: true */ "ws");
+    // @ts-ignore : global
+    if (!global.WebSocket)
+        global.WebSocket = WebSocket;
+    // @ts-ignore : global
+    if (!global.crypto)
+        global.crypto = new Crypto();
+    // @ts-ignore : global
+    if (!global.fetch)
+        global.fetch = fetch.default;
+    // @ts-ignore : global
+    if (!global.Headers)
+        global.Headers = fetch.Headers;
+    // @ts-ignore : global
+    if (!global.Request)
+        global.Request = fetch.Request;
+    // @ts-ignore : global
+    if (!global.Response)
+        global.Response = fetch.Response;
+}
+async function importForEnvironmentCore() {
+    try {
+        if (isNode) {
+            return (await import(
+            /* webpackIgnore: true */
+            "./wasm_modules/cardano_multiplatform_lib_nodejs/cardano_multiplatform_lib.js"));
+        }
+        const pkg = await __webpack_require__.e(/*! import() */ "vendors-node_modules_lucid-cardano_esm_src_core_wasm_modules_cardano_multiplatform_lib_web_ca-d40d81").then(__webpack_require__.bind(__webpack_require__, /*! ./wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib.js */ "./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib.js"));
+        await pkg.default(await fetch(new URL(/* asset import */ __webpack_require__(/*! ./wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib_bg.wasm */ "./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_multiplatform_lib_web/cardano_multiplatform_lib_bg.wasm"), __webpack_require__.b)));
+        return pkg;
+    }
+    catch (_e) {
+        // This only ever happens during SSR rendering
+        return null;
+    }
+}
+async function importForEnvironmentMessage() {
+    try {
+        if (isNode) {
+            return (await import(
+            /* webpackIgnore: true */
+            "./wasm_modules/cardano_message_signing_nodejs/cardano_message_signing.js"));
+        }
+        const pkg = await __webpack_require__.e(/*! import() */ "vendors-node_modules_lucid-cardano_esm_src_core_wasm_modules_cardano_message_signing_web_card-b04946").then(__webpack_require__.bind(__webpack_require__, /*! ./wasm_modules/cardano_message_signing_web/cardano_message_signing.js */ "./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_message_signing_web/cardano_message_signing.js"));
+        await pkg.default(await fetch(new URL(/* asset import */ __webpack_require__(/*! ./wasm_modules/cardano_message_signing_web/cardano_message_signing_bg.wasm */ "./node_modules/lucid-cardano/esm/src/core/wasm_modules/cardano_message_signing_web/cardano_message_signing_bg.wasm"), __webpack_require__.b)));
+        return pkg;
+    }
+    catch (_e) {
+        // This only ever happens during SSR rendering
+        return null;
+    }
+}
+const [resolvedCore, resolvedMessage] = await Promise.all([
+    importForEnvironmentCore(),
+    importForEnvironmentMessage(),
+]);
+const C = resolvedCore;
+const M = resolvedMessage;
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
 
 /***/ }),
 
@@ -127,7 +1764,19 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"C\": () => (/* reexport safe */ _core_js__WEBPACK_IMPORTED_MODULE_0__.C),\n/* harmony export */   \"M\": () => (/* reexport safe */ _core_js__WEBPACK_IMPORTED_MODULE_0__.M)\n/* harmony export */ });\n/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core.js */ \"./node_modules/lucid-cardano/esm/src/core/core.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_js__WEBPACK_IMPORTED_MODULE_0__]);\n_core_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/core/mod.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "C": () => (/* reexport safe */ _core_js__WEBPACK_IMPORTED_MODULE_0__.C),
+/* harmony export */   "M": () => (/* reexport safe */ _core_js__WEBPACK_IMPORTED_MODULE_0__.M)
+/* harmony export */ });
+/* harmony import */ var _core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core.js */ "./node_modules/lucid-cardano/esm/src/core/core.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_js__WEBPACK_IMPORTED_MODULE_0__]);
+_core_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -137,7 +1786,402 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Lucid\": () => (/* binding */ Lucid)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\n/* harmony import */ var _tx_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tx.js */ \"./node_modules/lucid-cardano/esm/src/lucid/tx.js\");\n/* harmony import */ var _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tx_complete.js */ \"./node_modules/lucid-cardano/esm/src/lucid/tx_complete.js\");\n/* harmony import */ var _misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../misc/wallet.js */ \"./node_modules/lucid-cardano/esm/src/misc/wallet.js\");\n/* harmony import */ var _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../misc/sign_data.js */ \"./node_modules/lucid-cardano/esm/src/misc/sign_data.js\");\n/* harmony import */ var _message_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./message.js */ \"./node_modules/lucid-cardano/esm/src/lucid/message.js\");\n/* harmony import */ var _plutus_time_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../plutus/time.js */ \"./node_modules/lucid-cardano/esm/src/plutus/time.js\");\n/* harmony import */ var _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../plutus/data.js */ \"./node_modules/lucid-cardano/esm/src/plutus/data.js\");\n/* harmony import */ var _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../provider/emulator.js */ \"./node_modules/lucid-cardano/esm/src/provider/emulator.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _tx_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__, _misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__, _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__, _message_js__WEBPACK_IMPORTED_MODULE_6__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__, _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _tx_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__, _misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__, _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__, _message_js__WEBPACK_IMPORTED_MODULE_6__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__, _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\n\n\n\n\n\n\n\nclass Lucid {\n    constructor() {\n        Object.defineProperty(this, \"txBuilderConfig\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"wallet\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"provider\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"network\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: \"Mainnet\"\n        });\n        Object.defineProperty(this, \"utils\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n    }\n    static async new(provider, network) {\n        const lucid = new this();\n        if (network)\n            lucid.network = network;\n        if (provider) {\n            lucid.provider = provider;\n            const protocolParameters = await provider.getProtocolParameters();\n            if (lucid.provider instanceof _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__.Emulator) {\n                lucid.network = \"Custom\";\n                _plutus_time_js__WEBPACK_IMPORTED_MODULE_7__.SLOT_CONFIG_NETWORK[lucid.network] = {\n                    zeroTime: lucid.provider.now(),\n                    zeroSlot: 0,\n                    slotLength: 1000,\n                };\n            }\n            const slotConfig = _plutus_time_js__WEBPACK_IMPORTED_MODULE_7__.SLOT_CONFIG_NETWORK[lucid.network];\n            lucid.txBuilderConfig = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionBuilderConfigBuilder[\"new\"]()\n                .coins_per_utxo_byte(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.coinsPerUtxoByte.toString()))\n                .fee_algo(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.LinearFee[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.minFeeA.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.minFeeB.toString())))\n                .key_deposit(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.keyDeposit.toString()))\n                .pool_deposit(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.poolDeposit.toString()))\n                .max_tx_size(protocolParameters.maxTxSize)\n                .max_value_size(protocolParameters.maxValSize)\n                .collateral_percentage(protocolParameters.collateralPercentage)\n                .max_collateral_inputs(protocolParameters.maxCollateralInputs)\n                .max_tx_ex_units(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ExUnits[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.maxTxExMem.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.maxTxExSteps.toString())))\n                .ex_unit_prices(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ExUnitPrices.from_float(protocolParameters.priceMem, protocolParameters.priceStep))\n                .slot_config(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slotConfig.zeroTime.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slotConfig.zeroSlot.toString()), slotConfig.slotLength)\n                .blockfrost(\n            // We have Aiken now as native plutus core engine (primary), but we still support blockfrost (secondary) in case of bugs.\n            _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Blockfrost[\"new\"](\n            // deno-lint-ignore no-explicit-any\n            (provider?.url || \"\") + \"/utils/txs/evaluate\", \n            // deno-lint-ignore no-explicit-any\n            provider?.projectId || \"\"))\n                .costmdls((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.createCostModels)(protocolParameters.costModels))\n                .build();\n        }\n        lucid.utils = new _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.Utils(lucid);\n        return lucid;\n    }\n    /**\n     * Switch provider and/or network.\n     * If provider or network unset, no overwriting happens. Provider or network from current instance are taken then.\n     */\n    async switchProvider(provider, network) {\n        if (this.network === \"Custom\") {\n            throw new Error(\"Cannot switch when on custom network.\");\n        }\n        const lucid = await Lucid.new(provider, network);\n        this.txBuilderConfig = lucid.txBuilderConfig;\n        this.provider = provider || this.provider;\n        this.network = network || this.network;\n        this.wallet = lucid.wallet;\n        return this;\n    }\n    newTx() {\n        return new _tx_js__WEBPACK_IMPORTED_MODULE_2__.Tx(this);\n    }\n    fromTx(tx) {\n        return new _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__.TxComplete(this, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Transaction.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(tx)));\n    }\n    /** Signs a message. Expects the payload to be Hex encoded. */\n    newMessage(address, payload) {\n        return new _message_js__WEBPACK_IMPORTED_MODULE_6__.Message(this, address, payload);\n    }\n    /** Verify a message. Expects the payload to be Hex encoded. */\n    verifyMessage(address, payload, signedMessage) {\n        const { paymentCredential, stakeCredential, address: { hex: addressHex } } = this.utils.getAddressDetails(address);\n        const keyHash = paymentCredential?.hash || stakeCredential?.hash;\n        if (!keyHash)\n            throw new Error(\"Not a valid address provided.\");\n        return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__.verifyData)(addressHex, keyHash, payload, signedMessage);\n    }\n    currentSlot() {\n        return this.utils.unixTimeToSlot(Date.now());\n    }\n    utxosAt(addressOrCredential) {\n        return this.provider.getUtxos(addressOrCredential);\n    }\n    utxosAtWithUnit(addressOrCredential, unit) {\n        return this.provider.getUtxosWithUnit(addressOrCredential, unit);\n    }\n    /** Unit needs to be an NFT (or optionally the entire supply in one UTxO). */\n    utxoByUnit(unit) {\n        return this.provider.getUtxoByUnit(unit);\n    }\n    utxosByOutRef(outRefs) {\n        return this.provider.getUtxosByOutRef(outRefs);\n    }\n    delegationAt(rewardAddress) {\n        return this.provider.getDelegation(rewardAddress);\n    }\n    awaitTx(txHash, checkInterval = 3000) {\n        return this.provider.awaitTx(txHash, checkInterval);\n    }\n    async datumOf(utxo, shape) {\n        if (!utxo.datum) {\n            if (!utxo.datumHash) {\n                throw new Error(\"This UTxO does not have a datum hash.\");\n            }\n            utxo.datum = await this.provider.getDatum(utxo.datumHash);\n        }\n        return shape ? _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__.Data.from(utxo.datum, shape) : utxo.datum;\n    }\n    /**\n     * Cardano Private key in bech32; not the BIP32 private key or any key that is not fully derived.\n     * Only an Enteprise address (without stake credential) is derived.\n     */\n    selectWalletFromPrivateKey(privateKey) {\n        const priv = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);\n        const pubKeyHash = priv.to_public().hash();\n        this.wallet = {\n            // deno-lint-ignore require-await\n            address: async () => _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.EnterpriseAddress[\"new\"](this.network === \"Mainnet\" ? 1 : 0, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(pubKeyHash))\n                .to_address()\n                .to_bech32(undefined),\n            // deno-lint-ignore require-await\n            rewardAddress: async () => null,\n            getUtxos: async () => {\n                return await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(await this.wallet.address()));\n            },\n            getUtxosCore: async () => {\n                const utxos = await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(await this.wallet.address()));\n                const coreUtxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs[\"new\"]();\n                utxos.forEach((utxo) => {\n                    coreUtxos.add((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo));\n                });\n                return coreUtxos;\n            },\n            // deno-lint-ignore require-await\n            getDelegation: async () => {\n                return { poolId: null, rewards: 0n };\n            },\n            // deno-lint-ignore require-await\n            signTx: async (tx) => {\n                const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(tx.body()), priv);\n                const txWitnessSetBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder[\"new\"]();\n                txWitnessSetBuilder.add_vkey(witness);\n                return txWitnessSetBuilder.build();\n            },\n            // deno-lint-ignore require-await\n            signMessage: async (address, payload) => {\n                const { paymentCredential, address: { hex: hexAddress } } = this.utils\n                    .getAddressDetails(address);\n                const keyHash = paymentCredential?.hash;\n                const originalKeyHash = pubKeyHash.to_hex();\n                if (!keyHash || keyHash !== originalKeyHash) {\n                    throw new Error(`Cannot sign message for address: ${address}.`);\n                }\n                return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__.signData)(hexAddress, payload, privateKey);\n            },\n            submitTx: async (tx) => {\n                return await this.provider.submitTx(tx);\n            },\n        };\n        return this;\n    }\n    selectWallet(api) {\n        const getAddressHex = async () => {\n            const [addressHex] = await api.getUsedAddresses();\n            if (addressHex)\n                return addressHex;\n            const [unusedAddressHex] = await api.getUnusedAddresses();\n            return unusedAddressHex;\n        };\n        this.wallet = {\n            address: async () => _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(await getAddressHex())).to_bech32(undefined),\n            rewardAddress: async () => {\n                const [rewardAddressHex] = await api.getRewardAddresses();\n                const rewardAddress = rewardAddressHex\n                    ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress.from_address(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(rewardAddressHex)))\n                        .to_address()\n                        .to_bech32(undefined)\n                    : null;\n                return rewardAddress;\n            },\n            getUtxos: async () => {\n                const utxos = ((await api.getUtxos()) || []).map((utxo) => {\n                    const parsedUtxo = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutput.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo));\n                    return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.coreToUtxo)(parsedUtxo);\n                });\n                return utxos;\n            },\n            getUtxosCore: async () => {\n                const utxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs[\"new\"]();\n                ((await api.getUtxos()) || []).forEach((utxo) => {\n                    utxos.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutput.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo)));\n                });\n                return utxos;\n            },\n            getDelegation: async () => {\n                const rewardAddr = await this.wallet.rewardAddress();\n                return rewardAddr\n                    ? await this.delegationAt(rewardAddr)\n                    : { poolId: null, rewards: 0n };\n            },\n            signTx: async (tx) => {\n                const witnessSet = await api.signTx((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(tx.to_bytes()), true);\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSet.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(witnessSet));\n            },\n            signMessage: async (address, payload) => {\n                const hexAddress = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bech32(address).to_bytes());\n                return await api.signData(hexAddress, payload);\n            },\n            submitTx: async (tx) => {\n                const txHash = await api.submitTx(tx);\n                return txHash;\n            },\n        };\n        return this;\n    }\n    /**\n     * Emulates a wallet by constructing it with the utxos and an address.\n     * If utxos are not set, utxos are fetched from the provided address.\n     */\n    selectWalletFrom({ address, utxos, rewardAddress, }) {\n        const addressDetails = this.utils.getAddressDetails(address);\n        this.wallet = {\n            // deno-lint-ignore require-await\n            address: async () => address,\n            // deno-lint-ignore require-await\n            rewardAddress: async () => {\n                const rewardAddr = !rewardAddress && addressDetails.stakeCredential\n                    ? (() => {\n                        if (addressDetails.stakeCredential.type === \"Key\") {\n                            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress[\"new\"](this.network === \"Mainnet\" ? 1 : 0, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(addressDetails.stakeCredential.hash)))\n                                .to_address()\n                                .to_bech32(undefined);\n                        }\n                        return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress[\"new\"](this.network === \"Mainnet\" ? 1 : 0, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_hex(addressDetails.stakeCredential.hash)))\n                            .to_address()\n                            .to_bech32(undefined);\n                    })()\n                    : rewardAddress;\n                return rewardAddr || null;\n            },\n            getUtxos: async () => {\n                return utxos ? utxos : await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address));\n            },\n            getUtxosCore: async () => {\n                const coreUtxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs[\"new\"]();\n                (utxos ? utxos : await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address)))\n                    .forEach((utxo) => coreUtxos.add((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo)));\n                return coreUtxos;\n            },\n            getDelegation: async () => {\n                const rewardAddr = await this.wallet.rewardAddress();\n                return rewardAddr\n                    ? await this.delegationAt(rewardAddr)\n                    : { poolId: null, rewards: 0n };\n            },\n            // deno-lint-ignore require-await\n            signTx: async () => {\n                throw new Error(\"Not implemented\");\n            },\n            // deno-lint-ignore require-await\n            signMessage: async () => {\n                throw new Error(\"Not implemented\");\n            },\n            submitTx: async (tx) => {\n                return await this.provider.submitTx(tx);\n            },\n        };\n        return this;\n    }\n    /**\n     * Select wallet from a seed phrase (e.g. 15 or 24 words). You have the option to choose between a Base address (with stake credential)\n     * and Enterprise address (without stake credential). You can also decide which account index to derive. By default account 0 is derived.\n     */\n    selectWalletFromSeed(seed, options) {\n        const { address, rewardAddress, paymentKey, stakeKey } = (0,_misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__.walletFromSeed)(seed, {\n            addressType: options?.addressType || \"Base\",\n            accountIndex: options?.accountIndex || 0,\n            password: options?.password,\n            network: this.network,\n        });\n        const paymentKeyHash = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(paymentKey).to_public()\n            .hash().to_hex();\n        const stakeKeyHash = stakeKey\n            ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(stakeKey).to_public().hash().to_hex()\n            : \"\";\n        const privKeyHashMap = {\n            [paymentKeyHash]: paymentKey,\n            [stakeKeyHash]: stakeKey,\n        };\n        this.wallet = {\n            // deno-lint-ignore require-await\n            address: async () => address,\n            // deno-lint-ignore require-await\n            rewardAddress: async () => rewardAddress || null,\n            // deno-lint-ignore require-await\n            getUtxos: async () => this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address)),\n            getUtxosCore: async () => {\n                const coreUtxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs[\"new\"]();\n                (await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address))).forEach((utxo) => coreUtxos.add((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo)));\n                return coreUtxos;\n            },\n            getDelegation: async () => {\n                const rewardAddr = await this.wallet.rewardAddress();\n                return rewardAddr\n                    ? await this.delegationAt(rewardAddr)\n                    : { poolId: null, rewards: 0n };\n            },\n            signTx: async (tx) => {\n                const utxos = await this.utxosAt(address);\n                const ownKeyHashes = [paymentKeyHash, stakeKeyHash];\n                const usedKeyHashes = (0,_misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__.discoverOwnUsedTxKeyHashes)(tx, ownKeyHashes, utxos);\n                const txWitnessSetBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder[\"new\"]();\n                usedKeyHashes.forEach((keyHash) => {\n                    const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(tx.body()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privKeyHashMap[keyHash]));\n                    txWitnessSetBuilder.add_vkey(witness);\n                });\n                return txWitnessSetBuilder.build();\n            },\n            // deno-lint-ignore require-await\n            signMessage: async (address, payload) => {\n                const { paymentCredential, stakeCredential, address: { hex: hexAddress }, } = this.utils\n                    .getAddressDetails(address);\n                const keyHash = paymentCredential?.hash || stakeCredential?.hash;\n                const privateKey = privKeyHashMap[keyHash];\n                if (!privateKey) {\n                    throw new Error(`Cannot sign message for address: ${address}.`);\n                }\n                return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__.signData)(hexAddress, payload, privateKey);\n            },\n            submitTx: async (tx) => {\n                return await this.provider.submitTx(tx);\n            },\n        };\n        return this;\n    }\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/lucid/lucid.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Lucid": () => (/* binding */ Lucid)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+/* harmony import */ var _tx_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tx.js */ "./node_modules/lucid-cardano/esm/src/lucid/tx.js");
+/* harmony import */ var _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tx_complete.js */ "./node_modules/lucid-cardano/esm/src/lucid/tx_complete.js");
+/* harmony import */ var _misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../misc/wallet.js */ "./node_modules/lucid-cardano/esm/src/misc/wallet.js");
+/* harmony import */ var _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../misc/sign_data.js */ "./node_modules/lucid-cardano/esm/src/misc/sign_data.js");
+/* harmony import */ var _message_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./message.js */ "./node_modules/lucid-cardano/esm/src/lucid/message.js");
+/* harmony import */ var _plutus_time_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../plutus/time.js */ "./node_modules/lucid-cardano/esm/src/plutus/time.js");
+/* harmony import */ var _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../plutus/data.js */ "./node_modules/lucid-cardano/esm/src/plutus/data.js");
+/* harmony import */ var _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../provider/emulator.js */ "./node_modules/lucid-cardano/esm/src/provider/emulator.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _tx_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__, _misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__, _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__, _message_js__WEBPACK_IMPORTED_MODULE_6__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__, _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _tx_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__, _misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__, _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__, _message_js__WEBPACK_IMPORTED_MODULE_6__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__, _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+
+
+
+
+
+
+
+class Lucid {
+    constructor() {
+        Object.defineProperty(this, "txBuilderConfig", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "wallet", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "provider", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "network", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: "Mainnet"
+        });
+        Object.defineProperty(this, "utils", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+    }
+    static async new(provider, network) {
+        const lucid = new this();
+        if (network)
+            lucid.network = network;
+        if (provider) {
+            lucid.provider = provider;
+            const protocolParameters = await provider.getProtocolParameters();
+            if (lucid.provider instanceof _provider_emulator_js__WEBPACK_IMPORTED_MODULE_9__.Emulator) {
+                lucid.network = "Custom";
+                _plutus_time_js__WEBPACK_IMPORTED_MODULE_7__.SLOT_CONFIG_NETWORK[lucid.network] = {
+                    zeroTime: lucid.provider.now(),
+                    zeroSlot: 0,
+                    slotLength: 1000,
+                };
+            }
+            const slotConfig = _plutus_time_js__WEBPACK_IMPORTED_MODULE_7__.SLOT_CONFIG_NETWORK[lucid.network];
+            lucid.txBuilderConfig = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionBuilderConfigBuilder["new"]()
+                .coins_per_utxo_byte(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.coinsPerUtxoByte.toString()))
+                .fee_algo(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.LinearFee["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.minFeeA.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.minFeeB.toString())))
+                .key_deposit(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.keyDeposit.toString()))
+                .pool_deposit(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.poolDeposit.toString()))
+                .max_tx_size(protocolParameters.maxTxSize)
+                .max_value_size(protocolParameters.maxValSize)
+                .collateral_percentage(protocolParameters.collateralPercentage)
+                .max_collateral_inputs(protocolParameters.maxCollateralInputs)
+                .max_tx_ex_units(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ExUnits["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.maxTxExMem.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(protocolParameters.maxTxExSteps.toString())))
+                .ex_unit_prices(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ExUnitPrices.from_float(protocolParameters.priceMem, protocolParameters.priceStep))
+                .slot_config(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slotConfig.zeroTime.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slotConfig.zeroSlot.toString()), slotConfig.slotLength)
+                .blockfrost(
+            // We have Aiken now as native plutus core engine (primary), but we still support blockfrost (secondary) in case of bugs.
+            _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Blockfrost["new"](
+            // deno-lint-ignore no-explicit-any
+            (provider?.url || "") + "/utils/txs/evaluate", 
+            // deno-lint-ignore no-explicit-any
+            provider?.projectId || ""))
+                .costmdls((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.createCostModels)(protocolParameters.costModels))
+                .build();
+        }
+        lucid.utils = new _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.Utils(lucid);
+        return lucid;
+    }
+    /**
+     * Switch provider and/or network.
+     * If provider or network unset, no overwriting happens. Provider or network from current instance are taken then.
+     */
+    async switchProvider(provider, network) {
+        if (this.network === "Custom") {
+            throw new Error("Cannot switch when on custom network.");
+        }
+        const lucid = await Lucid.new(provider, network);
+        this.txBuilderConfig = lucid.txBuilderConfig;
+        this.provider = provider || this.provider;
+        this.network = network || this.network;
+        this.wallet = lucid.wallet;
+        return this;
+    }
+    newTx() {
+        return new _tx_js__WEBPACK_IMPORTED_MODULE_2__.Tx(this);
+    }
+    fromTx(tx) {
+        return new _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__.TxComplete(this, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Transaction.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(tx)));
+    }
+    /** Signs a message. Expects the payload to be Hex encoded. */
+    newMessage(address, payload) {
+        return new _message_js__WEBPACK_IMPORTED_MODULE_6__.Message(this, address, payload);
+    }
+    /** Verify a message. Expects the payload to be Hex encoded. */
+    verifyMessage(address, payload, signedMessage) {
+        const { paymentCredential, stakeCredential, address: { hex: addressHex } } = this.utils.getAddressDetails(address);
+        const keyHash = paymentCredential?.hash || stakeCredential?.hash;
+        if (!keyHash)
+            throw new Error("Not a valid address provided.");
+        return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__.verifyData)(addressHex, keyHash, payload, signedMessage);
+    }
+    currentSlot() {
+        return this.utils.unixTimeToSlot(Date.now());
+    }
+    utxosAt(addressOrCredential) {
+        return this.provider.getUtxos(addressOrCredential);
+    }
+    utxosAtWithUnit(addressOrCredential, unit) {
+        return this.provider.getUtxosWithUnit(addressOrCredential, unit);
+    }
+    /** Unit needs to be an NFT (or optionally the entire supply in one UTxO). */
+    utxoByUnit(unit) {
+        return this.provider.getUtxoByUnit(unit);
+    }
+    utxosByOutRef(outRefs) {
+        return this.provider.getUtxosByOutRef(outRefs);
+    }
+    delegationAt(rewardAddress) {
+        return this.provider.getDelegation(rewardAddress);
+    }
+    awaitTx(txHash, checkInterval = 3000) {
+        return this.provider.awaitTx(txHash, checkInterval);
+    }
+    async datumOf(utxo, shape) {
+        if (!utxo.datum) {
+            if (!utxo.datumHash) {
+                throw new Error("This UTxO does not have a datum hash.");
+            }
+            utxo.datum = await this.provider.getDatum(utxo.datumHash);
+        }
+        return shape ? _plutus_data_js__WEBPACK_IMPORTED_MODULE_8__.Data.from(utxo.datum, shape) : utxo.datum;
+    }
+    /**
+     * Cardano Private key in bech32; not the BIP32 private key or any key that is not fully derived.
+     * Only an Enteprise address (without stake credential) is derived.
+     */
+    selectWalletFromPrivateKey(privateKey) {
+        const priv = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);
+        const pubKeyHash = priv.to_public().hash();
+        this.wallet = {
+            // deno-lint-ignore require-await
+            address: async () => _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.EnterpriseAddress["new"](this.network === "Mainnet" ? 1 : 0, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(pubKeyHash))
+                .to_address()
+                .to_bech32(undefined),
+            // deno-lint-ignore require-await
+            rewardAddress: async () => null,
+            getUtxos: async () => {
+                return await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(await this.wallet.address()));
+            },
+            getUtxosCore: async () => {
+                const utxos = await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(await this.wallet.address()));
+                const coreUtxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs["new"]();
+                utxos.forEach((utxo) => {
+                    coreUtxos.add((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo));
+                });
+                return coreUtxos;
+            },
+            // deno-lint-ignore require-await
+            getDelegation: async () => {
+                return { poolId: null, rewards: 0n };
+            },
+            // deno-lint-ignore require-await
+            signTx: async (tx) => {
+                const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(tx.body()), priv);
+                const txWitnessSetBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder["new"]();
+                txWitnessSetBuilder.add_vkey(witness);
+                return txWitnessSetBuilder.build();
+            },
+            // deno-lint-ignore require-await
+            signMessage: async (address, payload) => {
+                const { paymentCredential, address: { hex: hexAddress } } = this.utils
+                    .getAddressDetails(address);
+                const keyHash = paymentCredential?.hash;
+                const originalKeyHash = pubKeyHash.to_hex();
+                if (!keyHash || keyHash !== originalKeyHash) {
+                    throw new Error(`Cannot sign message for address: ${address}.`);
+                }
+                return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__.signData)(hexAddress, payload, privateKey);
+            },
+            submitTx: async (tx) => {
+                return await this.provider.submitTx(tx);
+            },
+        };
+        return this;
+    }
+    selectWallet(api) {
+        const getAddressHex = async () => {
+            const [addressHex] = await api.getUsedAddresses();
+            if (addressHex)
+                return addressHex;
+            const [unusedAddressHex] = await api.getUnusedAddresses();
+            return unusedAddressHex;
+        };
+        this.wallet = {
+            address: async () => _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(await getAddressHex())).to_bech32(undefined),
+            rewardAddress: async () => {
+                const [rewardAddressHex] = await api.getRewardAddresses();
+                const rewardAddress = rewardAddressHex
+                    ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress.from_address(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(rewardAddressHex)))
+                        .to_address()
+                        .to_bech32(undefined)
+                    : null;
+                return rewardAddress;
+            },
+            getUtxos: async () => {
+                const utxos = ((await api.getUtxos()) || []).map((utxo) => {
+                    const parsedUtxo = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutput.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo));
+                    return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.coreToUtxo)(parsedUtxo);
+                });
+                return utxos;
+            },
+            getUtxosCore: async () => {
+                const utxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs["new"]();
+                ((await api.getUtxos()) || []).forEach((utxo) => {
+                    utxos.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutput.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo)));
+                });
+                return utxos;
+            },
+            getDelegation: async () => {
+                const rewardAddr = await this.wallet.rewardAddress();
+                return rewardAddr
+                    ? await this.delegationAt(rewardAddr)
+                    : { poolId: null, rewards: 0n };
+            },
+            signTx: async (tx) => {
+                const witnessSet = await api.signTx((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(tx.to_bytes()), true);
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSet.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(witnessSet));
+            },
+            signMessage: async (address, payload) => {
+                const hexAddress = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bech32(address).to_bytes());
+                return await api.signData(hexAddress, payload);
+            },
+            submitTx: async (tx) => {
+                const txHash = await api.submitTx(tx);
+                return txHash;
+            },
+        };
+        return this;
+    }
+    /**
+     * Emulates a wallet by constructing it with the utxos and an address.
+     * If utxos are not set, utxos are fetched from the provided address.
+     */
+    selectWalletFrom({ address, utxos, rewardAddress, }) {
+        const addressDetails = this.utils.getAddressDetails(address);
+        this.wallet = {
+            // deno-lint-ignore require-await
+            address: async () => address,
+            // deno-lint-ignore require-await
+            rewardAddress: async () => {
+                const rewardAddr = !rewardAddress && addressDetails.stakeCredential
+                    ? (() => {
+                        if (addressDetails.stakeCredential.type === "Key") {
+                            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress["new"](this.network === "Mainnet" ? 1 : 0, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(addressDetails.stakeCredential.hash)))
+                                .to_address()
+                                .to_bech32(undefined);
+                        }
+                        return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress["new"](this.network === "Mainnet" ? 1 : 0, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_hex(addressDetails.stakeCredential.hash)))
+                            .to_address()
+                            .to_bech32(undefined);
+                    })()
+                    : rewardAddress;
+                return rewardAddr || null;
+            },
+            getUtxos: async () => {
+                return utxos ? utxos : await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address));
+            },
+            getUtxosCore: async () => {
+                const coreUtxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs["new"]();
+                (utxos ? utxos : await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address)))
+                    .forEach((utxo) => coreUtxos.add((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo)));
+                return coreUtxos;
+            },
+            getDelegation: async () => {
+                const rewardAddr = await this.wallet.rewardAddress();
+                return rewardAddr
+                    ? await this.delegationAt(rewardAddr)
+                    : { poolId: null, rewards: 0n };
+            },
+            // deno-lint-ignore require-await
+            signTx: async () => {
+                throw new Error("Not implemented");
+            },
+            // deno-lint-ignore require-await
+            signMessage: async () => {
+                throw new Error("Not implemented");
+            },
+            submitTx: async (tx) => {
+                return await this.provider.submitTx(tx);
+            },
+        };
+        return this;
+    }
+    /**
+     * Select wallet from a seed phrase (e.g. 15 or 24 words). You have the option to choose between a Base address (with stake credential)
+     * and Enterprise address (without stake credential). You can also decide which account index to derive. By default account 0 is derived.
+     */
+    selectWalletFromSeed(seed, options) {
+        const { address, rewardAddress, paymentKey, stakeKey } = (0,_misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__.walletFromSeed)(seed, {
+            addressType: options?.addressType || "Base",
+            accountIndex: options?.accountIndex || 0,
+            password: options?.password,
+            network: this.network,
+        });
+        const paymentKeyHash = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(paymentKey).to_public()
+            .hash().to_hex();
+        const stakeKeyHash = stakeKey
+            ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(stakeKey).to_public().hash().to_hex()
+            : "";
+        const privKeyHashMap = {
+            [paymentKeyHash]: paymentKey,
+            [stakeKeyHash]: stakeKey,
+        };
+        this.wallet = {
+            // deno-lint-ignore require-await
+            address: async () => address,
+            // deno-lint-ignore require-await
+            rewardAddress: async () => rewardAddress || null,
+            // deno-lint-ignore require-await
+            getUtxos: async () => this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address)),
+            getUtxosCore: async () => {
+                const coreUtxos = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutputs["new"]();
+                (await this.utxosAt((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf)(address))).forEach((utxo) => coreUtxos.add((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo)));
+                return coreUtxos;
+            },
+            getDelegation: async () => {
+                const rewardAddr = await this.wallet.rewardAddress();
+                return rewardAddr
+                    ? await this.delegationAt(rewardAddr)
+                    : { poolId: null, rewards: 0n };
+            },
+            signTx: async (tx) => {
+                const utxos = await this.utxosAt(address);
+                const ownKeyHashes = [paymentKeyHash, stakeKeyHash];
+                const usedKeyHashes = (0,_misc_wallet_js__WEBPACK_IMPORTED_MODULE_4__.discoverOwnUsedTxKeyHashes)(tx, ownKeyHashes, utxos);
+                const txWitnessSetBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder["new"]();
+                usedKeyHashes.forEach((keyHash) => {
+                    const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(tx.body()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privKeyHashMap[keyHash]));
+                    txWitnessSetBuilder.add_vkey(witness);
+                });
+                return txWitnessSetBuilder.build();
+            },
+            // deno-lint-ignore require-await
+            signMessage: async (address, payload) => {
+                const { paymentCredential, stakeCredential, address: { hex: hexAddress }, } = this.utils
+                    .getAddressDetails(address);
+                const keyHash = paymentCredential?.hash || stakeCredential?.hash;
+                const privateKey = privKeyHashMap[keyHash];
+                if (!privateKey) {
+                    throw new Error(`Cannot sign message for address: ${address}.`);
+                }
+                return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_5__.signData)(hexAddress, payload, privateKey);
+            },
+            submitTx: async (tx) => {
+                return await this.provider.submitTx(tx);
+            },
+        };
+        return this;
+    }
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -147,7 +2191,60 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \*************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Message\": () => (/* binding */ Message)\n/* harmony export */ });\n/* harmony import */ var _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../misc/sign_data.js */ \"./node_modules/lucid-cardano/esm/src/misc/sign_data.js\");\n/* harmony import */ var _mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mod.js */ \"./node_modules/lucid-cardano/esm/src/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__, _mod_js__WEBPACK_IMPORTED_MODULE_1__]);\n([_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__, _mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\nclass Message {\n    constructor(lucid, address, payload) {\n        Object.defineProperty(this, \"lucid\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"address\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"payload\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.lucid = lucid;\n        this.address = address;\n        this.payload = payload;\n    }\n    /** Sign message with selected wallet. */\n    sign() {\n        return this.lucid.wallet.signMessage(this.address, this.payload);\n    }\n    /** Sign message with a separate private key. */\n    signWithPrivateKey(privateKey) {\n        const { paymentCredential, stakeCredential, address: { hex: hexAddress } } = this.lucid.utils.getAddressDetails(this.address);\n        const keyHash = paymentCredential?.hash || stakeCredential?.hash;\n        const keyHashOriginal = _mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PrivateKey.from_bech32(privateKey).to_public()\n            .hash().to_hex();\n        if (!keyHash || keyHash !== keyHashOriginal) {\n            throw new Error(`Cannot sign message for address: ${this.address}.`);\n        }\n        return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__.signData)(hexAddress, this.payload, privateKey);\n    }\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/lucid/message.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Message": () => (/* binding */ Message)
+/* harmony export */ });
+/* harmony import */ var _misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../misc/sign_data.js */ "./node_modules/lucid-cardano/esm/src/misc/sign_data.js");
+/* harmony import */ var _mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../mod.js */ "./node_modules/lucid-cardano/esm/src/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__, _mod_js__WEBPACK_IMPORTED_MODULE_1__]);
+([_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__, _mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+class Message {
+    constructor(lucid, address, payload) {
+        Object.defineProperty(this, "lucid", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "address", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "payload", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.lucid = lucid;
+        this.address = address;
+        this.payload = payload;
+    }
+    /** Sign message with selected wallet. */
+    sign() {
+        return this.lucid.wallet.signMessage(this.address, this.payload);
+    }
+    /** Sign message with a separate private key. */
+    signWithPrivateKey(privateKey) {
+        const { paymentCredential, stakeCredential, address: { hex: hexAddress } } = this.lucid.utils.getAddressDetails(this.address);
+        const keyHash = paymentCredential?.hash || stakeCredential?.hash;
+        const keyHashOriginal = _mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PrivateKey.from_bech32(privateKey).to_public()
+            .hash().to_hex();
+        if (!keyHash || keyHash !== keyHashOriginal) {
+            throw new Error(`Cannot sign message for address: ${this.address}.`);
+        }
+        return (0,_misc_sign_data_js__WEBPACK_IMPORTED_MODULE_0__.signData)(hexAddress, this.payload, privateKey);
+    }
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -157,7 +2254,27 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \*********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Lucid\": () => (/* reexport safe */ _lucid_js__WEBPACK_IMPORTED_MODULE_0__.Lucid),\n/* harmony export */   \"Tx\": () => (/* reexport safe */ _tx_js__WEBPACK_IMPORTED_MODULE_1__.Tx),\n/* harmony export */   \"TxComplete\": () => (/* reexport safe */ _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__.TxComplete),\n/* harmony export */   \"TxSigned\": () => (/* reexport safe */ _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__.TxSigned)\n/* harmony export */ });\n/* harmony import */ var _lucid_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lucid.js */ \"./node_modules/lucid-cardano/esm/src/lucid/lucid.js\");\n/* harmony import */ var _tx_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tx.js */ \"./node_modules/lucid-cardano/esm/src/lucid/tx.js\");\n/* harmony import */ var _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tx_complete.js */ \"./node_modules/lucid-cardano/esm/src/lucid/tx_complete.js\");\n/* harmony import */ var _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tx_signed.js */ \"./node_modules/lucid-cardano/esm/src/lucid/tx_signed.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_lucid_js__WEBPACK_IMPORTED_MODULE_0__, _tx_js__WEBPACK_IMPORTED_MODULE_1__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__]);\n([_lucid_js__WEBPACK_IMPORTED_MODULE_0__, _tx_js__WEBPACK_IMPORTED_MODULE_1__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\n\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/lucid/mod.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Lucid": () => (/* reexport safe */ _lucid_js__WEBPACK_IMPORTED_MODULE_0__.Lucid),
+/* harmony export */   "Tx": () => (/* reexport safe */ _tx_js__WEBPACK_IMPORTED_MODULE_1__.Tx),
+/* harmony export */   "TxComplete": () => (/* reexport safe */ _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__.TxComplete),
+/* harmony export */   "TxSigned": () => (/* reexport safe */ _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__.TxSigned)
+/* harmony export */ });
+/* harmony import */ var _lucid_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lucid.js */ "./node_modules/lucid-cardano/esm/src/lucid/lucid.js");
+/* harmony import */ var _tx_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tx.js */ "./node_modules/lucid-cardano/esm/src/lucid/tx.js");
+/* harmony import */ var _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tx_complete.js */ "./node_modules/lucid-cardano/esm/src/lucid/tx_complete.js");
+/* harmony import */ var _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tx_signed.js */ "./node_modules/lucid-cardano/esm/src/lucid/tx_signed.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_lucid_js__WEBPACK_IMPORTED_MODULE_0__, _tx_js__WEBPACK_IMPORTED_MODULE_1__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__]);
+([_lucid_js__WEBPACK_IMPORTED_MODULE_0__, _tx_js__WEBPACK_IMPORTED_MODULE_1__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_2__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_3__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -167,7 +2284,443 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Tx\": () => (/* binding */ Tx)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\n/* harmony import */ var _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils.js */ \"./node_modules/lucid-cardano/esm/src/utils/utils.js\");\n/* harmony import */ var _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tx_complete.js */ \"./node_modules/lucid-cardano/esm/src/lucid/tx_complete.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\n\nclass Tx {\n    constructor(lucid) {\n        Object.defineProperty(this, \"txBuilder\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        /** Stores the tx instructions, which get executed after calling .complete() */\n        Object.defineProperty(this, \"tasks\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"lucid\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.lucid = lucid;\n        this.txBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionBuilder[\"new\"](this.lucid.txBuilderConfig);\n        this.tasks = [];\n    }\n    /** Read data from utxos. These utxos are only referenced and not spent. */\n    readFrom(utxos) {\n        this.tasks.push(async (that) => {\n            for (const utxo of utxos) {\n                if (utxo.datumHash) {\n                    utxo.datum = await that.lucid.datumOf(utxo);\n                    // Add datum to witness set, so it can be read from validators\n                    const plutusData = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo.datum));\n                    that.txBuilder.add_plutus_data(plutusData);\n                }\n                const coreUtxo = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo);\n                that.txBuilder.add_reference_input(coreUtxo);\n            }\n        });\n        return this;\n    }\n    /**\n     * A public key or native script input.\n     * With redeemer it's a plutus script input.\n     */\n    collectFrom(utxos, redeemer) {\n        this.tasks.push(async (that) => {\n            for (const utxo of utxos) {\n                if (utxo.datumHash && !utxo.datum) {\n                    utxo.datum = await that.lucid.datumOf(utxo);\n                }\n                const coreUtxo = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo);\n                that.txBuilder.add_input(coreUtxo, redeemer &&\n                    _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), utxo.datumHash && utxo.datum\n                        ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo.datum))\n                        : undefined, undefined)));\n            }\n        });\n        return this;\n    }\n    /**\n     * All assets should be of the same policy id.\n     * You can chain mintAssets functions together if you need to mint assets with different policy ids.\n     * If the plutus script doesn't need a redeemer, you still need to specifiy the void redeemer.\n     */\n    mintAssets(assets, redeemer) {\n        this.tasks.push((that) => {\n            const units = Object.keys(assets);\n            const policyId = units[0].slice(0, 56);\n            const mintAssets = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.MintAssets[\"new\"]();\n            units.forEach((unit) => {\n                if (unit.slice(0, 56) !== policyId) {\n                    throw new Error(\"Only one policy id allowed. You can chain multiple mintAssets functions together if you need to mint assets with different policy ids.\");\n                }\n                mintAssets.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.AssetName[\"new\"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(unit.slice(56))), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Int.from_str(assets[unit].toString()));\n            });\n            const scriptHash = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(policyId));\n            that.txBuilder.add_mint(scriptHash, mintAssets, redeemer\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))\n                : undefined);\n        });\n        return this;\n    }\n    /** Pay to a public key or native script address. */\n    payToAddress(address, assets) {\n        this.tasks.push((that) => {\n            const output = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionOutput[\"new\"](addressFromWithNetworkCheck(address, that.lucid), (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.assetsToValue)(assets));\n            that.txBuilder.add_output(output);\n        });\n        return this;\n    }\n    /** Pay to a public key or native script address with datum or scriptRef. */\n    payToAddressWithData(address, outputData, assets) {\n        this.tasks.push((that) => {\n            if (typeof outputData === \"string\") {\n                outputData = { asHash: outputData };\n            }\n            if ([outputData.hash, outputData.asHash, outputData.inline].filter((b) => b)\n                .length > 1) {\n                throw new Error(\"Not allowed to set hash, asHash and inline at the same time.\");\n            }\n            const output = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionOutput[\"new\"](addressFromWithNetworkCheck(address, that.lucid), (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.assetsToValue)(assets));\n            if (outputData.hash) {\n                output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DataHash.from_hex(outputData.hash)));\n            }\n            else if (outputData.asHash) {\n                const plutusData = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(outputData.asHash));\n                output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_plutus_data(plutusData)));\n                that.txBuilder.add_plutus_data(plutusData);\n            }\n            else if (outputData.inline) {\n                const plutusData = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(outputData.inline));\n                output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Data[\"new\"](plutusData)));\n            }\n            const script = outputData.scriptRef;\n            if (script) {\n                output.set_script_ref((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toScriptRef)(script));\n            }\n            that.txBuilder.add_output(output);\n        });\n        return this;\n    }\n    /** Pay to a plutus script address with datum or scriptRef. */\n    payToContract(address, outputData, assets) {\n        if (typeof outputData === \"string\") {\n            outputData = { asHash: outputData };\n        }\n        if (!(outputData.hash || outputData.asHash || outputData.inline)) {\n            throw new Error(\"No datum set. Script output becomes unspendable without datum.\");\n        }\n        return this.payToAddressWithData(address, outputData, assets);\n    }\n    /** Delegate to a stake pool. */\n    delegateTo(rewardAddress, poolId, redeemer) {\n        this.tasks.push((that) => {\n            const addressDetails = that.lucid.utils.getAddressDetails(rewardAddress);\n            if (addressDetails.type !== \"Reward\" ||\n                !addressDetails.stakeCredential) {\n                throw new Error(\"Not a reward address provided.\");\n            }\n            const credential = addressDetails.stakeCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)))\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)));\n            that.txBuilder.add_certificate(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_stake_delegation(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeDelegation[\"new\"](credential, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bech32(poolId))), redeemer\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))\n                : undefined);\n        });\n        return this;\n    }\n    /** Register a reward address in order to delegate to a pool and receive rewards. */\n    registerStake(rewardAddress) {\n        this.tasks.push((that) => {\n            const addressDetails = that.lucid.utils.getAddressDetails(rewardAddress);\n            if (addressDetails.type !== \"Reward\" ||\n                !addressDetails.stakeCredential) {\n                throw new Error(\"Not a reward address provided.\");\n            }\n            const credential = addressDetails.stakeCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)))\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)));\n            that.txBuilder.add_certificate(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_stake_registration(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeRegistration[\"new\"](credential)), undefined);\n        });\n        return this;\n    }\n    /** Deregister a reward address. */\n    deregisterStake(rewardAddress, redeemer) {\n        this.tasks.push((that) => {\n            const addressDetails = that.lucid.utils.getAddressDetails(rewardAddress);\n            if (addressDetails.type !== \"Reward\" ||\n                !addressDetails.stakeCredential) {\n                throw new Error(\"Not a reward address provided.\");\n            }\n            const credential = addressDetails.stakeCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)))\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)));\n            that.txBuilder.add_certificate(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_stake_deregistration(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeDeregistration[\"new\"](credential)), redeemer\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))\n                : undefined);\n        });\n        return this;\n    }\n    /** Register a stake pool. A pool deposit is required. The metadataUrl needs to be hosted already before making the registration. */\n    registerPool(poolParams) {\n        this.tasks.push(async (that) => {\n            const poolRegistration = await createPoolRegistration(poolParams, that.lucid);\n            const certificate = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_pool_registration(poolRegistration);\n            that.txBuilder.add_certificate(certificate, undefined);\n        });\n        return this;\n    }\n    /** Update a stake pool. No pool deposit is required. The metadataUrl needs to be hosted already before making the update. */\n    updatePool(poolParams) {\n        this.tasks.push(async (that) => {\n            const poolRegistration = await createPoolRegistration(poolParams, that.lucid);\n            // This flag makes sure a pool deposit is not required\n            poolRegistration.set_is_update(true);\n            const certificate = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_pool_registration(poolRegistration);\n            that.txBuilder.add_certificate(certificate, undefined);\n        });\n        return this;\n    }\n    /**\n     * Retire a stake pool. The epoch needs to be the greater than the current epoch + 1 and less than current epoch + eMax.\n     * The pool deposit will be sent to reward address as reward after full retirement of the pool.\n     */\n    retirePool(poolId, epoch) {\n        this.tasks.push((that) => {\n            const certificate = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_pool_retirement(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolRetirement[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bech32(poolId), epoch));\n            that.txBuilder.add_certificate(certificate, undefined);\n        });\n        return this;\n    }\n    withdraw(rewardAddress, amount, redeemer) {\n        this.tasks.push((that) => {\n            that.txBuilder.add_withdrawal(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress.from_address(addressFromWithNetworkCheck(rewardAddress, that.lucid)), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(amount.toString()), redeemer\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))\n                : undefined);\n        });\n        return this;\n    }\n    /**\n     * Needs to be a public key address.\n     * The PaymentKeyHash is taken when providing a Base, Enterprise or Pointer address.\n     * The StakeKeyHash is taken when providing a Reward address.\n     */\n    addSigner(address) {\n        const addressDetails = this.lucid.utils.getAddressDetails(address);\n        if (!addressDetails.paymentCredential && !addressDetails.stakeCredential) {\n            throw new Error(\"Not a valid address.\");\n        }\n        const credential = addressDetails.type === \"Reward\"\n            ? addressDetails.stakeCredential\n            : addressDetails.paymentCredential;\n        if (credential.type === \"Script\") {\n            throw new Error(\"Only key hashes are allowed as signers.\");\n        }\n        return this.addSignerKey(credential.hash);\n    }\n    /** Add a payment or stake key hash as a required signer of the transaction. */\n    addSignerKey(keyHash) {\n        this.tasks.push((that) => {\n            that.txBuilder.add_required_signer(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(keyHash)));\n        });\n        return this;\n    }\n    validFrom(unixTime) {\n        this.tasks.push((that) => {\n            const slot = that.lucid.utils.unixTimeToSlot(unixTime);\n            that.txBuilder.set_validity_start_interval(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slot.toString()));\n        });\n        return this;\n    }\n    validTo(unixTime) {\n        this.tasks.push((that) => {\n            const slot = that.lucid.utils.unixTimeToSlot(unixTime);\n            that.txBuilder.set_ttl(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slot.toString()));\n        });\n        return this;\n    }\n    attachMetadata(label, metadata) {\n        this.tasks.push((that) => {\n            that.txBuilder.add_json_metadatum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(label.toString()), JSON.stringify(metadata));\n        });\n        return this;\n    }\n    /** Converts strings to bytes if prefixed with **'0x'**. */\n    attachMetadataWithConversion(label, metadata) {\n        this.tasks.push((that) => {\n            that.txBuilder.add_json_metadatum_with_schema(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(label.toString()), JSON.stringify(metadata), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.MetadataJsonSchema.BasicConversions);\n        });\n        return this;\n    }\n    /** Explicitely set the network id in the transaction body. */\n    addNetworkId(id) {\n        this.tasks.push((that) => {\n            that.txBuilder.set_network_id(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkId.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(id.toString(16).padStart(2, \"0\"))));\n        });\n        return this;\n    }\n    attachSpendingValidator(spendingValidator) {\n        this.tasks.push((that) => {\n            attachScript(that, spendingValidator);\n        });\n        return this;\n    }\n    attachMintingPolicy(mintingPolicy) {\n        this.tasks.push((that) => {\n            attachScript(that, mintingPolicy);\n        });\n        return this;\n    }\n    attachCertificateValidator(certValidator) {\n        this.tasks.push((that) => {\n            attachScript(that, certValidator);\n        });\n        return this;\n    }\n    attachWithdrawalValidator(withdrawalValidator) {\n        this.tasks.push((that) => {\n            attachScript(that, withdrawalValidator);\n        });\n        return this;\n    }\n    /** Compose transactions. */\n    compose(tx) {\n        if (tx)\n            this.tasks = this.tasks.concat(tx.tasks);\n        return this;\n    }\n    async complete(options) {\n        if ([\n            options?.change?.outputData?.hash,\n            options?.change?.outputData?.asHash,\n            options?.change?.outputData?.inline,\n        ].filter((b) => b)\n            .length > 1) {\n            throw new Error(\"Not allowed to set hash, asHash and inline at the same time.\");\n        }\n        let task = this.tasks.shift();\n        while (task) {\n            await task(this);\n            task = this.tasks.shift();\n        }\n        const utxos = await this.lucid.wallet.getUtxosCore();\n        const changeAddress = addressFromWithNetworkCheck(options?.change?.address || (await this.lucid.wallet.address()), this.lucid);\n        if (options?.coinSelection || options?.coinSelection === undefined) {\n            this.txBuilder.add_inputs_from(utxos, changeAddress);\n        }\n        this.txBuilder.balance(changeAddress, (() => {\n            if (options?.change?.outputData?.hash) {\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DataHash.from_hex(options.change.outputData.hash));\n            }\n            else if (options?.change?.outputData?.asHash) {\n                this.txBuilder.add_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(options.change.outputData.asHash)));\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(options.change.outputData.asHash))));\n            }\n            else if (options?.change?.outputData?.inline) {\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Data[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(options.change.outputData.inline))));\n            }\n            else {\n                return undefined;\n            }\n        })());\n        return new _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__.TxComplete(this.lucid, await this.txBuilder.construct(utxos, changeAddress, options?.nativeUplc === undefined ? true : options?.nativeUplc));\n    }\n    /** Return the current transaction body in Hex encoded Cbor. */\n    async toString() {\n        let task = this.tasks.shift();\n        while (task) {\n            await task(this);\n            task = this.tasks.shift();\n        }\n        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(this.txBuilder.to_bytes());\n    }\n}\nfunction attachScript(tx, { type, script }) {\n    if (type === \"Native\") {\n        return tx.txBuilder.add_native_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.NativeScript.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(script)));\n    }\n    else if (type === \"PlutusV1\") {\n        return tx.txBuilder.add_plutus_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.applyDoubleCborEncoding)(script))));\n    }\n    else if (type === \"PlutusV2\") {\n        return tx.txBuilder.add_plutus_v2_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.applyDoubleCborEncoding)(script))));\n    }\n    throw new Error(\"No variant matched.\");\n}\nasync function createPoolRegistration(poolParams, lucid) {\n    const poolOwners = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHashes[\"new\"]();\n    poolParams.owners.forEach((owner) => {\n        const { stakeCredential } = lucid.utils.getAddressDetails(owner);\n        if (stakeCredential?.type === \"Key\") {\n            poolOwners.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(stakeCredential.hash));\n        }\n        else\n            throw new Error(\"Only key hashes allowed for pool owners.\");\n    });\n    const metadata = poolParams.metadataUrl\n        ? await fetch(poolParams.metadataUrl)\n            .then((res) => res.arrayBuffer())\n        : null;\n    const metadataHash = metadata\n        ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolMetadataHash.from_bytes(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_blake2b256(new Uint8Array(metadata)))\n        : null;\n    const relays = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relays[\"new\"]();\n    poolParams.relays.forEach((relay) => {\n        switch (relay.type) {\n            case \"SingleHostIp\": {\n                const ipV4 = relay.ipV4\n                    ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ipv4[\"new\"](new Uint8Array(relay.ipV4.split(\".\").map((b) => parseInt(b))))\n                    : undefined;\n                const ipV6 = relay.ipV6\n                    ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ipv6[\"new\"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(relay.ipV6.replaceAll(\":\", \"\")))\n                    : undefined;\n                relays.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relay.new_single_host_addr(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.SingleHostAddr[\"new\"](relay.port, ipV4, ipV6)));\n                break;\n            }\n            case \"SingleHostDomainName\": {\n                relays.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relay.new_single_host_name(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.SingleHostName[\"new\"](relay.port, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DNSRecordAorAAAA[\"new\"](relay.domainName))));\n                break;\n            }\n            case \"MultiHost\": {\n                relays.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relay.new_multi_host_name(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.MultiHostName[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DNSRecordSRV[\"new\"](relay.domainName))));\n                break;\n            }\n        }\n    });\n    return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolRegistration[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolParams[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bech32(poolParams.poolId), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.VRFKeyHash.from_hex(poolParams.vrfKeyHash), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(poolParams.pledge.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(poolParams.cost.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.UnitInterval.from_float(poolParams.margin), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress.from_address(addressFromWithNetworkCheck(poolParams.rewardAddress, lucid)), poolOwners, relays, metadataHash\n        ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolMetadata[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.URL[\"new\"](poolParams.metadataUrl), metadataHash)\n        : undefined));\n}\nfunction addressFromWithNetworkCheck(address, lucid) {\n    const addressDetails = lucid.utils.getAddressDetails(address);\n    const actualNetworkId = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.networkToId)(lucid.network);\n    if (addressDetails.networkId !== actualNetworkId) {\n        throw new Error(`Invalid address: Expected address with network id ${actualNetworkId}, but got ${addressDetails.networkId}`);\n    }\n    return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bech32(address);\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/lucid/tx.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Tx": () => (/* binding */ Tx)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+/* harmony import */ var _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils.js */ "./node_modules/lucid-cardano/esm/src/utils/utils.js");
+/* harmony import */ var _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tx_complete.js */ "./node_modules/lucid-cardano/esm/src/lucid/tx_complete.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__, _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+
+class Tx {
+    constructor(lucid) {
+        Object.defineProperty(this, "txBuilder", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        /** Stores the tx instructions, which get executed after calling .complete() */
+        Object.defineProperty(this, "tasks", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "lucid", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.lucid = lucid;
+        this.txBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionBuilder["new"](this.lucid.txBuilderConfig);
+        this.tasks = [];
+    }
+    /** Read data from utxos. These utxos are only referenced and not spent. */
+    readFrom(utxos) {
+        this.tasks.push(async (that) => {
+            for (const utxo of utxos) {
+                if (utxo.datumHash) {
+                    utxo.datum = await that.lucid.datumOf(utxo);
+                    // Add datum to witness set, so it can be read from validators
+                    const plutusData = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo.datum));
+                    that.txBuilder.add_plutus_data(plutusData);
+                }
+                const coreUtxo = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo);
+                that.txBuilder.add_reference_input(coreUtxo);
+            }
+        });
+        return this;
+    }
+    /**
+     * A public key or native script input.
+     * With redeemer it's a plutus script input.
+     */
+    collectFrom(utxos, redeemer) {
+        this.tasks.push(async (that) => {
+            for (const utxo of utxos) {
+                if (utxo.datumHash && !utxo.datum) {
+                    utxo.datum = await that.lucid.datumOf(utxo);
+                }
+                const coreUtxo = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore)(utxo);
+                that.txBuilder.add_input(coreUtxo, redeemer &&
+                    _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), utxo.datumHash && utxo.datum
+                        ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(utxo.datum))
+                        : undefined, undefined)));
+            }
+        });
+        return this;
+    }
+    /**
+     * All assets should be of the same policy id.
+     * You can chain mintAssets functions together if you need to mint assets with different policy ids.
+     * If the plutus script doesn't need a redeemer, you still need to specifiy the void redeemer.
+     */
+    mintAssets(assets, redeemer) {
+        this.tasks.push((that) => {
+            const units = Object.keys(assets);
+            const policyId = units[0].slice(0, 56);
+            const mintAssets = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.MintAssets["new"]();
+            units.forEach((unit) => {
+                if (unit.slice(0, 56) !== policyId) {
+                    throw new Error("Only one policy id allowed. You can chain multiple mintAssets functions together if you need to mint assets with different policy ids.");
+                }
+                mintAssets.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.AssetName["new"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(unit.slice(56))), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Int.from_str(assets[unit].toString()));
+            });
+            const scriptHash = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(policyId));
+            that.txBuilder.add_mint(scriptHash, mintAssets, redeemer
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))
+                : undefined);
+        });
+        return this;
+    }
+    /** Pay to a public key or native script address. */
+    payToAddress(address, assets) {
+        this.tasks.push((that) => {
+            const output = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionOutput["new"](addressFromWithNetworkCheck(address, that.lucid), (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.assetsToValue)(assets));
+            that.txBuilder.add_output(output);
+        });
+        return this;
+    }
+    /** Pay to a public key or native script address with datum or scriptRef. */
+    payToAddressWithData(address, outputData, assets) {
+        this.tasks.push((that) => {
+            if (typeof outputData === "string") {
+                outputData = { asHash: outputData };
+            }
+            if ([outputData.hash, outputData.asHash, outputData.inline].filter((b) => b)
+                .length > 1) {
+                throw new Error("Not allowed to set hash, asHash and inline at the same time.");
+            }
+            const output = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionOutput["new"](addressFromWithNetworkCheck(address, that.lucid), (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.assetsToValue)(assets));
+            if (outputData.hash) {
+                output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DataHash.from_hex(outputData.hash)));
+            }
+            else if (outputData.asHash) {
+                const plutusData = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(outputData.asHash));
+                output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_plutus_data(plutusData)));
+                that.txBuilder.add_plutus_data(plutusData);
+            }
+            else if (outputData.inline) {
+                const plutusData = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(outputData.inline));
+                output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Data["new"](plutusData)));
+            }
+            const script = outputData.scriptRef;
+            if (script) {
+                output.set_script_ref((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toScriptRef)(script));
+            }
+            that.txBuilder.add_output(output);
+        });
+        return this;
+    }
+    /** Pay to a plutus script address with datum or scriptRef. */
+    payToContract(address, outputData, assets) {
+        if (typeof outputData === "string") {
+            outputData = { asHash: outputData };
+        }
+        if (!(outputData.hash || outputData.asHash || outputData.inline)) {
+            throw new Error("No datum set. Script output becomes unspendable without datum.");
+        }
+        return this.payToAddressWithData(address, outputData, assets);
+    }
+    /** Delegate to a stake pool. */
+    delegateTo(rewardAddress, poolId, redeemer) {
+        this.tasks.push((that) => {
+            const addressDetails = that.lucid.utils.getAddressDetails(rewardAddress);
+            if (addressDetails.type !== "Reward" ||
+                !addressDetails.stakeCredential) {
+                throw new Error("Not a reward address provided.");
+            }
+            const credential = addressDetails.stakeCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)))
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)));
+            that.txBuilder.add_certificate(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_stake_delegation(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeDelegation["new"](credential, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bech32(poolId))), redeemer
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))
+                : undefined);
+        });
+        return this;
+    }
+    /** Register a reward address in order to delegate to a pool and receive rewards. */
+    registerStake(rewardAddress) {
+        this.tasks.push((that) => {
+            const addressDetails = that.lucid.utils.getAddressDetails(rewardAddress);
+            if (addressDetails.type !== "Reward" ||
+                !addressDetails.stakeCredential) {
+                throw new Error("Not a reward address provided.");
+            }
+            const credential = addressDetails.stakeCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)))
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)));
+            that.txBuilder.add_certificate(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_stake_registration(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeRegistration["new"](credential)), undefined);
+        });
+        return this;
+    }
+    /** Deregister a reward address. */
+    deregisterStake(rewardAddress, redeemer) {
+        this.tasks.push((that) => {
+            const addressDetails = that.lucid.utils.getAddressDetails(rewardAddress);
+            if (addressDetails.type !== "Reward" ||
+                !addressDetails.stakeCredential) {
+                throw new Error("Not a reward address provided.");
+            }
+            const credential = addressDetails.stakeCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)))
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(addressDetails.stakeCredential.hash)));
+            that.txBuilder.add_certificate(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_stake_deregistration(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeDeregistration["new"](credential)), redeemer
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))
+                : undefined);
+        });
+        return this;
+    }
+    /** Register a stake pool. A pool deposit is required. The metadataUrl needs to be hosted already before making the registration. */
+    registerPool(poolParams) {
+        this.tasks.push(async (that) => {
+            const poolRegistration = await createPoolRegistration(poolParams, that.lucid);
+            const certificate = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_pool_registration(poolRegistration);
+            that.txBuilder.add_certificate(certificate, undefined);
+        });
+        return this;
+    }
+    /** Update a stake pool. No pool deposit is required. The metadataUrl needs to be hosted already before making the update. */
+    updatePool(poolParams) {
+        this.tasks.push(async (that) => {
+            const poolRegistration = await createPoolRegistration(poolParams, that.lucid);
+            // This flag makes sure a pool deposit is not required
+            poolRegistration.set_is_update(true);
+            const certificate = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_pool_registration(poolRegistration);
+            that.txBuilder.add_certificate(certificate, undefined);
+        });
+        return this;
+    }
+    /**
+     * Retire a stake pool. The epoch needs to be the greater than the current epoch + 1 and less than current epoch + eMax.
+     * The pool deposit will be sent to reward address as reward after full retirement of the pool.
+     */
+    retirePool(poolId, epoch) {
+        this.tasks.push((that) => {
+            const certificate = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Certificate.new_pool_retirement(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolRetirement["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bech32(poolId), epoch));
+            that.txBuilder.add_certificate(certificate, undefined);
+        });
+        return this;
+    }
+    withdraw(rewardAddress, amount, redeemer) {
+        this.tasks.push((that) => {
+            that.txBuilder.add_withdrawal(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress.from_address(addressFromWithNetworkCheck(rewardAddress, that.lucid)), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(amount.toString()), redeemer
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptWitness.new_plutus_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusWitness["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(redeemer)), undefined, undefined))
+                : undefined);
+        });
+        return this;
+    }
+    /**
+     * Needs to be a public key address.
+     * The PaymentKeyHash is taken when providing a Base, Enterprise or Pointer address.
+     * The StakeKeyHash is taken when providing a Reward address.
+     */
+    addSigner(address) {
+        const addressDetails = this.lucid.utils.getAddressDetails(address);
+        if (!addressDetails.paymentCredential && !addressDetails.stakeCredential) {
+            throw new Error("Not a valid address.");
+        }
+        const credential = addressDetails.type === "Reward"
+            ? addressDetails.stakeCredential
+            : addressDetails.paymentCredential;
+        if (credential.type === "Script") {
+            throw new Error("Only key hashes are allowed as signers.");
+        }
+        return this.addSignerKey(credential.hash);
+    }
+    /** Add a payment or stake key hash as a required signer of the transaction. */
+    addSignerKey(keyHash) {
+        this.tasks.push((that) => {
+            that.txBuilder.add_required_signer(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(keyHash)));
+        });
+        return this;
+    }
+    validFrom(unixTime) {
+        this.tasks.push((that) => {
+            const slot = that.lucid.utils.unixTimeToSlot(unixTime);
+            that.txBuilder.set_validity_start_interval(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slot.toString()));
+        });
+        return this;
+    }
+    validTo(unixTime) {
+        this.tasks.push((that) => {
+            const slot = that.lucid.utils.unixTimeToSlot(unixTime);
+            that.txBuilder.set_ttl(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(slot.toString()));
+        });
+        return this;
+    }
+    attachMetadata(label, metadata) {
+        this.tasks.push((that) => {
+            that.txBuilder.add_json_metadatum(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(label.toString()), JSON.stringify(metadata));
+        });
+        return this;
+    }
+    /** Converts strings to bytes if prefixed with **'0x'**. */
+    attachMetadataWithConversion(label, metadata) {
+        this.tasks.push((that) => {
+            that.txBuilder.add_json_metadatum_with_schema(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(label.toString()), JSON.stringify(metadata), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.MetadataJsonSchema.BasicConversions);
+        });
+        return this;
+    }
+    /** Explicitely set the network id in the transaction body. */
+    addNetworkId(id) {
+        this.tasks.push((that) => {
+            that.txBuilder.set_network_id(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkId.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(id.toString(16).padStart(2, "0"))));
+        });
+        return this;
+    }
+    attachSpendingValidator(spendingValidator) {
+        this.tasks.push((that) => {
+            attachScript(that, spendingValidator);
+        });
+        return this;
+    }
+    attachMintingPolicy(mintingPolicy) {
+        this.tasks.push((that) => {
+            attachScript(that, mintingPolicy);
+        });
+        return this;
+    }
+    attachCertificateValidator(certValidator) {
+        this.tasks.push((that) => {
+            attachScript(that, certValidator);
+        });
+        return this;
+    }
+    attachWithdrawalValidator(withdrawalValidator) {
+        this.tasks.push((that) => {
+            attachScript(that, withdrawalValidator);
+        });
+        return this;
+    }
+    /** Compose transactions. */
+    compose(tx) {
+        if (tx)
+            this.tasks = this.tasks.concat(tx.tasks);
+        return this;
+    }
+    async complete(options) {
+        if ([
+            options?.change?.outputData?.hash,
+            options?.change?.outputData?.asHash,
+            options?.change?.outputData?.inline,
+        ].filter((b) => b)
+            .length > 1) {
+            throw new Error("Not allowed to set hash, asHash and inline at the same time.");
+        }
+        let task = this.tasks.shift();
+        while (task) {
+            await task(this);
+            task = this.tasks.shift();
+        }
+        const utxos = await this.lucid.wallet.getUtxosCore();
+        const changeAddress = addressFromWithNetworkCheck(options?.change?.address || (await this.lucid.wallet.address()), this.lucid);
+        if (options?.coinSelection || options?.coinSelection === undefined) {
+            this.txBuilder.add_inputs_from(utxos, changeAddress);
+        }
+        this.txBuilder.balance(changeAddress, (() => {
+            if (options?.change?.outputData?.hash) {
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DataHash.from_hex(options.change.outputData.hash));
+            }
+            else if (options?.change?.outputData?.asHash) {
+                this.txBuilder.add_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(options.change.outputData.asHash)));
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(options.change.outputData.asHash))));
+            }
+            else if (options?.change?.outputData?.inline) {
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Datum.new_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Data["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(options.change.outputData.inline))));
+            }
+            else {
+                return undefined;
+            }
+        })());
+        return new _tx_complete_js__WEBPACK_IMPORTED_MODULE_3__.TxComplete(this.lucid, await this.txBuilder.construct(utxos, changeAddress, options?.nativeUplc === undefined ? true : options?.nativeUplc));
+    }
+    /** Return the current transaction body in Hex encoded Cbor. */
+    async toString() {
+        let task = this.tasks.shift();
+        while (task) {
+            await task(this);
+            task = this.tasks.shift();
+        }
+        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(this.txBuilder.to_bytes());
+    }
+}
+function attachScript(tx, { type, script }) {
+    if (type === "Native") {
+        return tx.txBuilder.add_native_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.NativeScript.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(script)));
+    }
+    else if (type === "PlutusV1") {
+        return tx.txBuilder.add_plutus_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.applyDoubleCborEncoding)(script))));
+    }
+    else if (type === "PlutusV2") {
+        return tx.txBuilder.add_plutus_v2_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.applyDoubleCborEncoding)(script))));
+    }
+    throw new Error("No variant matched.");
+}
+async function createPoolRegistration(poolParams, lucid) {
+    const poolOwners = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHashes["new"]();
+    poolParams.owners.forEach((owner) => {
+        const { stakeCredential } = lucid.utils.getAddressDetails(owner);
+        if (stakeCredential?.type === "Key") {
+            poolOwners.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(stakeCredential.hash));
+        }
+        else
+            throw new Error("Only key hashes allowed for pool owners.");
+    });
+    const metadata = poolParams.metadataUrl
+        ? await fetch(poolParams.metadataUrl)
+            .then((res) => res.arrayBuffer())
+        : null;
+    const metadataHash = metadata
+        ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolMetadataHash.from_bytes(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_blake2b256(new Uint8Array(metadata)))
+        : null;
+    const relays = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relays["new"]();
+    poolParams.relays.forEach((relay) => {
+        switch (relay.type) {
+            case "SingleHostIp": {
+                const ipV4 = relay.ipV4
+                    ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ipv4["new"](new Uint8Array(relay.ipV4.split(".").map((b) => parseInt(b))))
+                    : undefined;
+                const ipV6 = relay.ipV6
+                    ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ipv6["new"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(relay.ipV6.replaceAll(":", "")))
+                    : undefined;
+                relays.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relay.new_single_host_addr(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.SingleHostAddr["new"](relay.port, ipV4, ipV6)));
+                break;
+            }
+            case "SingleHostDomainName": {
+                relays.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relay.new_single_host_name(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.SingleHostName["new"](relay.port, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DNSRecordAorAAAA["new"](relay.domainName))));
+                break;
+            }
+            case "MultiHost": {
+                relays.add(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Relay.new_multi_host_name(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.MultiHostName["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.DNSRecordSRV["new"](relay.domainName))));
+                break;
+            }
+        }
+    });
+    return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolRegistration["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolParams["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_bech32(poolParams.poolId), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.VRFKeyHash.from_hex(poolParams.vrfKeyHash), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(poolParams.pledge.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(poolParams.cost.toString()), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.UnitInterval.from_float(poolParams.margin), _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress.from_address(addressFromWithNetworkCheck(poolParams.rewardAddress, lucid)), poolOwners, relays, metadataHash
+        ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PoolMetadata["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.URL["new"](poolParams.metadataUrl), metadataHash)
+        : undefined));
+}
+function addressFromWithNetworkCheck(address, lucid) {
+    const addressDetails = lucid.utils.getAddressDetails(address);
+    const actualNetworkId = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.networkToId)(lucid.network);
+    if (addressDetails.networkId !== actualNetworkId) {
+        throw new Error(`Invalid address: Expected address with network id ${actualNetworkId}, but got ${addressDetails.networkId}`);
+    }
+    return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Address.from_bech32(address);
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -177,7 +2730,110 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \*****************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"TxComplete\": () => (/* binding */ TxComplete)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tx_signed.js */ \"./node_modules/lucid-cardano/esm/src/lucid/tx_signed.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_2__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\nclass TxComplete {\n    constructor(lucid, tx) {\n        Object.defineProperty(this, \"txComplete\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"witnessSetBuilder\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"tasks\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"lucid\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.lucid = lucid;\n        this.txComplete = tx;\n        this.witnessSetBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder[\"new\"]();\n        this.tasks = [];\n    }\n    sign() {\n        this.tasks.push(async () => {\n            const witnesses = await this.lucid.wallet.signTx(this.txComplete);\n            this.witnessSetBuilder.add_existing(witnesses);\n        });\n        return this;\n    }\n    /** Add an extra signature from a private key. */\n    signWithPrivateKey(privateKey) {\n        const priv = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);\n        const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txComplete.body()), priv);\n        this.witnessSetBuilder.add_vkey(witness);\n        return this;\n    }\n    /** Sign the transaction and return the witnesses that were just made. */\n    async partialSign() {\n        const witnesses = await this.lucid.wallet.signTx(this.txComplete);\n        this.witnessSetBuilder.add_existing(witnesses);\n        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(witnesses.to_bytes());\n    }\n    /**\n     * Sign the transaction and return the witnesses that were just made.\n     * Add an extra signature from a private key.\n     */\n    partialSignWithPrivateKey(privateKey) {\n        const priv = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);\n        const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txComplete.body()), priv);\n        this.witnessSetBuilder.add_vkey(witness);\n        const witnesses = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder[\"new\"]();\n        witnesses.add_vkey(witness);\n        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(witnesses.build().to_bytes());\n    }\n    /** Sign the transaction with the given witnesses. */\n    assemble(witnesses) {\n        witnesses.forEach((witness) => {\n            const witnessParsed = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSet.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(witness));\n            this.witnessSetBuilder.add_existing(witnessParsed);\n        });\n        return this;\n    }\n    async complete() {\n        for (const task of this.tasks) {\n            await task();\n        }\n        this.witnessSetBuilder.add_existing(this.txComplete.witness_set());\n        const signedTx = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Transaction[\"new\"](this.txComplete.body(), this.witnessSetBuilder.build(), this.txComplete.auxiliary_data());\n        return new _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__.TxSigned(this.lucid, signedTx);\n    }\n    /** Return the transaction in Hex encoded Cbor. */\n    toString() {\n        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(this.txComplete.to_bytes());\n    }\n    /** Return the transaction hash. */\n    toHash() {\n        return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txComplete.body()).to_hex();\n    }\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/lucid/tx_complete.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TxComplete": () => (/* binding */ TxComplete)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tx_signed.js */ "./node_modules/lucid-cardano/esm/src/lucid/tx_signed.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_2__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+class TxComplete {
+    constructor(lucid, tx) {
+        Object.defineProperty(this, "txComplete", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "witnessSetBuilder", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "tasks", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "lucid", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.lucid = lucid;
+        this.txComplete = tx;
+        this.witnessSetBuilder = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder["new"]();
+        this.tasks = [];
+    }
+    sign() {
+        this.tasks.push(async () => {
+            const witnesses = await this.lucid.wallet.signTx(this.txComplete);
+            this.witnessSetBuilder.add_existing(witnesses);
+        });
+        return this;
+    }
+    /** Add an extra signature from a private key. */
+    signWithPrivateKey(privateKey) {
+        const priv = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);
+        const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txComplete.body()), priv);
+        this.witnessSetBuilder.add_vkey(witness);
+        return this;
+    }
+    /** Sign the transaction and return the witnesses that were just made. */
+    async partialSign() {
+        const witnesses = await this.lucid.wallet.signTx(this.txComplete);
+        this.witnessSetBuilder.add_existing(witnesses);
+        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(witnesses.to_bytes());
+    }
+    /**
+     * Sign the transaction and return the witnesses that were just made.
+     * Add an extra signature from a private key.
+     */
+    partialSignWithPrivateKey(privateKey) {
+        const priv = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);
+        const witness = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.make_vkey_witness(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txComplete.body()), priv);
+        this.witnessSetBuilder.add_vkey(witness);
+        const witnesses = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSetBuilder["new"]();
+        witnesses.add_vkey(witness);
+        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(witnesses.build().to_bytes());
+    }
+    /** Sign the transaction with the given witnesses. */
+    assemble(witnesses) {
+        witnesses.forEach((witness) => {
+            const witnessParsed = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionWitnessSet.from_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(witness));
+            this.witnessSetBuilder.add_existing(witnessParsed);
+        });
+        return this;
+    }
+    async complete() {
+        for (const task of this.tasks) {
+            await task();
+        }
+        this.witnessSetBuilder.add_existing(this.txComplete.witness_set());
+        const signedTx = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Transaction["new"](this.txComplete.body(), this.witnessSetBuilder.build(), this.txComplete.auxiliary_data());
+        return new _tx_signed_js__WEBPACK_IMPORTED_MODULE_1__.TxSigned(this.lucid, signedTx);
+    }
+    /** Return the transaction in Hex encoded Cbor. */
+    toString() {
+        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(this.txComplete.to_bytes());
+    }
+    /** Return the transaction hash. */
+    toHash() {
+        return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txComplete.body()).to_hex();
+    }
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -187,7 +2843,49 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"TxSigned\": () => (/* binding */ TxSigned)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\nclass TxSigned {\n    constructor(lucid, tx) {\n        Object.defineProperty(this, \"txSigned\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"lucid\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.lucid = lucid;\n        this.txSigned = tx;\n    }\n    async submit() {\n        return await (this.lucid.wallet || this.lucid.provider).submitTx((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(this.txSigned.to_bytes()));\n    }\n    /** Returns the transaction in Hex encoded Cbor. */\n    toString() {\n        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(this.txSigned.to_bytes());\n    }\n    /** Return the transaction hash. */\n    toHash() {\n        return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txSigned.body()).to_hex();\n    }\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/lucid/tx_signed.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TxSigned": () => (/* binding */ TxSigned)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+class TxSigned {
+    constructor(lucid, tx) {
+        Object.defineProperty(this, "txSigned", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "lucid", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.lucid = lucid;
+        this.txSigned = tx;
+    }
+    async submit() {
+        return await (this.lucid.wallet || this.lucid.provider).submitTx((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(this.txSigned.to_bytes()));
+    }
+    /** Returns the transaction in Hex encoded Cbor. */
+    toString() {
+        return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(this.txSigned.to_bytes());
+    }
+    /** Return the transaction hash. */
+    toHash() {
+        return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(this.txSigned.body()).to_hex();
+    }
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -197,7 +2895,2200 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \**********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"generateMnemonic\": () => (/* binding */ generateMnemonic),\n/* harmony export */   \"mnemonicToEntropy\": () => (/* binding */ mnemonicToEntropy)\n/* harmony export */ });\n/* harmony import */ var _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/std@0.153.0/hash/sha256.js */ \"./node_modules/lucid-cardano/esm/deps/deno.land/std@0.153.0/hash/sha256.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);\n_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n// This is a partial reimplementation of BIP39 in Deno: https://github.com/bitcoinjs/bip39\n// We only use the default Wordlist (english)\n\n\nconst INVALID_MNEMONIC = \"Invalid mnemonic\";\nconst INVALID_ENTROPY = \"Invalid entropy\";\nconst INVALID_CHECKSUM = \"Invalid mnemonic checksum\";\nconst WORDLIST_REQUIRED = \"A wordlist is required but a default could not be found.\\n\" +\n    \"Please pass a 2048 word array explicitly.\";\nfunction mnemonicToEntropy(mnemonic, wordlist) {\n    wordlist = wordlist || DEFAULT_WORDLIST;\n    if (!wordlist) {\n        throw new Error(WORDLIST_REQUIRED);\n    }\n    const words = normalize(mnemonic).split(\" \");\n    if (words.length % 3 !== 0) {\n        throw new Error(INVALID_MNEMONIC);\n    }\n    // convert word indices to 11 bit binary strings\n    const bits = words\n        .map((word) => {\n        const index = wordlist.indexOf(word);\n        if (index === -1) {\n            throw new Error(INVALID_MNEMONIC);\n        }\n        return lpad(index.toString(2), \"0\", 11);\n    })\n        .join(\"\");\n    // split the binary string into ENT/CS\n    const dividerIndex = Math.floor(bits.length / 33) * 32;\n    const entropyBits = bits.slice(0, dividerIndex);\n    const checksumBits = bits.slice(dividerIndex);\n    // calculate the checksum and compare\n    const entropyBytes = entropyBits.match(/(.{1,8})/g).map(binaryToByte);\n    if (entropyBytes.length < 16) {\n        throw new Error(INVALID_ENTROPY);\n    }\n    if (entropyBytes.length > 32) {\n        throw new Error(INVALID_ENTROPY);\n    }\n    if (entropyBytes.length % 4 !== 0) {\n        throw new Error(INVALID_ENTROPY);\n    }\n    const entropy = new Uint8Array(entropyBytes);\n    const newChecksum = deriveChecksumBits(entropy);\n    if (newChecksum !== checksumBits) {\n        throw new Error(INVALID_CHECKSUM);\n    }\n    return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(entropy);\n}\nfunction randomBytes(size) {\n    // reimplementation of: https://github.com/crypto-browserify/randombytes/blob/master/browser.js\n    const MAX_UINT32 = 4294967295;\n    const MAX_BYTES = 65536;\n    const bytes = new Uint8Array(size);\n    if (size > MAX_UINT32) {\n        throw new RangeError(\"requested too many random bytes\");\n    }\n    if (size > 0) { // getRandomValues fails on IE if size == 0\n        if (size > MAX_BYTES) { // this is the max bytes crypto.getRandomValues\n            // can do at once see https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues\n            for (let generated = 0; generated < size; generated += MAX_BYTES) {\n                // buffer.slice automatically checks if the end is past the end of\n                // the buffer so we don't have to here\n                crypto.getRandomValues(bytes.slice(generated, generated + MAX_BYTES));\n            }\n        }\n        else {\n            crypto.getRandomValues(bytes);\n        }\n    }\n    return bytes;\n}\nfunction generateMnemonic(strength, rng, wordlist) {\n    strength = strength || 128;\n    if (strength % 32 !== 0) {\n        throw new TypeError(INVALID_ENTROPY);\n    }\n    rng = rng || randomBytes;\n    return entropyToMnemonic(rng(strength / 8), wordlist);\n}\nfunction entropyToMnemonic(entropy, wordlist) {\n    wordlist = wordlist || DEFAULT_WORDLIST;\n    if (!wordlist) {\n        throw new Error(WORDLIST_REQUIRED);\n    }\n    // 128 <= ENT <= 256\n    if (entropy.length < 16) {\n        throw new TypeError(INVALID_ENTROPY);\n    }\n    if (entropy.length > 32) {\n        throw new TypeError(INVALID_ENTROPY);\n    }\n    if (entropy.length % 4 !== 0) {\n        throw new TypeError(INVALID_ENTROPY);\n    }\n    const entropyBits = bytesToBinary(Array.from(entropy));\n    const checksumBits = deriveChecksumBits(entropy);\n    const bits = entropyBits + checksumBits;\n    const chunks = bits.match(/(.{1,11})/g);\n    const words = chunks.map((binary) => {\n        const index = binaryToByte(binary);\n        return wordlist[index];\n    });\n    return wordlist[0] === \"\\u3042\\u3044\\u3053\\u304f\\u3057\\u3093\" // Japanese wordlist\n        ? words.join(\"\\u3000\")\n        : words.join(\" \");\n}\nfunction deriveChecksumBits(entropyBuffer) {\n    const ENT = entropyBuffer.length * 8;\n    const CS = ENT / 32;\n    const hash = new _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_0__.Sha256()\n        .update(entropyBuffer)\n        .digest();\n    return bytesToBinary(Array.from(hash)).slice(0, CS);\n}\nfunction lpad(str, padString, length) {\n    while (str.length < length) {\n        str = padString + str;\n    }\n    return str;\n}\nfunction bytesToBinary(bytes) {\n    return bytes.map((x) => lpad(x.toString(2), \"0\", 8)).join(\"\");\n}\nfunction normalize(str) {\n    return (str || \"\").normalize(\"NFKD\");\n}\nfunction binaryToByte(bin) {\n    return parseInt(bin, 2);\n}\nconst DEFAULT_WORDLIST = [\n    \"abandon\",\n    \"ability\",\n    \"able\",\n    \"about\",\n    \"above\",\n    \"absent\",\n    \"absorb\",\n    \"abstract\",\n    \"absurd\",\n    \"abuse\",\n    \"access\",\n    \"accident\",\n    \"account\",\n    \"accuse\",\n    \"achieve\",\n    \"acid\",\n    \"acoustic\",\n    \"acquire\",\n    \"across\",\n    \"act\",\n    \"action\",\n    \"actor\",\n    \"actress\",\n    \"actual\",\n    \"adapt\",\n    \"add\",\n    \"addict\",\n    \"address\",\n    \"adjust\",\n    \"admit\",\n    \"adult\",\n    \"advance\",\n    \"advice\",\n    \"aerobic\",\n    \"affair\",\n    \"afford\",\n    \"afraid\",\n    \"again\",\n    \"age\",\n    \"agent\",\n    \"agree\",\n    \"ahead\",\n    \"aim\",\n    \"air\",\n    \"airport\",\n    \"aisle\",\n    \"alarm\",\n    \"album\",\n    \"alcohol\",\n    \"alert\",\n    \"alien\",\n    \"all\",\n    \"alley\",\n    \"allow\",\n    \"almost\",\n    \"alone\",\n    \"alpha\",\n    \"already\",\n    \"also\",\n    \"alter\",\n    \"always\",\n    \"amateur\",\n    \"amazing\",\n    \"among\",\n    \"amount\",\n    \"amused\",\n    \"analyst\",\n    \"anchor\",\n    \"ancient\",\n    \"anger\",\n    \"angle\",\n    \"angry\",\n    \"animal\",\n    \"ankle\",\n    \"announce\",\n    \"annual\",\n    \"another\",\n    \"answer\",\n    \"antenna\",\n    \"antique\",\n    \"anxiety\",\n    \"any\",\n    \"apart\",\n    \"apology\",\n    \"appear\",\n    \"apple\",\n    \"approve\",\n    \"april\",\n    \"arch\",\n    \"arctic\",\n    \"area\",\n    \"arena\",\n    \"argue\",\n    \"arm\",\n    \"armed\",\n    \"armor\",\n    \"army\",\n    \"around\",\n    \"arrange\",\n    \"arrest\",\n    \"arrive\",\n    \"arrow\",\n    \"art\",\n    \"artefact\",\n    \"artist\",\n    \"artwork\",\n    \"ask\",\n    \"aspect\",\n    \"assault\",\n    \"asset\",\n    \"assist\",\n    \"assume\",\n    \"asthma\",\n    \"athlete\",\n    \"atom\",\n    \"attack\",\n    \"attend\",\n    \"attitude\",\n    \"attract\",\n    \"auction\",\n    \"audit\",\n    \"august\",\n    \"aunt\",\n    \"author\",\n    \"auto\",\n    \"autumn\",\n    \"average\",\n    \"avocado\",\n    \"avoid\",\n    \"awake\",\n    \"aware\",\n    \"away\",\n    \"awesome\",\n    \"awful\",\n    \"awkward\",\n    \"axis\",\n    \"baby\",\n    \"bachelor\",\n    \"bacon\",\n    \"badge\",\n    \"bag\",\n    \"balance\",\n    \"balcony\",\n    \"ball\",\n    \"bamboo\",\n    \"banana\",\n    \"banner\",\n    \"bar\",\n    \"barely\",\n    \"bargain\",\n    \"barrel\",\n    \"base\",\n    \"basic\",\n    \"basket\",\n    \"battle\",\n    \"beach\",\n    \"bean\",\n    \"beauty\",\n    \"because\",\n    \"become\",\n    \"beef\",\n    \"before\",\n    \"begin\",\n    \"behave\",\n    \"behind\",\n    \"believe\",\n    \"below\",\n    \"belt\",\n    \"bench\",\n    \"benefit\",\n    \"best\",\n    \"betray\",\n    \"better\",\n    \"between\",\n    \"beyond\",\n    \"bicycle\",\n    \"bid\",\n    \"bike\",\n    \"bind\",\n    \"biology\",\n    \"bird\",\n    \"birth\",\n    \"bitter\",\n    \"black\",\n    \"blade\",\n    \"blame\",\n    \"blanket\",\n    \"blast\",\n    \"bleak\",\n    \"bless\",\n    \"blind\",\n    \"blood\",\n    \"blossom\",\n    \"blouse\",\n    \"blue\",\n    \"blur\",\n    \"blush\",\n    \"board\",\n    \"boat\",\n    \"body\",\n    \"boil\",\n    \"bomb\",\n    \"bone\",\n    \"bonus\",\n    \"book\",\n    \"boost\",\n    \"border\",\n    \"boring\",\n    \"borrow\",\n    \"boss\",\n    \"bottom\",\n    \"bounce\",\n    \"box\",\n    \"boy\",\n    \"bracket\",\n    \"brain\",\n    \"brand\",\n    \"brass\",\n    \"brave\",\n    \"bread\",\n    \"breeze\",\n    \"brick\",\n    \"bridge\",\n    \"brief\",\n    \"bright\",\n    \"bring\",\n    \"brisk\",\n    \"broccoli\",\n    \"broken\",\n    \"bronze\",\n    \"broom\",\n    \"brother\",\n    \"brown\",\n    \"brush\",\n    \"bubble\",\n    \"buddy\",\n    \"budget\",\n    \"buffalo\",\n    \"build\",\n    \"bulb\",\n    \"bulk\",\n    \"bullet\",\n    \"bundle\",\n    \"bunker\",\n    \"burden\",\n    \"burger\",\n    \"burst\",\n    \"bus\",\n    \"business\",\n    \"busy\",\n    \"butter\",\n    \"buyer\",\n    \"buzz\",\n    \"cabbage\",\n    \"cabin\",\n    \"cable\",\n    \"cactus\",\n    \"cage\",\n    \"cake\",\n    \"call\",\n    \"calm\",\n    \"camera\",\n    \"camp\",\n    \"can\",\n    \"canal\",\n    \"cancel\",\n    \"candy\",\n    \"cannon\",\n    \"canoe\",\n    \"canvas\",\n    \"canyon\",\n    \"capable\",\n    \"capital\",\n    \"captain\",\n    \"car\",\n    \"carbon\",\n    \"card\",\n    \"cargo\",\n    \"carpet\",\n    \"carry\",\n    \"cart\",\n    \"case\",\n    \"cash\",\n    \"casino\",\n    \"castle\",\n    \"casual\",\n    \"cat\",\n    \"catalog\",\n    \"catch\",\n    \"category\",\n    \"cattle\",\n    \"caught\",\n    \"cause\",\n    \"caution\",\n    \"cave\",\n    \"ceiling\",\n    \"celery\",\n    \"cement\",\n    \"census\",\n    \"century\",\n    \"cereal\",\n    \"certain\",\n    \"chair\",\n    \"chalk\",\n    \"champion\",\n    \"change\",\n    \"chaos\",\n    \"chapter\",\n    \"charge\",\n    \"chase\",\n    \"chat\",\n    \"cheap\",\n    \"check\",\n    \"cheese\",\n    \"chef\",\n    \"cherry\",\n    \"chest\",\n    \"chicken\",\n    \"chief\",\n    \"child\",\n    \"chimney\",\n    \"choice\",\n    \"choose\",\n    \"chronic\",\n    \"chuckle\",\n    \"chunk\",\n    \"churn\",\n    \"cigar\",\n    \"cinnamon\",\n    \"circle\",\n    \"citizen\",\n    \"city\",\n    \"civil\",\n    \"claim\",\n    \"clap\",\n    \"clarify\",\n    \"claw\",\n    \"clay\",\n    \"clean\",\n    \"clerk\",\n    \"clever\",\n    \"click\",\n    \"client\",\n    \"cliff\",\n    \"climb\",\n    \"clinic\",\n    \"clip\",\n    \"clock\",\n    \"clog\",\n    \"close\",\n    \"cloth\",\n    \"cloud\",\n    \"clown\",\n    \"club\",\n    \"clump\",\n    \"cluster\",\n    \"clutch\",\n    \"coach\",\n    \"coast\",\n    \"coconut\",\n    \"code\",\n    \"coffee\",\n    \"coil\",\n    \"coin\",\n    \"collect\",\n    \"color\",\n    \"column\",\n    \"combine\",\n    \"come\",\n    \"comfort\",\n    \"comic\",\n    \"common\",\n    \"company\",\n    \"concert\",\n    \"conduct\",\n    \"confirm\",\n    \"congress\",\n    \"connect\",\n    \"consider\",\n    \"control\",\n    \"convince\",\n    \"cook\",\n    \"cool\",\n    \"copper\",\n    \"copy\",\n    \"coral\",\n    \"core\",\n    \"corn\",\n    \"correct\",\n    \"cost\",\n    \"cotton\",\n    \"couch\",\n    \"country\",\n    \"couple\",\n    \"course\",\n    \"cousin\",\n    \"cover\",\n    \"coyote\",\n    \"crack\",\n    \"cradle\",\n    \"craft\",\n    \"cram\",\n    \"crane\",\n    \"crash\",\n    \"crater\",\n    \"crawl\",\n    \"crazy\",\n    \"cream\",\n    \"credit\",\n    \"creek\",\n    \"crew\",\n    \"cricket\",\n    \"crime\",\n    \"crisp\",\n    \"critic\",\n    \"crop\",\n    \"cross\",\n    \"crouch\",\n    \"crowd\",\n    \"crucial\",\n    \"cruel\",\n    \"cruise\",\n    \"crumble\",\n    \"crunch\",\n    \"crush\",\n    \"cry\",\n    \"crystal\",\n    \"cube\",\n    \"culture\",\n    \"cup\",\n    \"cupboard\",\n    \"curious\",\n    \"current\",\n    \"curtain\",\n    \"curve\",\n    \"cushion\",\n    \"custom\",\n    \"cute\",\n    \"cycle\",\n    \"dad\",\n    \"damage\",\n    \"damp\",\n    \"dance\",\n    \"danger\",\n    \"daring\",\n    \"dash\",\n    \"daughter\",\n    \"dawn\",\n    \"day\",\n    \"deal\",\n    \"debate\",\n    \"debris\",\n    \"decade\",\n    \"december\",\n    \"decide\",\n    \"decline\",\n    \"decorate\",\n    \"decrease\",\n    \"deer\",\n    \"defense\",\n    \"define\",\n    \"defy\",\n    \"degree\",\n    \"delay\",\n    \"deliver\",\n    \"demand\",\n    \"demise\",\n    \"denial\",\n    \"dentist\",\n    \"deny\",\n    \"depart\",\n    \"depend\",\n    \"deposit\",\n    \"depth\",\n    \"deputy\",\n    \"derive\",\n    \"describe\",\n    \"desert\",\n    \"design\",\n    \"desk\",\n    \"despair\",\n    \"destroy\",\n    \"detail\",\n    \"detect\",\n    \"develop\",\n    \"device\",\n    \"devote\",\n    \"diagram\",\n    \"dial\",\n    \"diamond\",\n    \"diary\",\n    \"dice\",\n    \"diesel\",\n    \"diet\",\n    \"differ\",\n    \"digital\",\n    \"dignity\",\n    \"dilemma\",\n    \"dinner\",\n    \"dinosaur\",\n    \"direct\",\n    \"dirt\",\n    \"disagree\",\n    \"discover\",\n    \"disease\",\n    \"dish\",\n    \"dismiss\",\n    \"disorder\",\n    \"display\",\n    \"distance\",\n    \"divert\",\n    \"divide\",\n    \"divorce\",\n    \"dizzy\",\n    \"doctor\",\n    \"document\",\n    \"dog\",\n    \"doll\",\n    \"dolphin\",\n    \"domain\",\n    \"donate\",\n    \"donkey\",\n    \"donor\",\n    \"door\",\n    \"dose\",\n    \"double\",\n    \"dove\",\n    \"draft\",\n    \"dragon\",\n    \"drama\",\n    \"drastic\",\n    \"draw\",\n    \"dream\",\n    \"dress\",\n    \"drift\",\n    \"drill\",\n    \"drink\",\n    \"drip\",\n    \"drive\",\n    \"drop\",\n    \"drum\",\n    \"dry\",\n    \"duck\",\n    \"dumb\",\n    \"dune\",\n    \"during\",\n    \"dust\",\n    \"dutch\",\n    \"duty\",\n    \"dwarf\",\n    \"dynamic\",\n    \"eager\",\n    \"eagle\",\n    \"early\",\n    \"earn\",\n    \"earth\",\n    \"easily\",\n    \"east\",\n    \"easy\",\n    \"echo\",\n    \"ecology\",\n    \"economy\",\n    \"edge\",\n    \"edit\",\n    \"educate\",\n    \"effort\",\n    \"egg\",\n    \"eight\",\n    \"either\",\n    \"elbow\",\n    \"elder\",\n    \"electric\",\n    \"elegant\",\n    \"element\",\n    \"elephant\",\n    \"elevator\",\n    \"elite\",\n    \"else\",\n    \"embark\",\n    \"embody\",\n    \"embrace\",\n    \"emerge\",\n    \"emotion\",\n    \"employ\",\n    \"empower\",\n    \"empty\",\n    \"enable\",\n    \"enact\",\n    \"end\",\n    \"endless\",\n    \"endorse\",\n    \"enemy\",\n    \"energy\",\n    \"enforce\",\n    \"engage\",\n    \"engine\",\n    \"enhance\",\n    \"enjoy\",\n    \"enlist\",\n    \"enough\",\n    \"enrich\",\n    \"enroll\",\n    \"ensure\",\n    \"enter\",\n    \"entire\",\n    \"entry\",\n    \"envelope\",\n    \"episode\",\n    \"equal\",\n    \"equip\",\n    \"era\",\n    \"erase\",\n    \"erode\",\n    \"erosion\",\n    \"error\",\n    \"erupt\",\n    \"escape\",\n    \"essay\",\n    \"essence\",\n    \"estate\",\n    \"eternal\",\n    \"ethics\",\n    \"evidence\",\n    \"evil\",\n    \"evoke\",\n    \"evolve\",\n    \"exact\",\n    \"example\",\n    \"excess\",\n    \"exchange\",\n    \"excite\",\n    \"exclude\",\n    \"excuse\",\n    \"execute\",\n    \"exercise\",\n    \"exhaust\",\n    \"exhibit\",\n    \"exile\",\n    \"exist\",\n    \"exit\",\n    \"exotic\",\n    \"expand\",\n    \"expect\",\n    \"expire\",\n    \"explain\",\n    \"expose\",\n    \"express\",\n    \"extend\",\n    \"extra\",\n    \"eye\",\n    \"eyebrow\",\n    \"fabric\",\n    \"face\",\n    \"faculty\",\n    \"fade\",\n    \"faint\",\n    \"faith\",\n    \"fall\",\n    \"false\",\n    \"fame\",\n    \"family\",\n    \"famous\",\n    \"fan\",\n    \"fancy\",\n    \"fantasy\",\n    \"farm\",\n    \"fashion\",\n    \"fat\",\n    \"fatal\",\n    \"father\",\n    \"fatigue\",\n    \"fault\",\n    \"favorite\",\n    \"feature\",\n    \"february\",\n    \"federal\",\n    \"fee\",\n    \"feed\",\n    \"feel\",\n    \"female\",\n    \"fence\",\n    \"festival\",\n    \"fetch\",\n    \"fever\",\n    \"few\",\n    \"fiber\",\n    \"fiction\",\n    \"field\",\n    \"figure\",\n    \"file\",\n    \"film\",\n    \"filter\",\n    \"final\",\n    \"find\",\n    \"fine\",\n    \"finger\",\n    \"finish\",\n    \"fire\",\n    \"firm\",\n    \"first\",\n    \"fiscal\",\n    \"fish\",\n    \"fit\",\n    \"fitness\",\n    \"fix\",\n    \"flag\",\n    \"flame\",\n    \"flash\",\n    \"flat\",\n    \"flavor\",\n    \"flee\",\n    \"flight\",\n    \"flip\",\n    \"float\",\n    \"flock\",\n    \"floor\",\n    \"flower\",\n    \"fluid\",\n    \"flush\",\n    \"fly\",\n    \"foam\",\n    \"focus\",\n    \"fog\",\n    \"foil\",\n    \"fold\",\n    \"follow\",\n    \"food\",\n    \"foot\",\n    \"force\",\n    \"forest\",\n    \"forget\",\n    \"fork\",\n    \"fortune\",\n    \"forum\",\n    \"forward\",\n    \"fossil\",\n    \"foster\",\n    \"found\",\n    \"fox\",\n    \"fragile\",\n    \"frame\",\n    \"frequent\",\n    \"fresh\",\n    \"friend\",\n    \"fringe\",\n    \"frog\",\n    \"front\",\n    \"frost\",\n    \"frown\",\n    \"frozen\",\n    \"fruit\",\n    \"fuel\",\n    \"fun\",\n    \"funny\",\n    \"furnace\",\n    \"fury\",\n    \"future\",\n    \"gadget\",\n    \"gain\",\n    \"galaxy\",\n    \"gallery\",\n    \"game\",\n    \"gap\",\n    \"garage\",\n    \"garbage\",\n    \"garden\",\n    \"garlic\",\n    \"garment\",\n    \"gas\",\n    \"gasp\",\n    \"gate\",\n    \"gather\",\n    \"gauge\",\n    \"gaze\",\n    \"general\",\n    \"genius\",\n    \"genre\",\n    \"gentle\",\n    \"genuine\",\n    \"gesture\",\n    \"ghost\",\n    \"giant\",\n    \"gift\",\n    \"giggle\",\n    \"ginger\",\n    \"giraffe\",\n    \"girl\",\n    \"give\",\n    \"glad\",\n    \"glance\",\n    \"glare\",\n    \"glass\",\n    \"glide\",\n    \"glimpse\",\n    \"globe\",\n    \"gloom\",\n    \"glory\",\n    \"glove\",\n    \"glow\",\n    \"glue\",\n    \"goat\",\n    \"goddess\",\n    \"gold\",\n    \"good\",\n    \"goose\",\n    \"gorilla\",\n    \"gospel\",\n    \"gossip\",\n    \"govern\",\n    \"gown\",\n    \"grab\",\n    \"grace\",\n    \"grain\",\n    \"grant\",\n    \"grape\",\n    \"grass\",\n    \"gravity\",\n    \"great\",\n    \"green\",\n    \"grid\",\n    \"grief\",\n    \"grit\",\n    \"grocery\",\n    \"group\",\n    \"grow\",\n    \"grunt\",\n    \"guard\",\n    \"guess\",\n    \"guide\",\n    \"guilt\",\n    \"guitar\",\n    \"gun\",\n    \"gym\",\n    \"habit\",\n    \"hair\",\n    \"half\",\n    \"hammer\",\n    \"hamster\",\n    \"hand\",\n    \"happy\",\n    \"harbor\",\n    \"hard\",\n    \"harsh\",\n    \"harvest\",\n    \"hat\",\n    \"have\",\n    \"hawk\",\n    \"hazard\",\n    \"head\",\n    \"health\",\n    \"heart\",\n    \"heavy\",\n    \"hedgehog\",\n    \"height\",\n    \"hello\",\n    \"helmet\",\n    \"help\",\n    \"hen\",\n    \"hero\",\n    \"hidden\",\n    \"high\",\n    \"hill\",\n    \"hint\",\n    \"hip\",\n    \"hire\",\n    \"history\",\n    \"hobby\",\n    \"hockey\",\n    \"hold\",\n    \"hole\",\n    \"holiday\",\n    \"hollow\",\n    \"home\",\n    \"honey\",\n    \"hood\",\n    \"hope\",\n    \"horn\",\n    \"horror\",\n    \"horse\",\n    \"hospital\",\n    \"host\",\n    \"hotel\",\n    \"hour\",\n    \"hover\",\n    \"hub\",\n    \"huge\",\n    \"human\",\n    \"humble\",\n    \"humor\",\n    \"hundred\",\n    \"hungry\",\n    \"hunt\",\n    \"hurdle\",\n    \"hurry\",\n    \"hurt\",\n    \"husband\",\n    \"hybrid\",\n    \"ice\",\n    \"icon\",\n    \"idea\",\n    \"identify\",\n    \"idle\",\n    \"ignore\",\n    \"ill\",\n    \"illegal\",\n    \"illness\",\n    \"image\",\n    \"imitate\",\n    \"immense\",\n    \"immune\",\n    \"impact\",\n    \"impose\",\n    \"improve\",\n    \"impulse\",\n    \"inch\",\n    \"include\",\n    \"income\",\n    \"increase\",\n    \"index\",\n    \"indicate\",\n    \"indoor\",\n    \"industry\",\n    \"infant\",\n    \"inflict\",\n    \"inform\",\n    \"inhale\",\n    \"inherit\",\n    \"initial\",\n    \"inject\",\n    \"injury\",\n    \"inmate\",\n    \"inner\",\n    \"innocent\",\n    \"input\",\n    \"inquiry\",\n    \"insane\",\n    \"insect\",\n    \"inside\",\n    \"inspire\",\n    \"install\",\n    \"intact\",\n    \"interest\",\n    \"into\",\n    \"invest\",\n    \"invite\",\n    \"involve\",\n    \"iron\",\n    \"island\",\n    \"isolate\",\n    \"issue\",\n    \"item\",\n    \"ivory\",\n    \"jacket\",\n    \"jaguar\",\n    \"jar\",\n    \"jazz\",\n    \"jealous\",\n    \"jeans\",\n    \"jelly\",\n    \"jewel\",\n    \"job\",\n    \"join\",\n    \"joke\",\n    \"journey\",\n    \"joy\",\n    \"judge\",\n    \"juice\",\n    \"jump\",\n    \"jungle\",\n    \"junior\",\n    \"junk\",\n    \"just\",\n    \"kangaroo\",\n    \"keen\",\n    \"keep\",\n    \"ketchup\",\n    \"key\",\n    \"kick\",\n    \"kid\",\n    \"kidney\",\n    \"kind\",\n    \"kingdom\",\n    \"kiss\",\n    \"kit\",\n    \"kitchen\",\n    \"kite\",\n    \"kitten\",\n    \"kiwi\",\n    \"knee\",\n    \"knife\",\n    \"knock\",\n    \"know\",\n    \"lab\",\n    \"label\",\n    \"labor\",\n    \"ladder\",\n    \"lady\",\n    \"lake\",\n    \"lamp\",\n    \"language\",\n    \"laptop\",\n    \"large\",\n    \"later\",\n    \"latin\",\n    \"laugh\",\n    \"laundry\",\n    \"lava\",\n    \"law\",\n    \"lawn\",\n    \"lawsuit\",\n    \"layer\",\n    \"lazy\",\n    \"leader\",\n    \"leaf\",\n    \"learn\",\n    \"leave\",\n    \"lecture\",\n    \"left\",\n    \"leg\",\n    \"legal\",\n    \"legend\",\n    \"leisure\",\n    \"lemon\",\n    \"lend\",\n    \"length\",\n    \"lens\",\n    \"leopard\",\n    \"lesson\",\n    \"letter\",\n    \"level\",\n    \"liar\",\n    \"liberty\",\n    \"library\",\n    \"license\",\n    \"life\",\n    \"lift\",\n    \"light\",\n    \"like\",\n    \"limb\",\n    \"limit\",\n    \"link\",\n    \"lion\",\n    \"liquid\",\n    \"list\",\n    \"little\",\n    \"live\",\n    \"lizard\",\n    \"load\",\n    \"loan\",\n    \"lobster\",\n    \"local\",\n    \"lock\",\n    \"logic\",\n    \"lonely\",\n    \"long\",\n    \"loop\",\n    \"lottery\",\n    \"loud\",\n    \"lounge\",\n    \"love\",\n    \"loyal\",\n    \"lucky\",\n    \"luggage\",\n    \"lumber\",\n    \"lunar\",\n    \"lunch\",\n    \"luxury\",\n    \"lyrics\",\n    \"machine\",\n    \"mad\",\n    \"magic\",\n    \"magnet\",\n    \"maid\",\n    \"mail\",\n    \"main\",\n    \"major\",\n    \"make\",\n    \"mammal\",\n    \"man\",\n    \"manage\",\n    \"mandate\",\n    \"mango\",\n    \"mansion\",\n    \"manual\",\n    \"maple\",\n    \"marble\",\n    \"march\",\n    \"margin\",\n    \"marine\",\n    \"market\",\n    \"marriage\",\n    \"mask\",\n    \"mass\",\n    \"master\",\n    \"match\",\n    \"material\",\n    \"math\",\n    \"matrix\",\n    \"matter\",\n    \"maximum\",\n    \"maze\",\n    \"meadow\",\n    \"mean\",\n    \"measure\",\n    \"meat\",\n    \"mechanic\",\n    \"medal\",\n    \"media\",\n    \"melody\",\n    \"melt\",\n    \"member\",\n    \"memory\",\n    \"mention\",\n    \"menu\",\n    \"mercy\",\n    \"merge\",\n    \"merit\",\n    \"merry\",\n    \"mesh\",\n    \"message\",\n    \"metal\",\n    \"method\",\n    \"middle\",\n    \"midnight\",\n    \"milk\",\n    \"million\",\n    \"mimic\",\n    \"mind\",\n    \"minimum\",\n    \"minor\",\n    \"minute\",\n    \"miracle\",\n    \"mirror\",\n    \"misery\",\n    \"miss\",\n    \"mistake\",\n    \"mix\",\n    \"mixed\",\n    \"mixture\",\n    \"mobile\",\n    \"model\",\n    \"modify\",\n    \"mom\",\n    \"moment\",\n    \"monitor\",\n    \"monkey\",\n    \"monster\",\n    \"month\",\n    \"moon\",\n    \"moral\",\n    \"more\",\n    \"morning\",\n    \"mosquito\",\n    \"mother\",\n    \"motion\",\n    \"motor\",\n    \"mountain\",\n    \"mouse\",\n    \"move\",\n    \"movie\",\n    \"much\",\n    \"muffin\",\n    \"mule\",\n    \"multiply\",\n    \"muscle\",\n    \"museum\",\n    \"mushroom\",\n    \"music\",\n    \"must\",\n    \"mutual\",\n    \"myself\",\n    \"mystery\",\n    \"myth\",\n    \"naive\",\n    \"name\",\n    \"napkin\",\n    \"narrow\",\n    \"nasty\",\n    \"nation\",\n    \"nature\",\n    \"near\",\n    \"neck\",\n    \"need\",\n    \"negative\",\n    \"neglect\",\n    \"neither\",\n    \"nephew\",\n    \"nerve\",\n    \"nest\",\n    \"net\",\n    \"network\",\n    \"neutral\",\n    \"never\",\n    \"news\",\n    \"next\",\n    \"nice\",\n    \"night\",\n    \"noble\",\n    \"noise\",\n    \"nominee\",\n    \"noodle\",\n    \"normal\",\n    \"north\",\n    \"nose\",\n    \"notable\",\n    \"note\",\n    \"nothing\",\n    \"notice\",\n    \"novel\",\n    \"now\",\n    \"nuclear\",\n    \"number\",\n    \"nurse\",\n    \"nut\",\n    \"oak\",\n    \"obey\",\n    \"object\",\n    \"oblige\",\n    \"obscure\",\n    \"observe\",\n    \"obtain\",\n    \"obvious\",\n    \"occur\",\n    \"ocean\",\n    \"october\",\n    \"odor\",\n    \"off\",\n    \"offer\",\n    \"office\",\n    \"often\",\n    \"oil\",\n    \"okay\",\n    \"old\",\n    \"olive\",\n    \"olympic\",\n    \"omit\",\n    \"once\",\n    \"one\",\n    \"onion\",\n    \"online\",\n    \"only\",\n    \"open\",\n    \"opera\",\n    \"opinion\",\n    \"oppose\",\n    \"option\",\n    \"orange\",\n    \"orbit\",\n    \"orchard\",\n    \"order\",\n    \"ordinary\",\n    \"organ\",\n    \"orient\",\n    \"original\",\n    \"orphan\",\n    \"ostrich\",\n    \"other\",\n    \"outdoor\",\n    \"outer\",\n    \"output\",\n    \"outside\",\n    \"oval\",\n    \"oven\",\n    \"over\",\n    \"own\",\n    \"owner\",\n    \"oxygen\",\n    \"oyster\",\n    \"ozone\",\n    \"pact\",\n    \"paddle\",\n    \"page\",\n    \"pair\",\n    \"palace\",\n    \"palm\",\n    \"panda\",\n    \"panel\",\n    \"panic\",\n    \"panther\",\n    \"paper\",\n    \"parade\",\n    \"parent\",\n    \"park\",\n    \"parrot\",\n    \"party\",\n    \"pass\",\n    \"patch\",\n    \"path\",\n    \"patient\",\n    \"patrol\",\n    \"pattern\",\n    \"pause\",\n    \"pave\",\n    \"payment\",\n    \"peace\",\n    \"peanut\",\n    \"pear\",\n    \"peasant\",\n    \"pelican\",\n    \"pen\",\n    \"penalty\",\n    \"pencil\",\n    \"people\",\n    \"pepper\",\n    \"perfect\",\n    \"permit\",\n    \"person\",\n    \"pet\",\n    \"phone\",\n    \"photo\",\n    \"phrase\",\n    \"physical\",\n    \"piano\",\n    \"picnic\",\n    \"picture\",\n    \"piece\",\n    \"pig\",\n    \"pigeon\",\n    \"pill\",\n    \"pilot\",\n    \"pink\",\n    \"pioneer\",\n    \"pipe\",\n    \"pistol\",\n    \"pitch\",\n    \"pizza\",\n    \"place\",\n    \"planet\",\n    \"plastic\",\n    \"plate\",\n    \"play\",\n    \"please\",\n    \"pledge\",\n    \"pluck\",\n    \"plug\",\n    \"plunge\",\n    \"poem\",\n    \"poet\",\n    \"point\",\n    \"polar\",\n    \"pole\",\n    \"police\",\n    \"pond\",\n    \"pony\",\n    \"pool\",\n    \"popular\",\n    \"portion\",\n    \"position\",\n    \"possible\",\n    \"post\",\n    \"potato\",\n    \"pottery\",\n    \"poverty\",\n    \"powder\",\n    \"power\",\n    \"practice\",\n    \"praise\",\n    \"predict\",\n    \"prefer\",\n    \"prepare\",\n    \"present\",\n    \"pretty\",\n    \"prevent\",\n    \"price\",\n    \"pride\",\n    \"primary\",\n    \"print\",\n    \"priority\",\n    \"prison\",\n    \"private\",\n    \"prize\",\n    \"problem\",\n    \"process\",\n    \"produce\",\n    \"profit\",\n    \"program\",\n    \"project\",\n    \"promote\",\n    \"proof\",\n    \"property\",\n    \"prosper\",\n    \"protect\",\n    \"proud\",\n    \"provide\",\n    \"public\",\n    \"pudding\",\n    \"pull\",\n    \"pulp\",\n    \"pulse\",\n    \"pumpkin\",\n    \"punch\",\n    \"pupil\",\n    \"puppy\",\n    \"purchase\",\n    \"purity\",\n    \"purpose\",\n    \"purse\",\n    \"push\",\n    \"put\",\n    \"puzzle\",\n    \"pyramid\",\n    \"quality\",\n    \"quantum\",\n    \"quarter\",\n    \"question\",\n    \"quick\",\n    \"quit\",\n    \"quiz\",\n    \"quote\",\n    \"rabbit\",\n    \"raccoon\",\n    \"race\",\n    \"rack\",\n    \"radar\",\n    \"radio\",\n    \"rail\",\n    \"rain\",\n    \"raise\",\n    \"rally\",\n    \"ramp\",\n    \"ranch\",\n    \"random\",\n    \"range\",\n    \"rapid\",\n    \"rare\",\n    \"rate\",\n    \"rather\",\n    \"raven\",\n    \"raw\",\n    \"razor\",\n    \"ready\",\n    \"real\",\n    \"reason\",\n    \"rebel\",\n    \"rebuild\",\n    \"recall\",\n    \"receive\",\n    \"recipe\",\n    \"record\",\n    \"recycle\",\n    \"reduce\",\n    \"reflect\",\n    \"reform\",\n    \"refuse\",\n    \"region\",\n    \"regret\",\n    \"regular\",\n    \"reject\",\n    \"relax\",\n    \"release\",\n    \"relief\",\n    \"rely\",\n    \"remain\",\n    \"remember\",\n    \"remind\",\n    \"remove\",\n    \"render\",\n    \"renew\",\n    \"rent\",\n    \"reopen\",\n    \"repair\",\n    \"repeat\",\n    \"replace\",\n    \"report\",\n    \"require\",\n    \"rescue\",\n    \"resemble\",\n    \"resist\",\n    \"resource\",\n    \"response\",\n    \"result\",\n    \"retire\",\n    \"retreat\",\n    \"return\",\n    \"reunion\",\n    \"reveal\",\n    \"review\",\n    \"reward\",\n    \"rhythm\",\n    \"rib\",\n    \"ribbon\",\n    \"rice\",\n    \"rich\",\n    \"ride\",\n    \"ridge\",\n    \"rifle\",\n    \"right\",\n    \"rigid\",\n    \"ring\",\n    \"riot\",\n    \"ripple\",\n    \"risk\",\n    \"ritual\",\n    \"rival\",\n    \"river\",\n    \"road\",\n    \"roast\",\n    \"robot\",\n    \"robust\",\n    \"rocket\",\n    \"romance\",\n    \"roof\",\n    \"rookie\",\n    \"room\",\n    \"rose\",\n    \"rotate\",\n    \"rough\",\n    \"round\",\n    \"route\",\n    \"royal\",\n    \"rubber\",\n    \"rude\",\n    \"rug\",\n    \"rule\",\n    \"run\",\n    \"runway\",\n    \"rural\",\n    \"sad\",\n    \"saddle\",\n    \"sadness\",\n    \"safe\",\n    \"sail\",\n    \"salad\",\n    \"salmon\",\n    \"salon\",\n    \"salt\",\n    \"salute\",\n    \"same\",\n    \"sample\",\n    \"sand\",\n    \"satisfy\",\n    \"satoshi\",\n    \"sauce\",\n    \"sausage\",\n    \"save\",\n    \"say\",\n    \"scale\",\n    \"scan\",\n    \"scare\",\n    \"scatter\",\n    \"scene\",\n    \"scheme\",\n    \"school\",\n    \"science\",\n    \"scissors\",\n    \"scorpion\",\n    \"scout\",\n    \"scrap\",\n    \"screen\",\n    \"script\",\n    \"scrub\",\n    \"sea\",\n    \"search\",\n    \"season\",\n    \"seat\",\n    \"second\",\n    \"secret\",\n    \"section\",\n    \"security\",\n    \"seed\",\n    \"seek\",\n    \"segment\",\n    \"select\",\n    \"sell\",\n    \"seminar\",\n    \"senior\",\n    \"sense\",\n    \"sentence\",\n    \"series\",\n    \"service\",\n    \"session\",\n    \"settle\",\n    \"setup\",\n    \"seven\",\n    \"shadow\",\n    \"shaft\",\n    \"shallow\",\n    \"share\",\n    \"shed\",\n    \"shell\",\n    \"sheriff\",\n    \"shield\",\n    \"shift\",\n    \"shine\",\n    \"ship\",\n    \"shiver\",\n    \"shock\",\n    \"shoe\",\n    \"shoot\",\n    \"shop\",\n    \"short\",\n    \"shoulder\",\n    \"shove\",\n    \"shrimp\",\n    \"shrug\",\n    \"shuffle\",\n    \"shy\",\n    \"sibling\",\n    \"sick\",\n    \"side\",\n    \"siege\",\n    \"sight\",\n    \"sign\",\n    \"silent\",\n    \"silk\",\n    \"silly\",\n    \"silver\",\n    \"similar\",\n    \"simple\",\n    \"since\",\n    \"sing\",\n    \"siren\",\n    \"sister\",\n    \"situate\",\n    \"six\",\n    \"size\",\n    \"skate\",\n    \"sketch\",\n    \"ski\",\n    \"skill\",\n    \"skin\",\n    \"skirt\",\n    \"skull\",\n    \"slab\",\n    \"slam\",\n    \"sleep\",\n    \"slender\",\n    \"slice\",\n    \"slide\",\n    \"slight\",\n    \"slim\",\n    \"slogan\",\n    \"slot\",\n    \"slow\",\n    \"slush\",\n    \"small\",\n    \"smart\",\n    \"smile\",\n    \"smoke\",\n    \"smooth\",\n    \"snack\",\n    \"snake\",\n    \"snap\",\n    \"sniff\",\n    \"snow\",\n    \"soap\",\n    \"soccer\",\n    \"social\",\n    \"sock\",\n    \"soda\",\n    \"soft\",\n    \"solar\",\n    \"soldier\",\n    \"solid\",\n    \"solution\",\n    \"solve\",\n    \"someone\",\n    \"song\",\n    \"soon\",\n    \"sorry\",\n    \"sort\",\n    \"soul\",\n    \"sound\",\n    \"soup\",\n    \"source\",\n    \"south\",\n    \"space\",\n    \"spare\",\n    \"spatial\",\n    \"spawn\",\n    \"speak\",\n    \"special\",\n    \"speed\",\n    \"spell\",\n    \"spend\",\n    \"sphere\",\n    \"spice\",\n    \"spider\",\n    \"spike\",\n    \"spin\",\n    \"spirit\",\n    \"split\",\n    \"spoil\",\n    \"sponsor\",\n    \"spoon\",\n    \"sport\",\n    \"spot\",\n    \"spray\",\n    \"spread\",\n    \"spring\",\n    \"spy\",\n    \"square\",\n    \"squeeze\",\n    \"squirrel\",\n    \"stable\",\n    \"stadium\",\n    \"staff\",\n    \"stage\",\n    \"stairs\",\n    \"stamp\",\n    \"stand\",\n    \"start\",\n    \"state\",\n    \"stay\",\n    \"steak\",\n    \"steel\",\n    \"stem\",\n    \"step\",\n    \"stereo\",\n    \"stick\",\n    \"still\",\n    \"sting\",\n    \"stock\",\n    \"stomach\",\n    \"stone\",\n    \"stool\",\n    \"story\",\n    \"stove\",\n    \"strategy\",\n    \"street\",\n    \"strike\",\n    \"strong\",\n    \"struggle\",\n    \"student\",\n    \"stuff\",\n    \"stumble\",\n    \"style\",\n    \"subject\",\n    \"submit\",\n    \"subway\",\n    \"success\",\n    \"such\",\n    \"sudden\",\n    \"suffer\",\n    \"sugar\",\n    \"suggest\",\n    \"suit\",\n    \"summer\",\n    \"sun\",\n    \"sunny\",\n    \"sunset\",\n    \"super\",\n    \"supply\",\n    \"supreme\",\n    \"sure\",\n    \"surface\",\n    \"surge\",\n    \"surprise\",\n    \"surround\",\n    \"survey\",\n    \"suspect\",\n    \"sustain\",\n    \"swallow\",\n    \"swamp\",\n    \"swap\",\n    \"swarm\",\n    \"swear\",\n    \"sweet\",\n    \"swift\",\n    \"swim\",\n    \"swing\",\n    \"switch\",\n    \"sword\",\n    \"symbol\",\n    \"symptom\",\n    \"syrup\",\n    \"system\",\n    \"table\",\n    \"tackle\",\n    \"tag\",\n    \"tail\",\n    \"talent\",\n    \"talk\",\n    \"tank\",\n    \"tape\",\n    \"target\",\n    \"task\",\n    \"taste\",\n    \"tattoo\",\n    \"taxi\",\n    \"teach\",\n    \"team\",\n    \"tell\",\n    \"ten\",\n    \"tenant\",\n    \"tennis\",\n    \"tent\",\n    \"term\",\n    \"test\",\n    \"text\",\n    \"thank\",\n    \"that\",\n    \"theme\",\n    \"then\",\n    \"theory\",\n    \"there\",\n    \"they\",\n    \"thing\",\n    \"this\",\n    \"thought\",\n    \"three\",\n    \"thrive\",\n    \"throw\",\n    \"thumb\",\n    \"thunder\",\n    \"ticket\",\n    \"tide\",\n    \"tiger\",\n    \"tilt\",\n    \"timber\",\n    \"time\",\n    \"tiny\",\n    \"tip\",\n    \"tired\",\n    \"tissue\",\n    \"title\",\n    \"toast\",\n    \"tobacco\",\n    \"today\",\n    \"toddler\",\n    \"toe\",\n    \"together\",\n    \"toilet\",\n    \"token\",\n    \"tomato\",\n    \"tomorrow\",\n    \"tone\",\n    \"tongue\",\n    \"tonight\",\n    \"tool\",\n    \"tooth\",\n    \"top\",\n    \"topic\",\n    \"topple\",\n    \"torch\",\n    \"tornado\",\n    \"tortoise\",\n    \"toss\",\n    \"total\",\n    \"tourist\",\n    \"toward\",\n    \"tower\",\n    \"town\",\n    \"toy\",\n    \"track\",\n    \"trade\",\n    \"traffic\",\n    \"tragic\",\n    \"train\",\n    \"transfer\",\n    \"trap\",\n    \"trash\",\n    \"travel\",\n    \"tray\",\n    \"treat\",\n    \"tree\",\n    \"trend\",\n    \"trial\",\n    \"tribe\",\n    \"trick\",\n    \"trigger\",\n    \"trim\",\n    \"trip\",\n    \"trophy\",\n    \"trouble\",\n    \"truck\",\n    \"true\",\n    \"truly\",\n    \"trumpet\",\n    \"trust\",\n    \"truth\",\n    \"try\",\n    \"tube\",\n    \"tuition\",\n    \"tumble\",\n    \"tuna\",\n    \"tunnel\",\n    \"turkey\",\n    \"turn\",\n    \"turtle\",\n    \"twelve\",\n    \"twenty\",\n    \"twice\",\n    \"twin\",\n    \"twist\",\n    \"two\",\n    \"type\",\n    \"typical\",\n    \"ugly\",\n    \"umbrella\",\n    \"unable\",\n    \"unaware\",\n    \"uncle\",\n    \"uncover\",\n    \"under\",\n    \"undo\",\n    \"unfair\",\n    \"unfold\",\n    \"unhappy\",\n    \"uniform\",\n    \"unique\",\n    \"unit\",\n    \"universe\",\n    \"unknown\",\n    \"unlock\",\n    \"until\",\n    \"unusual\",\n    \"unveil\",\n    \"update\",\n    \"upgrade\",\n    \"uphold\",\n    \"upon\",\n    \"upper\",\n    \"upset\",\n    \"urban\",\n    \"urge\",\n    \"usage\",\n    \"use\",\n    \"used\",\n    \"useful\",\n    \"useless\",\n    \"usual\",\n    \"utility\",\n    \"vacant\",\n    \"vacuum\",\n    \"vague\",\n    \"valid\",\n    \"valley\",\n    \"valve\",\n    \"van\",\n    \"vanish\",\n    \"vapor\",\n    \"various\",\n    \"vast\",\n    \"vault\",\n    \"vehicle\",\n    \"velvet\",\n    \"vendor\",\n    \"venture\",\n    \"venue\",\n    \"verb\",\n    \"verify\",\n    \"version\",\n    \"very\",\n    \"vessel\",\n    \"veteran\",\n    \"viable\",\n    \"vibrant\",\n    \"vicious\",\n    \"victory\",\n    \"video\",\n    \"view\",\n    \"village\",\n    \"vintage\",\n    \"violin\",\n    \"virtual\",\n    \"virus\",\n    \"visa\",\n    \"visit\",\n    \"visual\",\n    \"vital\",\n    \"vivid\",\n    \"vocal\",\n    \"voice\",\n    \"void\",\n    \"volcano\",\n    \"volume\",\n    \"vote\",\n    \"voyage\",\n    \"wage\",\n    \"wagon\",\n    \"wait\",\n    \"walk\",\n    \"wall\",\n    \"walnut\",\n    \"want\",\n    \"warfare\",\n    \"warm\",\n    \"warrior\",\n    \"wash\",\n    \"wasp\",\n    \"waste\",\n    \"water\",\n    \"wave\",\n    \"way\",\n    \"wealth\",\n    \"weapon\",\n    \"wear\",\n    \"weasel\",\n    \"weather\",\n    \"web\",\n    \"wedding\",\n    \"weekend\",\n    \"weird\",\n    \"welcome\",\n    \"west\",\n    \"wet\",\n    \"whale\",\n    \"what\",\n    \"wheat\",\n    \"wheel\",\n    \"when\",\n    \"where\",\n    \"whip\",\n    \"whisper\",\n    \"wide\",\n    \"width\",\n    \"wife\",\n    \"wild\",\n    \"will\",\n    \"win\",\n    \"window\",\n    \"wine\",\n    \"wing\",\n    \"wink\",\n    \"winner\",\n    \"winter\",\n    \"wire\",\n    \"wisdom\",\n    \"wise\",\n    \"wish\",\n    \"witness\",\n    \"wolf\",\n    \"woman\",\n    \"wonder\",\n    \"wood\",\n    \"wool\",\n    \"word\",\n    \"work\",\n    \"world\",\n    \"worry\",\n    \"worth\",\n    \"wrap\",\n    \"wreck\",\n    \"wrestle\",\n    \"wrist\",\n    \"write\",\n    \"wrong\",\n    \"yard\",\n    \"year\",\n    \"yellow\",\n    \"you\",\n    \"young\",\n    \"youth\",\n    \"zebra\",\n    \"zero\",\n    \"zone\",\n    \"zoo\",\n];\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/misc/bip39.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "generateMnemonic": () => (/* binding */ generateMnemonic),
+/* harmony export */   "mnemonicToEntropy": () => (/* binding */ mnemonicToEntropy)
+/* harmony export */ });
+/* harmony import */ var _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/std@0.153.0/hash/sha256.js */ "./node_modules/lucid-cardano/esm/deps/deno.land/std@0.153.0/hash/sha256.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);
+_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+// This is a partial reimplementation of BIP39 in Deno: https://github.com/bitcoinjs/bip39
+// We only use the default Wordlist (english)
+
+
+const INVALID_MNEMONIC = "Invalid mnemonic";
+const INVALID_ENTROPY = "Invalid entropy";
+const INVALID_CHECKSUM = "Invalid mnemonic checksum";
+const WORDLIST_REQUIRED = "A wordlist is required but a default could not be found.\n" +
+    "Please pass a 2048 word array explicitly.";
+function mnemonicToEntropy(mnemonic, wordlist) {
+    wordlist = wordlist || DEFAULT_WORDLIST;
+    if (!wordlist) {
+        throw new Error(WORDLIST_REQUIRED);
+    }
+    const words = normalize(mnemonic).split(" ");
+    if (words.length % 3 !== 0) {
+        throw new Error(INVALID_MNEMONIC);
+    }
+    // convert word indices to 11 bit binary strings
+    const bits = words
+        .map((word) => {
+        const index = wordlist.indexOf(word);
+        if (index === -1) {
+            throw new Error(INVALID_MNEMONIC);
+        }
+        return lpad(index.toString(2), "0", 11);
+    })
+        .join("");
+    // split the binary string into ENT/CS
+    const dividerIndex = Math.floor(bits.length / 33) * 32;
+    const entropyBits = bits.slice(0, dividerIndex);
+    const checksumBits = bits.slice(dividerIndex);
+    // calculate the checksum and compare
+    const entropyBytes = entropyBits.match(/(.{1,8})/g).map(binaryToByte);
+    if (entropyBytes.length < 16) {
+        throw new Error(INVALID_ENTROPY);
+    }
+    if (entropyBytes.length > 32) {
+        throw new Error(INVALID_ENTROPY);
+    }
+    if (entropyBytes.length % 4 !== 0) {
+        throw new Error(INVALID_ENTROPY);
+    }
+    const entropy = new Uint8Array(entropyBytes);
+    const newChecksum = deriveChecksumBits(entropy);
+    if (newChecksum !== checksumBits) {
+        throw new Error(INVALID_CHECKSUM);
+    }
+    return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(entropy);
+}
+function randomBytes(size) {
+    // reimplementation of: https://github.com/crypto-browserify/randombytes/blob/master/browser.js
+    const MAX_UINT32 = 4294967295;
+    const MAX_BYTES = 65536;
+    const bytes = new Uint8Array(size);
+    if (size > MAX_UINT32) {
+        throw new RangeError("requested too many random bytes");
+    }
+    if (size > 0) { // getRandomValues fails on IE if size == 0
+        if (size > MAX_BYTES) { // this is the max bytes crypto.getRandomValues
+            // can do at once see https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
+            for (let generated = 0; generated < size; generated += MAX_BYTES) {
+                // buffer.slice automatically checks if the end is past the end of
+                // the buffer so we don't have to here
+                crypto.getRandomValues(bytes.slice(generated, generated + MAX_BYTES));
+            }
+        }
+        else {
+            crypto.getRandomValues(bytes);
+        }
+    }
+    return bytes;
+}
+function generateMnemonic(strength, rng, wordlist) {
+    strength = strength || 128;
+    if (strength % 32 !== 0) {
+        throw new TypeError(INVALID_ENTROPY);
+    }
+    rng = rng || randomBytes;
+    return entropyToMnemonic(rng(strength / 8), wordlist);
+}
+function entropyToMnemonic(entropy, wordlist) {
+    wordlist = wordlist || DEFAULT_WORDLIST;
+    if (!wordlist) {
+        throw new Error(WORDLIST_REQUIRED);
+    }
+    // 128 <= ENT <= 256
+    if (entropy.length < 16) {
+        throw new TypeError(INVALID_ENTROPY);
+    }
+    if (entropy.length > 32) {
+        throw new TypeError(INVALID_ENTROPY);
+    }
+    if (entropy.length % 4 !== 0) {
+        throw new TypeError(INVALID_ENTROPY);
+    }
+    const entropyBits = bytesToBinary(Array.from(entropy));
+    const checksumBits = deriveChecksumBits(entropy);
+    const bits = entropyBits + checksumBits;
+    const chunks = bits.match(/(.{1,11})/g);
+    const words = chunks.map((binary) => {
+        const index = binaryToByte(binary);
+        return wordlist[index];
+    });
+    return wordlist[0] === "\u3042\u3044\u3053\u304f\u3057\u3093" // Japanese wordlist
+        ? words.join("\u3000")
+        : words.join(" ");
+}
+function deriveChecksumBits(entropyBuffer) {
+    const ENT = entropyBuffer.length * 8;
+    const CS = ENT / 32;
+    const hash = new _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_0__.Sha256()
+        .update(entropyBuffer)
+        .digest();
+    return bytesToBinary(Array.from(hash)).slice(0, CS);
+}
+function lpad(str, padString, length) {
+    while (str.length < length) {
+        str = padString + str;
+    }
+    return str;
+}
+function bytesToBinary(bytes) {
+    return bytes.map((x) => lpad(x.toString(2), "0", 8)).join("");
+}
+function normalize(str) {
+    return (str || "").normalize("NFKD");
+}
+function binaryToByte(bin) {
+    return parseInt(bin, 2);
+}
+const DEFAULT_WORDLIST = [
+    "abandon",
+    "ability",
+    "able",
+    "about",
+    "above",
+    "absent",
+    "absorb",
+    "abstract",
+    "absurd",
+    "abuse",
+    "access",
+    "accident",
+    "account",
+    "accuse",
+    "achieve",
+    "acid",
+    "acoustic",
+    "acquire",
+    "across",
+    "act",
+    "action",
+    "actor",
+    "actress",
+    "actual",
+    "adapt",
+    "add",
+    "addict",
+    "address",
+    "adjust",
+    "admit",
+    "adult",
+    "advance",
+    "advice",
+    "aerobic",
+    "affair",
+    "afford",
+    "afraid",
+    "again",
+    "age",
+    "agent",
+    "agree",
+    "ahead",
+    "aim",
+    "air",
+    "airport",
+    "aisle",
+    "alarm",
+    "album",
+    "alcohol",
+    "alert",
+    "alien",
+    "all",
+    "alley",
+    "allow",
+    "almost",
+    "alone",
+    "alpha",
+    "already",
+    "also",
+    "alter",
+    "always",
+    "amateur",
+    "amazing",
+    "among",
+    "amount",
+    "amused",
+    "analyst",
+    "anchor",
+    "ancient",
+    "anger",
+    "angle",
+    "angry",
+    "animal",
+    "ankle",
+    "announce",
+    "annual",
+    "another",
+    "answer",
+    "antenna",
+    "antique",
+    "anxiety",
+    "any",
+    "apart",
+    "apology",
+    "appear",
+    "apple",
+    "approve",
+    "april",
+    "arch",
+    "arctic",
+    "area",
+    "arena",
+    "argue",
+    "arm",
+    "armed",
+    "armor",
+    "army",
+    "around",
+    "arrange",
+    "arrest",
+    "arrive",
+    "arrow",
+    "art",
+    "artefact",
+    "artist",
+    "artwork",
+    "ask",
+    "aspect",
+    "assault",
+    "asset",
+    "assist",
+    "assume",
+    "asthma",
+    "athlete",
+    "atom",
+    "attack",
+    "attend",
+    "attitude",
+    "attract",
+    "auction",
+    "audit",
+    "august",
+    "aunt",
+    "author",
+    "auto",
+    "autumn",
+    "average",
+    "avocado",
+    "avoid",
+    "awake",
+    "aware",
+    "away",
+    "awesome",
+    "awful",
+    "awkward",
+    "axis",
+    "baby",
+    "bachelor",
+    "bacon",
+    "badge",
+    "bag",
+    "balance",
+    "balcony",
+    "ball",
+    "bamboo",
+    "banana",
+    "banner",
+    "bar",
+    "barely",
+    "bargain",
+    "barrel",
+    "base",
+    "basic",
+    "basket",
+    "battle",
+    "beach",
+    "bean",
+    "beauty",
+    "because",
+    "become",
+    "beef",
+    "before",
+    "begin",
+    "behave",
+    "behind",
+    "believe",
+    "below",
+    "belt",
+    "bench",
+    "benefit",
+    "best",
+    "betray",
+    "better",
+    "between",
+    "beyond",
+    "bicycle",
+    "bid",
+    "bike",
+    "bind",
+    "biology",
+    "bird",
+    "birth",
+    "bitter",
+    "black",
+    "blade",
+    "blame",
+    "blanket",
+    "blast",
+    "bleak",
+    "bless",
+    "blind",
+    "blood",
+    "blossom",
+    "blouse",
+    "blue",
+    "blur",
+    "blush",
+    "board",
+    "boat",
+    "body",
+    "boil",
+    "bomb",
+    "bone",
+    "bonus",
+    "book",
+    "boost",
+    "border",
+    "boring",
+    "borrow",
+    "boss",
+    "bottom",
+    "bounce",
+    "box",
+    "boy",
+    "bracket",
+    "brain",
+    "brand",
+    "brass",
+    "brave",
+    "bread",
+    "breeze",
+    "brick",
+    "bridge",
+    "brief",
+    "bright",
+    "bring",
+    "brisk",
+    "broccoli",
+    "broken",
+    "bronze",
+    "broom",
+    "brother",
+    "brown",
+    "brush",
+    "bubble",
+    "buddy",
+    "budget",
+    "buffalo",
+    "build",
+    "bulb",
+    "bulk",
+    "bullet",
+    "bundle",
+    "bunker",
+    "burden",
+    "burger",
+    "burst",
+    "bus",
+    "business",
+    "busy",
+    "butter",
+    "buyer",
+    "buzz",
+    "cabbage",
+    "cabin",
+    "cable",
+    "cactus",
+    "cage",
+    "cake",
+    "call",
+    "calm",
+    "camera",
+    "camp",
+    "can",
+    "canal",
+    "cancel",
+    "candy",
+    "cannon",
+    "canoe",
+    "canvas",
+    "canyon",
+    "capable",
+    "capital",
+    "captain",
+    "car",
+    "carbon",
+    "card",
+    "cargo",
+    "carpet",
+    "carry",
+    "cart",
+    "case",
+    "cash",
+    "casino",
+    "castle",
+    "casual",
+    "cat",
+    "catalog",
+    "catch",
+    "category",
+    "cattle",
+    "caught",
+    "cause",
+    "caution",
+    "cave",
+    "ceiling",
+    "celery",
+    "cement",
+    "census",
+    "century",
+    "cereal",
+    "certain",
+    "chair",
+    "chalk",
+    "champion",
+    "change",
+    "chaos",
+    "chapter",
+    "charge",
+    "chase",
+    "chat",
+    "cheap",
+    "check",
+    "cheese",
+    "chef",
+    "cherry",
+    "chest",
+    "chicken",
+    "chief",
+    "child",
+    "chimney",
+    "choice",
+    "choose",
+    "chronic",
+    "chuckle",
+    "chunk",
+    "churn",
+    "cigar",
+    "cinnamon",
+    "circle",
+    "citizen",
+    "city",
+    "civil",
+    "claim",
+    "clap",
+    "clarify",
+    "claw",
+    "clay",
+    "clean",
+    "clerk",
+    "clever",
+    "click",
+    "client",
+    "cliff",
+    "climb",
+    "clinic",
+    "clip",
+    "clock",
+    "clog",
+    "close",
+    "cloth",
+    "cloud",
+    "clown",
+    "club",
+    "clump",
+    "cluster",
+    "clutch",
+    "coach",
+    "coast",
+    "coconut",
+    "code",
+    "coffee",
+    "coil",
+    "coin",
+    "collect",
+    "color",
+    "column",
+    "combine",
+    "come",
+    "comfort",
+    "comic",
+    "common",
+    "company",
+    "concert",
+    "conduct",
+    "confirm",
+    "congress",
+    "connect",
+    "consider",
+    "control",
+    "convince",
+    "cook",
+    "cool",
+    "copper",
+    "copy",
+    "coral",
+    "core",
+    "corn",
+    "correct",
+    "cost",
+    "cotton",
+    "couch",
+    "country",
+    "couple",
+    "course",
+    "cousin",
+    "cover",
+    "coyote",
+    "crack",
+    "cradle",
+    "craft",
+    "cram",
+    "crane",
+    "crash",
+    "crater",
+    "crawl",
+    "crazy",
+    "cream",
+    "credit",
+    "creek",
+    "crew",
+    "cricket",
+    "crime",
+    "crisp",
+    "critic",
+    "crop",
+    "cross",
+    "crouch",
+    "crowd",
+    "crucial",
+    "cruel",
+    "cruise",
+    "crumble",
+    "crunch",
+    "crush",
+    "cry",
+    "crystal",
+    "cube",
+    "culture",
+    "cup",
+    "cupboard",
+    "curious",
+    "current",
+    "curtain",
+    "curve",
+    "cushion",
+    "custom",
+    "cute",
+    "cycle",
+    "dad",
+    "damage",
+    "damp",
+    "dance",
+    "danger",
+    "daring",
+    "dash",
+    "daughter",
+    "dawn",
+    "day",
+    "deal",
+    "debate",
+    "debris",
+    "decade",
+    "december",
+    "decide",
+    "decline",
+    "decorate",
+    "decrease",
+    "deer",
+    "defense",
+    "define",
+    "defy",
+    "degree",
+    "delay",
+    "deliver",
+    "demand",
+    "demise",
+    "denial",
+    "dentist",
+    "deny",
+    "depart",
+    "depend",
+    "deposit",
+    "depth",
+    "deputy",
+    "derive",
+    "describe",
+    "desert",
+    "design",
+    "desk",
+    "despair",
+    "destroy",
+    "detail",
+    "detect",
+    "develop",
+    "device",
+    "devote",
+    "diagram",
+    "dial",
+    "diamond",
+    "diary",
+    "dice",
+    "diesel",
+    "diet",
+    "differ",
+    "digital",
+    "dignity",
+    "dilemma",
+    "dinner",
+    "dinosaur",
+    "direct",
+    "dirt",
+    "disagree",
+    "discover",
+    "disease",
+    "dish",
+    "dismiss",
+    "disorder",
+    "display",
+    "distance",
+    "divert",
+    "divide",
+    "divorce",
+    "dizzy",
+    "doctor",
+    "document",
+    "dog",
+    "doll",
+    "dolphin",
+    "domain",
+    "donate",
+    "donkey",
+    "donor",
+    "door",
+    "dose",
+    "double",
+    "dove",
+    "draft",
+    "dragon",
+    "drama",
+    "drastic",
+    "draw",
+    "dream",
+    "dress",
+    "drift",
+    "drill",
+    "drink",
+    "drip",
+    "drive",
+    "drop",
+    "drum",
+    "dry",
+    "duck",
+    "dumb",
+    "dune",
+    "during",
+    "dust",
+    "dutch",
+    "duty",
+    "dwarf",
+    "dynamic",
+    "eager",
+    "eagle",
+    "early",
+    "earn",
+    "earth",
+    "easily",
+    "east",
+    "easy",
+    "echo",
+    "ecology",
+    "economy",
+    "edge",
+    "edit",
+    "educate",
+    "effort",
+    "egg",
+    "eight",
+    "either",
+    "elbow",
+    "elder",
+    "electric",
+    "elegant",
+    "element",
+    "elephant",
+    "elevator",
+    "elite",
+    "else",
+    "embark",
+    "embody",
+    "embrace",
+    "emerge",
+    "emotion",
+    "employ",
+    "empower",
+    "empty",
+    "enable",
+    "enact",
+    "end",
+    "endless",
+    "endorse",
+    "enemy",
+    "energy",
+    "enforce",
+    "engage",
+    "engine",
+    "enhance",
+    "enjoy",
+    "enlist",
+    "enough",
+    "enrich",
+    "enroll",
+    "ensure",
+    "enter",
+    "entire",
+    "entry",
+    "envelope",
+    "episode",
+    "equal",
+    "equip",
+    "era",
+    "erase",
+    "erode",
+    "erosion",
+    "error",
+    "erupt",
+    "escape",
+    "essay",
+    "essence",
+    "estate",
+    "eternal",
+    "ethics",
+    "evidence",
+    "evil",
+    "evoke",
+    "evolve",
+    "exact",
+    "example",
+    "excess",
+    "exchange",
+    "excite",
+    "exclude",
+    "excuse",
+    "execute",
+    "exercise",
+    "exhaust",
+    "exhibit",
+    "exile",
+    "exist",
+    "exit",
+    "exotic",
+    "expand",
+    "expect",
+    "expire",
+    "explain",
+    "expose",
+    "express",
+    "extend",
+    "extra",
+    "eye",
+    "eyebrow",
+    "fabric",
+    "face",
+    "faculty",
+    "fade",
+    "faint",
+    "faith",
+    "fall",
+    "false",
+    "fame",
+    "family",
+    "famous",
+    "fan",
+    "fancy",
+    "fantasy",
+    "farm",
+    "fashion",
+    "fat",
+    "fatal",
+    "father",
+    "fatigue",
+    "fault",
+    "favorite",
+    "feature",
+    "february",
+    "federal",
+    "fee",
+    "feed",
+    "feel",
+    "female",
+    "fence",
+    "festival",
+    "fetch",
+    "fever",
+    "few",
+    "fiber",
+    "fiction",
+    "field",
+    "figure",
+    "file",
+    "film",
+    "filter",
+    "final",
+    "find",
+    "fine",
+    "finger",
+    "finish",
+    "fire",
+    "firm",
+    "first",
+    "fiscal",
+    "fish",
+    "fit",
+    "fitness",
+    "fix",
+    "flag",
+    "flame",
+    "flash",
+    "flat",
+    "flavor",
+    "flee",
+    "flight",
+    "flip",
+    "float",
+    "flock",
+    "floor",
+    "flower",
+    "fluid",
+    "flush",
+    "fly",
+    "foam",
+    "focus",
+    "fog",
+    "foil",
+    "fold",
+    "follow",
+    "food",
+    "foot",
+    "force",
+    "forest",
+    "forget",
+    "fork",
+    "fortune",
+    "forum",
+    "forward",
+    "fossil",
+    "foster",
+    "found",
+    "fox",
+    "fragile",
+    "frame",
+    "frequent",
+    "fresh",
+    "friend",
+    "fringe",
+    "frog",
+    "front",
+    "frost",
+    "frown",
+    "frozen",
+    "fruit",
+    "fuel",
+    "fun",
+    "funny",
+    "furnace",
+    "fury",
+    "future",
+    "gadget",
+    "gain",
+    "galaxy",
+    "gallery",
+    "game",
+    "gap",
+    "garage",
+    "garbage",
+    "garden",
+    "garlic",
+    "garment",
+    "gas",
+    "gasp",
+    "gate",
+    "gather",
+    "gauge",
+    "gaze",
+    "general",
+    "genius",
+    "genre",
+    "gentle",
+    "genuine",
+    "gesture",
+    "ghost",
+    "giant",
+    "gift",
+    "giggle",
+    "ginger",
+    "giraffe",
+    "girl",
+    "give",
+    "glad",
+    "glance",
+    "glare",
+    "glass",
+    "glide",
+    "glimpse",
+    "globe",
+    "gloom",
+    "glory",
+    "glove",
+    "glow",
+    "glue",
+    "goat",
+    "goddess",
+    "gold",
+    "good",
+    "goose",
+    "gorilla",
+    "gospel",
+    "gossip",
+    "govern",
+    "gown",
+    "grab",
+    "grace",
+    "grain",
+    "grant",
+    "grape",
+    "grass",
+    "gravity",
+    "great",
+    "green",
+    "grid",
+    "grief",
+    "grit",
+    "grocery",
+    "group",
+    "grow",
+    "grunt",
+    "guard",
+    "guess",
+    "guide",
+    "guilt",
+    "guitar",
+    "gun",
+    "gym",
+    "habit",
+    "hair",
+    "half",
+    "hammer",
+    "hamster",
+    "hand",
+    "happy",
+    "harbor",
+    "hard",
+    "harsh",
+    "harvest",
+    "hat",
+    "have",
+    "hawk",
+    "hazard",
+    "head",
+    "health",
+    "heart",
+    "heavy",
+    "hedgehog",
+    "height",
+    "hello",
+    "helmet",
+    "help",
+    "hen",
+    "hero",
+    "hidden",
+    "high",
+    "hill",
+    "hint",
+    "hip",
+    "hire",
+    "history",
+    "hobby",
+    "hockey",
+    "hold",
+    "hole",
+    "holiday",
+    "hollow",
+    "home",
+    "honey",
+    "hood",
+    "hope",
+    "horn",
+    "horror",
+    "horse",
+    "hospital",
+    "host",
+    "hotel",
+    "hour",
+    "hover",
+    "hub",
+    "huge",
+    "human",
+    "humble",
+    "humor",
+    "hundred",
+    "hungry",
+    "hunt",
+    "hurdle",
+    "hurry",
+    "hurt",
+    "husband",
+    "hybrid",
+    "ice",
+    "icon",
+    "idea",
+    "identify",
+    "idle",
+    "ignore",
+    "ill",
+    "illegal",
+    "illness",
+    "image",
+    "imitate",
+    "immense",
+    "immune",
+    "impact",
+    "impose",
+    "improve",
+    "impulse",
+    "inch",
+    "include",
+    "income",
+    "increase",
+    "index",
+    "indicate",
+    "indoor",
+    "industry",
+    "infant",
+    "inflict",
+    "inform",
+    "inhale",
+    "inherit",
+    "initial",
+    "inject",
+    "injury",
+    "inmate",
+    "inner",
+    "innocent",
+    "input",
+    "inquiry",
+    "insane",
+    "insect",
+    "inside",
+    "inspire",
+    "install",
+    "intact",
+    "interest",
+    "into",
+    "invest",
+    "invite",
+    "involve",
+    "iron",
+    "island",
+    "isolate",
+    "issue",
+    "item",
+    "ivory",
+    "jacket",
+    "jaguar",
+    "jar",
+    "jazz",
+    "jealous",
+    "jeans",
+    "jelly",
+    "jewel",
+    "job",
+    "join",
+    "joke",
+    "journey",
+    "joy",
+    "judge",
+    "juice",
+    "jump",
+    "jungle",
+    "junior",
+    "junk",
+    "just",
+    "kangaroo",
+    "keen",
+    "keep",
+    "ketchup",
+    "key",
+    "kick",
+    "kid",
+    "kidney",
+    "kind",
+    "kingdom",
+    "kiss",
+    "kit",
+    "kitchen",
+    "kite",
+    "kitten",
+    "kiwi",
+    "knee",
+    "knife",
+    "knock",
+    "know",
+    "lab",
+    "label",
+    "labor",
+    "ladder",
+    "lady",
+    "lake",
+    "lamp",
+    "language",
+    "laptop",
+    "large",
+    "later",
+    "latin",
+    "laugh",
+    "laundry",
+    "lava",
+    "law",
+    "lawn",
+    "lawsuit",
+    "layer",
+    "lazy",
+    "leader",
+    "leaf",
+    "learn",
+    "leave",
+    "lecture",
+    "left",
+    "leg",
+    "legal",
+    "legend",
+    "leisure",
+    "lemon",
+    "lend",
+    "length",
+    "lens",
+    "leopard",
+    "lesson",
+    "letter",
+    "level",
+    "liar",
+    "liberty",
+    "library",
+    "license",
+    "life",
+    "lift",
+    "light",
+    "like",
+    "limb",
+    "limit",
+    "link",
+    "lion",
+    "liquid",
+    "list",
+    "little",
+    "live",
+    "lizard",
+    "load",
+    "loan",
+    "lobster",
+    "local",
+    "lock",
+    "logic",
+    "lonely",
+    "long",
+    "loop",
+    "lottery",
+    "loud",
+    "lounge",
+    "love",
+    "loyal",
+    "lucky",
+    "luggage",
+    "lumber",
+    "lunar",
+    "lunch",
+    "luxury",
+    "lyrics",
+    "machine",
+    "mad",
+    "magic",
+    "magnet",
+    "maid",
+    "mail",
+    "main",
+    "major",
+    "make",
+    "mammal",
+    "man",
+    "manage",
+    "mandate",
+    "mango",
+    "mansion",
+    "manual",
+    "maple",
+    "marble",
+    "march",
+    "margin",
+    "marine",
+    "market",
+    "marriage",
+    "mask",
+    "mass",
+    "master",
+    "match",
+    "material",
+    "math",
+    "matrix",
+    "matter",
+    "maximum",
+    "maze",
+    "meadow",
+    "mean",
+    "measure",
+    "meat",
+    "mechanic",
+    "medal",
+    "media",
+    "melody",
+    "melt",
+    "member",
+    "memory",
+    "mention",
+    "menu",
+    "mercy",
+    "merge",
+    "merit",
+    "merry",
+    "mesh",
+    "message",
+    "metal",
+    "method",
+    "middle",
+    "midnight",
+    "milk",
+    "million",
+    "mimic",
+    "mind",
+    "minimum",
+    "minor",
+    "minute",
+    "miracle",
+    "mirror",
+    "misery",
+    "miss",
+    "mistake",
+    "mix",
+    "mixed",
+    "mixture",
+    "mobile",
+    "model",
+    "modify",
+    "mom",
+    "moment",
+    "monitor",
+    "monkey",
+    "monster",
+    "month",
+    "moon",
+    "moral",
+    "more",
+    "morning",
+    "mosquito",
+    "mother",
+    "motion",
+    "motor",
+    "mountain",
+    "mouse",
+    "move",
+    "movie",
+    "much",
+    "muffin",
+    "mule",
+    "multiply",
+    "muscle",
+    "museum",
+    "mushroom",
+    "music",
+    "must",
+    "mutual",
+    "myself",
+    "mystery",
+    "myth",
+    "naive",
+    "name",
+    "napkin",
+    "narrow",
+    "nasty",
+    "nation",
+    "nature",
+    "near",
+    "neck",
+    "need",
+    "negative",
+    "neglect",
+    "neither",
+    "nephew",
+    "nerve",
+    "nest",
+    "net",
+    "network",
+    "neutral",
+    "never",
+    "news",
+    "next",
+    "nice",
+    "night",
+    "noble",
+    "noise",
+    "nominee",
+    "noodle",
+    "normal",
+    "north",
+    "nose",
+    "notable",
+    "note",
+    "nothing",
+    "notice",
+    "novel",
+    "now",
+    "nuclear",
+    "number",
+    "nurse",
+    "nut",
+    "oak",
+    "obey",
+    "object",
+    "oblige",
+    "obscure",
+    "observe",
+    "obtain",
+    "obvious",
+    "occur",
+    "ocean",
+    "october",
+    "odor",
+    "off",
+    "offer",
+    "office",
+    "often",
+    "oil",
+    "okay",
+    "old",
+    "olive",
+    "olympic",
+    "omit",
+    "once",
+    "one",
+    "onion",
+    "online",
+    "only",
+    "open",
+    "opera",
+    "opinion",
+    "oppose",
+    "option",
+    "orange",
+    "orbit",
+    "orchard",
+    "order",
+    "ordinary",
+    "organ",
+    "orient",
+    "original",
+    "orphan",
+    "ostrich",
+    "other",
+    "outdoor",
+    "outer",
+    "output",
+    "outside",
+    "oval",
+    "oven",
+    "over",
+    "own",
+    "owner",
+    "oxygen",
+    "oyster",
+    "ozone",
+    "pact",
+    "paddle",
+    "page",
+    "pair",
+    "palace",
+    "palm",
+    "panda",
+    "panel",
+    "panic",
+    "panther",
+    "paper",
+    "parade",
+    "parent",
+    "park",
+    "parrot",
+    "party",
+    "pass",
+    "patch",
+    "path",
+    "patient",
+    "patrol",
+    "pattern",
+    "pause",
+    "pave",
+    "payment",
+    "peace",
+    "peanut",
+    "pear",
+    "peasant",
+    "pelican",
+    "pen",
+    "penalty",
+    "pencil",
+    "people",
+    "pepper",
+    "perfect",
+    "permit",
+    "person",
+    "pet",
+    "phone",
+    "photo",
+    "phrase",
+    "physical",
+    "piano",
+    "picnic",
+    "picture",
+    "piece",
+    "pig",
+    "pigeon",
+    "pill",
+    "pilot",
+    "pink",
+    "pioneer",
+    "pipe",
+    "pistol",
+    "pitch",
+    "pizza",
+    "place",
+    "planet",
+    "plastic",
+    "plate",
+    "play",
+    "please",
+    "pledge",
+    "pluck",
+    "plug",
+    "plunge",
+    "poem",
+    "poet",
+    "point",
+    "polar",
+    "pole",
+    "police",
+    "pond",
+    "pony",
+    "pool",
+    "popular",
+    "portion",
+    "position",
+    "possible",
+    "post",
+    "potato",
+    "pottery",
+    "poverty",
+    "powder",
+    "power",
+    "practice",
+    "praise",
+    "predict",
+    "prefer",
+    "prepare",
+    "present",
+    "pretty",
+    "prevent",
+    "price",
+    "pride",
+    "primary",
+    "print",
+    "priority",
+    "prison",
+    "private",
+    "prize",
+    "problem",
+    "process",
+    "produce",
+    "profit",
+    "program",
+    "project",
+    "promote",
+    "proof",
+    "property",
+    "prosper",
+    "protect",
+    "proud",
+    "provide",
+    "public",
+    "pudding",
+    "pull",
+    "pulp",
+    "pulse",
+    "pumpkin",
+    "punch",
+    "pupil",
+    "puppy",
+    "purchase",
+    "purity",
+    "purpose",
+    "purse",
+    "push",
+    "put",
+    "puzzle",
+    "pyramid",
+    "quality",
+    "quantum",
+    "quarter",
+    "question",
+    "quick",
+    "quit",
+    "quiz",
+    "quote",
+    "rabbit",
+    "raccoon",
+    "race",
+    "rack",
+    "radar",
+    "radio",
+    "rail",
+    "rain",
+    "raise",
+    "rally",
+    "ramp",
+    "ranch",
+    "random",
+    "range",
+    "rapid",
+    "rare",
+    "rate",
+    "rather",
+    "raven",
+    "raw",
+    "razor",
+    "ready",
+    "real",
+    "reason",
+    "rebel",
+    "rebuild",
+    "recall",
+    "receive",
+    "recipe",
+    "record",
+    "recycle",
+    "reduce",
+    "reflect",
+    "reform",
+    "refuse",
+    "region",
+    "regret",
+    "regular",
+    "reject",
+    "relax",
+    "release",
+    "relief",
+    "rely",
+    "remain",
+    "remember",
+    "remind",
+    "remove",
+    "render",
+    "renew",
+    "rent",
+    "reopen",
+    "repair",
+    "repeat",
+    "replace",
+    "report",
+    "require",
+    "rescue",
+    "resemble",
+    "resist",
+    "resource",
+    "response",
+    "result",
+    "retire",
+    "retreat",
+    "return",
+    "reunion",
+    "reveal",
+    "review",
+    "reward",
+    "rhythm",
+    "rib",
+    "ribbon",
+    "rice",
+    "rich",
+    "ride",
+    "ridge",
+    "rifle",
+    "right",
+    "rigid",
+    "ring",
+    "riot",
+    "ripple",
+    "risk",
+    "ritual",
+    "rival",
+    "river",
+    "road",
+    "roast",
+    "robot",
+    "robust",
+    "rocket",
+    "romance",
+    "roof",
+    "rookie",
+    "room",
+    "rose",
+    "rotate",
+    "rough",
+    "round",
+    "route",
+    "royal",
+    "rubber",
+    "rude",
+    "rug",
+    "rule",
+    "run",
+    "runway",
+    "rural",
+    "sad",
+    "saddle",
+    "sadness",
+    "safe",
+    "sail",
+    "salad",
+    "salmon",
+    "salon",
+    "salt",
+    "salute",
+    "same",
+    "sample",
+    "sand",
+    "satisfy",
+    "satoshi",
+    "sauce",
+    "sausage",
+    "save",
+    "say",
+    "scale",
+    "scan",
+    "scare",
+    "scatter",
+    "scene",
+    "scheme",
+    "school",
+    "science",
+    "scissors",
+    "scorpion",
+    "scout",
+    "scrap",
+    "screen",
+    "script",
+    "scrub",
+    "sea",
+    "search",
+    "season",
+    "seat",
+    "second",
+    "secret",
+    "section",
+    "security",
+    "seed",
+    "seek",
+    "segment",
+    "select",
+    "sell",
+    "seminar",
+    "senior",
+    "sense",
+    "sentence",
+    "series",
+    "service",
+    "session",
+    "settle",
+    "setup",
+    "seven",
+    "shadow",
+    "shaft",
+    "shallow",
+    "share",
+    "shed",
+    "shell",
+    "sheriff",
+    "shield",
+    "shift",
+    "shine",
+    "ship",
+    "shiver",
+    "shock",
+    "shoe",
+    "shoot",
+    "shop",
+    "short",
+    "shoulder",
+    "shove",
+    "shrimp",
+    "shrug",
+    "shuffle",
+    "shy",
+    "sibling",
+    "sick",
+    "side",
+    "siege",
+    "sight",
+    "sign",
+    "silent",
+    "silk",
+    "silly",
+    "silver",
+    "similar",
+    "simple",
+    "since",
+    "sing",
+    "siren",
+    "sister",
+    "situate",
+    "six",
+    "size",
+    "skate",
+    "sketch",
+    "ski",
+    "skill",
+    "skin",
+    "skirt",
+    "skull",
+    "slab",
+    "slam",
+    "sleep",
+    "slender",
+    "slice",
+    "slide",
+    "slight",
+    "slim",
+    "slogan",
+    "slot",
+    "slow",
+    "slush",
+    "small",
+    "smart",
+    "smile",
+    "smoke",
+    "smooth",
+    "snack",
+    "snake",
+    "snap",
+    "sniff",
+    "snow",
+    "soap",
+    "soccer",
+    "social",
+    "sock",
+    "soda",
+    "soft",
+    "solar",
+    "soldier",
+    "solid",
+    "solution",
+    "solve",
+    "someone",
+    "song",
+    "soon",
+    "sorry",
+    "sort",
+    "soul",
+    "sound",
+    "soup",
+    "source",
+    "south",
+    "space",
+    "spare",
+    "spatial",
+    "spawn",
+    "speak",
+    "special",
+    "speed",
+    "spell",
+    "spend",
+    "sphere",
+    "spice",
+    "spider",
+    "spike",
+    "spin",
+    "spirit",
+    "split",
+    "spoil",
+    "sponsor",
+    "spoon",
+    "sport",
+    "spot",
+    "spray",
+    "spread",
+    "spring",
+    "spy",
+    "square",
+    "squeeze",
+    "squirrel",
+    "stable",
+    "stadium",
+    "staff",
+    "stage",
+    "stairs",
+    "stamp",
+    "stand",
+    "start",
+    "state",
+    "stay",
+    "steak",
+    "steel",
+    "stem",
+    "step",
+    "stereo",
+    "stick",
+    "still",
+    "sting",
+    "stock",
+    "stomach",
+    "stone",
+    "stool",
+    "story",
+    "stove",
+    "strategy",
+    "street",
+    "strike",
+    "strong",
+    "struggle",
+    "student",
+    "stuff",
+    "stumble",
+    "style",
+    "subject",
+    "submit",
+    "subway",
+    "success",
+    "such",
+    "sudden",
+    "suffer",
+    "sugar",
+    "suggest",
+    "suit",
+    "summer",
+    "sun",
+    "sunny",
+    "sunset",
+    "super",
+    "supply",
+    "supreme",
+    "sure",
+    "surface",
+    "surge",
+    "surprise",
+    "surround",
+    "survey",
+    "suspect",
+    "sustain",
+    "swallow",
+    "swamp",
+    "swap",
+    "swarm",
+    "swear",
+    "sweet",
+    "swift",
+    "swim",
+    "swing",
+    "switch",
+    "sword",
+    "symbol",
+    "symptom",
+    "syrup",
+    "system",
+    "table",
+    "tackle",
+    "tag",
+    "tail",
+    "talent",
+    "talk",
+    "tank",
+    "tape",
+    "target",
+    "task",
+    "taste",
+    "tattoo",
+    "taxi",
+    "teach",
+    "team",
+    "tell",
+    "ten",
+    "tenant",
+    "tennis",
+    "tent",
+    "term",
+    "test",
+    "text",
+    "thank",
+    "that",
+    "theme",
+    "then",
+    "theory",
+    "there",
+    "they",
+    "thing",
+    "this",
+    "thought",
+    "three",
+    "thrive",
+    "throw",
+    "thumb",
+    "thunder",
+    "ticket",
+    "tide",
+    "tiger",
+    "tilt",
+    "timber",
+    "time",
+    "tiny",
+    "tip",
+    "tired",
+    "tissue",
+    "title",
+    "toast",
+    "tobacco",
+    "today",
+    "toddler",
+    "toe",
+    "together",
+    "toilet",
+    "token",
+    "tomato",
+    "tomorrow",
+    "tone",
+    "tongue",
+    "tonight",
+    "tool",
+    "tooth",
+    "top",
+    "topic",
+    "topple",
+    "torch",
+    "tornado",
+    "tortoise",
+    "toss",
+    "total",
+    "tourist",
+    "toward",
+    "tower",
+    "town",
+    "toy",
+    "track",
+    "trade",
+    "traffic",
+    "tragic",
+    "train",
+    "transfer",
+    "trap",
+    "trash",
+    "travel",
+    "tray",
+    "treat",
+    "tree",
+    "trend",
+    "trial",
+    "tribe",
+    "trick",
+    "trigger",
+    "trim",
+    "trip",
+    "trophy",
+    "trouble",
+    "truck",
+    "true",
+    "truly",
+    "trumpet",
+    "trust",
+    "truth",
+    "try",
+    "tube",
+    "tuition",
+    "tumble",
+    "tuna",
+    "tunnel",
+    "turkey",
+    "turn",
+    "turtle",
+    "twelve",
+    "twenty",
+    "twice",
+    "twin",
+    "twist",
+    "two",
+    "type",
+    "typical",
+    "ugly",
+    "umbrella",
+    "unable",
+    "unaware",
+    "uncle",
+    "uncover",
+    "under",
+    "undo",
+    "unfair",
+    "unfold",
+    "unhappy",
+    "uniform",
+    "unique",
+    "unit",
+    "universe",
+    "unknown",
+    "unlock",
+    "until",
+    "unusual",
+    "unveil",
+    "update",
+    "upgrade",
+    "uphold",
+    "upon",
+    "upper",
+    "upset",
+    "urban",
+    "urge",
+    "usage",
+    "use",
+    "used",
+    "useful",
+    "useless",
+    "usual",
+    "utility",
+    "vacant",
+    "vacuum",
+    "vague",
+    "valid",
+    "valley",
+    "valve",
+    "van",
+    "vanish",
+    "vapor",
+    "various",
+    "vast",
+    "vault",
+    "vehicle",
+    "velvet",
+    "vendor",
+    "venture",
+    "venue",
+    "verb",
+    "verify",
+    "version",
+    "very",
+    "vessel",
+    "veteran",
+    "viable",
+    "vibrant",
+    "vicious",
+    "victory",
+    "video",
+    "view",
+    "village",
+    "vintage",
+    "violin",
+    "virtual",
+    "virus",
+    "visa",
+    "visit",
+    "visual",
+    "vital",
+    "vivid",
+    "vocal",
+    "voice",
+    "void",
+    "volcano",
+    "volume",
+    "vote",
+    "voyage",
+    "wage",
+    "wagon",
+    "wait",
+    "walk",
+    "wall",
+    "walnut",
+    "want",
+    "warfare",
+    "warm",
+    "warrior",
+    "wash",
+    "wasp",
+    "waste",
+    "water",
+    "wave",
+    "way",
+    "wealth",
+    "weapon",
+    "wear",
+    "weasel",
+    "weather",
+    "web",
+    "wedding",
+    "weekend",
+    "weird",
+    "welcome",
+    "west",
+    "wet",
+    "whale",
+    "what",
+    "wheat",
+    "wheel",
+    "when",
+    "where",
+    "whip",
+    "whisper",
+    "wide",
+    "width",
+    "wife",
+    "wild",
+    "will",
+    "win",
+    "window",
+    "wine",
+    "wing",
+    "wink",
+    "winner",
+    "winter",
+    "wire",
+    "wisdom",
+    "wise",
+    "wish",
+    "witness",
+    "wolf",
+    "woman",
+    "wonder",
+    "wood",
+    "wool",
+    "word",
+    "work",
+    "world",
+    "worry",
+    "worth",
+    "wrap",
+    "wreck",
+    "wrestle",
+    "wrist",
+    "write",
+    "wrong",
+    "yard",
+    "year",
+    "yellow",
+    "you",
+    "young",
+    "youth",
+    "zebra",
+    "zero",
+    "zone",
+    "zoo",
+];
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -207,7 +5098,280 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \*********************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"crc8\": () => (/* binding */ crc8)\n/* harmony export */ });\n// This is a partial reimplementation of CRC-8 (node-crc) in Deno: https://github.com/alexgorbatchev/node-crc\nlet TABLE = [\n    0x00,\n    0x07,\n    0x0e,\n    0x09,\n    0x1c,\n    0x1b,\n    0x12,\n    0x15,\n    0x38,\n    0x3f,\n    0x36,\n    0x31,\n    0x24,\n    0x23,\n    0x2a,\n    0x2d,\n    0x70,\n    0x77,\n    0x7e,\n    0x79,\n    0x6c,\n    0x6b,\n    0x62,\n    0x65,\n    0x48,\n    0x4f,\n    0x46,\n    0x41,\n    0x54,\n    0x53,\n    0x5a,\n    0x5d,\n    0xe0,\n    0xe7,\n    0xee,\n    0xe9,\n    0xfc,\n    0xfb,\n    0xf2,\n    0xf5,\n    0xd8,\n    0xdf,\n    0xd6,\n    0xd1,\n    0xc4,\n    0xc3,\n    0xca,\n    0xcd,\n    0x90,\n    0x97,\n    0x9e,\n    0x99,\n    0x8c,\n    0x8b,\n    0x82,\n    0x85,\n    0xa8,\n    0xaf,\n    0xa6,\n    0xa1,\n    0xb4,\n    0xb3,\n    0xba,\n    0xbd,\n    0xc7,\n    0xc0,\n    0xc9,\n    0xce,\n    0xdb,\n    0xdc,\n    0xd5,\n    0xd2,\n    0xff,\n    0xf8,\n    0xf1,\n    0xf6,\n    0xe3,\n    0xe4,\n    0xed,\n    0xea,\n    0xb7,\n    0xb0,\n    0xb9,\n    0xbe,\n    0xab,\n    0xac,\n    0xa5,\n    0xa2,\n    0x8f,\n    0x88,\n    0x81,\n    0x86,\n    0x93,\n    0x94,\n    0x9d,\n    0x9a,\n    0x27,\n    0x20,\n    0x29,\n    0x2e,\n    0x3b,\n    0x3c,\n    0x35,\n    0x32,\n    0x1f,\n    0x18,\n    0x11,\n    0x16,\n    0x03,\n    0x04,\n    0x0d,\n    0x0a,\n    0x57,\n    0x50,\n    0x59,\n    0x5e,\n    0x4b,\n    0x4c,\n    0x45,\n    0x42,\n    0x6f,\n    0x68,\n    0x61,\n    0x66,\n    0x73,\n    0x74,\n    0x7d,\n    0x7a,\n    0x89,\n    0x8e,\n    0x87,\n    0x80,\n    0x95,\n    0x92,\n    0x9b,\n    0x9c,\n    0xb1,\n    0xb6,\n    0xbf,\n    0xb8,\n    0xad,\n    0xaa,\n    0xa3,\n    0xa4,\n    0xf9,\n    0xfe,\n    0xf7,\n    0xf0,\n    0xe5,\n    0xe2,\n    0xeb,\n    0xec,\n    0xc1,\n    0xc6,\n    0xcf,\n    0xc8,\n    0xdd,\n    0xda,\n    0xd3,\n    0xd4,\n    0x69,\n    0x6e,\n    0x67,\n    0x60,\n    0x75,\n    0x72,\n    0x7b,\n    0x7c,\n    0x51,\n    0x56,\n    0x5f,\n    0x58,\n    0x4d,\n    0x4a,\n    0x43,\n    0x44,\n    0x19,\n    0x1e,\n    0x17,\n    0x10,\n    0x05,\n    0x02,\n    0x0b,\n    0x0c,\n    0x21,\n    0x26,\n    0x2f,\n    0x28,\n    0x3d,\n    0x3a,\n    0x33,\n    0x34,\n    0x4e,\n    0x49,\n    0x40,\n    0x47,\n    0x52,\n    0x55,\n    0x5c,\n    0x5b,\n    0x76,\n    0x71,\n    0x78,\n    0x7f,\n    0x6a,\n    0x6d,\n    0x64,\n    0x63,\n    0x3e,\n    0x39,\n    0x30,\n    0x37,\n    0x22,\n    0x25,\n    0x2c,\n    0x2b,\n    0x06,\n    0x01,\n    0x08,\n    0x0f,\n    0x1a,\n    0x1d,\n    0x14,\n    0x13,\n    0xae,\n    0xa9,\n    0xa0,\n    0xa7,\n    0xb2,\n    0xb5,\n    0xbc,\n    0xbb,\n    0x96,\n    0x91,\n    0x98,\n    0x9f,\n    0x8a,\n    0x8d,\n    0x84,\n    0x83,\n    0xde,\n    0xd9,\n    0xd0,\n    0xd7,\n    0xc2,\n    0xc5,\n    0xcc,\n    0xcb,\n    0xe6,\n    0xe1,\n    0xe8,\n    0xef,\n    0xfa,\n    0xfd,\n    0xf4,\n    0xf3,\n];\nif (typeof Int32Array !== \"undefined\") {\n    TABLE = new Int32Array(TABLE);\n}\nfunction crc8(current, previous = 0) {\n    let crc = ~~previous;\n    for (let index = 0; index < current.length; index++) {\n        crc = TABLE[(crc ^ current[index]) & 0xff] & 0xff;\n    }\n    return crc;\n}\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/misc/crc8.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "crc8": () => (/* binding */ crc8)
+/* harmony export */ });
+// This is a partial reimplementation of CRC-8 (node-crc) in Deno: https://github.com/alexgorbatchev/node-crc
+let TABLE = [
+    0x00,
+    0x07,
+    0x0e,
+    0x09,
+    0x1c,
+    0x1b,
+    0x12,
+    0x15,
+    0x38,
+    0x3f,
+    0x36,
+    0x31,
+    0x24,
+    0x23,
+    0x2a,
+    0x2d,
+    0x70,
+    0x77,
+    0x7e,
+    0x79,
+    0x6c,
+    0x6b,
+    0x62,
+    0x65,
+    0x48,
+    0x4f,
+    0x46,
+    0x41,
+    0x54,
+    0x53,
+    0x5a,
+    0x5d,
+    0xe0,
+    0xe7,
+    0xee,
+    0xe9,
+    0xfc,
+    0xfb,
+    0xf2,
+    0xf5,
+    0xd8,
+    0xdf,
+    0xd6,
+    0xd1,
+    0xc4,
+    0xc3,
+    0xca,
+    0xcd,
+    0x90,
+    0x97,
+    0x9e,
+    0x99,
+    0x8c,
+    0x8b,
+    0x82,
+    0x85,
+    0xa8,
+    0xaf,
+    0xa6,
+    0xa1,
+    0xb4,
+    0xb3,
+    0xba,
+    0xbd,
+    0xc7,
+    0xc0,
+    0xc9,
+    0xce,
+    0xdb,
+    0xdc,
+    0xd5,
+    0xd2,
+    0xff,
+    0xf8,
+    0xf1,
+    0xf6,
+    0xe3,
+    0xe4,
+    0xed,
+    0xea,
+    0xb7,
+    0xb0,
+    0xb9,
+    0xbe,
+    0xab,
+    0xac,
+    0xa5,
+    0xa2,
+    0x8f,
+    0x88,
+    0x81,
+    0x86,
+    0x93,
+    0x94,
+    0x9d,
+    0x9a,
+    0x27,
+    0x20,
+    0x29,
+    0x2e,
+    0x3b,
+    0x3c,
+    0x35,
+    0x32,
+    0x1f,
+    0x18,
+    0x11,
+    0x16,
+    0x03,
+    0x04,
+    0x0d,
+    0x0a,
+    0x57,
+    0x50,
+    0x59,
+    0x5e,
+    0x4b,
+    0x4c,
+    0x45,
+    0x42,
+    0x6f,
+    0x68,
+    0x61,
+    0x66,
+    0x73,
+    0x74,
+    0x7d,
+    0x7a,
+    0x89,
+    0x8e,
+    0x87,
+    0x80,
+    0x95,
+    0x92,
+    0x9b,
+    0x9c,
+    0xb1,
+    0xb6,
+    0xbf,
+    0xb8,
+    0xad,
+    0xaa,
+    0xa3,
+    0xa4,
+    0xf9,
+    0xfe,
+    0xf7,
+    0xf0,
+    0xe5,
+    0xe2,
+    0xeb,
+    0xec,
+    0xc1,
+    0xc6,
+    0xcf,
+    0xc8,
+    0xdd,
+    0xda,
+    0xd3,
+    0xd4,
+    0x69,
+    0x6e,
+    0x67,
+    0x60,
+    0x75,
+    0x72,
+    0x7b,
+    0x7c,
+    0x51,
+    0x56,
+    0x5f,
+    0x58,
+    0x4d,
+    0x4a,
+    0x43,
+    0x44,
+    0x19,
+    0x1e,
+    0x17,
+    0x10,
+    0x05,
+    0x02,
+    0x0b,
+    0x0c,
+    0x21,
+    0x26,
+    0x2f,
+    0x28,
+    0x3d,
+    0x3a,
+    0x33,
+    0x34,
+    0x4e,
+    0x49,
+    0x40,
+    0x47,
+    0x52,
+    0x55,
+    0x5c,
+    0x5b,
+    0x76,
+    0x71,
+    0x78,
+    0x7f,
+    0x6a,
+    0x6d,
+    0x64,
+    0x63,
+    0x3e,
+    0x39,
+    0x30,
+    0x37,
+    0x22,
+    0x25,
+    0x2c,
+    0x2b,
+    0x06,
+    0x01,
+    0x08,
+    0x0f,
+    0x1a,
+    0x1d,
+    0x14,
+    0x13,
+    0xae,
+    0xa9,
+    0xa0,
+    0xa7,
+    0xb2,
+    0xb5,
+    0xbc,
+    0xbb,
+    0x96,
+    0x91,
+    0x98,
+    0x9f,
+    0x8a,
+    0x8d,
+    0x84,
+    0x83,
+    0xde,
+    0xd9,
+    0xd0,
+    0xd7,
+    0xc2,
+    0xc5,
+    0xcc,
+    0xcb,
+    0xe6,
+    0xe1,
+    0xe8,
+    0xef,
+    0xfa,
+    0xfd,
+    0xf4,
+    0xf3,
+];
+if (typeof Int32Array !== "undefined") {
+    TABLE = new Int32Array(TABLE);
+}
+function crc8(current, previous = 0) {
+    let crc = ~~previous;
+    for (let index = 0; index < current.length; index++) {
+        crc = TABLE[(crc ^ current[index]) & 0xff] & 0xff;
+    }
+    return crc;
+}
+
 
 /***/ }),
 
@@ -217,7 +5381,131 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"signData\": () => (/* binding */ signData),\n/* harmony export */   \"verifyData\": () => (/* binding */ verifyData)\n/* harmony export */ });\n/* harmony import */ var _mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mod.js */ \"./node_modules/lucid-cardano/esm/src/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_mod_js__WEBPACK_IMPORTED_MODULE_0__]);\n_mod_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\nfunction signData(addressHex, payload, privateKey) {\n    const protectedHeaders = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.HeaderMap[\"new\"]();\n    protectedHeaders.set_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.from_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.AlgorithmId.EdDSA));\n    protectedHeaders.set_header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_text(\"address\"), _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.CBORValue.new_bytes((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(addressHex)));\n    const protectedSerialized = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.ProtectedHeaderMap[\"new\"](protectedHeaders);\n    const unprotectedHeaders = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.HeaderMap[\"new\"]();\n    const headers = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Headers[\"new\"](protectedSerialized, unprotectedHeaders);\n    const builder = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSESign1Builder[\"new\"](headers, (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(payload), false);\n    const toSign = builder.make_data_to_sign().to_bytes();\n    const priv = _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);\n    const signedSigStruc = priv.sign(toSign).to_bytes();\n    const coseSign1 = builder.build(signedSigStruc);\n    const key = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSEKey[\"new\"](_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.from_key_type(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.KeyType.OKP));\n    key.set_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.from_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.AlgorithmId.EdDSA));\n    key.set_header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str(\"1\"))), _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.CBORValue.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_i32(6))); // crv (-1) set to Ed25519 (6)\n    key.set_header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str(\"2\"))), _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.CBORValue.new_bytes(priv.to_public().as_bytes())); // x (-2) set to public key\n    return {\n        signature: (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(coseSign1.to_bytes()),\n        key: (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(key.to_bytes()),\n    };\n}\nfunction verifyData(addressHex, keyHash, payload, signedMessage) {\n    const cose1 = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSESign1.from_bytes((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(signedMessage.signature));\n    const key = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSEKey.from_bytes((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(signedMessage.key));\n    const protectedHeaders = cose1.headers().protected()\n        .deserialized_headers();\n    const cose1Address = (() => {\n        try {\n            return (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(protectedHeaders.header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_text(\"address\"))?.as_bytes());\n        }\n        catch (_e) {\n            throw new Error(\"No address found in signature.\");\n        }\n    })();\n    const cose1AlgorithmId = (() => {\n        try {\n            const int = protectedHeaders.algorithm_id()?.as_int();\n            if (int?.is_positive())\n                return parseInt(int.as_positive()?.to_str());\n            return parseInt(int?.as_negative()?.to_str());\n        }\n        catch (_e) {\n            throw new Error(\"Failed to retrieve Algorithm Id.\");\n        }\n    })();\n    const keyAlgorithmId = (() => {\n        try {\n            const int = key.algorithm_id()?.as_int();\n            if (int?.is_positive())\n                return parseInt(int.as_positive()?.to_str());\n            return parseInt(int?.as_negative()?.to_str());\n        }\n        catch (_e) {\n            throw new Error(\"Failed to retrieve Algorithm Id.\");\n        }\n    })();\n    const keyCurve = (() => {\n        try {\n            const int = key.header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str(\"1\"))))?.as_int();\n            if (int?.is_positive())\n                return parseInt(int.as_positive()?.to_str());\n            return parseInt(int?.as_negative()?.to_str());\n        }\n        catch (_e) {\n            throw new Error(\"Failed to retrieve Curve.\");\n        }\n    })();\n    const keyType = (() => {\n        try {\n            const int = key.key_type().as_int();\n            if (int?.is_positive())\n                return parseInt(int.as_positive()?.to_str());\n            return parseInt(int?.as_negative()?.to_str());\n        }\n        catch (_e) {\n            throw new Error(\"Failed to retrieve Key Type.\");\n        }\n    })();\n    const publicKey = (() => {\n        try {\n            return _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PublicKey.from_bytes(key.header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str(\"2\"))))?.as_bytes());\n        }\n        catch (_e) {\n            throw new Error(\"No public key found.\");\n        }\n    })();\n    const cose1Payload = (() => {\n        try {\n            return (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(cose1.payload());\n        }\n        catch (_e) {\n            throw new Error(\"No payload found.\");\n        }\n    })();\n    const signature = _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519Signature.from_bytes(cose1.signature());\n    const data = cose1.signed_data(undefined, undefined).to_bytes();\n    if (cose1Address !== addressHex)\n        return false;\n    if (keyHash !== publicKey.hash().to_hex())\n        return false;\n    if (cose1AlgorithmId !== keyAlgorithmId &&\n        cose1AlgorithmId !== _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.AlgorithmId.EdDSA) {\n        return false;\n    }\n    if (keyCurve !== 6)\n        return false;\n    if (keyType !== 1)\n        return false;\n    if (cose1Payload !== payload)\n        return false;\n    return publicKey.verify(data, signature);\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/misc/sign_data.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "signData": () => (/* binding */ signData),
+/* harmony export */   "verifyData": () => (/* binding */ verifyData)
+/* harmony export */ });
+/* harmony import */ var _mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mod.js */ "./node_modules/lucid-cardano/esm/src/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_mod_js__WEBPACK_IMPORTED_MODULE_0__]);
+_mod_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
+function signData(addressHex, payload, privateKey) {
+    const protectedHeaders = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.HeaderMap["new"]();
+    protectedHeaders.set_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.from_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.AlgorithmId.EdDSA));
+    protectedHeaders.set_header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_text("address"), _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.CBORValue.new_bytes((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(addressHex)));
+    const protectedSerialized = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.ProtectedHeaderMap["new"](protectedHeaders);
+    const unprotectedHeaders = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.HeaderMap["new"]();
+    const headers = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Headers["new"](protectedSerialized, unprotectedHeaders);
+    const builder = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSESign1Builder["new"](headers, (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(payload), false);
+    const toSign = builder.make_data_to_sign().to_bytes();
+    const priv = _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PrivateKey.from_bech32(privateKey);
+    const signedSigStruc = priv.sign(toSign).to_bytes();
+    const coseSign1 = builder.build(signedSigStruc);
+    const key = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSEKey["new"](_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.from_key_type(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.KeyType.OKP));
+    key.set_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.from_algorithm_id(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.AlgorithmId.EdDSA));
+    key.set_header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str("1"))), _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.CBORValue.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_i32(6))); // crv (-1) set to Ed25519 (6)
+    key.set_header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str("2"))), _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.CBORValue.new_bytes(priv.to_public().as_bytes())); // x (-2) set to public key
+    return {
+        signature: (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(coseSign1.to_bytes()),
+        key: (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(key.to_bytes()),
+    };
+}
+function verifyData(addressHex, keyHash, payload, signedMessage) {
+    const cose1 = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSESign1.from_bytes((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(signedMessage.signature));
+    const key = _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.COSEKey.from_bytes((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(signedMessage.key));
+    const protectedHeaders = cose1.headers().protected()
+        .deserialized_headers();
+    const cose1Address = (() => {
+        try {
+            return (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(protectedHeaders.header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_text("address"))?.as_bytes());
+        }
+        catch (_e) {
+            throw new Error("No address found in signature.");
+        }
+    })();
+    const cose1AlgorithmId = (() => {
+        try {
+            const int = protectedHeaders.algorithm_id()?.as_int();
+            if (int?.is_positive())
+                return parseInt(int.as_positive()?.to_str());
+            return parseInt(int?.as_negative()?.to_str());
+        }
+        catch (_e) {
+            throw new Error("Failed to retrieve Algorithm Id.");
+        }
+    })();
+    const keyAlgorithmId = (() => {
+        try {
+            const int = key.algorithm_id()?.as_int();
+            if (int?.is_positive())
+                return parseInt(int.as_positive()?.to_str());
+            return parseInt(int?.as_negative()?.to_str());
+        }
+        catch (_e) {
+            throw new Error("Failed to retrieve Algorithm Id.");
+        }
+    })();
+    const keyCurve = (() => {
+        try {
+            const int = key.header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str("1"))))?.as_int();
+            if (int?.is_positive())
+                return parseInt(int.as_positive()?.to_str());
+            return parseInt(int?.as_negative()?.to_str());
+        }
+        catch (_e) {
+            throw new Error("Failed to retrieve Curve.");
+        }
+    })();
+    const keyType = (() => {
+        try {
+            const int = key.key_type().as_int();
+            if (int?.is_positive())
+                return parseInt(int.as_positive()?.to_str());
+            return parseInt(int?.as_negative()?.to_str());
+        }
+        catch (_e) {
+            throw new Error("Failed to retrieve Key Type.");
+        }
+    })();
+    const publicKey = (() => {
+        try {
+            return _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PublicKey.from_bytes(key.header(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Label.new_int(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.Int.new_negative(_mod_js__WEBPACK_IMPORTED_MODULE_0__.M.BigNum.from_str("2"))))?.as_bytes());
+        }
+        catch (_e) {
+            throw new Error("No public key found.");
+        }
+    })();
+    const cose1Payload = (() => {
+        try {
+            return (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(cose1.payload());
+        }
+        catch (_e) {
+            throw new Error("No payload found.");
+        }
+    })();
+    const signature = _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519Signature.from_bytes(cose1.signature());
+    const data = cose1.signed_data(undefined, undefined).to_bytes();
+    if (cose1Address !== addressHex)
+        return false;
+    if (keyHash !== publicKey.hash().to_hex())
+        return false;
+    if (cose1AlgorithmId !== keyAlgorithmId &&
+        cose1AlgorithmId !== _mod_js__WEBPACK_IMPORTED_MODULE_0__.M.AlgorithmId.EdDSA) {
+        return false;
+    }
+    if (keyCurve !== 6)
+        return false;
+    if (keyType !== 1)
+        return false;
+    if (cose1Payload !== payload)
+        return false;
+    return publicKey.verify(data, signature);
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -227,7 +5515,192 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"discoverOwnUsedTxKeyHashes\": () => (/* binding */ discoverOwnUsedTxKeyHashes),\n/* harmony export */   \"walletFromSeed\": () => (/* binding */ walletFromSeed)\n/* harmony export */ });\n/* harmony import */ var _mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mod.js */ \"./node_modules/lucid-cardano/esm/src/mod.js\");\n/* harmony import */ var _bip39_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bip39.js */ \"./node_modules/lucid-cardano/esm/src/misc/bip39.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_mod_js__WEBPACK_IMPORTED_MODULE_0__, _bip39_js__WEBPACK_IMPORTED_MODULE_1__]);\n([_mod_js__WEBPACK_IMPORTED_MODULE_0__, _bip39_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\nfunction walletFromSeed(seed, options = { addressType: \"Base\", accountIndex: 0, network: \"Mainnet\" }) {\n    function harden(num) {\n        if (typeof num !== \"number\")\n            throw new Error(\"Type number required here!\");\n        return 0x80000000 + num;\n    }\n    const entropy = (0,_bip39_js__WEBPACK_IMPORTED_MODULE_1__.mnemonicToEntropy)(seed);\n    const rootKey = _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Bip32PrivateKey.from_bip39_entropy((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(entropy), options.password\n        ? new TextEncoder().encode(options.password)\n        : new Uint8Array());\n    const accountKey = rootKey.derive(harden(1852))\n        .derive(harden(1815))\n        .derive(harden(options.accountIndex));\n    const paymentKey = accountKey.derive(0).derive(0).to_raw_key();\n    const stakeKey = accountKey.derive(2).derive(0).to_raw_key();\n    const paymentKeyHash = paymentKey.to_public().hash();\n    const stakeKeyHash = stakeKey.to_public().hash();\n    const networkId = options.network === \"Mainnet\" ? 1 : 0;\n    const address = options.addressType === \"Base\"\n        ? _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BaseAddress[\"new\"](networkId, _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(paymentKeyHash), _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(stakeKeyHash)).to_address().to_bech32(undefined)\n        : _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.EnterpriseAddress[\"new\"](networkId, _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(paymentKeyHash)).to_address().to_bech32(undefined);\n    const rewardAddress = options.addressType === \"Base\"\n        ? _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress[\"new\"](networkId, _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(stakeKeyHash)).to_address().to_bech32(undefined)\n        : null;\n    return {\n        address,\n        rewardAddress,\n        paymentKey: paymentKey.to_bech32(),\n        stakeKey: options.addressType === \"Base\" ? stakeKey.to_bech32() : null,\n    };\n}\nfunction discoverOwnUsedTxKeyHashes(tx, ownKeyHashes, ownUtxos) {\n    const usedKeyHashes = [];\n    // key hashes from inputs\n    const inputs = tx.body().inputs();\n    for (let i = 0; i < inputs.len(); i++) {\n        const input = inputs.get(i);\n        const txHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(input.transaction_id().to_bytes());\n        const outputIndex = parseInt(input.index().to_str());\n        const utxo = ownUtxos.find((utxo) => utxo.txHash === txHash && utxo.outputIndex === outputIndex);\n        if (utxo) {\n            const { paymentCredential } = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.getAddressDetails)(utxo.address);\n            usedKeyHashes.push(paymentCredential?.hash);\n        }\n    }\n    const txBody = tx.body();\n    // key hashes from certificates\n    function keyHashFromCert(txBody) {\n        const certs = txBody.certs();\n        if (!certs)\n            return;\n        for (let i = 0; i < certs.len(); i++) {\n            const cert = certs.get(i);\n            if (cert.kind() === 0) {\n                const credential = cert.as_stake_registration()?.stake_credential();\n                if (credential?.kind() === 0) {\n                    // Key hash not needed for registration\n                }\n            }\n            else if (cert.kind() === 1) {\n                const credential = cert.as_stake_deregistration()?.stake_credential();\n                if (credential?.kind() === 0) {\n                    const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(credential.to_keyhash().to_bytes());\n                    usedKeyHashes.push(keyHash);\n                }\n            }\n            else if (cert.kind() === 2) {\n                const credential = cert.as_stake_delegation()?.stake_credential();\n                if (credential?.kind() === 0) {\n                    const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(credential.to_keyhash().to_bytes());\n                    usedKeyHashes.push(keyHash);\n                }\n            }\n            else if (cert.kind() === 3) {\n                const poolParams = cert\n                    .as_pool_registration()?.pool_params();\n                const owners = poolParams\n                    ?.pool_owners();\n                if (!owners)\n                    break;\n                for (let i = 0; i < owners.len(); i++) {\n                    const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(owners.get(i).to_bytes());\n                    usedKeyHashes.push(keyHash);\n                }\n                const operator = poolParams.operator().to_hex();\n                usedKeyHashes.push(operator);\n            }\n            else if (cert.kind() === 4) {\n                const operator = cert.as_pool_retirement().pool_keyhash().to_hex();\n                usedKeyHashes.push(operator);\n            }\n            else if (cert.kind() === 6) {\n                const instantRewards = cert\n                    .as_move_instantaneous_rewards_cert()\n                    ?.move_instantaneous_reward().as_to_stake_creds()\n                    ?.keys();\n                if (!instantRewards)\n                    break;\n                for (let i = 0; i < instantRewards.len(); i++) {\n                    const credential = instantRewards.get(i);\n                    if (credential.kind() === 0) {\n                        const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(credential.to_keyhash().to_bytes());\n                        usedKeyHashes.push(keyHash);\n                    }\n                }\n            }\n        }\n    }\n    if (txBody.certs())\n        keyHashFromCert(txBody);\n    // key hashes from withdrawals\n    const withdrawals = txBody.withdrawals();\n    function keyHashFromWithdrawal(withdrawals) {\n        const rewardAddresses = withdrawals.keys();\n        for (let i = 0; i < rewardAddresses.len(); i++) {\n            const credential = rewardAddresses.get(i).payment_cred();\n            if (credential.kind() === 0) {\n                usedKeyHashes.push(credential.to_keyhash().to_hex());\n            }\n        }\n    }\n    if (withdrawals)\n        keyHashFromWithdrawal(withdrawals);\n    // key hashes from scripts\n    const scripts = tx.witness_set().native_scripts();\n    function keyHashFromScript(scripts) {\n        for (let i = 0; i < scripts.len(); i++) {\n            const script = scripts.get(i);\n            if (script.kind() === 0) {\n                const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(script.as_script_pubkey().addr_keyhash().to_bytes());\n                usedKeyHashes.push(keyHash);\n            }\n            if (script.kind() === 1) {\n                keyHashFromScript(script.as_script_all().native_scripts());\n                return;\n            }\n            if (script.kind() === 2) {\n                keyHashFromScript(script.as_script_any().native_scripts());\n                return;\n            }\n            if (script.kind() === 3) {\n                keyHashFromScript(script.as_script_n_of_k().native_scripts());\n                return;\n            }\n        }\n    }\n    if (scripts)\n        keyHashFromScript(scripts);\n    // keyHashes from required signers\n    const requiredSigners = txBody.required_signers();\n    if (requiredSigners) {\n        for (let i = 0; i < requiredSigners.len(); i++) {\n            usedKeyHashes.push((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(requiredSigners.get(i).to_bytes()));\n        }\n    }\n    // keyHashes from collateral\n    const collateral = txBody.collateral();\n    if (collateral) {\n        for (let i = 0; i < collateral.len(); i++) {\n            const input = collateral.get(i);\n            const txHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(input.transaction_id().to_bytes());\n            const outputIndex = parseInt(input.index().to_str());\n            const utxo = ownUtxos.find((utxo) => utxo.txHash === txHash && utxo.outputIndex === outputIndex);\n            if (utxo) {\n                const { paymentCredential } = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.getAddressDetails)(utxo.address);\n                usedKeyHashes.push(paymentCredential?.hash);\n            }\n        }\n    }\n    return usedKeyHashes.filter((k) => ownKeyHashes.includes(k));\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/misc/wallet.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "discoverOwnUsedTxKeyHashes": () => (/* binding */ discoverOwnUsedTxKeyHashes),
+/* harmony export */   "walletFromSeed": () => (/* binding */ walletFromSeed)
+/* harmony export */ });
+/* harmony import */ var _mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mod.js */ "./node_modules/lucid-cardano/esm/src/mod.js");
+/* harmony import */ var _bip39_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bip39.js */ "./node_modules/lucid-cardano/esm/src/misc/bip39.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_mod_js__WEBPACK_IMPORTED_MODULE_0__, _bip39_js__WEBPACK_IMPORTED_MODULE_1__]);
+([_mod_js__WEBPACK_IMPORTED_MODULE_0__, _bip39_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+function walletFromSeed(seed, options = { addressType: "Base", accountIndex: 0, network: "Mainnet" }) {
+    function harden(num) {
+        if (typeof num !== "number")
+            throw new Error("Type number required here!");
+        return 0x80000000 + num;
+    }
+    const entropy = (0,_bip39_js__WEBPACK_IMPORTED_MODULE_1__.mnemonicToEntropy)(seed);
+    const rootKey = _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Bip32PrivateKey.from_bip39_entropy((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.fromHex)(entropy), options.password
+        ? new TextEncoder().encode(options.password)
+        : new Uint8Array());
+    const accountKey = rootKey.derive(harden(1852))
+        .derive(harden(1815))
+        .derive(harden(options.accountIndex));
+    const paymentKey = accountKey.derive(0).derive(0).to_raw_key();
+    const stakeKey = accountKey.derive(2).derive(0).to_raw_key();
+    const paymentKeyHash = paymentKey.to_public().hash();
+    const stakeKeyHash = stakeKey.to_public().hash();
+    const networkId = options.network === "Mainnet" ? 1 : 0;
+    const address = options.addressType === "Base"
+        ? _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BaseAddress["new"](networkId, _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(paymentKeyHash), _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(stakeKeyHash)).to_address().to_bech32(undefined)
+        : _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.EnterpriseAddress["new"](networkId, _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(paymentKeyHash)).to_address().to_bech32(undefined);
+    const rewardAddress = options.addressType === "Base"
+        ? _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress["new"](networkId, _mod_js__WEBPACK_IMPORTED_MODULE_0__.C.StakeCredential.from_keyhash(stakeKeyHash)).to_address().to_bech32(undefined)
+        : null;
+    return {
+        address,
+        rewardAddress,
+        paymentKey: paymentKey.to_bech32(),
+        stakeKey: options.addressType === "Base" ? stakeKey.to_bech32() : null,
+    };
+}
+function discoverOwnUsedTxKeyHashes(tx, ownKeyHashes, ownUtxos) {
+    const usedKeyHashes = [];
+    // key hashes from inputs
+    const inputs = tx.body().inputs();
+    for (let i = 0; i < inputs.len(); i++) {
+        const input = inputs.get(i);
+        const txHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(input.transaction_id().to_bytes());
+        const outputIndex = parseInt(input.index().to_str());
+        const utxo = ownUtxos.find((utxo) => utxo.txHash === txHash && utxo.outputIndex === outputIndex);
+        if (utxo) {
+            const { paymentCredential } = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.getAddressDetails)(utxo.address);
+            usedKeyHashes.push(paymentCredential?.hash);
+        }
+    }
+    const txBody = tx.body();
+    // key hashes from certificates
+    function keyHashFromCert(txBody) {
+        const certs = txBody.certs();
+        if (!certs)
+            return;
+        for (let i = 0; i < certs.len(); i++) {
+            const cert = certs.get(i);
+            if (cert.kind() === 0) {
+                const credential = cert.as_stake_registration()?.stake_credential();
+                if (credential?.kind() === 0) {
+                    // Key hash not needed for registration
+                }
+            }
+            else if (cert.kind() === 1) {
+                const credential = cert.as_stake_deregistration()?.stake_credential();
+                if (credential?.kind() === 0) {
+                    const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(credential.to_keyhash().to_bytes());
+                    usedKeyHashes.push(keyHash);
+                }
+            }
+            else if (cert.kind() === 2) {
+                const credential = cert.as_stake_delegation()?.stake_credential();
+                if (credential?.kind() === 0) {
+                    const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(credential.to_keyhash().to_bytes());
+                    usedKeyHashes.push(keyHash);
+                }
+            }
+            else if (cert.kind() === 3) {
+                const poolParams = cert
+                    .as_pool_registration()?.pool_params();
+                const owners = poolParams
+                    ?.pool_owners();
+                if (!owners)
+                    break;
+                for (let i = 0; i < owners.len(); i++) {
+                    const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(owners.get(i).to_bytes());
+                    usedKeyHashes.push(keyHash);
+                }
+                const operator = poolParams.operator().to_hex();
+                usedKeyHashes.push(operator);
+            }
+            else if (cert.kind() === 4) {
+                const operator = cert.as_pool_retirement().pool_keyhash().to_hex();
+                usedKeyHashes.push(operator);
+            }
+            else if (cert.kind() === 6) {
+                const instantRewards = cert
+                    .as_move_instantaneous_rewards_cert()
+                    ?.move_instantaneous_reward().as_to_stake_creds()
+                    ?.keys();
+                if (!instantRewards)
+                    break;
+                for (let i = 0; i < instantRewards.len(); i++) {
+                    const credential = instantRewards.get(i);
+                    if (credential.kind() === 0) {
+                        const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(credential.to_keyhash().to_bytes());
+                        usedKeyHashes.push(keyHash);
+                    }
+                }
+            }
+        }
+    }
+    if (txBody.certs())
+        keyHashFromCert(txBody);
+    // key hashes from withdrawals
+    const withdrawals = txBody.withdrawals();
+    function keyHashFromWithdrawal(withdrawals) {
+        const rewardAddresses = withdrawals.keys();
+        for (let i = 0; i < rewardAddresses.len(); i++) {
+            const credential = rewardAddresses.get(i).payment_cred();
+            if (credential.kind() === 0) {
+                usedKeyHashes.push(credential.to_keyhash().to_hex());
+            }
+        }
+    }
+    if (withdrawals)
+        keyHashFromWithdrawal(withdrawals);
+    // key hashes from scripts
+    const scripts = tx.witness_set().native_scripts();
+    function keyHashFromScript(scripts) {
+        for (let i = 0; i < scripts.len(); i++) {
+            const script = scripts.get(i);
+            if (script.kind() === 0) {
+                const keyHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(script.as_script_pubkey().addr_keyhash().to_bytes());
+                usedKeyHashes.push(keyHash);
+            }
+            if (script.kind() === 1) {
+                keyHashFromScript(script.as_script_all().native_scripts());
+                return;
+            }
+            if (script.kind() === 2) {
+                keyHashFromScript(script.as_script_any().native_scripts());
+                return;
+            }
+            if (script.kind() === 3) {
+                keyHashFromScript(script.as_script_n_of_k().native_scripts());
+                return;
+            }
+        }
+    }
+    if (scripts)
+        keyHashFromScript(scripts);
+    // keyHashes from required signers
+    const requiredSigners = txBody.required_signers();
+    if (requiredSigners) {
+        for (let i = 0; i < requiredSigners.len(); i++) {
+            usedKeyHashes.push((0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(requiredSigners.get(i).to_bytes()));
+        }
+    }
+    // keyHashes from collateral
+    const collateral = txBody.collateral();
+    if (collateral) {
+        for (let i = 0; i < collateral.len(); i++) {
+            const input = collateral.get(i);
+            const txHash = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.toHex)(input.transaction_id().to_bytes());
+            const outputIndex = parseInt(input.index().to_str());
+            const utxo = ownUtxos.find((utxo) => utxo.txHash === txHash && utxo.outputIndex === outputIndex);
+            if (utxo) {
+                const { paymentCredential } = (0,_mod_js__WEBPACK_IMPORTED_MODULE_0__.getAddressDetails)(utxo.address);
+                usedKeyHashes.push(paymentCredential?.hash);
+            }
+        }
+    }
+    return usedKeyHashes.filter((k) => ownKeyHashes.includes(k));
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -237,7 +5710,74 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Blockfrost\": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.Blockfrost),\n/* harmony export */   \"C\": () => (/* reexport safe */ _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C),\n/* harmony export */   \"Constr\": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.Constr),\n/* harmony export */   \"Data\": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.Data),\n/* harmony export */   \"Emulator\": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.Emulator),\n/* harmony export */   \"Kupmios\": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.Kupmios),\n/* harmony export */   \"Lucid\": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.Lucid),\n/* harmony export */   \"M\": () => (/* reexport safe */ _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.M),\n/* harmony export */   \"MerkleTree\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.MerkleTree),\n/* harmony export */   \"PROTOCOL_PARAMETERS_DEFAULT\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.PROTOCOL_PARAMETERS_DEFAULT),\n/* harmony export */   \"SLOT_CONFIG_NETWORK\": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.SLOT_CONFIG_NETWORK),\n/* harmony export */   \"Tx\": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.Tx),\n/* harmony export */   \"TxComplete\": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.TxComplete),\n/* harmony export */   \"TxSigned\": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.TxSigned),\n/* harmony export */   \"Utils\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.Utils),\n/* harmony export */   \"applyDoubleCborEncoding\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.applyDoubleCborEncoding),\n/* harmony export */   \"applyParamsToScript\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.applyParamsToScript),\n/* harmony export */   \"assetsToValue\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.assetsToValue),\n/* harmony export */   \"combineHash\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.combineHash),\n/* harmony export */   \"concat\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.concat),\n/* harmony export */   \"coreToUtxo\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.coreToUtxo),\n/* harmony export */   \"createCostModels\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.createCostModels),\n/* harmony export */   \"datumJsonToCbor\": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.datumJsonToCbor),\n/* harmony export */   \"equals\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.equals),\n/* harmony export */   \"fromHex\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromHex),\n/* harmony export */   \"fromLabel\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromLabel),\n/* harmony export */   \"fromScriptRef\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromScriptRef),\n/* harmony export */   \"fromText\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromText),\n/* harmony export */   \"fromUnit\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromUnit),\n/* harmony export */   \"generatePrivateKey\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.generatePrivateKey),\n/* harmony export */   \"generateSeedPhrase\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.generateSeedPhrase),\n/* harmony export */   \"getAddressDetails\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.getAddressDetails),\n/* harmony export */   \"nativeScriptFromJson\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.nativeScriptFromJson),\n/* harmony export */   \"networkToId\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.networkToId),\n/* harmony export */   \"paymentCredentialOf\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.paymentCredentialOf),\n/* harmony export */   \"sha256\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.sha256),\n/* harmony export */   \"slotToBeginUnixTime\": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.slotToBeginUnixTime),\n/* harmony export */   \"stakeCredentialOf\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.stakeCredentialOf),\n/* harmony export */   \"toHex\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toHex),\n/* harmony export */   \"toLabel\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toLabel),\n/* harmony export */   \"toPublicKey\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toPublicKey),\n/* harmony export */   \"toScriptRef\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toScriptRef),\n/* harmony export */   \"toText\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toText),\n/* harmony export */   \"toUnit\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toUnit),\n/* harmony export */   \"unixTimeToEnclosingSlot\": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.unixTimeToEnclosingSlot),\n/* harmony export */   \"utxoToCore\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.utxoToCore),\n/* harmony export */   \"valueToAssets\": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.valueToAssets)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lucid/mod.js */ \"./node_modules/lucid-cardano/esm/src/lucid/mod.js\");\n/* harmony import */ var _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./provider/mod.js */ \"./node_modules/lucid-cardano/esm/src/provider/mod.js\");\n/* harmony import */ var _types_mod_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./types/mod.js */ \"./node_modules/lucid-cardano/esm/src/types/mod.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\n/* harmony import */ var _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./plutus/mod.js */ \"./node_modules/lucid-cardano/esm/src/plutus/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__, _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__, _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__, _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__, _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\n\n\n\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/mod.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Blockfrost": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.Blockfrost),
+/* harmony export */   "C": () => (/* reexport safe */ _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C),
+/* harmony export */   "Constr": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.Constr),
+/* harmony export */   "Data": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.Data),
+/* harmony export */   "Emulator": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.Emulator),
+/* harmony export */   "Kupmios": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.Kupmios),
+/* harmony export */   "Lucid": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.Lucid),
+/* harmony export */   "M": () => (/* reexport safe */ _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.M),
+/* harmony export */   "MerkleTree": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.MerkleTree),
+/* harmony export */   "PROTOCOL_PARAMETERS_DEFAULT": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.PROTOCOL_PARAMETERS_DEFAULT),
+/* harmony export */   "SLOT_CONFIG_NETWORK": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.SLOT_CONFIG_NETWORK),
+/* harmony export */   "Tx": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.Tx),
+/* harmony export */   "TxComplete": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.TxComplete),
+/* harmony export */   "TxSigned": () => (/* reexport safe */ _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__.TxSigned),
+/* harmony export */   "Utils": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.Utils),
+/* harmony export */   "applyDoubleCborEncoding": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.applyDoubleCborEncoding),
+/* harmony export */   "applyParamsToScript": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.applyParamsToScript),
+/* harmony export */   "assetsToValue": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.assetsToValue),
+/* harmony export */   "combineHash": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.combineHash),
+/* harmony export */   "concat": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.concat),
+/* harmony export */   "coreToUtxo": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.coreToUtxo),
+/* harmony export */   "createCostModels": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.createCostModels),
+/* harmony export */   "datumJsonToCbor": () => (/* reexport safe */ _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__.datumJsonToCbor),
+/* harmony export */   "equals": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.equals),
+/* harmony export */   "fromHex": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromHex),
+/* harmony export */   "fromLabel": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromLabel),
+/* harmony export */   "fromScriptRef": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromScriptRef),
+/* harmony export */   "fromText": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromText),
+/* harmony export */   "fromUnit": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.fromUnit),
+/* harmony export */   "generatePrivateKey": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.generatePrivateKey),
+/* harmony export */   "generateSeedPhrase": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.generateSeedPhrase),
+/* harmony export */   "getAddressDetails": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.getAddressDetails),
+/* harmony export */   "nativeScriptFromJson": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.nativeScriptFromJson),
+/* harmony export */   "networkToId": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.networkToId),
+/* harmony export */   "paymentCredentialOf": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.paymentCredentialOf),
+/* harmony export */   "sha256": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.sha256),
+/* harmony export */   "slotToBeginUnixTime": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.slotToBeginUnixTime),
+/* harmony export */   "stakeCredentialOf": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.stakeCredentialOf),
+/* harmony export */   "toHex": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toHex),
+/* harmony export */   "toLabel": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toLabel),
+/* harmony export */   "toPublicKey": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toPublicKey),
+/* harmony export */   "toScriptRef": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toScriptRef),
+/* harmony export */   "toText": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toText),
+/* harmony export */   "toUnit": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.toUnit),
+/* harmony export */   "unixTimeToEnclosingSlot": () => (/* reexport safe */ _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__.unixTimeToEnclosingSlot),
+/* harmony export */   "utxoToCore": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.utxoToCore),
+/* harmony export */   "valueToAssets": () => (/* reexport safe */ _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__.valueToAssets)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lucid/mod.js */ "./node_modules/lucid-cardano/esm/src/lucid/mod.js");
+/* harmony import */ var _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./provider/mod.js */ "./node_modules/lucid-cardano/esm/src/provider/mod.js");
+/* harmony import */ var _types_mod_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./types/mod.js */ "./node_modules/lucid-cardano/esm/src/types/mod.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+/* harmony import */ var _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./plutus/mod.js */ "./node_modules/lucid-cardano/esm/src/plutus/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__, _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__, _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _lucid_mod_js__WEBPACK_IMPORTED_MODULE_1__, _provider_mod_js__WEBPACK_IMPORTED_MODULE_2__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_4__, _plutus_mod_js__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+
+
+
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -247,7 +5787,703 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Constr\": () => (/* binding */ Constr),\n/* harmony export */   \"Data\": () => (/* binding */ Data)\n/* harmony export */ });\n/* harmony import */ var _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/x/typebox@0.25.13/src/typebox.js */ \"./node_modules/lucid-cardano/esm/deps/deno.land/x/typebox@0.25.13/src/typebox.js\");\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils.js */ \"./node_modules/lucid-cardano/esm/src/utils/utils.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\nclass Constr {\n    constructor(index, fields) {\n        Object.defineProperty(this, \"index\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"fields\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.index = index;\n        this.fields = fields;\n    }\n}\nconst Data = {\n    // Types\n    // Note: Recursive types are not supported (yet)\n    Integer: function (options) {\n        const integer = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({ dataType: \"integer\" });\n        if (options) {\n            Object.entries(options).forEach(([key, value]) => {\n                integer[key] = value;\n            });\n        }\n        return integer;\n    },\n    Bytes: function (options) {\n        const bytes = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({ dataType: \"bytes\" });\n        if (options) {\n            Object.entries(options).forEach(([key, value]) => {\n                bytes[key] = value;\n            });\n        }\n        return bytes;\n    },\n    Boolean: function () {\n        return _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({\n            anyOf: [\n                {\n                    title: \"False\",\n                    dataType: \"constructor\",\n                    index: 0,\n                    fields: [],\n                },\n                {\n                    title: \"True\",\n                    dataType: \"constructor\",\n                    index: 1,\n                    fields: [],\n                },\n            ],\n        });\n    },\n    Any: function () {\n        return _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({ description: \"Any Data.\" });\n    },\n    Array: function (items, options) {\n        const array = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Array(items);\n        replaceProperties(array, { dataType: \"list\", items });\n        if (options) {\n            Object.entries(options).forEach(([key, value]) => {\n                array[key] = value;\n            });\n        }\n        return array;\n    },\n    Map: function (keys, values, options) {\n        const map = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({\n            dataType: \"map\",\n            keys,\n            values,\n        });\n        if (options) {\n            Object.entries(options).forEach(([key, value]) => {\n                map[key] = value;\n            });\n        }\n        return map;\n    },\n    /**\n     * Object applies by default a PlutusData Constr with index 0.\\\n     * Set 'hasConstr' to false to serialize Object as PlutusData List.\n     */\n    Object: function (properties, options) {\n        const object = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Object(properties);\n        replaceProperties(object, {\n            anyOf: [{\n                    dataType: \"constructor\",\n                    index: 0,\n                    fields: Object.entries(properties).map(([title, p]) => ({\n                        ...p,\n                        title,\n                    })),\n                }],\n        });\n        object.anyOf[0].hasConstr = typeof options?.hasConstr === \"undefined\" ||\n            options.hasConstr;\n        return object;\n    },\n    Enum: function (items) {\n        const union = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Union(items);\n        replaceProperties(union, {\n            anyOf: items.map((item, index) => item.anyOf[0].fields.length === 0\n                ? ({\n                    ...item.anyOf[0],\n                    index,\n                })\n                : ({\n                    dataType: \"constructor\",\n                    title: (() => {\n                        const title = item.anyOf[0].fields[0].title;\n                        if (title.charAt(0) !==\n                            title.charAt(0).toUpperCase()) {\n                            throw new Error(`Enum '${title}' needs to start with an uppercase letter.`);\n                        }\n                        return item.anyOf[0].fields[0].title;\n                    })(),\n                    index,\n                    fields: item.anyOf[0].fields[0].items,\n                })),\n        });\n        return union;\n    },\n    /**\n     * Tuple is by default a PlutusData List.\\\n     * Set 'hasConstr' to true to apply a PlutusData Constr with index 0.\n     */\n    Tuple: function (items, options) {\n        const tuple = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Tuple(items);\n        replaceProperties(tuple, {\n            dataType: \"list\",\n            items,\n        });\n        if (options) {\n            Object.entries(options).forEach(([key, value]) => {\n                tuple[key] = value;\n            });\n        }\n        return tuple;\n    },\n    Literal: function (title) {\n        if (title.charAt(0) !== title.charAt(0).toUpperCase()) {\n            throw new Error(`Enum '${title}' needs to start with an uppercase letter.`);\n        }\n        const literal = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Literal(title);\n        replaceProperties(literal, {\n            anyOf: [{\n                    dataType: \"constructor\",\n                    title,\n                    index: 0,\n                    fields: [],\n                }],\n        });\n        return literal;\n    },\n    Nullable: function (item) {\n        return _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({\n            anyOf: [\n                {\n                    title: \"Some\",\n                    description: \"An optional value.\",\n                    dataType: \"constructor\",\n                    index: 0,\n                    fields: [\n                        item,\n                    ],\n                },\n                {\n                    title: \"None\",\n                    description: \"Nothing.\",\n                    dataType: \"constructor\",\n                    index: 1,\n                    fields: [],\n                },\n            ],\n        });\n    },\n    /**\n     * Convert PlutusData to Cbor encoded data.\\\n     * Or apply a shape and convert the provided data struct to Cbor encoded data.\n     */\n    to,\n    /** Convert Cbor encoded data to PlutusData */\n    from,\n    /**\n     * Note Constr cannot be used here.\\\n     * Strings prefixed with '0x' are not UTF-8 encoded.\n     */\n    fromJson,\n    /**\n     * Note Constr cannot be used here, also only bytes/integers as Json keys.\\\n     */\n    toJson,\n    void: function () {\n        return \"d87980\";\n    },\n    castFrom,\n    castTo,\n};\n/**\n * Convert PlutusData to Cbor encoded data.\\\n * Or apply a shape and convert the provided data struct to Cbor encoded data.\n */\nfunction to(data, shape) {\n    function serialize(data) {\n        try {\n            if (typeof data === \"bigint\") {\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_integer(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigInt.from_str(data.toString()));\n            }\n            else if (typeof data === \"string\") {\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(data));\n            }\n            else if (data instanceof Constr) {\n                const { index, fields } = data;\n                const plutusList = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusList[\"new\"]();\n                fields.forEach((field) => plutusList.add(serialize(field)));\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_constr_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ConstrPlutusData[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(index.toString()), plutusList));\n            }\n            else if (data instanceof Array) {\n                const plutusList = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusList[\"new\"]();\n                data.forEach((arg) => plutusList.add(serialize(arg)));\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_list(plutusList);\n            }\n            else if (data instanceof Map) {\n                const plutusMap = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusMap[\"new\"]();\n                for (const [key, value] of data.entries()) {\n                    plutusMap.insert(serialize(key), serialize(value));\n                }\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_map(plutusMap);\n            }\n            throw new Error(\"Unsupported type\");\n        }\n        catch (error) {\n            throw new Error(\"Could not serialize the data: \" + error);\n        }\n    }\n    const d = shape ? castTo(data, shape) : data;\n    return (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(serialize(d).to_bytes());\n}\n/**\n *  Convert Cbor encoded data to Data.\\\n *  Or apply a shape and cast the cbor encoded data to a certain type.\n */\nfunction from(raw, shape) {\n    function deserialize(data) {\n        if (data.kind() === 0) {\n            const constr = data.as_constr_plutus_data();\n            const l = constr.data();\n            const desL = [];\n            for (let i = 0; i < l.len(); i++) {\n                desL.push(deserialize(l.get(i)));\n            }\n            return new Constr(parseInt(constr.alternative().to_str()), desL);\n        }\n        else if (data.kind() === 1) {\n            const m = data.as_map();\n            const desM = new Map();\n            const keys = m.keys();\n            for (let i = 0; i < keys.len(); i++) {\n                desM.set(deserialize(keys.get(i)), deserialize(m.get(keys.get(i))));\n            }\n            return desM;\n        }\n        else if (data.kind() === 2) {\n            const l = data.as_list();\n            const desL = [];\n            for (let i = 0; i < l.len(); i++) {\n                desL.push(deserialize(l.get(i)));\n            }\n            return desL;\n        }\n        else if (data.kind() === 3) {\n            return BigInt(data.as_integer().to_str());\n        }\n        else if (data.kind() === 4) {\n            return (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(data.as_bytes());\n        }\n        throw new Error(\"Unsupported type\");\n    }\n    const data = deserialize(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(raw)));\n    return shape ? castFrom(data, shape) : data;\n}\n/**\n * Note Constr cannot be used here.\\\n * Strings prefixed with '0x' are not UTF-8 encoded.\n */\nfunction fromJson(json) {\n    function toData(json) {\n        if (typeof json === \"string\") {\n            return json.startsWith(\"0x\")\n                ? (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(json.slice(2)))\n                : (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromText)(json);\n        }\n        if (typeof json === \"number\")\n            return BigInt(json);\n        if (typeof json === \"bigint\")\n            return json;\n        if (json instanceof Array)\n            return json.map((v) => toData(v));\n        if (json instanceof Object) {\n            const tempMap = new Map();\n            Object.entries(json).forEach(([key, value]) => {\n                tempMap.set(toData(key), toData(value));\n            });\n            return tempMap;\n        }\n        throw new Error(\"Unsupported type\");\n    }\n    return toData(json);\n}\n/**\n * Note Constr cannot be used here, also only bytes/integers as Json keys.\\\n */\nfunction toJson(plutusData) {\n    function fromData(data) {\n        if (typeof data === \"bigint\" ||\n            typeof data === \"number\" ||\n            (typeof data === \"string\" &&\n                !isNaN(parseInt(data)) &&\n                data.slice(-1) === \"n\")) {\n            const bigint = typeof data === \"string\"\n                ? BigInt(data.slice(0, -1))\n                : data;\n            return parseInt(bigint.toString());\n        }\n        if (typeof data === \"string\") {\n            try {\n                return new TextDecoder(undefined, { fatal: true }).decode((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(data));\n            }\n            catch (_) {\n                return \"0x\" + (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(data));\n            }\n        }\n        if (data instanceof Array)\n            return data.map((v) => fromData(v));\n        if (data instanceof Map) {\n            const tempJson = {};\n            data.forEach((value, key) => {\n                const convertedKey = fromData(key);\n                if (typeof convertedKey !== \"string\" &&\n                    typeof convertedKey !== \"number\") {\n                    throw new Error(\"Unsupported type (Note: Only bytes or integers can be keys of a JSON object)\");\n                }\n                tempJson[convertedKey] = fromData(value);\n            });\n            return tempJson;\n        }\n        throw new Error(\"Unsupported type (Note: Constructor cannot be converted to JSON)\");\n    }\n    return fromData(plutusData);\n}\nfunction castFrom(data, shape) {\n    if (!shape)\n        throw new Error(\"Could not type cast data.\");\n    const shapeType = (shape.anyOf ? \"enum\" : \"\") || shape.dataType;\n    switch (shapeType) {\n        case \"integer\": {\n            if (typeof data !== \"bigint\") {\n                throw new Error(\"Could not type cast to integer.\");\n            }\n            integerConstraints(data, shape);\n            return data;\n        }\n        case \"bytes\": {\n            if (typeof data !== \"string\") {\n                throw new Error(\"Could not type cast to bytes.\");\n            }\n            bytesConstraints(data, shape);\n            return data;\n        }\n        case \"constructor\": {\n            if (data instanceof Constr && data.index === shape.index &&\n                (shape.hasConstr || shape.hasConstr === undefined)) {\n                const fields = {};\n                if (shape.fields.length !== data.fields.length) {\n                    throw new Error(\"Could not ype cast to object. Fields do not match.\");\n                }\n                shape.fields.forEach((field, fieldIndex) => {\n                    if ((/[A-Z]/.test(field.title[0]))) {\n                        throw new Error(\"Could not type cast to object. Object properties need to start with a lowercase letter.\");\n                    }\n                    fields[field.title] = castFrom(data.fields[fieldIndex], field);\n                });\n                return fields;\n            }\n            else if (data instanceof Array && !shape.hasConstr &&\n                shape.hasConstr !== undefined) {\n                const fields = {};\n                if (shape.fields.length !== data.length) {\n                    throw new Error(\"Could not ype cast to object. Fields do not match.\");\n                }\n                shape.fields.forEach((field, fieldIndex) => {\n                    if ((/[A-Z]/.test(field.title[0]))) {\n                        throw new Error(\"Could not type cast to object. Object properties need to start with a lowercase letter.\");\n                    }\n                    fields[field.title] = castFrom(data[fieldIndex], field);\n                });\n                return fields;\n            }\n            throw new Error(\"Could not type cast to object.\");\n        }\n        case \"enum\": {\n            // When enum has only one entry it's a single constructor/record object\n            if (shape.anyOf.length === 1) {\n                return castFrom(data, shape.anyOf[0]);\n            }\n            if (!(data instanceof Constr)) {\n                throw new Error(\"Could not type cast to enum.\");\n            }\n            const enumShape = shape.anyOf.find((entry) => entry.index === data.index);\n            if (!enumShape || enumShape.fields.length !== data.fields.length) {\n                throw new Error(\"Could not type cast to enum.\");\n            }\n            if (isBoolean(shape)) {\n                if (data.fields.length !== 0) {\n                    throw new Error(\"Could not type cast to boolean.\");\n                }\n                switch (data.index) {\n                    case 0:\n                        return false;\n                    case 1:\n                        return true;\n                }\n                throw new Error(\"Could not type cast to boolean.\");\n            }\n            else if (isNullable(shape)) {\n                switch (data.index) {\n                    case 0: {\n                        if (data.fields.length !== 1) {\n                            throw new Error(\"Could not type cast to nullable object.\");\n                        }\n                        return castFrom(data.fields[0], shape.anyOf[0].fields[0]);\n                    }\n                    case 1: {\n                        if (data.fields.length !== 0) {\n                            throw new Error(\"Could not type cast to nullable object.\");\n                        }\n                        return null;\n                    }\n                }\n                throw new Error(\"Could not type cast to nullable object.\");\n            }\n            switch (enumShape.dataType) {\n                case \"constructor\": {\n                    if (enumShape.fields.length === 0) {\n                        if (/[A-Z]/.test(enumShape.title[0])) {\n                            return enumShape.title;\n                        }\n                        throw new Error(\"Could not type cast to enum.\");\n                    }\n                    else {\n                        if (!(/[A-Z]/.test(enumShape.title))) {\n                            throw new Error(\"Could not type cast to enum. Enums need to start with an uppercase letter.\");\n                        }\n                        if (enumShape.fields.length !== data.fields.length) {\n                            throw new Error(\"Could not type cast to enum.\");\n                        }\n                        return {\n                            [enumShape.title]: enumShape.fields.map((field, index) => castFrom(data.fields[index], field)),\n                        };\n                    }\n                }\n            }\n            throw new Error(\"Could not type cast to enum.\");\n        }\n        case \"list\": {\n            if (shape.items instanceof Array) {\n                // tuple\n                if (data instanceof Constr &&\n                    data.index === 0 &&\n                    shape.hasConstr) {\n                    return data.fields.map((field, index) => castFrom(field, shape.items[index]));\n                }\n                else if (data instanceof Array && !shape.hasConstr) {\n                    return data.map((field, index) => castFrom(field, shape.items[index]));\n                }\n                throw new Error(\"Could not type cast to tuple.\");\n            }\n            else {\n                // array\n                if (!(data instanceof Array)) {\n                    throw new Error(\"Could not type cast to array.\");\n                }\n                listConstraints(data, shape);\n                return data.map((field) => castFrom(field, shape.items));\n            }\n        }\n        case \"map\": {\n            if (!(data instanceof Map)) {\n                throw new Error(\"Could not type cast to map.\");\n            }\n            mapConstraints(data, shape);\n            const map = new Map();\n            for (const [key, value] of (data)\n                .entries()) {\n                map.set(castFrom(key, shape.keys), castFrom(value, shape.values));\n            }\n            return map;\n        }\n        case undefined: {\n            return data;\n        }\n    }\n    throw new Error(\"Could not type cast data.\");\n}\nfunction castTo(struct, shape) {\n    if (!shape)\n        throw new Error(\"Could not type cast struct.\");\n    const shapeType = (shape.anyOf ? \"enum\" : \"\") || shape.dataType;\n    switch (shapeType) {\n        case \"integer\": {\n            if (typeof struct !== \"bigint\") {\n                throw new Error(\"Could not type cast to integer.\");\n            }\n            integerConstraints(struct, shape);\n            return struct;\n        }\n        case \"bytes\": {\n            if (typeof struct !== \"string\") {\n                throw new Error(\"Could not type cast to bytes.\");\n            }\n            bytesConstraints(struct, shape);\n            return struct;\n        }\n        case \"constructor\": {\n            if (typeof struct !== \"object\" || struct === null) {\n                throw new Error(\"Could not type cast to constructor.\");\n            }\n            const fields = shape.fields.map((field) => castTo(struct[field.title], field));\n            return (shape.hasConstr || shape.hasConstr === undefined)\n                ? new Constr(shape.index, fields)\n                : fields;\n        }\n        case \"enum\": {\n            // When enum has only one entry it's a single constructor/record object\n            if (shape.anyOf.length === 1) {\n                return castTo(struct, shape.anyOf[0]);\n            }\n            if (isBoolean(shape)) {\n                if (typeof struct !== \"boolean\") {\n                    throw new Error(\"Could not type cast to boolean.\");\n                }\n                return new Constr(struct ? 1 : 0, []);\n            }\n            else if (isNullable(shape)) {\n                if (struct === null)\n                    return new Constr(1, []);\n                else {\n                    const fields = shape.anyOf[0].fields;\n                    if (fields.length !== 1) {\n                        throw new Error(\"Could not type cast to nullable object.\");\n                    }\n                    return new Constr(0, [\n                        castTo(struct, fields[0]),\n                    ]);\n                }\n            }\n            switch (typeof struct) {\n                case \"string\": {\n                    if (!(/[A-Z]/.test(struct[0]))) {\n                        throw new Error(\"Could not type cast to enum. Enum needs to start with an uppercase letter.\");\n                    }\n                    const enumIndex = shape.anyOf.findIndex((s) => s.dataType === \"constructor\" &&\n                        s.fields.length === 0 &&\n                        s.title === struct);\n                    if (enumIndex === -1)\n                        throw new Error(\"Could not type cast to enum.\");\n                    return new Constr(enumIndex, []);\n                }\n                case \"object\": {\n                    if (struct === null)\n                        throw new Error(\"Could not type cast to enum.\");\n                    const structTitle = Object.keys(struct)[0];\n                    if (!(/[A-Z]/.test(structTitle))) {\n                        throw new Error(\"Could not type cast to enum. Enum needs to start with an uppercase letter.\");\n                    }\n                    const enumEntry = shape.anyOf.find((s) => s.dataType === \"constructor\" &&\n                        s.title === structTitle);\n                    if (!enumEntry)\n                        throw new Error(\"Could not type cast to enum.\");\n                    return new Constr(enumEntry.index, struct[structTitle].map((item, index) => castTo(item, enumEntry.fields[index])));\n                }\n            }\n            throw new Error(\"Could not type cast to enum.\");\n        }\n        case \"list\": {\n            if (!(struct instanceof Array)) {\n                throw new Error(\"Could not type cast to array/tuple.\");\n            }\n            if (shape.items instanceof Array) {\n                // tuple\n                const fields = struct.map((item, index) => castTo(item, shape.items[index]));\n                return shape.hasConstr ? new Constr(0, fields) : fields;\n            }\n            else {\n                // array\n                listConstraints(struct, shape);\n                return struct.map((item) => castTo(item, shape.items));\n            }\n        }\n        case \"map\": {\n            if (!(struct instanceof Map)) {\n                throw new Error(\"Could not type cast to map.\");\n            }\n            mapConstraints(struct, shape);\n            const map = new Map();\n            for (const [key, value] of (struct)\n                .entries()) {\n                map.set(castTo(key, shape.keys), castTo(value, shape.values));\n            }\n            return map;\n        }\n        case undefined: {\n            return struct;\n        }\n    }\n    throw new Error(\"Could not type cast struct.\");\n}\nfunction integerConstraints(integer, shape) {\n    if (shape.minimum && integer < BigInt(shape.minimum)) {\n        throw new Error(`Integer ${integer} is below the minimum ${shape.minimum}.`);\n    }\n    if (shape.maximum && integer > BigInt(shape.maximum)) {\n        throw new Error(`Integer ${integer} is above the maxiumum ${shape.maximum}.`);\n    }\n    if (shape.exclusiveMinimum && integer <= BigInt(shape.exclusiveMinimum)) {\n        throw new Error(`Integer ${integer} is below the exclusive minimum ${shape.exclusiveMinimum}.`);\n    }\n    if (shape.exclusiveMaximum && integer >= BigInt(shape.exclusiveMaximum)) {\n        throw new Error(`Integer ${integer} is above the exclusive maximum ${shape.exclusiveMaximum}.`);\n    }\n}\nfunction bytesConstraints(bytes, shape) {\n    if (shape.enum && !shape.enum.some((keyword) => keyword === bytes))\n        throw new Error(`None of the keywords match with '${bytes}'.`);\n    if (shape.minLength && bytes.length / 2 < shape.minLength) {\n        throw new Error(`Bytes need to have a length of at least ${shape.minLength} bytes.`);\n    }\n    if (shape.maxLength && bytes.length / 2 > shape.maxLength) {\n        throw new Error(`Bytes can have a length of at most ${shape.minLength} bytes.`);\n    }\n}\nfunction listConstraints(list, shape) {\n    if (shape.minItems && list.length < shape.minItems) {\n        throw new Error(`Array needs to contain at least ${shape.minItems} items.`);\n    }\n    if (shape.maxItems && list.length > shape.maxItems) {\n        throw new Error(`Array can contain at most ${shape.maxItems} items.`);\n    }\n    if (shape.uniqueItems && (new Set(list)).size !== list.length) {\n        // Note this only works for primitive types like string and bigint.\n        throw new Error(\"Array constains duplicates.\");\n    }\n}\nfunction mapConstraints(map, shape) {\n    if (shape.minItems && map.size < shape.minItems) {\n        throw new Error(`Map needs to contain at least ${shape.minItems} items.`);\n    }\n    if (shape.maxItems && map.size > shape.maxItems) {\n        throw new Error(`Map can contain at most ${shape.maxItems} items.`);\n    }\n}\nfunction isBoolean(shape) {\n    return shape.anyOf && shape.anyOf[0]?.title === \"False\" &&\n        shape.anyOf[1]?.title === \"True\";\n}\nfunction isNullable(shape) {\n    return shape.anyOf && shape.anyOf[0]?.title === \"Some\" &&\n        shape.anyOf[1]?.title === \"None\";\n}\nfunction replaceProperties(object, properties) {\n    Object.keys(object).forEach((key) => {\n        delete object[key];\n    });\n    Object.assign(object, properties);\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/plutus/data.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Constr": () => (/* binding */ Constr),
+/* harmony export */   "Data": () => (/* binding */ Data)
+/* harmony export */ });
+/* harmony import */ var _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/x/typebox@0.25.13/src/typebox.js */ "./node_modules/lucid-cardano/esm/deps/deno.land/x/typebox@0.25.13/src/typebox.js");
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils.js */ "./node_modules/lucid-cardano/esm/src/utils/utils.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+class Constr {
+    constructor(index, fields) {
+        Object.defineProperty(this, "index", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "fields", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.index = index;
+        this.fields = fields;
+    }
+}
+const Data = {
+    // Types
+    // Note: Recursive types are not supported (yet)
+    Integer: function (options) {
+        const integer = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({ dataType: "integer" });
+        if (options) {
+            Object.entries(options).forEach(([key, value]) => {
+                integer[key] = value;
+            });
+        }
+        return integer;
+    },
+    Bytes: function (options) {
+        const bytes = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({ dataType: "bytes" });
+        if (options) {
+            Object.entries(options).forEach(([key, value]) => {
+                bytes[key] = value;
+            });
+        }
+        return bytes;
+    },
+    Boolean: function () {
+        return _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({
+            anyOf: [
+                {
+                    title: "False",
+                    dataType: "constructor",
+                    index: 0,
+                    fields: [],
+                },
+                {
+                    title: "True",
+                    dataType: "constructor",
+                    index: 1,
+                    fields: [],
+                },
+            ],
+        });
+    },
+    Any: function () {
+        return _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({ description: "Any Data." });
+    },
+    Array: function (items, options) {
+        const array = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Array(items);
+        replaceProperties(array, { dataType: "list", items });
+        if (options) {
+            Object.entries(options).forEach(([key, value]) => {
+                array[key] = value;
+            });
+        }
+        return array;
+    },
+    Map: function (keys, values, options) {
+        const map = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({
+            dataType: "map",
+            keys,
+            values,
+        });
+        if (options) {
+            Object.entries(options).forEach(([key, value]) => {
+                map[key] = value;
+            });
+        }
+        return map;
+    },
+    /**
+     * Object applies by default a PlutusData Constr with index 0.\
+     * Set 'hasConstr' to false to serialize Object as PlutusData List.
+     */
+    Object: function (properties, options) {
+        const object = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Object(properties);
+        replaceProperties(object, {
+            anyOf: [{
+                    dataType: "constructor",
+                    index: 0,
+                    fields: Object.entries(properties).map(([title, p]) => ({
+                        ...p,
+                        title,
+                    })),
+                }],
+        });
+        object.anyOf[0].hasConstr = typeof options?.hasConstr === "undefined" ||
+            options.hasConstr;
+        return object;
+    },
+    Enum: function (items) {
+        const union = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Union(items);
+        replaceProperties(union, {
+            anyOf: items.map((item, index) => item.anyOf[0].fields.length === 0
+                ? ({
+                    ...item.anyOf[0],
+                    index,
+                })
+                : ({
+                    dataType: "constructor",
+                    title: (() => {
+                        const title = item.anyOf[0].fields[0].title;
+                        if (title.charAt(0) !==
+                            title.charAt(0).toUpperCase()) {
+                            throw new Error(`Enum '${title}' needs to start with an uppercase letter.`);
+                        }
+                        return item.anyOf[0].fields[0].title;
+                    })(),
+                    index,
+                    fields: item.anyOf[0].fields[0].items,
+                })),
+        });
+        return union;
+    },
+    /**
+     * Tuple is by default a PlutusData List.\
+     * Set 'hasConstr' to true to apply a PlutusData Constr with index 0.
+     */
+    Tuple: function (items, options) {
+        const tuple = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Tuple(items);
+        replaceProperties(tuple, {
+            dataType: "list",
+            items,
+        });
+        if (options) {
+            Object.entries(options).forEach(([key, value]) => {
+                tuple[key] = value;
+            });
+        }
+        return tuple;
+    },
+    Literal: function (title) {
+        if (title.charAt(0) !== title.charAt(0).toUpperCase()) {
+            throw new Error(`Enum '${title}' needs to start with an uppercase letter.`);
+        }
+        const literal = _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Literal(title);
+        replaceProperties(literal, {
+            anyOf: [{
+                    dataType: "constructor",
+                    title,
+                    index: 0,
+                    fields: [],
+                }],
+        });
+        return literal;
+    },
+    Nullable: function (item) {
+        return _deps_deno_land_x_typebox_0_25_13_src_typebox_js__WEBPACK_IMPORTED_MODULE_0__.Type.Unsafe({
+            anyOf: [
+                {
+                    title: "Some",
+                    description: "An optional value.",
+                    dataType: "constructor",
+                    index: 0,
+                    fields: [
+                        item,
+                    ],
+                },
+                {
+                    title: "None",
+                    description: "Nothing.",
+                    dataType: "constructor",
+                    index: 1,
+                    fields: [],
+                },
+            ],
+        });
+    },
+    /**
+     * Convert PlutusData to Cbor encoded data.\
+     * Or apply a shape and convert the provided data struct to Cbor encoded data.
+     */
+    to,
+    /** Convert Cbor encoded data to PlutusData */
+    from,
+    /**
+     * Note Constr cannot be used here.\
+     * Strings prefixed with '0x' are not UTF-8 encoded.
+     */
+    fromJson,
+    /**
+     * Note Constr cannot be used here, also only bytes/integers as Json keys.\
+     */
+    toJson,
+    void: function () {
+        return "d87980";
+    },
+    castFrom,
+    castTo,
+};
+/**
+ * Convert PlutusData to Cbor encoded data.\
+ * Or apply a shape and convert the provided data struct to Cbor encoded data.
+ */
+function to(data, shape) {
+    function serialize(data) {
+        try {
+            if (typeof data === "bigint") {
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_integer(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigInt.from_str(data.toString()));
+            }
+            else if (typeof data === "string") {
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(data));
+            }
+            else if (data instanceof Constr) {
+                const { index, fields } = data;
+                const plutusList = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusList["new"]();
+                fields.forEach((field) => plutusList.add(serialize(field)));
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_constr_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ConstrPlutusData["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(index.toString()), plutusList));
+            }
+            else if (data instanceof Array) {
+                const plutusList = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusList["new"]();
+                data.forEach((arg) => plutusList.add(serialize(arg)));
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_list(plutusList);
+            }
+            else if (data instanceof Map) {
+                const plutusMap = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusMap["new"]();
+                for (const [key, value] of data.entries()) {
+                    plutusMap.insert(serialize(key), serialize(value));
+                }
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.new_map(plutusMap);
+            }
+            throw new Error("Unsupported type");
+        }
+        catch (error) {
+            throw new Error("Could not serialize the data: " + error);
+        }
+    }
+    const d = shape ? castTo(data, shape) : data;
+    return (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(serialize(d).to_bytes());
+}
+/**
+ *  Convert Cbor encoded data to Data.\
+ *  Or apply a shape and cast the cbor encoded data to a certain type.
+ */
+function from(raw, shape) {
+    function deserialize(data) {
+        if (data.kind() === 0) {
+            const constr = data.as_constr_plutus_data();
+            const l = constr.data();
+            const desL = [];
+            for (let i = 0; i < l.len(); i++) {
+                desL.push(deserialize(l.get(i)));
+            }
+            return new Constr(parseInt(constr.alternative().to_str()), desL);
+        }
+        else if (data.kind() === 1) {
+            const m = data.as_map();
+            const desM = new Map();
+            const keys = m.keys();
+            for (let i = 0; i < keys.len(); i++) {
+                desM.set(deserialize(keys.get(i)), deserialize(m.get(keys.get(i))));
+            }
+            return desM;
+        }
+        else if (data.kind() === 2) {
+            const l = data.as_list();
+            const desL = [];
+            for (let i = 0; i < l.len(); i++) {
+                desL.push(deserialize(l.get(i)));
+            }
+            return desL;
+        }
+        else if (data.kind() === 3) {
+            return BigInt(data.as_integer().to_str());
+        }
+        else if (data.kind() === 4) {
+            return (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(data.as_bytes());
+        }
+        throw new Error("Unsupported type");
+    }
+    const data = deserialize(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(raw)));
+    return shape ? castFrom(data, shape) : data;
+}
+/**
+ * Note Constr cannot be used here.\
+ * Strings prefixed with '0x' are not UTF-8 encoded.
+ */
+function fromJson(json) {
+    function toData(json) {
+        if (typeof json === "string") {
+            return json.startsWith("0x")
+                ? (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(json.slice(2)))
+                : (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromText)(json);
+        }
+        if (typeof json === "number")
+            return BigInt(json);
+        if (typeof json === "bigint")
+            return json;
+        if (json instanceof Array)
+            return json.map((v) => toData(v));
+        if (json instanceof Object) {
+            const tempMap = new Map();
+            Object.entries(json).forEach(([key, value]) => {
+                tempMap.set(toData(key), toData(value));
+            });
+            return tempMap;
+        }
+        throw new Error("Unsupported type");
+    }
+    return toData(json);
+}
+/**
+ * Note Constr cannot be used here, also only bytes/integers as Json keys.\
+ */
+function toJson(plutusData) {
+    function fromData(data) {
+        if (typeof data === "bigint" ||
+            typeof data === "number" ||
+            (typeof data === "string" &&
+                !isNaN(parseInt(data)) &&
+                data.slice(-1) === "n")) {
+            const bigint = typeof data === "string"
+                ? BigInt(data.slice(0, -1))
+                : data;
+            return parseInt(bigint.toString());
+        }
+        if (typeof data === "string") {
+            try {
+                return new TextDecoder(undefined, { fatal: true }).decode((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(data));
+            }
+            catch (_) {
+                return "0x" + (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(data));
+            }
+        }
+        if (data instanceof Array)
+            return data.map((v) => fromData(v));
+        if (data instanceof Map) {
+            const tempJson = {};
+            data.forEach((value, key) => {
+                const convertedKey = fromData(key);
+                if (typeof convertedKey !== "string" &&
+                    typeof convertedKey !== "number") {
+                    throw new Error("Unsupported type (Note: Only bytes or integers can be keys of a JSON object)");
+                }
+                tempJson[convertedKey] = fromData(value);
+            });
+            return tempJson;
+        }
+        throw new Error("Unsupported type (Note: Constructor cannot be converted to JSON)");
+    }
+    return fromData(plutusData);
+}
+function castFrom(data, shape) {
+    if (!shape)
+        throw new Error("Could not type cast data.");
+    const shapeType = (shape.anyOf ? "enum" : "") || shape.dataType;
+    switch (shapeType) {
+        case "integer": {
+            if (typeof data !== "bigint") {
+                throw new Error("Could not type cast to integer.");
+            }
+            integerConstraints(data, shape);
+            return data;
+        }
+        case "bytes": {
+            if (typeof data !== "string") {
+                throw new Error("Could not type cast to bytes.");
+            }
+            bytesConstraints(data, shape);
+            return data;
+        }
+        case "constructor": {
+            if (data instanceof Constr && data.index === shape.index &&
+                (shape.hasConstr || shape.hasConstr === undefined)) {
+                const fields = {};
+                if (shape.fields.length !== data.fields.length) {
+                    throw new Error("Could not ype cast to object. Fields do not match.");
+                }
+                shape.fields.forEach((field, fieldIndex) => {
+                    if ((/[A-Z]/.test(field.title[0]))) {
+                        throw new Error("Could not type cast to object. Object properties need to start with a lowercase letter.");
+                    }
+                    fields[field.title] = castFrom(data.fields[fieldIndex], field);
+                });
+                return fields;
+            }
+            else if (data instanceof Array && !shape.hasConstr &&
+                shape.hasConstr !== undefined) {
+                const fields = {};
+                if (shape.fields.length !== data.length) {
+                    throw new Error("Could not ype cast to object. Fields do not match.");
+                }
+                shape.fields.forEach((field, fieldIndex) => {
+                    if ((/[A-Z]/.test(field.title[0]))) {
+                        throw new Error("Could not type cast to object. Object properties need to start with a lowercase letter.");
+                    }
+                    fields[field.title] = castFrom(data[fieldIndex], field);
+                });
+                return fields;
+            }
+            throw new Error("Could not type cast to object.");
+        }
+        case "enum": {
+            // When enum has only one entry it's a single constructor/record object
+            if (shape.anyOf.length === 1) {
+                return castFrom(data, shape.anyOf[0]);
+            }
+            if (!(data instanceof Constr)) {
+                throw new Error("Could not type cast to enum.");
+            }
+            const enumShape = shape.anyOf.find((entry) => entry.index === data.index);
+            if (!enumShape || enumShape.fields.length !== data.fields.length) {
+                throw new Error("Could not type cast to enum.");
+            }
+            if (isBoolean(shape)) {
+                if (data.fields.length !== 0) {
+                    throw new Error("Could not type cast to boolean.");
+                }
+                switch (data.index) {
+                    case 0:
+                        return false;
+                    case 1:
+                        return true;
+                }
+                throw new Error("Could not type cast to boolean.");
+            }
+            else if (isNullable(shape)) {
+                switch (data.index) {
+                    case 0: {
+                        if (data.fields.length !== 1) {
+                            throw new Error("Could not type cast to nullable object.");
+                        }
+                        return castFrom(data.fields[0], shape.anyOf[0].fields[0]);
+                    }
+                    case 1: {
+                        if (data.fields.length !== 0) {
+                            throw new Error("Could not type cast to nullable object.");
+                        }
+                        return null;
+                    }
+                }
+                throw new Error("Could not type cast to nullable object.");
+            }
+            switch (enumShape.dataType) {
+                case "constructor": {
+                    if (enumShape.fields.length === 0) {
+                        if (/[A-Z]/.test(enumShape.title[0])) {
+                            return enumShape.title;
+                        }
+                        throw new Error("Could not type cast to enum.");
+                    }
+                    else {
+                        if (!(/[A-Z]/.test(enumShape.title))) {
+                            throw new Error("Could not type cast to enum. Enums need to start with an uppercase letter.");
+                        }
+                        if (enumShape.fields.length !== data.fields.length) {
+                            throw new Error("Could not type cast to enum.");
+                        }
+                        return {
+                            [enumShape.title]: enumShape.fields.map((field, index) => castFrom(data.fields[index], field)),
+                        };
+                    }
+                }
+            }
+            throw new Error("Could not type cast to enum.");
+        }
+        case "list": {
+            if (shape.items instanceof Array) {
+                // tuple
+                if (data instanceof Constr &&
+                    data.index === 0 &&
+                    shape.hasConstr) {
+                    return data.fields.map((field, index) => castFrom(field, shape.items[index]));
+                }
+                else if (data instanceof Array && !shape.hasConstr) {
+                    return data.map((field, index) => castFrom(field, shape.items[index]));
+                }
+                throw new Error("Could not type cast to tuple.");
+            }
+            else {
+                // array
+                if (!(data instanceof Array)) {
+                    throw new Error("Could not type cast to array.");
+                }
+                listConstraints(data, shape);
+                return data.map((field) => castFrom(field, shape.items));
+            }
+        }
+        case "map": {
+            if (!(data instanceof Map)) {
+                throw new Error("Could not type cast to map.");
+            }
+            mapConstraints(data, shape);
+            const map = new Map();
+            for (const [key, value] of (data)
+                .entries()) {
+                map.set(castFrom(key, shape.keys), castFrom(value, shape.values));
+            }
+            return map;
+        }
+        case undefined: {
+            return data;
+        }
+    }
+    throw new Error("Could not type cast data.");
+}
+function castTo(struct, shape) {
+    if (!shape)
+        throw new Error("Could not type cast struct.");
+    const shapeType = (shape.anyOf ? "enum" : "") || shape.dataType;
+    switch (shapeType) {
+        case "integer": {
+            if (typeof struct !== "bigint") {
+                throw new Error("Could not type cast to integer.");
+            }
+            integerConstraints(struct, shape);
+            return struct;
+        }
+        case "bytes": {
+            if (typeof struct !== "string") {
+                throw new Error("Could not type cast to bytes.");
+            }
+            bytesConstraints(struct, shape);
+            return struct;
+        }
+        case "constructor": {
+            if (typeof struct !== "object" || struct === null) {
+                throw new Error("Could not type cast to constructor.");
+            }
+            const fields = shape.fields.map((field) => castTo(struct[field.title], field));
+            return (shape.hasConstr || shape.hasConstr === undefined)
+                ? new Constr(shape.index, fields)
+                : fields;
+        }
+        case "enum": {
+            // When enum has only one entry it's a single constructor/record object
+            if (shape.anyOf.length === 1) {
+                return castTo(struct, shape.anyOf[0]);
+            }
+            if (isBoolean(shape)) {
+                if (typeof struct !== "boolean") {
+                    throw new Error("Could not type cast to boolean.");
+                }
+                return new Constr(struct ? 1 : 0, []);
+            }
+            else if (isNullable(shape)) {
+                if (struct === null)
+                    return new Constr(1, []);
+                else {
+                    const fields = shape.anyOf[0].fields;
+                    if (fields.length !== 1) {
+                        throw new Error("Could not type cast to nullable object.");
+                    }
+                    return new Constr(0, [
+                        castTo(struct, fields[0]),
+                    ]);
+                }
+            }
+            switch (typeof struct) {
+                case "string": {
+                    if (!(/[A-Z]/.test(struct[0]))) {
+                        throw new Error("Could not type cast to enum. Enum needs to start with an uppercase letter.");
+                    }
+                    const enumIndex = shape.anyOf.findIndex((s) => s.dataType === "constructor" &&
+                        s.fields.length === 0 &&
+                        s.title === struct);
+                    if (enumIndex === -1)
+                        throw new Error("Could not type cast to enum.");
+                    return new Constr(enumIndex, []);
+                }
+                case "object": {
+                    if (struct === null)
+                        throw new Error("Could not type cast to enum.");
+                    const structTitle = Object.keys(struct)[0];
+                    if (!(/[A-Z]/.test(structTitle))) {
+                        throw new Error("Could not type cast to enum. Enum needs to start with an uppercase letter.");
+                    }
+                    const enumEntry = shape.anyOf.find((s) => s.dataType === "constructor" &&
+                        s.title === structTitle);
+                    if (!enumEntry)
+                        throw new Error("Could not type cast to enum.");
+                    return new Constr(enumEntry.index, struct[structTitle].map((item, index) => castTo(item, enumEntry.fields[index])));
+                }
+            }
+            throw new Error("Could not type cast to enum.");
+        }
+        case "list": {
+            if (!(struct instanceof Array)) {
+                throw new Error("Could not type cast to array/tuple.");
+            }
+            if (shape.items instanceof Array) {
+                // tuple
+                const fields = struct.map((item, index) => castTo(item, shape.items[index]));
+                return shape.hasConstr ? new Constr(0, fields) : fields;
+            }
+            else {
+                // array
+                listConstraints(struct, shape);
+                return struct.map((item) => castTo(item, shape.items));
+            }
+        }
+        case "map": {
+            if (!(struct instanceof Map)) {
+                throw new Error("Could not type cast to map.");
+            }
+            mapConstraints(struct, shape);
+            const map = new Map();
+            for (const [key, value] of (struct)
+                .entries()) {
+                map.set(castTo(key, shape.keys), castTo(value, shape.values));
+            }
+            return map;
+        }
+        case undefined: {
+            return struct;
+        }
+    }
+    throw new Error("Could not type cast struct.");
+}
+function integerConstraints(integer, shape) {
+    if (shape.minimum && integer < BigInt(shape.minimum)) {
+        throw new Error(`Integer ${integer} is below the minimum ${shape.minimum}.`);
+    }
+    if (shape.maximum && integer > BigInt(shape.maximum)) {
+        throw new Error(`Integer ${integer} is above the maxiumum ${shape.maximum}.`);
+    }
+    if (shape.exclusiveMinimum && integer <= BigInt(shape.exclusiveMinimum)) {
+        throw new Error(`Integer ${integer} is below the exclusive minimum ${shape.exclusiveMinimum}.`);
+    }
+    if (shape.exclusiveMaximum && integer >= BigInt(shape.exclusiveMaximum)) {
+        throw new Error(`Integer ${integer} is above the exclusive maximum ${shape.exclusiveMaximum}.`);
+    }
+}
+function bytesConstraints(bytes, shape) {
+    if (shape.enum && !shape.enum.some((keyword) => keyword === bytes))
+        throw new Error(`None of the keywords match with '${bytes}'.`);
+    if (shape.minLength && bytes.length / 2 < shape.minLength) {
+        throw new Error(`Bytes need to have a length of at least ${shape.minLength} bytes.`);
+    }
+    if (shape.maxLength && bytes.length / 2 > shape.maxLength) {
+        throw new Error(`Bytes can have a length of at most ${shape.minLength} bytes.`);
+    }
+}
+function listConstraints(list, shape) {
+    if (shape.minItems && list.length < shape.minItems) {
+        throw new Error(`Array needs to contain at least ${shape.minItems} items.`);
+    }
+    if (shape.maxItems && list.length > shape.maxItems) {
+        throw new Error(`Array can contain at most ${shape.maxItems} items.`);
+    }
+    if (shape.uniqueItems && (new Set(list)).size !== list.length) {
+        // Note this only works for primitive types like string and bigint.
+        throw new Error("Array constains duplicates.");
+    }
+}
+function mapConstraints(map, shape) {
+    if (shape.minItems && map.size < shape.minItems) {
+        throw new Error(`Map needs to contain at least ${shape.minItems} items.`);
+    }
+    if (shape.maxItems && map.size > shape.maxItems) {
+        throw new Error(`Map can contain at most ${shape.maxItems} items.`);
+    }
+}
+function isBoolean(shape) {
+    return shape.anyOf && shape.anyOf[0]?.title === "False" &&
+        shape.anyOf[1]?.title === "True";
+}
+function isNullable(shape) {
+    return shape.anyOf && shape.anyOf[0]?.title === "Some" &&
+        shape.anyOf[1]?.title === "None";
+}
+function replaceProperties(object, properties) {
+    Object.keys(object).forEach((key) => {
+        delete object[key];
+    });
+    Object.assign(object, properties);
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -257,7 +6493,24 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \**********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Constr\": () => (/* reexport safe */ _data_js__WEBPACK_IMPORTED_MODULE_0__.Constr),\n/* harmony export */   \"Data\": () => (/* reexport safe */ _data_js__WEBPACK_IMPORTED_MODULE_0__.Data),\n/* harmony export */   \"SLOT_CONFIG_NETWORK\": () => (/* reexport safe */ _time_js__WEBPACK_IMPORTED_MODULE_1__.SLOT_CONFIG_NETWORK),\n/* harmony export */   \"slotToBeginUnixTime\": () => (/* reexport safe */ _time_js__WEBPACK_IMPORTED_MODULE_1__.slotToBeginUnixTime),\n/* harmony export */   \"unixTimeToEnclosingSlot\": () => (/* reexport safe */ _time_js__WEBPACK_IMPORTED_MODULE_1__.unixTimeToEnclosingSlot)\n/* harmony export */ });\n/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data.js */ \"./node_modules/lucid-cardano/esm/src/plutus/data.js\");\n/* harmony import */ var _time_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./time.js */ \"./node_modules/lucid-cardano/esm/src/plutus/time.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_data_js__WEBPACK_IMPORTED_MODULE_0__]);\n_data_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\n\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/plutus/mod.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Constr": () => (/* reexport safe */ _data_js__WEBPACK_IMPORTED_MODULE_0__.Constr),
+/* harmony export */   "Data": () => (/* reexport safe */ _data_js__WEBPACK_IMPORTED_MODULE_0__.Data),
+/* harmony export */   "SLOT_CONFIG_NETWORK": () => (/* reexport safe */ _time_js__WEBPACK_IMPORTED_MODULE_1__.SLOT_CONFIG_NETWORK),
+/* harmony export */   "slotToBeginUnixTime": () => (/* reexport safe */ _time_js__WEBPACK_IMPORTED_MODULE_1__.slotToBeginUnixTime),
+/* harmony export */   "unixTimeToEnclosingSlot": () => (/* reexport safe */ _time_js__WEBPACK_IMPORTED_MODULE_1__.unixTimeToEnclosingSlot)
+/* harmony export */ });
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data.js */ "./node_modules/lucid-cardano/esm/src/plutus/data.js");
+/* harmony import */ var _time_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./time.js */ "./node_modules/lucid-cardano/esm/src/plutus/time.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_data_js__WEBPACK_IMPORTED_MODULE_0__]);
+_data_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
+
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -267,7 +6520,37 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***********************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"SLOT_CONFIG_NETWORK\": () => (/* binding */ SLOT_CONFIG_NETWORK),\n/* harmony export */   \"slotToBeginUnixTime\": () => (/* binding */ slotToBeginUnixTime),\n/* harmony export */   \"unixTimeToEnclosingSlot\": () => (/* binding */ unixTimeToEnclosingSlot)\n/* harmony export */ });\nconst SLOT_CONFIG_NETWORK = {\n    Mainnet: { zeroTime: 1596059091000, zeroSlot: 4492800, slotLength: 1000 },\n    Preview: { zeroTime: 1666656000000, zeroSlot: 0, slotLength: 1000 },\n    Preprod: {\n        zeroTime: 1654041600000 + 1728000000,\n        zeroSlot: 86400,\n        slotLength: 1000,\n    },\n    /** Customizable slot config (Initialized with 0 values). */\n    Custom: { zeroTime: 0, zeroSlot: 0, slotLength: 0 },\n};\nfunction slotToBeginUnixTime(slot, slotConfig) {\n    const msAfterBegin = (slot - slotConfig.zeroSlot) * slotConfig.slotLength;\n    return slotConfig.zeroTime + msAfterBegin;\n}\n// slotToBeginUnixTime and slotToEndUnixTime are identical when slotLength == 1. So we don't need to worry about this now.\n// function slotToEndUnixTime(slot: Slot, slotConfig: SlotConfig): UnixTime {\n//   return slotToBeginUnixTime(slot, slotConfig) + (slotConfig.slotLength - 1);\n// }\nfunction unixTimeToEnclosingSlot(unixTime, slotConfig) {\n    const timePassed = unixTime - slotConfig.zeroTime;\n    const slotsPassed = Math.floor(timePassed / slotConfig.slotLength);\n    return slotsPassed + slotConfig.zeroSlot;\n}\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/plutus/time.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SLOT_CONFIG_NETWORK": () => (/* binding */ SLOT_CONFIG_NETWORK),
+/* harmony export */   "slotToBeginUnixTime": () => (/* binding */ slotToBeginUnixTime),
+/* harmony export */   "unixTimeToEnclosingSlot": () => (/* binding */ unixTimeToEnclosingSlot)
+/* harmony export */ });
+const SLOT_CONFIG_NETWORK = {
+    Mainnet: { zeroTime: 1596059091000, zeroSlot: 4492800, slotLength: 1000 },
+    Preview: { zeroTime: 1666656000000, zeroSlot: 0, slotLength: 1000 },
+    Preprod: {
+        zeroTime: 1654041600000 + 1728000000,
+        zeroSlot: 86400,
+        slotLength: 1000,
+    },
+    /** Customizable slot config (Initialized with 0 values). */
+    Custom: { zeroTime: 0, zeroSlot: 0, slotLength: 0 },
+};
+function slotToBeginUnixTime(slot, slotConfig) {
+    const msAfterBegin = (slot - slotConfig.zeroSlot) * slotConfig.slotLength;
+    return slotConfig.zeroTime + msAfterBegin;
+}
+// slotToBeginUnixTime and slotToEndUnixTime are identical when slotLength == 1. So we don't need to worry about this now.
+// function slotToEndUnixTime(slot: Slot, slotConfig: SlotConfig): UnixTime {
+//   return slotToBeginUnixTime(slot, slotConfig) + (slotConfig.slotLength - 1);
+// }
+function unixTimeToEnclosingSlot(unixTime, slotConfig) {
+    const timePassed = unixTime - slotConfig.zeroTime;
+    const slotsPassed = Math.floor(timePassed / slotConfig.slotLength);
+    return slotsPassed + slotConfig.zeroSlot;
+}
+
 
 /***/ }),
 
@@ -277,7 +6560,272 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*******************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Blockfrost\": () => (/* binding */ Blockfrost),\n/* harmony export */   \"datumJsonToCbor\": () => (/* binding */ datumJsonToCbor)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\n/* harmony import */ var _package_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../package.js */ \"./node_modules/lucid-cardano/esm/package.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\nclass Blockfrost {\n    constructor(url, projectId) {\n        Object.defineProperty(this, \"url\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"projectId\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.url = url;\n        this.projectId = projectId || \"\";\n    }\n    async getProtocolParameters() {\n        const result = await fetch(`${this.url}/epochs/latest/parameters`, {\n            headers: { project_id: this.projectId, lucid },\n        }).then((res) => res.json());\n        return {\n            minFeeA: parseInt(result.min_fee_a),\n            minFeeB: parseInt(result.min_fee_b),\n            maxTxSize: parseInt(result.max_tx_size),\n            maxValSize: parseInt(result.max_val_size),\n            keyDeposit: BigInt(result.key_deposit),\n            poolDeposit: BigInt(result.pool_deposit),\n            priceMem: parseFloat(result.price_mem),\n            priceStep: parseFloat(result.price_step),\n            maxTxExMem: BigInt(result.max_tx_ex_mem),\n            maxTxExSteps: BigInt(result.max_tx_ex_steps),\n            coinsPerUtxoByte: BigInt(result.coins_per_utxo_size),\n            collateralPercentage: parseInt(result.collateral_percent),\n            maxCollateralInputs: parseInt(result.max_collateral_inputs),\n            costModels: result.cost_models,\n        };\n    }\n    async getUtxos(addressOrCredential) {\n        const queryPredicate = (() => {\n            if (typeof addressOrCredential === \"string\")\n                return addressOrCredential;\n            const credentialBech32 = addressOrCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(addressOrCredential.hash).to_bech32(\"addr_vkh\")\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_hex(addressOrCredential.hash).to_bech32(\"addr_vkh\"); // should be 'script' (CIP-0005)\n            return credentialBech32;\n        })();\n        let result = [];\n        let page = 1;\n        while (true) {\n            const pageResult = await fetch(`${this.url}/addresses/${queryPredicate}/utxos?page=${page}`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());\n            if (pageResult.error) {\n                if (pageResult.status_code === 404) {\n                    return [];\n                }\n                else {\n                    throw new Error(\"Could not fetch UTxOs from Blockfrost. Try again.\");\n                }\n            }\n            result = result.concat(pageResult);\n            if (pageResult.length <= 0)\n                break;\n            page++;\n        }\n        return this.blockfrostUtxosToUtxos(result);\n    }\n    async getUtxosWithUnit(addressOrCredential, unit) {\n        const queryPredicate = (() => {\n            if (typeof addressOrCredential === \"string\")\n                return addressOrCredential;\n            const credentialBech32 = addressOrCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(addressOrCredential.hash).to_bech32(\"addr_vkh\")\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_hex(addressOrCredential.hash).to_bech32(\"addr_vkh\"); // should be 'script' (CIP-0005)\n            return credentialBech32;\n        })();\n        let result = [];\n        let page = 1;\n        while (true) {\n            const pageResult = await fetch(`${this.url}/addresses/${queryPredicate}/utxos/${unit}?page=${page}`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());\n            if (pageResult.error) {\n                if (pageResult.status_code === 404) {\n                    return [];\n                }\n                else {\n                    throw new Error(\"Could not fetch UTxOs from Blockfrost. Try again.\");\n                }\n            }\n            result = result.concat(pageResult);\n            if (pageResult.length <= 0)\n                break;\n            page++;\n        }\n        return this.blockfrostUtxosToUtxos(result);\n    }\n    async getUtxoByUnit(unit) {\n        const addresses = await fetch(`${this.url}/assets/${unit}/addresses?count=2`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());\n        if (!addresses || addresses.error) {\n            throw new Error(\"Unit not found.\");\n        }\n        if (addresses.length > 1) {\n            throw new Error(\"Unit needs to be an NFT or only held by one address.\");\n        }\n        const address = addresses[0].address;\n        const utxos = await this.getUtxosWithUnit(address, unit);\n        if (utxos.length > 1) {\n            throw new Error(\"Unit needs to be an NFT or only held by one address.\");\n        }\n        return utxos[0];\n    }\n    async getUtxosByOutRef(outRefs) {\n        const queryHashes = [...new Set(outRefs.map((outRef) => outRef.txHash))];\n        const utxos = await Promise.all(queryHashes.map(async (txHash) => {\n            const result = await fetch(`${this.url}/txs/${txHash}/utxos`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());\n            if (!result || result.error) {\n                return [];\n            }\n            const utxosResult = result.outputs.map((\n            // deno-lint-ignore no-explicit-any\n            r) => ({\n                ...r,\n                tx_hash: txHash,\n            }));\n            return this.blockfrostUtxosToUtxos(utxosResult);\n        }));\n        return utxos.reduce((acc, utxos) => acc.concat(utxos), []).filter((utxo) => outRefs.some((outRef) => utxo.txHash === outRef.txHash && utxo.outputIndex === outRef.outputIndex));\n    }\n    async getDelegation(rewardAddress) {\n        const result = await fetch(`${this.url}/accounts/${rewardAddress}`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());\n        if (!result || result.error) {\n            return { poolId: null, rewards: 0n };\n        }\n        return {\n            poolId: result.pool_id || null,\n            rewards: BigInt(result.withdrawable_amount),\n        };\n    }\n    async getDatum(datumHash) {\n        const datum = await fetch(`${this.url}/scripts/datum/${datumHash}/cbor`, {\n            headers: { project_id: this.projectId, lucid },\n        })\n            .then((res) => res.json())\n            .then((res) => res.cbor);\n        if (!datum || datum.error) {\n            throw new Error(`No datum found for datum hash: ${datumHash}`);\n        }\n        return datum;\n    }\n    awaitTx(txHash, checkInterval = 3000) {\n        return new Promise((res) => {\n            const confirmation = setInterval(async () => {\n                const isConfirmed = await fetch(`${this.url}/txs/${txHash}`, {\n                    headers: { project_id: this.projectId, lucid },\n                }).then((res) => res.json());\n                if (isConfirmed && !isConfirmed.error) {\n                    clearInterval(confirmation);\n                    res(true);\n                    return;\n                }\n            }, checkInterval);\n        });\n    }\n    async submitTx(tx) {\n        const result = await fetch(`${this.url}/tx/submit`, {\n            method: \"POST\",\n            headers: {\n                \"Content-Type\": \"application/cbor\",\n                project_id: this.projectId,\n                lucid,\n            },\n            body: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(tx),\n        }).then((res) => res.json());\n        if (!result || result.error) {\n            if (result?.status_code === 400)\n                throw new Error(result.message);\n            else\n                throw new Error(\"Could not submit transaction.\");\n        }\n        return result;\n    }\n    async blockfrostUtxosToUtxos(result) {\n        return (await Promise.all(result.map(async (r) => ({\n            txHash: r.tx_hash,\n            outputIndex: r.output_index,\n            assets: (() => {\n                const a = {};\n                r.amount.forEach((am) => {\n                    a[am.unit] = BigInt(am.quantity);\n                });\n                return a;\n            })(),\n            address: r.address,\n            datumHash: !r.inline_datum ? r.data_hash : undefined,\n            datum: r.inline_datum,\n            scriptRef: r.reference_script_hash &&\n                (await (async () => {\n                    const { type, } = await fetch(`${this.url}/scripts/${r.reference_script_hash}`, {\n                        headers: { project_id: this.projectId, lucid },\n                    }).then((res) => res.json());\n                    // TODO: support native scripts\n                    if (type === \"Native\" || type === \"native\") {\n                        throw new Error(\"Native script ref not implemented!\");\n                    }\n                    const { cbor: script } = await fetch(`${this.url}/scripts/${r.reference_script_hash}/cbor`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());\n                    return {\n                        type: type === \"plutusV1\" ? \"PlutusV1\" : \"PlutusV2\",\n                        script: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.applyDoubleCborEncoding)(script),\n                    };\n                })()),\n        }))));\n    }\n}\n/**\n * This function is temporarily needed only, until Blockfrost returns the datum natively in Cbor.\n * The conversion is ambigious, that's why it's better to get the datum directly in Cbor.\n */\nfunction datumJsonToCbor(json) {\n    const convert = (json) => {\n        if (!isNaN(json.int)) {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_integer(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigInt.from_str(json.int.toString()));\n        }\n        else if (json.bytes || !isNaN(Number(json.bytes))) {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(json.bytes));\n        }\n        else if (json.map) {\n            const m = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusMap[\"new\"]();\n            json.map.forEach(({ k, v }) => {\n                m.insert(convert(k), convert(v));\n            });\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_map(m);\n        }\n        else if (json.list) {\n            const l = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusList[\"new\"]();\n            json.list.forEach((v) => {\n                l.add(convert(v));\n            });\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_list(l);\n        }\n        else if (!isNaN(json.constructor)) {\n            const l = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusList[\"new\"]();\n            json.fields.forEach((v) => {\n                l.add(convert(v));\n            });\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_constr_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ConstrPlutusData[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(json.constructor.toString()), l));\n        }\n        throw new Error(\"Unsupported type\");\n    };\n    return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(convert(json).to_bytes());\n}\nconst lucid = _package_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"].version; // Lucid version\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/provider/blockfrost.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Blockfrost": () => (/* binding */ Blockfrost),
+/* harmony export */   "datumJsonToCbor": () => (/* binding */ datumJsonToCbor)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+/* harmony import */ var _package_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../package.js */ "./node_modules/lucid-cardano/esm/package.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+class Blockfrost {
+    constructor(url, projectId) {
+        Object.defineProperty(this, "url", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "projectId", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.url = url;
+        this.projectId = projectId || "";
+    }
+    async getProtocolParameters() {
+        const result = await fetch(`${this.url}/epochs/latest/parameters`, {
+            headers: { project_id: this.projectId, lucid },
+        }).then((res) => res.json());
+        return {
+            minFeeA: parseInt(result.min_fee_a),
+            minFeeB: parseInt(result.min_fee_b),
+            maxTxSize: parseInt(result.max_tx_size),
+            maxValSize: parseInt(result.max_val_size),
+            keyDeposit: BigInt(result.key_deposit),
+            poolDeposit: BigInt(result.pool_deposit),
+            priceMem: parseFloat(result.price_mem),
+            priceStep: parseFloat(result.price_step),
+            maxTxExMem: BigInt(result.max_tx_ex_mem),
+            maxTxExSteps: BigInt(result.max_tx_ex_steps),
+            coinsPerUtxoByte: BigInt(result.coins_per_utxo_size),
+            collateralPercentage: parseInt(result.collateral_percent),
+            maxCollateralInputs: parseInt(result.max_collateral_inputs),
+            costModels: result.cost_models,
+        };
+    }
+    async getUtxos(addressOrCredential) {
+        const queryPredicate = (() => {
+            if (typeof addressOrCredential === "string")
+                return addressOrCredential;
+            const credentialBech32 = addressOrCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(addressOrCredential.hash).to_bech32("addr_vkh")
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_hex(addressOrCredential.hash).to_bech32("addr_vkh"); // should be 'script' (CIP-0005)
+            return credentialBech32;
+        })();
+        let result = [];
+        let page = 1;
+        while (true) {
+            const pageResult = await fetch(`${this.url}/addresses/${queryPredicate}/utxos?page=${page}`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());
+            if (pageResult.error) {
+                if (pageResult.status_code === 404) {
+                    return [];
+                }
+                else {
+                    throw new Error("Could not fetch UTxOs from Blockfrost. Try again.");
+                }
+            }
+            result = result.concat(pageResult);
+            if (pageResult.length <= 0)
+                break;
+            page++;
+        }
+        return this.blockfrostUtxosToUtxos(result);
+    }
+    async getUtxosWithUnit(addressOrCredential, unit) {
+        const queryPredicate = (() => {
+            if (typeof addressOrCredential === "string")
+                return addressOrCredential;
+            const credentialBech32 = addressOrCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(addressOrCredential.hash).to_bech32("addr_vkh")
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHash.from_hex(addressOrCredential.hash).to_bech32("addr_vkh"); // should be 'script' (CIP-0005)
+            return credentialBech32;
+        })();
+        let result = [];
+        let page = 1;
+        while (true) {
+            const pageResult = await fetch(`${this.url}/addresses/${queryPredicate}/utxos/${unit}?page=${page}`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());
+            if (pageResult.error) {
+                if (pageResult.status_code === 404) {
+                    return [];
+                }
+                else {
+                    throw new Error("Could not fetch UTxOs from Blockfrost. Try again.");
+                }
+            }
+            result = result.concat(pageResult);
+            if (pageResult.length <= 0)
+                break;
+            page++;
+        }
+        return this.blockfrostUtxosToUtxos(result);
+    }
+    async getUtxoByUnit(unit) {
+        const addresses = await fetch(`${this.url}/assets/${unit}/addresses?count=2`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());
+        if (!addresses || addresses.error) {
+            throw new Error("Unit not found.");
+        }
+        if (addresses.length > 1) {
+            throw new Error("Unit needs to be an NFT or only held by one address.");
+        }
+        const address = addresses[0].address;
+        const utxos = await this.getUtxosWithUnit(address, unit);
+        if (utxos.length > 1) {
+            throw new Error("Unit needs to be an NFT or only held by one address.");
+        }
+        return utxos[0];
+    }
+    async getUtxosByOutRef(outRefs) {
+        const queryHashes = [...new Set(outRefs.map((outRef) => outRef.txHash))];
+        const utxos = await Promise.all(queryHashes.map(async (txHash) => {
+            const result = await fetch(`${this.url}/txs/${txHash}/utxos`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());
+            if (!result || result.error) {
+                return [];
+            }
+            const utxosResult = result.outputs.map((
+            // deno-lint-ignore no-explicit-any
+            r) => ({
+                ...r,
+                tx_hash: txHash,
+            }));
+            return this.blockfrostUtxosToUtxos(utxosResult);
+        }));
+        return utxos.reduce((acc, utxos) => acc.concat(utxos), []).filter((utxo) => outRefs.some((outRef) => utxo.txHash === outRef.txHash && utxo.outputIndex === outRef.outputIndex));
+    }
+    async getDelegation(rewardAddress) {
+        const result = await fetch(`${this.url}/accounts/${rewardAddress}`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());
+        if (!result || result.error) {
+            return { poolId: null, rewards: 0n };
+        }
+        return {
+            poolId: result.pool_id || null,
+            rewards: BigInt(result.withdrawable_amount),
+        };
+    }
+    async getDatum(datumHash) {
+        const datum = await fetch(`${this.url}/scripts/datum/${datumHash}/cbor`, {
+            headers: { project_id: this.projectId, lucid },
+        })
+            .then((res) => res.json())
+            .then((res) => res.cbor);
+        if (!datum || datum.error) {
+            throw new Error(`No datum found for datum hash: ${datumHash}`);
+        }
+        return datum;
+    }
+    awaitTx(txHash, checkInterval = 3000) {
+        return new Promise((res) => {
+            const confirmation = setInterval(async () => {
+                const isConfirmed = await fetch(`${this.url}/txs/${txHash}`, {
+                    headers: { project_id: this.projectId, lucid },
+                }).then((res) => res.json());
+                if (isConfirmed && !isConfirmed.error) {
+                    clearInterval(confirmation);
+                    res(true);
+                    return;
+                }
+            }, checkInterval);
+        });
+    }
+    async submitTx(tx) {
+        const result = await fetch(`${this.url}/tx/submit`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/cbor",
+                project_id: this.projectId,
+                lucid,
+            },
+            body: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(tx),
+        }).then((res) => res.json());
+        if (!result || result.error) {
+            if (result?.status_code === 400)
+                throw new Error(result.message);
+            else
+                throw new Error("Could not submit transaction.");
+        }
+        return result;
+    }
+    async blockfrostUtxosToUtxos(result) {
+        return (await Promise.all(result.map(async (r) => ({
+            txHash: r.tx_hash,
+            outputIndex: r.output_index,
+            assets: (() => {
+                const a = {};
+                r.amount.forEach((am) => {
+                    a[am.unit] = BigInt(am.quantity);
+                });
+                return a;
+            })(),
+            address: r.address,
+            datumHash: !r.inline_datum ? r.data_hash : undefined,
+            datum: r.inline_datum,
+            scriptRef: r.reference_script_hash &&
+                (await (async () => {
+                    const { type, } = await fetch(`${this.url}/scripts/${r.reference_script_hash}`, {
+                        headers: { project_id: this.projectId, lucid },
+                    }).then((res) => res.json());
+                    // TODO: support native scripts
+                    if (type === "Native" || type === "native") {
+                        throw new Error("Native script ref not implemented!");
+                    }
+                    const { cbor: script } = await fetch(`${this.url}/scripts/${r.reference_script_hash}/cbor`, { headers: { project_id: this.projectId, lucid } }).then((res) => res.json());
+                    return {
+                        type: type === "plutusV1" ? "PlutusV1" : "PlutusV2",
+                        script: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.applyDoubleCborEncoding)(script),
+                    };
+                })()),
+        }))));
+    }
+}
+/**
+ * This function is temporarily needed only, until Blockfrost returns the datum natively in Cbor.
+ * The conversion is ambigious, that's why it's better to get the datum directly in Cbor.
+ */
+function datumJsonToCbor(json) {
+    const convert = (json) => {
+        if (!isNaN(json.int)) {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_integer(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigInt.from_str(json.int.toString()));
+        }
+        else if (json.bytes || !isNaN(Number(json.bytes))) {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_bytes((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(json.bytes));
+        }
+        else if (json.map) {
+            const m = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusMap["new"]();
+            json.map.forEach(({ k, v }) => {
+                m.insert(convert(k), convert(v));
+            });
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_map(m);
+        }
+        else if (json.list) {
+            const l = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusList["new"]();
+            json.list.forEach((v) => {
+                l.add(convert(v));
+            });
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_list(l);
+        }
+        else if (!isNaN(json.constructor)) {
+            const l = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusList["new"]();
+            json.fields.forEach((v) => {
+                l.add(convert(v));
+            });
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusData.new_constr_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.ConstrPlutusData["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(json.constructor.toString()), l));
+        }
+        throw new Error("Unsupported type");
+    };
+    return (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(convert(json).to_bytes());
+}
+const lucid = _package_js__WEBPACK_IMPORTED_MODULE_2__["default"].version; // Lucid version
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -287,7 +6835,658 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \*****************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Emulator\": () => (/* binding */ Emulator)\n/* harmony export */ });\n/* harmony import */ var _core_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/core.js */ \"./node_modules/lucid-cardano/esm/src/core/core.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\n/* harmony import */ var _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils.js */ \"./node_modules/lucid-cardano/esm/src/utils/utils.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_core_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__]);\n([_core_core_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\nclass Emulator {\n    constructor(accounts, protocolParameters = _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.PROTOCOL_PARAMETERS_DEFAULT) {\n        Object.defineProperty(this, \"ledger\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"mempool\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: {}\n        });\n        /**\n         * Only stake key registrations/delegations and rewards are tracked.\n         * Other certificates are not tracked.\n         */\n        Object.defineProperty(this, \"chain\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: {}\n        });\n        Object.defineProperty(this, \"blockHeight\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"slot\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"time\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"protocolParameters\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"datumTable\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: {}\n        });\n        const GENESIS_HASH = \"00\".repeat(32);\n        this.blockHeight = 0;\n        this.slot = 0;\n        this.time = Date.now();\n        this.ledger = {};\n        accounts.forEach(({ address, assets }, index) => {\n            this.ledger[GENESIS_HASH + index] = {\n                utxo: {\n                    txHash: GENESIS_HASH,\n                    outputIndex: index,\n                    address,\n                    assets,\n                },\n                spent: false,\n            };\n        });\n        this.protocolParameters = protocolParameters;\n    }\n    now() {\n        return this.time;\n    }\n    awaitSlot(length = 1) {\n        this.slot += length;\n        this.time += length * 1000;\n        const currentHeight = this.blockHeight;\n        this.blockHeight = Math.floor(this.slot / 20);\n        if (this.blockHeight > currentHeight) {\n            for (const [outRef, { utxo, spent }] of Object.entries(this.mempool)) {\n                this.ledger[outRef] = { utxo, spent };\n            }\n            for (const [outRef, { spent }] of Object.entries(this.ledger)) {\n                if (spent)\n                    delete this.ledger[outRef];\n            }\n            this.mempool = {};\n        }\n    }\n    awaitBlock(height = 1) {\n        this.blockHeight += height;\n        this.slot += height * 20;\n        this.time += height * 20 * 1000;\n        for (const [outRef, { utxo, spent }] of Object.entries(this.mempool)) {\n            this.ledger[outRef] = { utxo, spent };\n        }\n        for (const [outRef, { spent }] of Object.entries(this.ledger)) {\n            if (spent)\n                delete this.ledger[outRef];\n        }\n        this.mempool = {};\n    }\n    getUtxos(addressOrCredential) {\n        const utxos = Object.values(this.ledger).flatMap(({ utxo }) => {\n            if (typeof addressOrCredential === \"string\") {\n                return addressOrCredential === utxo.address ? utxo : [];\n            }\n            else {\n                const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(utxo.address);\n                return paymentCredential?.hash === addressOrCredential.hash ? utxo : [];\n            }\n        });\n        return Promise.resolve(utxos);\n    }\n    getProtocolParameters() {\n        return Promise.resolve(this.protocolParameters);\n    }\n    getDatum(datumHash) {\n        return Promise.resolve(this.datumTable[datumHash]);\n    }\n    getUtxosWithUnit(addressOrCredential, unit) {\n        const utxos = Object.values(this.ledger).flatMap(({ utxo }) => {\n            if (typeof addressOrCredential === \"string\") {\n                return addressOrCredential === utxo.address && utxo.assets[unit] > 0n\n                    ? utxo\n                    : [];\n            }\n            else {\n                const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(utxo.address);\n                return paymentCredential?.hash === addressOrCredential.hash &&\n                    utxo.assets[unit] > 0n\n                    ? utxo\n                    : [];\n            }\n        });\n        return Promise.resolve(utxos);\n    }\n    getUtxosByOutRef(outRefs) {\n        return Promise.resolve(outRefs.flatMap((outRef) => this.ledger[outRef.txHash + outRef.outputIndex]?.utxo || []));\n    }\n    getUtxoByUnit(unit) {\n        const utxos = Object.values(this.ledger).flatMap(({ utxo }) => utxo.assets[unit] > 0n ? utxo : []);\n        if (utxos.length > 1) {\n            throw new Error(\"Unit needs to be an NFT or only held by one address.\");\n        }\n        return Promise.resolve(utxos[0]);\n    }\n    getDelegation(rewardAddress) {\n        return Promise.resolve({\n            poolId: this.chain[rewardAddress]?.delegation?.poolId || null,\n            rewards: this.chain[rewardAddress]?.delegation?.rewards || 0n,\n        });\n    }\n    awaitTx(txHash) {\n        if (this.mempool[txHash + 0]) {\n            this.awaitBlock();\n            return Promise.resolve(true);\n        }\n        return Promise.resolve(true);\n    }\n    /**\n     * Emulates the behaviour of the reward distribution at epoch boundaries.\n     * Stake keys need to be registered and delegated like on a real chain in order to receive rewards.\n     */\n    distributeRewards(rewards) {\n        for (const [rewardAddress, { registeredStake, delegation }] of Object.entries(this.chain)) {\n            if (registeredStake && delegation.poolId) {\n                this.chain[rewardAddress] = {\n                    registeredStake,\n                    delegation: {\n                        poolId: delegation.poolId,\n                        rewards: delegation.rewards += rewards,\n                    },\n                };\n            }\n        }\n        this.awaitBlock();\n    }\n    submitTx(tx) {\n        /*\n            Checks that are already handled by the transaction builder:\n              - Fee calculation\n              - Phase 2 evaluation\n              - Input value == Output value (including mint value)\n              - Min ada requirement\n              - Stake key registration deposit amount\n              - Collateral\n    \r\n            Checks that need to be done:\n              - Verify witnesses\n              - Correct count of scripts and vkeys\n              - Stake key registration\n              - Withdrawals\n              - Validity interval\n         */\n        const desTx = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.Transaction.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(tx));\n        const body = desTx.body();\n        const witnesses = desTx.witness_set();\n        const datums = witnesses.plutus_data();\n        const txHash = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(body).to_hex();\n        // Validity interval\n        // Lower bound is inclusive?\n        // Upper bound is inclusive?\n        const lowerBound = body.validity_start_interval()\n            ? parseInt(body.validity_start_interval().to_str())\n            : null;\n        const upperBound = body.ttl() ? parseInt(body.ttl().to_str()) : null;\n        if (Number.isInteger(lowerBound) && this.slot < lowerBound) {\n            throw new Error(`Lower bound (${lowerBound}) not in slot range (${this.slot}).`);\n        }\n        if (Number.isInteger(upperBound) && this.slot > upperBound) {\n            throw new Error(`Upper bound (${upperBound}) not in slot range (${this.slot}).`);\n        }\n        // Datums in witness set\n        const datumTable = (() => {\n            const table = {};\n            for (let i = 0; i < (datums?.len() || 0); i++) {\n                const datum = datums.get(i);\n                const datumHash = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_plutus_data(datum).to_hex();\n                table[datumHash] = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(datum.to_bytes());\n            }\n            return table;\n        })();\n        const consumedHashes = new Set();\n        // Witness keys\n        const keyHashes = (() => {\n            const keyHashes = [];\n            for (let i = 0; i < (witnesses.vkeys()?.len() || 0); i++) {\n                const witness = witnesses.vkeys().get(i);\n                const publicKey = witness.vkey().public_key();\n                const keyHash = publicKey.hash().to_hex();\n                if (!publicKey.verify((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(txHash), witness.signature())) {\n                    throw new Error(`Invalid vkey witness. Key hash: ${keyHash}`);\n                }\n                keyHashes.push(keyHash);\n            }\n            return keyHashes;\n        })();\n        // We only need this to verify native scripts. The check happens in the CML.\n        const edKeyHashes = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHashes[\"new\"]();\n        keyHashes.forEach((keyHash) => edKeyHashes.add(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(keyHash)));\n        const nativeHashes = (() => {\n            const scriptHashes = [];\n            for (let i = 0; i < (witnesses.native_scripts()?.len() || 0); i++) {\n                const witness = witnesses.native_scripts().get(i);\n                const scriptHash = witness.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.NativeScript)\n                    .to_hex();\n                if (!witness.verify(Number.isInteger(lowerBound)\n                    ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(lowerBound.toString())\n                    : undefined, Number.isInteger(upperBound)\n                    ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(upperBound.toString())\n                    : undefined, edKeyHashes)) {\n                    throw new Error(`Invalid native script witness. Script hash: ${scriptHash}`);\n                }\n                for (let i = 0; i < witness.get_required_signers().len(); i++) {\n                    const keyHash = witness.get_required_signers().get(i).to_hex();\n                    consumedHashes.add(keyHash);\n                }\n                scriptHashes.push(scriptHash);\n            }\n            return scriptHashes;\n        })();\n        const nativeHashesOptional = {};\n        const plutusHashesOptional = [];\n        const plutusHashes = (() => {\n            const scriptHashes = [];\n            for (let i = 0; i < (witnesses.plutus_scripts()?.len() || 0); i++) {\n                const script = witnesses.plutus_scripts().get(i);\n                const scriptHash = script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV1)\n                    .to_hex();\n                scriptHashes.push(scriptHash);\n            }\n            for (let i = 0; i < (witnesses.plutus_v2_scripts()?.len() || 0); i++) {\n                const script = witnesses.plutus_v2_scripts().get(i);\n                const scriptHash = script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV2)\n                    .to_hex();\n                scriptHashes.push(scriptHash);\n            }\n            return scriptHashes;\n        })();\n        const inputs = body.inputs();\n        inputs.sort();\n        const resolvedInputs = [];\n        // Check existence of inputs and look for script refs.\n        for (let i = 0; i < inputs.len(); i++) {\n            const input = inputs.get(i);\n            const outRef = input.transaction_id().to_hex() + input.index().to_str();\n            const entryLedger = this.ledger[outRef];\n            const { entry, type } = !entryLedger\n                ? { entry: this.mempool[outRef], type: \"Mempool\" }\n                : { entry: entryLedger, type: \"Ledger\" };\n            if (!entry || entry.spent) {\n                throw new Error(`Could not spend UTxO: ${JSON.stringify({\n                    txHash: entry?.utxo.txHash,\n                    outputIndex: entry?.utxo.outputIndex,\n                })}\\nIt does not exist or was already spent.`);\n            }\n            const scriptRef = entry.utxo.scriptRef;\n            if (scriptRef) {\n                switch (scriptRef.type) {\n                    case \"Native\": {\n                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NativeScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));\n                        nativeHashesOptional[script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.NativeScript).to_hex()] = script;\n                        break;\n                    }\n                    case \"PlutusV1\": {\n                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));\n                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV1).to_hex());\n                        break;\n                    }\n                    case \"PlutusV2\": {\n                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));\n                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV2).to_hex());\n                        break;\n                    }\n                }\n            }\n            if (entry.utxo.datumHash)\n                consumedHashes.add(entry.utxo.datumHash);\n            resolvedInputs.push({ entry, type });\n        }\n        // Check existence of reference inputs and look for script refs.\n        for (let i = 0; i < (body.reference_inputs()?.len() || 0); i++) {\n            const input = body.reference_inputs().get(i);\n            const outRef = input.transaction_id().to_hex() + input.index().to_str();\n            const entry = this.ledger[outRef] || this.mempool[outRef];\n            if (!entry || entry.spent) {\n                throw new Error(`Could not read UTxO: ${JSON.stringify({\n                    txHash: entry?.utxo.txHash,\n                    outputIndex: entry?.utxo.outputIndex,\n                })}\\nIt does not exist or was already spent.`);\n            }\n            const scriptRef = entry.utxo.scriptRef;\n            if (scriptRef) {\n                switch (scriptRef.type) {\n                    case \"Native\": {\n                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NativeScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));\n                        nativeHashesOptional[script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.NativeScript).to_hex()] = script;\n                        break;\n                    }\n                    case \"PlutusV1\": {\n                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));\n                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV1).to_hex());\n                        break;\n                    }\n                    case \"PlutusV2\": {\n                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));\n                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV2).to_hex());\n                        break;\n                    }\n                }\n            }\n            if (entry.utxo.datumHash)\n                consumedHashes.add(entry.utxo.datumHash);\n        }\n        const redeemers = (() => {\n            const tagMap = {\n                0: \"Spend\",\n                1: \"Mint\",\n                2: \"Cert\",\n                3: \"Reward\",\n            };\n            const collected = [];\n            for (let i = 0; i < (witnesses.redeemers()?.len() || 0); i++) {\n                const redeemer = witnesses.redeemers().get(i);\n                collected.push({\n                    tag: tagMap[redeemer.tag().kind()],\n                    index: parseInt(redeemer.index().to_str()),\n                });\n            }\n            return collected;\n        })();\n        function checkAndConsumeHash(credential, tag, index) {\n            switch (credential.type) {\n                case \"Key\": {\n                    if (!keyHashes.includes(credential.hash)) {\n                        throw new Error(`Missing vkey witness. Key hash: ${credential.hash}`);\n                    }\n                    consumedHashes.add(credential.hash);\n                    break;\n                }\n                case \"Script\": {\n                    if (nativeHashes.includes(credential.hash)) {\n                        consumedHashes.add(credential.hash);\n                        break;\n                    }\n                    else if (nativeHashesOptional[credential.hash]) {\n                        if (!nativeHashesOptional[credential.hash].verify(Number.isInteger(lowerBound)\n                            ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(lowerBound.toString())\n                            : undefined, Number.isInteger(upperBound)\n                            ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(upperBound.toString())\n                            : undefined, edKeyHashes)) {\n                            throw new Error(`Invalid native script witness. Script hash: ${credential.hash}`);\n                        }\n                        break;\n                    }\n                    else if (plutusHashes.includes(credential.hash) ||\n                        plutusHashesOptional.includes(credential.hash)) {\n                        if (redeemers.find((redeemer) => redeemer.tag === tag && redeemer.index === index)) {\n                            consumedHashes.add(credential.hash);\n                            break;\n                        }\n                    }\n                    throw new Error(`Missing script witness. Script hash: ${credential.hash}`);\n                }\n            }\n        }\n        // Check collateral inputs\n        for (let i = 0; i < (body.collateral()?.len() || 0); i++) {\n            const input = body.collateral().get(i);\n            const outRef = input.transaction_id().to_hex() + input.index().to_str();\n            const entry = this.ledger[outRef] || this.mempool[outRef];\n            if (!entry || entry.spent) {\n                throw new Error(`Could not read UTxO: ${JSON.stringify({\n                    txHash: entry?.utxo.txHash,\n                    outputIndex: entry?.utxo.outputIndex,\n                })}\\nIt does not exist or was already spent.`);\n            }\n            const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(entry.utxo.address);\n            if (paymentCredential?.type === \"Script\") {\n                throw new Error(\"Collateral inputs can only contain vkeys.\");\n            }\n            checkAndConsumeHash(paymentCredential, null, null);\n        }\n        // Check required signers\n        for (let i = 0; i < (body.required_signers()?.len() || 0); i++) {\n            const signer = body.required_signers().get(i);\n            checkAndConsumeHash({ type: \"Key\", hash: signer.to_hex() }, null, null);\n        }\n        // Check mint witnesses\n        for (let index = 0; index < (body.mint()?.keys().len() || 0); index++) {\n            const policyId = body.mint().keys().get(index).to_hex();\n            checkAndConsumeHash({ type: \"Script\", hash: policyId }, \"Mint\", index);\n        }\n        // Check withdrawal witnesses\n        const withdrawalRequests = [];\n        for (let index = 0; index < (body.withdrawals()?.keys().len() || 0); index++) {\n            const rawAddress = body.withdrawals().keys().get(index);\n            const withdrawal = BigInt(body.withdrawals().get(rawAddress).to_str());\n            const rewardAddress = rawAddress.to_address().to_bech32(undefined);\n            const { stakeCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(rewardAddress);\n            checkAndConsumeHash(stakeCredential, \"Reward\", index);\n            if (this.chain[rewardAddress]?.delegation.rewards !== withdrawal) {\n                throw new Error(\"Withdrawal amount doesn't match actual reward balance.\");\n            }\n            withdrawalRequests.push({ rewardAddress, withdrawal });\n        }\n        // Check cert witnesses\n        const certRequests = [];\n        for (let index = 0; index < (body.certs()?.len() || 0); index++) {\n            /*\n              Checking only:\n              1. Stake registration\n              2. Stake deregistration\n              3. Stake delegation\n      \r\n              All other certificate types are not checked and considered valid.\n            */\n            const cert = body.certs().get(index);\n            switch (cert.kind()) {\n                case 0: {\n                    const registration = cert.as_stake_registration();\n                    const rewardAddress = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress[\"new\"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkInfo.testnet().network_id(), registration.stake_credential()).to_address().to_bech32(undefined);\n                    if (this.chain[rewardAddress]?.registeredStake) {\n                        throw new Error(`Stake key is already registered. Reward address: ${rewardAddress}`);\n                    }\n                    certRequests.push({ type: \"Registration\", rewardAddress });\n                    break;\n                }\n                case 1: {\n                    const deregistration = cert.as_stake_deregistration();\n                    const rewardAddress = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress[\"new\"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkInfo.testnet().network_id(), deregistration.stake_credential()).to_address().to_bech32(undefined);\n                    const { stakeCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(rewardAddress);\n                    checkAndConsumeHash(stakeCredential, \"Cert\", index);\n                    if (!this.chain[rewardAddress]?.registeredStake) {\n                        throw new Error(`Stake key is already deregistered. Reward address: ${rewardAddress}`);\n                    }\n                    certRequests.push({ type: \"Deregistration\", rewardAddress });\n                    break;\n                }\n                case 2: {\n                    const delegation = cert.as_stake_delegation();\n                    const rewardAddress = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress[\"new\"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkInfo.testnet().network_id(), delegation.stake_credential()).to_address().to_bech32(undefined);\n                    const poolId = delegation.pool_keyhash().to_bech32(\"pool\");\n                    const { stakeCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(rewardAddress);\n                    checkAndConsumeHash(stakeCredential, \"Cert\", index);\n                    if (!this.chain[rewardAddress]?.registeredStake &&\n                        !certRequests.find((request) => request.type === \"Registration\" &&\n                            request.rewardAddress === rewardAddress)) {\n                        throw new Error(`Stake key is not registered. Reward address: ${rewardAddress}`);\n                    }\n                    certRequests.push({ type: \"Delegation\", rewardAddress, poolId });\n                    break;\n                }\n            }\n        }\n        // Check input witnesses\n        resolvedInputs.forEach(({ entry: { utxo } }, index) => {\n            const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(utxo.address);\n            checkAndConsumeHash(paymentCredential, \"Spend\", index);\n        });\n        // Create outputs and consume datum hashes\n        const outputs = (() => {\n            const collected = [];\n            for (let i = 0; i < body.outputs().len(); i++) {\n                const output = body.outputs().get(i);\n                const unspentOutput = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutput[\"new\"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionInput[\"new\"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionHash.from_hex(txHash), _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(i.toString())), output);\n                const utxo = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.coreToUtxo)(unspentOutput);\n                if (utxo.datumHash)\n                    consumedHashes.add(utxo.datumHash);\n                collected.push({\n                    utxo,\n                    spent: false,\n                });\n            }\n            return collected;\n        })();\n        // Check consumed witnesses\n        const [extraKeyHash] = keyHashes.filter((keyHash) => !consumedHashes.has(keyHash));\n        if (extraKeyHash) {\n            throw new Error(`Extraneous vkey witness. Key hash: ${extraKeyHash}`);\n        }\n        const [extraNativeHash] = nativeHashes.filter((scriptHash) => !consumedHashes.has(scriptHash));\n        if (extraNativeHash) {\n            throw new Error(`Extraneous native script. Script hash: ${extraNativeHash}`);\n        }\n        const [extraPlutusHash] = plutusHashes.filter((scriptHash) => !consumedHashes.has(scriptHash));\n        if (extraPlutusHash) {\n            throw new Error(`Extraneous plutus script. Script hash: ${extraPlutusHash}`);\n        }\n        const [extraDatumHash] = Object.keys(datumTable).filter((datumHash) => !consumedHashes.has(datumHash));\n        if (extraDatumHash) {\n            throw new Error(`Extraneous plutus data. Datum hash: ${extraDatumHash}`);\n        }\n        // Apply transitions\n        resolvedInputs.forEach(({ entry, type }) => {\n            const outRef = entry.utxo.txHash + entry.utxo.outputIndex;\n            entry.spent = true;\n            if (type === \"Ledger\")\n                this.ledger[outRef] = entry;\n            else if (type === \"Mempool\")\n                this.mempool[outRef] = entry;\n        });\n        withdrawalRequests.forEach(({ rewardAddress, withdrawal }) => {\n            this.chain[rewardAddress].delegation.rewards -= withdrawal;\n        });\n        certRequests.forEach(({ type, rewardAddress, poolId }) => {\n            switch (type) {\n                case \"Registration\": {\n                    if (this.chain[rewardAddress]) {\n                        this.chain[rewardAddress].registeredStake = true;\n                    }\n                    else {\n                        this.chain[rewardAddress] = {\n                            registeredStake: true,\n                            delegation: { poolId: null, rewards: 0n },\n                        };\n                    }\n                    break;\n                }\n                case \"Deregistration\": {\n                    this.chain[rewardAddress].registeredStake = false;\n                    this.chain[rewardAddress].delegation.poolId = null;\n                    break;\n                }\n                case \"Delegation\": {\n                    this.chain[rewardAddress].delegation.poolId = poolId;\n                }\n            }\n        });\n        outputs.forEach(({ utxo, spent }) => {\n            this.mempool[utxo.txHash + utxo.outputIndex] = {\n                utxo,\n                spent,\n            };\n        });\n        for (const [datumHash, datum] of Object.entries(datumTable)) {\n            this.datumTable[datumHash] = datum;\n        }\n        return Promise.resolve(txHash);\n    }\n    log() {\n        function getRandomColor(unit) {\n            const seed = unit === \"lovelace\" ? \"1\" : unit;\n            // Convert the seed string to a number\n            let num = 0;\n            for (let i = 0; i < seed.length; i++) {\n                num += seed.charCodeAt(i);\n            }\n            // Generate a color based on the seed number\n            const r = (num * 123) % 256;\n            const g = (num * 321) % 256;\n            const b = (num * 213) % 256;\n            // Return the color as a hex string\n            return \"#\" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);\n        }\n        const totalBalances = {};\n        const balances = {};\n        for (const { utxo } of Object.values(this.ledger)) {\n            for (const [unit, quantity] of Object.entries(utxo.assets)) {\n                if (!balances[utxo.address]) {\n                    balances[utxo.address] = { [unit]: quantity };\n                }\n                else if (!balances[utxo.address]?.[unit]) {\n                    balances[utxo.address][unit] = quantity;\n                }\n                else {\n                    balances[utxo.address][unit] += quantity;\n                }\n                if (!totalBalances[unit]) {\n                    totalBalances[unit] = quantity;\n                }\n                else {\n                    totalBalances[unit] += quantity;\n                }\n            }\n        }\n        console.log(\"\\n%cBlockchain state\", \"color:purple\");\n        console.log(`\n    Block height:   %c${this.blockHeight}%c\n    Slot:           %c${this.slot}%c\n    Unix time:      %c${this.time}\n  `, \"color:yellow\", \"color:white\", \"color:yellow\", \"color:white\", \"color:yellow\");\n        console.log(\"\\n\");\n        for (const [address, assets] of Object.entries(balances)) {\n            console.log(`Address: %c${address}`, \"color:blue\", \"\\n\");\n            for (const [unit, quantity] of Object.entries(assets)) {\n                const barLength = Math.max(Math.floor(60 * (Number(quantity) / Number(totalBalances[unit]))), 1);\n                console.log(`%c${\"\\u2586\".repeat(barLength) + \" \".repeat(60 - barLength)}`, `color: ${getRandomColor(unit)}`, \"\", `${unit}:`, quantity, \"\");\n            }\n            console.log(`\\n${\"\\u2581\".repeat(60)}\\n`);\n        }\n    }\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/provider/emulator.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Emulator": () => (/* binding */ Emulator)
+/* harmony export */ });
+/* harmony import */ var _core_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/core.js */ "./node_modules/lucid-cardano/esm/src/core/core.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+/* harmony import */ var _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils.js */ "./node_modules/lucid-cardano/esm/src/utils/utils.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_core_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__]);
+([_core_core_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__, _utils_utils_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+class Emulator {
+    constructor(accounts, protocolParameters = _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.PROTOCOL_PARAMETERS_DEFAULT) {
+        Object.defineProperty(this, "ledger", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "mempool", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: {}
+        });
+        /**
+         * Only stake key registrations/delegations and rewards are tracked.
+         * Other certificates are not tracked.
+         */
+        Object.defineProperty(this, "chain", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: {}
+        });
+        Object.defineProperty(this, "blockHeight", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "slot", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "time", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "protocolParameters", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "datumTable", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: {}
+        });
+        const GENESIS_HASH = "00".repeat(32);
+        this.blockHeight = 0;
+        this.slot = 0;
+        this.time = Date.now();
+        this.ledger = {};
+        accounts.forEach(({ address, assets }, index) => {
+            this.ledger[GENESIS_HASH + index] = {
+                utxo: {
+                    txHash: GENESIS_HASH,
+                    outputIndex: index,
+                    address,
+                    assets,
+                },
+                spent: false,
+            };
+        });
+        this.protocolParameters = protocolParameters;
+    }
+    now() {
+        return this.time;
+    }
+    awaitSlot(length = 1) {
+        this.slot += length;
+        this.time += length * 1000;
+        const currentHeight = this.blockHeight;
+        this.blockHeight = Math.floor(this.slot / 20);
+        if (this.blockHeight > currentHeight) {
+            for (const [outRef, { utxo, spent }] of Object.entries(this.mempool)) {
+                this.ledger[outRef] = { utxo, spent };
+            }
+            for (const [outRef, { spent }] of Object.entries(this.ledger)) {
+                if (spent)
+                    delete this.ledger[outRef];
+            }
+            this.mempool = {};
+        }
+    }
+    awaitBlock(height = 1) {
+        this.blockHeight += height;
+        this.slot += height * 20;
+        this.time += height * 20 * 1000;
+        for (const [outRef, { utxo, spent }] of Object.entries(this.mempool)) {
+            this.ledger[outRef] = { utxo, spent };
+        }
+        for (const [outRef, { spent }] of Object.entries(this.ledger)) {
+            if (spent)
+                delete this.ledger[outRef];
+        }
+        this.mempool = {};
+    }
+    getUtxos(addressOrCredential) {
+        const utxos = Object.values(this.ledger).flatMap(({ utxo }) => {
+            if (typeof addressOrCredential === "string") {
+                return addressOrCredential === utxo.address ? utxo : [];
+            }
+            else {
+                const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(utxo.address);
+                return paymentCredential?.hash === addressOrCredential.hash ? utxo : [];
+            }
+        });
+        return Promise.resolve(utxos);
+    }
+    getProtocolParameters() {
+        return Promise.resolve(this.protocolParameters);
+    }
+    getDatum(datumHash) {
+        return Promise.resolve(this.datumTable[datumHash]);
+    }
+    getUtxosWithUnit(addressOrCredential, unit) {
+        const utxos = Object.values(this.ledger).flatMap(({ utxo }) => {
+            if (typeof addressOrCredential === "string") {
+                return addressOrCredential === utxo.address && utxo.assets[unit] > 0n
+                    ? utxo
+                    : [];
+            }
+            else {
+                const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(utxo.address);
+                return paymentCredential?.hash === addressOrCredential.hash &&
+                    utxo.assets[unit] > 0n
+                    ? utxo
+                    : [];
+            }
+        });
+        return Promise.resolve(utxos);
+    }
+    getUtxosByOutRef(outRefs) {
+        return Promise.resolve(outRefs.flatMap((outRef) => this.ledger[outRef.txHash + outRef.outputIndex]?.utxo || []));
+    }
+    getUtxoByUnit(unit) {
+        const utxos = Object.values(this.ledger).flatMap(({ utxo }) => utxo.assets[unit] > 0n ? utxo : []);
+        if (utxos.length > 1) {
+            throw new Error("Unit needs to be an NFT or only held by one address.");
+        }
+        return Promise.resolve(utxos[0]);
+    }
+    getDelegation(rewardAddress) {
+        return Promise.resolve({
+            poolId: this.chain[rewardAddress]?.delegation?.poolId || null,
+            rewards: this.chain[rewardAddress]?.delegation?.rewards || 0n,
+        });
+    }
+    awaitTx(txHash) {
+        if (this.mempool[txHash + 0]) {
+            this.awaitBlock();
+            return Promise.resolve(true);
+        }
+        return Promise.resolve(true);
+    }
+    /**
+     * Emulates the behaviour of the reward distribution at epoch boundaries.
+     * Stake keys need to be registered and delegated like on a real chain in order to receive rewards.
+     */
+    distributeRewards(rewards) {
+        for (const [rewardAddress, { registeredStake, delegation }] of Object.entries(this.chain)) {
+            if (registeredStake && delegation.poolId) {
+                this.chain[rewardAddress] = {
+                    registeredStake,
+                    delegation: {
+                        poolId: delegation.poolId,
+                        rewards: delegation.rewards += rewards,
+                    },
+                };
+            }
+        }
+        this.awaitBlock();
+    }
+    submitTx(tx) {
+        /*
+            Checks that are already handled by the transaction builder:
+              - Fee calculation
+              - Phase 2 evaluation
+              - Input value == Output value (including mint value)
+              - Min ada requirement
+              - Stake key registration deposit amount
+              - Collateral
+    
+            Checks that need to be done:
+              - Verify witnesses
+              - Correct count of scripts and vkeys
+              - Stake key registration
+              - Withdrawals
+              - Validity interval
+         */
+        const desTx = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.Transaction.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(tx));
+        const body = desTx.body();
+        const witnesses = desTx.witness_set();
+        const datums = witnesses.plutus_data();
+        const txHash = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_transaction(body).to_hex();
+        // Validity interval
+        // Lower bound is inclusive?
+        // Upper bound is inclusive?
+        const lowerBound = body.validity_start_interval()
+            ? parseInt(body.validity_start_interval().to_str())
+            : null;
+        const upperBound = body.ttl() ? parseInt(body.ttl().to_str()) : null;
+        if (Number.isInteger(lowerBound) && this.slot < lowerBound) {
+            throw new Error(`Lower bound (${lowerBound}) not in slot range (${this.slot}).`);
+        }
+        if (Number.isInteger(upperBound) && this.slot > upperBound) {
+            throw new Error(`Upper bound (${upperBound}) not in slot range (${this.slot}).`);
+        }
+        // Datums in witness set
+        const datumTable = (() => {
+            const table = {};
+            for (let i = 0; i < (datums?.len() || 0); i++) {
+                const datum = datums.get(i);
+                const datumHash = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.hash_plutus_data(datum).to_hex();
+                table[datumHash] = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(datum.to_bytes());
+            }
+            return table;
+        })();
+        const consumedHashes = new Set();
+        // Witness keys
+        const keyHashes = (() => {
+            const keyHashes = [];
+            for (let i = 0; i < (witnesses.vkeys()?.len() || 0); i++) {
+                const witness = witnesses.vkeys().get(i);
+                const publicKey = witness.vkey().public_key();
+                const keyHash = publicKey.hash().to_hex();
+                if (!publicKey.verify((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(txHash), witness.signature())) {
+                    throw new Error(`Invalid vkey witness. Key hash: ${keyHash}`);
+                }
+                keyHashes.push(keyHash);
+            }
+            return keyHashes;
+        })();
+        // We only need this to verify native scripts. The check happens in the CML.
+        const edKeyHashes = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHashes["new"]();
+        keyHashes.forEach((keyHash) => edKeyHashes.add(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.Ed25519KeyHash.from_hex(keyHash)));
+        const nativeHashes = (() => {
+            const scriptHashes = [];
+            for (let i = 0; i < (witnesses.native_scripts()?.len() || 0); i++) {
+                const witness = witnesses.native_scripts().get(i);
+                const scriptHash = witness.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.NativeScript)
+                    .to_hex();
+                if (!witness.verify(Number.isInteger(lowerBound)
+                    ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(lowerBound.toString())
+                    : undefined, Number.isInteger(upperBound)
+                    ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(upperBound.toString())
+                    : undefined, edKeyHashes)) {
+                    throw new Error(`Invalid native script witness. Script hash: ${scriptHash}`);
+                }
+                for (let i = 0; i < witness.get_required_signers().len(); i++) {
+                    const keyHash = witness.get_required_signers().get(i).to_hex();
+                    consumedHashes.add(keyHash);
+                }
+                scriptHashes.push(scriptHash);
+            }
+            return scriptHashes;
+        })();
+        const nativeHashesOptional = {};
+        const plutusHashesOptional = [];
+        const plutusHashes = (() => {
+            const scriptHashes = [];
+            for (let i = 0; i < (witnesses.plutus_scripts()?.len() || 0); i++) {
+                const script = witnesses.plutus_scripts().get(i);
+                const scriptHash = script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV1)
+                    .to_hex();
+                scriptHashes.push(scriptHash);
+            }
+            for (let i = 0; i < (witnesses.plutus_v2_scripts()?.len() || 0); i++) {
+                const script = witnesses.plutus_v2_scripts().get(i);
+                const scriptHash = script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV2)
+                    .to_hex();
+                scriptHashes.push(scriptHash);
+            }
+            return scriptHashes;
+        })();
+        const inputs = body.inputs();
+        inputs.sort();
+        const resolvedInputs = [];
+        // Check existence of inputs and look for script refs.
+        for (let i = 0; i < inputs.len(); i++) {
+            const input = inputs.get(i);
+            const outRef = input.transaction_id().to_hex() + input.index().to_str();
+            const entryLedger = this.ledger[outRef];
+            const { entry, type } = !entryLedger
+                ? { entry: this.mempool[outRef], type: "Mempool" }
+                : { entry: entryLedger, type: "Ledger" };
+            if (!entry || entry.spent) {
+                throw new Error(`Could not spend UTxO: ${JSON.stringify({
+                    txHash: entry?.utxo.txHash,
+                    outputIndex: entry?.utxo.outputIndex,
+                })}\nIt does not exist or was already spent.`);
+            }
+            const scriptRef = entry.utxo.scriptRef;
+            if (scriptRef) {
+                switch (scriptRef.type) {
+                    case "Native": {
+                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NativeScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));
+                        nativeHashesOptional[script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.NativeScript).to_hex()] = script;
+                        break;
+                    }
+                    case "PlutusV1": {
+                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));
+                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV1).to_hex());
+                        break;
+                    }
+                    case "PlutusV2": {
+                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));
+                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV2).to_hex());
+                        break;
+                    }
+                }
+            }
+            if (entry.utxo.datumHash)
+                consumedHashes.add(entry.utxo.datumHash);
+            resolvedInputs.push({ entry, type });
+        }
+        // Check existence of reference inputs and look for script refs.
+        for (let i = 0; i < (body.reference_inputs()?.len() || 0); i++) {
+            const input = body.reference_inputs().get(i);
+            const outRef = input.transaction_id().to_hex() + input.index().to_str();
+            const entry = this.ledger[outRef] || this.mempool[outRef];
+            if (!entry || entry.spent) {
+                throw new Error(`Could not read UTxO: ${JSON.stringify({
+                    txHash: entry?.utxo.txHash,
+                    outputIndex: entry?.utxo.outputIndex,
+                })}\nIt does not exist or was already spent.`);
+            }
+            const scriptRef = entry.utxo.scriptRef;
+            if (scriptRef) {
+                switch (scriptRef.type) {
+                    case "Native": {
+                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NativeScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));
+                        nativeHashesOptional[script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.NativeScript).to_hex()] = script;
+                        break;
+                    }
+                    case "PlutusV1": {
+                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));
+                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV1).to_hex());
+                        break;
+                    }
+                    case "PlutusV2": {
+                        const script = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript.from_bytes((0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.fromHex)(scriptRef.script));
+                        plutusHashesOptional.push(script.hash(_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.ScriptHashNamespace.PlutusV2).to_hex());
+                        break;
+                    }
+                }
+            }
+            if (entry.utxo.datumHash)
+                consumedHashes.add(entry.utxo.datumHash);
+        }
+        const redeemers = (() => {
+            const tagMap = {
+                0: "Spend",
+                1: "Mint",
+                2: "Cert",
+                3: "Reward",
+            };
+            const collected = [];
+            for (let i = 0; i < (witnesses.redeemers()?.len() || 0); i++) {
+                const redeemer = witnesses.redeemers().get(i);
+                collected.push({
+                    tag: tagMap[redeemer.tag().kind()],
+                    index: parseInt(redeemer.index().to_str()),
+                });
+            }
+            return collected;
+        })();
+        function checkAndConsumeHash(credential, tag, index) {
+            switch (credential.type) {
+                case "Key": {
+                    if (!keyHashes.includes(credential.hash)) {
+                        throw new Error(`Missing vkey witness. Key hash: ${credential.hash}`);
+                    }
+                    consumedHashes.add(credential.hash);
+                    break;
+                }
+                case "Script": {
+                    if (nativeHashes.includes(credential.hash)) {
+                        consumedHashes.add(credential.hash);
+                        break;
+                    }
+                    else if (nativeHashesOptional[credential.hash]) {
+                        if (!nativeHashesOptional[credential.hash].verify(Number.isInteger(lowerBound)
+                            ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(lowerBound.toString())
+                            : undefined, Number.isInteger(upperBound)
+                            ? _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(upperBound.toString())
+                            : undefined, edKeyHashes)) {
+                            throw new Error(`Invalid native script witness. Script hash: ${credential.hash}`);
+                        }
+                        break;
+                    }
+                    else if (plutusHashes.includes(credential.hash) ||
+                        plutusHashesOptional.includes(credential.hash)) {
+                        if (redeemers.find((redeemer) => redeemer.tag === tag && redeemer.index === index)) {
+                            consumedHashes.add(credential.hash);
+                            break;
+                        }
+                    }
+                    throw new Error(`Missing script witness. Script hash: ${credential.hash}`);
+                }
+            }
+        }
+        // Check collateral inputs
+        for (let i = 0; i < (body.collateral()?.len() || 0); i++) {
+            const input = body.collateral().get(i);
+            const outRef = input.transaction_id().to_hex() + input.index().to_str();
+            const entry = this.ledger[outRef] || this.mempool[outRef];
+            if (!entry || entry.spent) {
+                throw new Error(`Could not read UTxO: ${JSON.stringify({
+                    txHash: entry?.utxo.txHash,
+                    outputIndex: entry?.utxo.outputIndex,
+                })}\nIt does not exist or was already spent.`);
+            }
+            const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(entry.utxo.address);
+            if (paymentCredential?.type === "Script") {
+                throw new Error("Collateral inputs can only contain vkeys.");
+            }
+            checkAndConsumeHash(paymentCredential, null, null);
+        }
+        // Check required signers
+        for (let i = 0; i < (body.required_signers()?.len() || 0); i++) {
+            const signer = body.required_signers().get(i);
+            checkAndConsumeHash({ type: "Key", hash: signer.to_hex() }, null, null);
+        }
+        // Check mint witnesses
+        for (let index = 0; index < (body.mint()?.keys().len() || 0); index++) {
+            const policyId = body.mint().keys().get(index).to_hex();
+            checkAndConsumeHash({ type: "Script", hash: policyId }, "Mint", index);
+        }
+        // Check withdrawal witnesses
+        const withdrawalRequests = [];
+        for (let index = 0; index < (body.withdrawals()?.keys().len() || 0); index++) {
+            const rawAddress = body.withdrawals().keys().get(index);
+            const withdrawal = BigInt(body.withdrawals().get(rawAddress).to_str());
+            const rewardAddress = rawAddress.to_address().to_bech32(undefined);
+            const { stakeCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(rewardAddress);
+            checkAndConsumeHash(stakeCredential, "Reward", index);
+            if (this.chain[rewardAddress]?.delegation.rewards !== withdrawal) {
+                throw new Error("Withdrawal amount doesn't match actual reward balance.");
+            }
+            withdrawalRequests.push({ rewardAddress, withdrawal });
+        }
+        // Check cert witnesses
+        const certRequests = [];
+        for (let index = 0; index < (body.certs()?.len() || 0); index++) {
+            /*
+              Checking only:
+              1. Stake registration
+              2. Stake deregistration
+              3. Stake delegation
+      
+              All other certificate types are not checked and considered valid.
+            */
+            const cert = body.certs().get(index);
+            switch (cert.kind()) {
+                case 0: {
+                    const registration = cert.as_stake_registration();
+                    const rewardAddress = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress["new"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkInfo.testnet().network_id(), registration.stake_credential()).to_address().to_bech32(undefined);
+                    if (this.chain[rewardAddress]?.registeredStake) {
+                        throw new Error(`Stake key is already registered. Reward address: ${rewardAddress}`);
+                    }
+                    certRequests.push({ type: "Registration", rewardAddress });
+                    break;
+                }
+                case 1: {
+                    const deregistration = cert.as_stake_deregistration();
+                    const rewardAddress = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress["new"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkInfo.testnet().network_id(), deregistration.stake_credential()).to_address().to_bech32(undefined);
+                    const { stakeCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(rewardAddress);
+                    checkAndConsumeHash(stakeCredential, "Cert", index);
+                    if (!this.chain[rewardAddress]?.registeredStake) {
+                        throw new Error(`Stake key is already deregistered. Reward address: ${rewardAddress}`);
+                    }
+                    certRequests.push({ type: "Deregistration", rewardAddress });
+                    break;
+                }
+                case 2: {
+                    const delegation = cert.as_stake_delegation();
+                    const rewardAddress = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.RewardAddress["new"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.NetworkInfo.testnet().network_id(), delegation.stake_credential()).to_address().to_bech32(undefined);
+                    const poolId = delegation.pool_keyhash().to_bech32("pool");
+                    const { stakeCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(rewardAddress);
+                    checkAndConsumeHash(stakeCredential, "Cert", index);
+                    if (!this.chain[rewardAddress]?.registeredStake &&
+                        !certRequests.find((request) => request.type === "Registration" &&
+                            request.rewardAddress === rewardAddress)) {
+                        throw new Error(`Stake key is not registered. Reward address: ${rewardAddress}`);
+                    }
+                    certRequests.push({ type: "Delegation", rewardAddress, poolId });
+                    break;
+                }
+            }
+        }
+        // Check input witnesses
+        resolvedInputs.forEach(({ entry: { utxo } }, index) => {
+            const { paymentCredential } = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.getAddressDetails)(utxo.address);
+            checkAndConsumeHash(paymentCredential, "Spend", index);
+        });
+        // Create outputs and consume datum hashes
+        const outputs = (() => {
+            const collected = [];
+            for (let i = 0; i < body.outputs().len(); i++) {
+                const output = body.outputs().get(i);
+                const unspentOutput = _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionUnspentOutput["new"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionInput["new"](_core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.TransactionHash.from_hex(txHash), _core_core_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(i.toString())), output);
+                const utxo = (0,_utils_utils_js__WEBPACK_IMPORTED_MODULE_2__.coreToUtxo)(unspentOutput);
+                if (utxo.datumHash)
+                    consumedHashes.add(utxo.datumHash);
+                collected.push({
+                    utxo,
+                    spent: false,
+                });
+            }
+            return collected;
+        })();
+        // Check consumed witnesses
+        const [extraKeyHash] = keyHashes.filter((keyHash) => !consumedHashes.has(keyHash));
+        if (extraKeyHash) {
+            throw new Error(`Extraneous vkey witness. Key hash: ${extraKeyHash}`);
+        }
+        const [extraNativeHash] = nativeHashes.filter((scriptHash) => !consumedHashes.has(scriptHash));
+        if (extraNativeHash) {
+            throw new Error(`Extraneous native script. Script hash: ${extraNativeHash}`);
+        }
+        const [extraPlutusHash] = plutusHashes.filter((scriptHash) => !consumedHashes.has(scriptHash));
+        if (extraPlutusHash) {
+            throw new Error(`Extraneous plutus script. Script hash: ${extraPlutusHash}`);
+        }
+        const [extraDatumHash] = Object.keys(datumTable).filter((datumHash) => !consumedHashes.has(datumHash));
+        if (extraDatumHash) {
+            throw new Error(`Extraneous plutus data. Datum hash: ${extraDatumHash}`);
+        }
+        // Apply transitions
+        resolvedInputs.forEach(({ entry, type }) => {
+            const outRef = entry.utxo.txHash + entry.utxo.outputIndex;
+            entry.spent = true;
+            if (type === "Ledger")
+                this.ledger[outRef] = entry;
+            else if (type === "Mempool")
+                this.mempool[outRef] = entry;
+        });
+        withdrawalRequests.forEach(({ rewardAddress, withdrawal }) => {
+            this.chain[rewardAddress].delegation.rewards -= withdrawal;
+        });
+        certRequests.forEach(({ type, rewardAddress, poolId }) => {
+            switch (type) {
+                case "Registration": {
+                    if (this.chain[rewardAddress]) {
+                        this.chain[rewardAddress].registeredStake = true;
+                    }
+                    else {
+                        this.chain[rewardAddress] = {
+                            registeredStake: true,
+                            delegation: { poolId: null, rewards: 0n },
+                        };
+                    }
+                    break;
+                }
+                case "Deregistration": {
+                    this.chain[rewardAddress].registeredStake = false;
+                    this.chain[rewardAddress].delegation.poolId = null;
+                    break;
+                }
+                case "Delegation": {
+                    this.chain[rewardAddress].delegation.poolId = poolId;
+                }
+            }
+        });
+        outputs.forEach(({ utxo, spent }) => {
+            this.mempool[utxo.txHash + utxo.outputIndex] = {
+                utxo,
+                spent,
+            };
+        });
+        for (const [datumHash, datum] of Object.entries(datumTable)) {
+            this.datumTable[datumHash] = datum;
+        }
+        return Promise.resolve(txHash);
+    }
+    log() {
+        function getRandomColor(unit) {
+            const seed = unit === "lovelace" ? "1" : unit;
+            // Convert the seed string to a number
+            let num = 0;
+            for (let i = 0; i < seed.length; i++) {
+                num += seed.charCodeAt(i);
+            }
+            // Generate a color based on the seed number
+            const r = (num * 123) % 256;
+            const g = (num * 321) % 256;
+            const b = (num * 213) % 256;
+            // Return the color as a hex string
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+        const totalBalances = {};
+        const balances = {};
+        for (const { utxo } of Object.values(this.ledger)) {
+            for (const [unit, quantity] of Object.entries(utxo.assets)) {
+                if (!balances[utxo.address]) {
+                    balances[utxo.address] = { [unit]: quantity };
+                }
+                else if (!balances[utxo.address]?.[unit]) {
+                    balances[utxo.address][unit] = quantity;
+                }
+                else {
+                    balances[utxo.address][unit] += quantity;
+                }
+                if (!totalBalances[unit]) {
+                    totalBalances[unit] = quantity;
+                }
+                else {
+                    totalBalances[unit] += quantity;
+                }
+            }
+        }
+        console.log("\n%cBlockchain state", "color:purple");
+        console.log(`
+    Block height:   %c${this.blockHeight}%c
+    Slot:           %c${this.slot}%c
+    Unix time:      %c${this.time}
+  `, "color:yellow", "color:white", "color:yellow", "color:white", "color:yellow");
+        console.log("\n");
+        for (const [address, assets] of Object.entries(balances)) {
+            console.log(`Address: %c${address}`, "color:blue", "\n");
+            for (const [unit, quantity] of Object.entries(assets)) {
+                const barLength = Math.max(Math.floor(60 * (Number(quantity) / Number(totalBalances[unit]))), 1);
+                console.log(`%c${"\u2586".repeat(barLength) + " ".repeat(60 - barLength)}`, `color: ${getRandomColor(unit)}`, "", `${unit}:`, quantity, "");
+            }
+            console.log(`\n${"\u2581".repeat(60)}\n`);
+        }
+    }
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -297,7 +7496,234 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \****************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Kupmios\": () => (/* binding */ Kupmios)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ \"./node_modules/lucid-cardano/esm/src/utils/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\nclass Kupmios {\n    /**\n     * @param kupoUrl: http(s)://localhost:1442\n     * @param ogmiosUrl: ws(s)://localhost:1337\n     */\n    constructor(kupoUrl, ogmiosUrl) {\n        Object.defineProperty(this, \"kupoUrl\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        Object.defineProperty(this, \"ogmiosUrl\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.kupoUrl = kupoUrl;\n        this.ogmiosUrl = ogmiosUrl;\n    }\n    async getProtocolParameters() {\n        const client = await this.ogmiosWsp(\"Query\", {\n            query: \"currentProtocolParameters\",\n        });\n        return new Promise((res, rej) => {\n            client.addEventListener(\"message\", (msg) => {\n                try {\n                    const { result } = JSON.parse(msg.data);\n                    // deno-lint-ignore no-explicit-any\n                    const costModels = {};\n                    Object.keys(result.costModels).forEach((v) => {\n                        const version = v.split(\":\")[1].toUpperCase();\n                        const plutusVersion = \"Plutus\" + version;\n                        costModels[plutusVersion] = result.costModels[v];\n                    });\n                    const [memNum, memDenom] = result.prices.memory.split(\"/\");\n                    const [stepsNum, stepsDenom] = result.prices.steps.split(\"/\");\n                    res({\n                        minFeeA: parseInt(result.minFeeCoefficient),\n                        minFeeB: parseInt(result.minFeeConstant),\n                        maxTxSize: parseInt(result.maxTxSize),\n                        maxValSize: parseInt(result.maxValueSize),\n                        keyDeposit: BigInt(result.stakeKeyDeposit),\n                        poolDeposit: BigInt(result.poolDeposit),\n                        priceMem: parseInt(memNum) / parseInt(memDenom),\n                        priceStep: parseInt(stepsNum) / parseInt(stepsDenom),\n                        maxTxExMem: BigInt(result.maxExecutionUnitsPerTransaction.memory),\n                        maxTxExSteps: BigInt(result.maxExecutionUnitsPerTransaction.steps),\n                        coinsPerUtxoByte: BigInt(result.coinsPerUtxoByte),\n                        collateralPercentage: parseInt(result.collateralPercentage),\n                        maxCollateralInputs: parseInt(result.maxCollateralInputs),\n                        costModels,\n                    });\n                    client.close();\n                }\n                catch (e) {\n                    rej(e);\n                }\n            }, { once: true });\n        });\n    }\n    async getUtxos(addressOrCredential) {\n        const isAddress = typeof addressOrCredential === \"string\";\n        const queryPredicate = isAddress\n            ? addressOrCredential\n            : addressOrCredential.hash;\n        const result = await fetch(`${this.kupoUrl}/matches/${queryPredicate}${isAddress ? \"\" : \"/*\"}?unspent`)\n            .then((res) => res.json());\n        return this.kupmiosUtxosToUtxos(result);\n    }\n    async getUtxosWithUnit(addressOrCredential, unit) {\n        const isAddress = typeof addressOrCredential === \"string\";\n        const queryPredicate = isAddress\n            ? addressOrCredential\n            : addressOrCredential.hash;\n        const { policyId, assetName } = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromUnit)(unit);\n        const result = await fetch(`${this.kupoUrl}/matches/${queryPredicate}${isAddress ? \"\" : \"/*\"}?unspent&policy_id=${policyId}${assetName ? `&asset_name=${assetName}` : \"\"}`)\n            .then((res) => res.json());\n        return this.kupmiosUtxosToUtxos(result);\n    }\n    async getUtxoByUnit(unit) {\n        const { policyId, assetName } = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromUnit)(unit);\n        const result = await fetch(`${this.kupoUrl}/matches/${policyId}.${assetName ? `${assetName}` : \"*\"}?unspent`)\n            .then((res) => res.json());\n        const utxos = await this.kupmiosUtxosToUtxos(result);\n        if (utxos.length > 1) {\n            throw new Error(\"Unit needs to be an NFT or only held by one address.\");\n        }\n        return utxos[0];\n    }\n    async getUtxosByOutRef(outRefs) {\n        const queryHashes = [...new Set(outRefs.map((outRef) => outRef.txHash))];\n        const utxos = await Promise.all(queryHashes.map(async (txHash) => {\n            const result = await fetch(`${this.kupoUrl}/matches/*@${txHash}?unspent`).then((res) => res.json());\n            return this.kupmiosUtxosToUtxos(result);\n        }));\n        return utxos.reduce((acc, utxos) => acc.concat(utxos), []).filter((utxo) => outRefs.some((outRef) => utxo.txHash === outRef.txHash && utxo.outputIndex === outRef.outputIndex));\n    }\n    async getDelegation(rewardAddress) {\n        const client = await this.ogmiosWsp(\"Query\", {\n            query: { \"delegationsAndRewards\": [rewardAddress] },\n        });\n        return new Promise((res, rej) => {\n            client.addEventListener(\"message\", (msg) => {\n                try {\n                    const { result } = JSON.parse(msg.data);\n                    const delegation = (result ? Object.values(result)[0] : {});\n                    res({\n                        poolId: delegation?.delegate || null,\n                        rewards: BigInt(delegation?.rewards || 0),\n                    });\n                    client.close();\n                }\n                catch (e) {\n                    rej(e);\n                }\n            }, { once: true });\n        });\n    }\n    async getDatum(datumHash) {\n        const result = await fetch(`${this.kupoUrl}/datums/${datumHash}`).then((res) => res.json());\n        if (!result || !result.datum) {\n            throw new Error(`No datum found for datum hash: ${datumHash}`);\n        }\n        return result.datum;\n    }\n    awaitTx(txHash, checkInterval = 3000) {\n        return new Promise((res) => {\n            const confirmation = setInterval(async () => {\n                const isConfirmed = await fetch(`${this.kupoUrl}/matches/*@${txHash}?unspent`).then((res) => res.json());\n                if (isConfirmed && isConfirmed.length > 0) {\n                    clearInterval(confirmation);\n                    res(true);\n                    return;\n                }\n            }, checkInterval);\n        });\n    }\n    async submitTx(tx) {\n        const client = await this.ogmiosWsp(\"SubmitTx\", {\n            submit: tx,\n        });\n        return new Promise((res, rej) => {\n            client.addEventListener(\"message\", (msg) => {\n                try {\n                    const { result } = JSON.parse(msg.data);\n                    if (result.SubmitSuccess)\n                        res(result.SubmitSuccess.txId);\n                    else\n                        rej(result.SubmitFail);\n                    client.close();\n                }\n                catch (e) {\n                    rej(e);\n                }\n            }, { once: true });\n        });\n    }\n    kupmiosUtxosToUtxos(utxos) {\n        // deno-lint-ignore no-explicit-any\n        return Promise.all(utxos.map(async (utxo) => {\n            return ({\n                txHash: utxo.transaction_id,\n                outputIndex: parseInt(utxo.output_index),\n                address: utxo.address,\n                assets: (() => {\n                    const a = { lovelace: BigInt(utxo.value.coins) };\n                    Object.keys(utxo.value.assets).forEach((unit) => {\n                        a[unit.replace(\".\", \"\")] = BigInt(utxo.value.assets[unit]);\n                    });\n                    return a;\n                })(),\n                datumHash: utxo?.datum_type === \"hash\" ? utxo.datum_hash : null,\n                datum: utxo?.datum_type === \"inline\"\n                    ? await this.getDatum(utxo.datum_hash)\n                    : null,\n                scriptRef: utxo.script_hash &&\n                    (await (async () => {\n                        const { script, language, } = await fetch(`${this.kupoUrl}/scripts/${utxo.script_hash}`).then((res) => res.json());\n                        if (language === \"native\") {\n                            return { type: \"Native\", script };\n                        }\n                        else if (language === \"plutus:v1\") {\n                            return {\n                                type: \"PlutusV1\",\n                                script: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript[\"new\"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(script)).to_bytes()),\n                            };\n                        }\n                        else if (language === \"plutus:v2\") {\n                            return {\n                                type: \"PlutusV2\",\n                                script: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript[\"new\"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(script)).to_bytes()),\n                            };\n                        }\n                    })()),\n            });\n        }));\n    }\n    async ogmiosWsp(methodname, args) {\n        const client = new WebSocket(this.ogmiosUrl);\n        await new Promise((res) => {\n            client.addEventListener(\"open\", () => res(1), { once: true });\n        });\n        client.send(JSON.stringify({\n            type: \"jsonwsp/request\",\n            version: \"1.0\",\n            servicename: \"ogmios\",\n            methodname,\n            args,\n        }));\n        return client;\n    }\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/provider/kupmios.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Kupmios": () => (/* binding */ Kupmios)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mod.js */ "./node_modules/lucid-cardano/esm/src/utils/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__, _utils_mod_js__WEBPACK_IMPORTED_MODULE_1__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+class Kupmios {
+    /**
+     * @param kupoUrl: http(s)://localhost:1442
+     * @param ogmiosUrl: ws(s)://localhost:1337
+     */
+    constructor(kupoUrl, ogmiosUrl) {
+        Object.defineProperty(this, "kupoUrl", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "ogmiosUrl", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.kupoUrl = kupoUrl;
+        this.ogmiosUrl = ogmiosUrl;
+    }
+    async getProtocolParameters() {
+        const client = await this.ogmiosWsp("Query", {
+            query: "currentProtocolParameters",
+        });
+        return new Promise((res, rej) => {
+            client.addEventListener("message", (msg) => {
+                try {
+                    const { result } = JSON.parse(msg.data);
+                    // deno-lint-ignore no-explicit-any
+                    const costModels = {};
+                    Object.keys(result.costModels).forEach((v) => {
+                        const version = v.split(":")[1].toUpperCase();
+                        const plutusVersion = "Plutus" + version;
+                        costModels[plutusVersion] = result.costModels[v];
+                    });
+                    const [memNum, memDenom] = result.prices.memory.split("/");
+                    const [stepsNum, stepsDenom] = result.prices.steps.split("/");
+                    res({
+                        minFeeA: parseInt(result.minFeeCoefficient),
+                        minFeeB: parseInt(result.minFeeConstant),
+                        maxTxSize: parseInt(result.maxTxSize),
+                        maxValSize: parseInt(result.maxValueSize),
+                        keyDeposit: BigInt(result.stakeKeyDeposit),
+                        poolDeposit: BigInt(result.poolDeposit),
+                        priceMem: parseInt(memNum) / parseInt(memDenom),
+                        priceStep: parseInt(stepsNum) / parseInt(stepsDenom),
+                        maxTxExMem: BigInt(result.maxExecutionUnitsPerTransaction.memory),
+                        maxTxExSteps: BigInt(result.maxExecutionUnitsPerTransaction.steps),
+                        coinsPerUtxoByte: BigInt(result.coinsPerUtxoByte),
+                        collateralPercentage: parseInt(result.collateralPercentage),
+                        maxCollateralInputs: parseInt(result.maxCollateralInputs),
+                        costModels,
+                    });
+                    client.close();
+                }
+                catch (e) {
+                    rej(e);
+                }
+            }, { once: true });
+        });
+    }
+    async getUtxos(addressOrCredential) {
+        const isAddress = typeof addressOrCredential === "string";
+        const queryPredicate = isAddress
+            ? addressOrCredential
+            : addressOrCredential.hash;
+        const result = await fetch(`${this.kupoUrl}/matches/${queryPredicate}${isAddress ? "" : "/*"}?unspent`)
+            .then((res) => res.json());
+        return this.kupmiosUtxosToUtxos(result);
+    }
+    async getUtxosWithUnit(addressOrCredential, unit) {
+        const isAddress = typeof addressOrCredential === "string";
+        const queryPredicate = isAddress
+            ? addressOrCredential
+            : addressOrCredential.hash;
+        const { policyId, assetName } = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromUnit)(unit);
+        const result = await fetch(`${this.kupoUrl}/matches/${queryPredicate}${isAddress ? "" : "/*"}?unspent&policy_id=${policyId}${assetName ? `&asset_name=${assetName}` : ""}`)
+            .then((res) => res.json());
+        return this.kupmiosUtxosToUtxos(result);
+    }
+    async getUtxoByUnit(unit) {
+        const { policyId, assetName } = (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromUnit)(unit);
+        const result = await fetch(`${this.kupoUrl}/matches/${policyId}.${assetName ? `${assetName}` : "*"}?unspent`)
+            .then((res) => res.json());
+        const utxos = await this.kupmiosUtxosToUtxos(result);
+        if (utxos.length > 1) {
+            throw new Error("Unit needs to be an NFT or only held by one address.");
+        }
+        return utxos[0];
+    }
+    async getUtxosByOutRef(outRefs) {
+        const queryHashes = [...new Set(outRefs.map((outRef) => outRef.txHash))];
+        const utxos = await Promise.all(queryHashes.map(async (txHash) => {
+            const result = await fetch(`${this.kupoUrl}/matches/*@${txHash}?unspent`).then((res) => res.json());
+            return this.kupmiosUtxosToUtxos(result);
+        }));
+        return utxos.reduce((acc, utxos) => acc.concat(utxos), []).filter((utxo) => outRefs.some((outRef) => utxo.txHash === outRef.txHash && utxo.outputIndex === outRef.outputIndex));
+    }
+    async getDelegation(rewardAddress) {
+        const client = await this.ogmiosWsp("Query", {
+            query: { "delegationsAndRewards": [rewardAddress] },
+        });
+        return new Promise((res, rej) => {
+            client.addEventListener("message", (msg) => {
+                try {
+                    const { result } = JSON.parse(msg.data);
+                    const delegation = (result ? Object.values(result)[0] : {});
+                    res({
+                        poolId: delegation?.delegate || null,
+                        rewards: BigInt(delegation?.rewards || 0),
+                    });
+                    client.close();
+                }
+                catch (e) {
+                    rej(e);
+                }
+            }, { once: true });
+        });
+    }
+    async getDatum(datumHash) {
+        const result = await fetch(`${this.kupoUrl}/datums/${datumHash}`).then((res) => res.json());
+        if (!result || !result.datum) {
+            throw new Error(`No datum found for datum hash: ${datumHash}`);
+        }
+        return result.datum;
+    }
+    awaitTx(txHash, checkInterval = 3000) {
+        return new Promise((res) => {
+            const confirmation = setInterval(async () => {
+                const isConfirmed = await fetch(`${this.kupoUrl}/matches/*@${txHash}?unspent`).then((res) => res.json());
+                if (isConfirmed && isConfirmed.length > 0) {
+                    clearInterval(confirmation);
+                    res(true);
+                    return;
+                }
+            }, checkInterval);
+        });
+    }
+    async submitTx(tx) {
+        const client = await this.ogmiosWsp("SubmitTx", {
+            submit: tx,
+        });
+        return new Promise((res, rej) => {
+            client.addEventListener("message", (msg) => {
+                try {
+                    const { result } = JSON.parse(msg.data);
+                    if (result.SubmitSuccess)
+                        res(result.SubmitSuccess.txId);
+                    else
+                        rej(result.SubmitFail);
+                    client.close();
+                }
+                catch (e) {
+                    rej(e);
+                }
+            }, { once: true });
+        });
+    }
+    kupmiosUtxosToUtxos(utxos) {
+        // deno-lint-ignore no-explicit-any
+        return Promise.all(utxos.map(async (utxo) => {
+            return ({
+                txHash: utxo.transaction_id,
+                outputIndex: parseInt(utxo.output_index),
+                address: utxo.address,
+                assets: (() => {
+                    const a = { lovelace: BigInt(utxo.value.coins) };
+                    Object.keys(utxo.value.assets).forEach((unit) => {
+                        a[unit.replace(".", "")] = BigInt(utxo.value.assets[unit]);
+                    });
+                    return a;
+                })(),
+                datumHash: utxo?.datum_type === "hash" ? utxo.datum_hash : null,
+                datum: utxo?.datum_type === "inline"
+                    ? await this.getDatum(utxo.datum_hash)
+                    : null,
+                scriptRef: utxo.script_hash &&
+                    (await (async () => {
+                        const { script, language, } = await fetch(`${this.kupoUrl}/scripts/${utxo.script_hash}`).then((res) => res.json());
+                        if (language === "native") {
+                            return { type: "Native", script };
+                        }
+                        else if (language === "plutus:v1") {
+                            return {
+                                type: "PlutusV1",
+                                script: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript["new"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(script)).to_bytes()),
+                            };
+                        }
+                        else if (language === "plutus:v2") {
+                            return {
+                                type: "PlutusV2",
+                                script: (0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.toHex)(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.PlutusScript["new"]((0,_utils_mod_js__WEBPACK_IMPORTED_MODULE_1__.fromHex)(script)).to_bytes()),
+                            };
+                        }
+                    })()),
+            });
+        }));
+    }
+    async ogmiosWsp(methodname, args) {
+        const client = new WebSocket(this.ogmiosUrl);
+        await new Promise((res) => {
+            client.addEventListener("open", () => res(1), { once: true });
+        });
+        client.send(JSON.stringify({
+            type: "jsonwsp/request",
+            version: "1.0",
+            servicename: "ogmios",
+            methodname,
+            args,
+        }));
+        return client;
+    }
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -307,7 +7733,25 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Blockfrost\": () => (/* reexport safe */ _blockfrost_js__WEBPACK_IMPORTED_MODULE_0__.Blockfrost),\n/* harmony export */   \"Emulator\": () => (/* reexport safe */ _emulator_js__WEBPACK_IMPORTED_MODULE_2__.Emulator),\n/* harmony export */   \"Kupmios\": () => (/* reexport safe */ _kupmios_js__WEBPACK_IMPORTED_MODULE_1__.Kupmios),\n/* harmony export */   \"datumJsonToCbor\": () => (/* reexport safe */ _blockfrost_js__WEBPACK_IMPORTED_MODULE_0__.datumJsonToCbor)\n/* harmony export */ });\n/* harmony import */ var _blockfrost_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blockfrost.js */ \"./node_modules/lucid-cardano/esm/src/provider/blockfrost.js\");\n/* harmony import */ var _kupmios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./kupmios.js */ \"./node_modules/lucid-cardano/esm/src/provider/kupmios.js\");\n/* harmony import */ var _emulator_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./emulator.js */ \"./node_modules/lucid-cardano/esm/src/provider/emulator.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_blockfrost_js__WEBPACK_IMPORTED_MODULE_0__, _kupmios_js__WEBPACK_IMPORTED_MODULE_1__, _emulator_js__WEBPACK_IMPORTED_MODULE_2__]);\n([_blockfrost_js__WEBPACK_IMPORTED_MODULE_0__, _kupmios_js__WEBPACK_IMPORTED_MODULE_1__, _emulator_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/provider/mod.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Blockfrost": () => (/* reexport safe */ _blockfrost_js__WEBPACK_IMPORTED_MODULE_0__.Blockfrost),
+/* harmony export */   "Emulator": () => (/* reexport safe */ _emulator_js__WEBPACK_IMPORTED_MODULE_2__.Emulator),
+/* harmony export */   "Kupmios": () => (/* reexport safe */ _kupmios_js__WEBPACK_IMPORTED_MODULE_1__.Kupmios),
+/* harmony export */   "datumJsonToCbor": () => (/* reexport safe */ _blockfrost_js__WEBPACK_IMPORTED_MODULE_0__.datumJsonToCbor)
+/* harmony export */ });
+/* harmony import */ var _blockfrost_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blockfrost.js */ "./node_modules/lucid-cardano/esm/src/provider/blockfrost.js");
+/* harmony import */ var _kupmios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./kupmios.js */ "./node_modules/lucid-cardano/esm/src/provider/kupmios.js");
+/* harmony import */ var _emulator_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./emulator.js */ "./node_modules/lucid-cardano/esm/src/provider/emulator.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_blockfrost_js__WEBPACK_IMPORTED_MODULE_0__, _kupmios_js__WEBPACK_IMPORTED_MODULE_1__, _emulator_js__WEBPACK_IMPORTED_MODULE_2__]);
+([_blockfrost_js__WEBPACK_IMPORTED_MODULE_0__, _kupmios_js__WEBPACK_IMPORTED_MODULE_1__, _emulator_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -317,7 +7761,9 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/types/global.js?");
+__webpack_require__.r(__webpack_exports__);
+
+
 
 /***/ }),
 
@@ -327,7 +7773,12 @@ eval("__webpack_require__.r(__webpack_exports__);\n\n\n\n//# sourceURL=webpack:/
   \*********************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _types_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types.js */ \"./node_modules/lucid-cardano/esm/src/types/types.js\");\n/* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./global.js */ \"./node_modules/lucid-cardano/esm/src/types/global.js\");\n\n\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/types/mod.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _types_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types.js */ "./node_modules/lucid-cardano/esm/src/types/types.js");
+/* harmony import */ var _global_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./global.js */ "./node_modules/lucid-cardano/esm/src/types/global.js");
+
+
+
 
 /***/ }),
 
@@ -337,7 +7788,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _typ
   \***********************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n\n\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/types/types.js?");
+__webpack_require__.r(__webpack_exports__);
+
+
 
 /***/ }),
 
@@ -347,7 +7800,397 @@ eval("__webpack_require__.r(__webpack_exports__);\n\n\n\n//# sourceURL=webpack:/
   \****************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"PROTOCOL_PARAMETERS_DEFAULT\": () => (/* binding */ PROTOCOL_PARAMETERS_DEFAULT),\n/* harmony export */   \"createCostModels\": () => (/* binding */ createCostModels)\n/* harmony export */ });\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__]);\n_core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n\nfunction createCostModels(costModels) {\n    const costmdls = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Costmdls[\"new\"]();\n    // add plutus v1\n    const costmdlV1 = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.CostModel[\"new\"]();\n    Object.values(costModels.PlutusV1).forEach((cost, index) => {\n        costmdlV1.set(index, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Int[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(cost.toString())));\n    });\n    costmdls.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Language.new_plutus_v1(), costmdlV1);\n    // add plutus v2\n    const costmdlV2 = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.CostModel.new_plutus_v2();\n    Object.values(costModels.PlutusV2 || []).forEach((cost, index) => {\n        costmdlV2.set(index, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Int[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(cost.toString())));\n    });\n    costmdls.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Language.new_plutus_v2(), costmdlV2);\n    return costmdls;\n}\nconst PROTOCOL_PARAMETERS_DEFAULT = {\n    minFeeA: 44,\n    minFeeB: 155381,\n    maxTxSize: 16384,\n    maxValSize: 5000,\n    keyDeposit: 2000000n,\n    poolDeposit: 500000000n,\n    priceMem: 0.0577,\n    priceStep: 0.0000721,\n    maxTxExMem: 14000000n,\n    maxTxExSteps: 10000000000n,\n    coinsPerUtxoByte: 4310n,\n    collateralPercentage: 150,\n    maxCollateralInputs: 3,\n    costModels: {\n        PlutusV1: {\n            \"addInteger-cpu-arguments-intercept\": 205665,\n            \"addInteger-cpu-arguments-slope\": 812,\n            \"addInteger-memory-arguments-intercept\": 1,\n            \"addInteger-memory-arguments-slope\": 1,\n            \"appendByteString-cpu-arguments-intercept\": 1000,\n            \"appendByteString-cpu-arguments-slope\": 571,\n            \"appendByteString-memory-arguments-intercept\": 0,\n            \"appendByteString-memory-arguments-slope\": 1,\n            \"appendString-cpu-arguments-intercept\": 1000,\n            \"appendString-cpu-arguments-slope\": 24177,\n            \"appendString-memory-arguments-intercept\": 4,\n            \"appendString-memory-arguments-slope\": 1,\n            \"bData-cpu-arguments\": 1000,\n            \"bData-memory-arguments\": 32,\n            \"blake2b_256-cpu-arguments-intercept\": 117366,\n            \"blake2b_256-cpu-arguments-slope\": 10475,\n            \"blake2b_256-memory-arguments\": 4,\n            \"cekApplyCost-exBudgetCPU\": 23000,\n            \"cekApplyCost-exBudgetMemory\": 100,\n            \"cekBuiltinCost-exBudgetCPU\": 23000,\n            \"cekBuiltinCost-exBudgetMemory\": 100,\n            \"cekConstCost-exBudgetCPU\": 23000,\n            \"cekConstCost-exBudgetMemory\": 100,\n            \"cekDelayCost-exBudgetCPU\": 23000,\n            \"cekDelayCost-exBudgetMemory\": 100,\n            \"cekForceCost-exBudgetCPU\": 23000,\n            \"cekForceCost-exBudgetMemory\": 100,\n            \"cekLamCost-exBudgetCPU\": 23000,\n            \"cekLamCost-exBudgetMemory\": 100,\n            \"cekStartupCost-exBudgetCPU\": 100,\n            \"cekStartupCost-exBudgetMemory\": 100,\n            \"cekVarCost-exBudgetCPU\": 23000,\n            \"cekVarCost-exBudgetMemory\": 100,\n            \"chooseData-cpu-arguments\": 19537,\n            \"chooseData-memory-arguments\": 32,\n            \"chooseList-cpu-arguments\": 175354,\n            \"chooseList-memory-arguments\": 32,\n            \"chooseUnit-cpu-arguments\": 46417,\n            \"chooseUnit-memory-arguments\": 4,\n            \"consByteString-cpu-arguments-intercept\": 221973,\n            \"consByteString-cpu-arguments-slope\": 511,\n            \"consByteString-memory-arguments-intercept\": 0,\n            \"consByteString-memory-arguments-slope\": 1,\n            \"constrData-cpu-arguments\": 89141,\n            \"constrData-memory-arguments\": 32,\n            \"decodeUtf8-cpu-arguments-intercept\": 497525,\n            \"decodeUtf8-cpu-arguments-slope\": 14068,\n            \"decodeUtf8-memory-arguments-intercept\": 4,\n            \"decodeUtf8-memory-arguments-slope\": 2,\n            \"divideInteger-cpu-arguments-constant\": 196500,\n            \"divideInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"divideInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"divideInteger-memory-arguments-intercept\": 0,\n            \"divideInteger-memory-arguments-minimum\": 1,\n            \"divideInteger-memory-arguments-slope\": 1,\n            \"encodeUtf8-cpu-arguments-intercept\": 1000,\n            \"encodeUtf8-cpu-arguments-slope\": 28662,\n            \"encodeUtf8-memory-arguments-intercept\": 4,\n            \"encodeUtf8-memory-arguments-slope\": 2,\n            \"equalsByteString-cpu-arguments-constant\": 245000,\n            \"equalsByteString-cpu-arguments-intercept\": 216773,\n            \"equalsByteString-cpu-arguments-slope\": 62,\n            \"equalsByteString-memory-arguments\": 1,\n            \"equalsData-cpu-arguments-intercept\": 1060367,\n            \"equalsData-cpu-arguments-slope\": 12586,\n            \"equalsData-memory-arguments\": 1,\n            \"equalsInteger-cpu-arguments-intercept\": 208512,\n            \"equalsInteger-cpu-arguments-slope\": 421,\n            \"equalsInteger-memory-arguments\": 1,\n            \"equalsString-cpu-arguments-constant\": 187000,\n            \"equalsString-cpu-arguments-intercept\": 1000,\n            \"equalsString-cpu-arguments-slope\": 52998,\n            \"equalsString-memory-arguments\": 1,\n            \"fstPair-cpu-arguments\": 80436,\n            \"fstPair-memory-arguments\": 32,\n            \"headList-cpu-arguments\": 43249,\n            \"headList-memory-arguments\": 32,\n            \"iData-cpu-arguments\": 1000,\n            \"iData-memory-arguments\": 32,\n            \"ifThenElse-cpu-arguments\": 80556,\n            \"ifThenElse-memory-arguments\": 1,\n            \"indexByteString-cpu-arguments\": 57667,\n            \"indexByteString-memory-arguments\": 4,\n            \"lengthOfByteString-cpu-arguments\": 1000,\n            \"lengthOfByteString-memory-arguments\": 10,\n            \"lessThanByteString-cpu-arguments-intercept\": 197145,\n            \"lessThanByteString-cpu-arguments-slope\": 156,\n            \"lessThanByteString-memory-arguments\": 1,\n            \"lessThanEqualsByteString-cpu-arguments-intercept\": 197145,\n            \"lessThanEqualsByteString-cpu-arguments-slope\": 156,\n            \"lessThanEqualsByteString-memory-arguments\": 1,\n            \"lessThanEqualsInteger-cpu-arguments-intercept\": 204924,\n            \"lessThanEqualsInteger-cpu-arguments-slope\": 473,\n            \"lessThanEqualsInteger-memory-arguments\": 1,\n            \"lessThanInteger-cpu-arguments-intercept\": 208896,\n            \"lessThanInteger-cpu-arguments-slope\": 511,\n            \"lessThanInteger-memory-arguments\": 1,\n            \"listData-cpu-arguments\": 52467,\n            \"listData-memory-arguments\": 32,\n            \"mapData-cpu-arguments\": 64832,\n            \"mapData-memory-arguments\": 32,\n            \"mkCons-cpu-arguments\": 65493,\n            \"mkCons-memory-arguments\": 32,\n            \"mkNilData-cpu-arguments\": 22558,\n            \"mkNilData-memory-arguments\": 32,\n            \"mkNilPairData-cpu-arguments\": 16563,\n            \"mkNilPairData-memory-arguments\": 32,\n            \"mkPairData-cpu-arguments\": 76511,\n            \"mkPairData-memory-arguments\": 32,\n            \"modInteger-cpu-arguments-constant\": 196500,\n            \"modInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"modInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"modInteger-memory-arguments-intercept\": 0,\n            \"modInteger-memory-arguments-minimum\": 1,\n            \"modInteger-memory-arguments-slope\": 1,\n            \"multiplyInteger-cpu-arguments-intercept\": 69522,\n            \"multiplyInteger-cpu-arguments-slope\": 11687,\n            \"multiplyInteger-memory-arguments-intercept\": 0,\n            \"multiplyInteger-memory-arguments-slope\": 1,\n            \"nullList-cpu-arguments\": 60091,\n            \"nullList-memory-arguments\": 32,\n            \"quotientInteger-cpu-arguments-constant\": 196500,\n            \"quotientInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"quotientInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"quotientInteger-memory-arguments-intercept\": 0,\n            \"quotientInteger-memory-arguments-minimum\": 1,\n            \"quotientInteger-memory-arguments-slope\": 1,\n            \"remainderInteger-cpu-arguments-constant\": 196500,\n            \"remainderInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"remainderInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"remainderInteger-memory-arguments-intercept\": 0,\n            \"remainderInteger-memory-arguments-minimum\": 1,\n            \"remainderInteger-memory-arguments-slope\": 1,\n            \"sha2_256-cpu-arguments-intercept\": 806990,\n            \"sha2_256-cpu-arguments-slope\": 30482,\n            \"sha2_256-memory-arguments\": 4,\n            \"sha3_256-cpu-arguments-intercept\": 1927926,\n            \"sha3_256-cpu-arguments-slope\": 82523,\n            \"sha3_256-memory-arguments\": 4,\n            \"sliceByteString-cpu-arguments-intercept\": 265318,\n            \"sliceByteString-cpu-arguments-slope\": 0,\n            \"sliceByteString-memory-arguments-intercept\": 4,\n            \"sliceByteString-memory-arguments-slope\": 0,\n            \"sndPair-cpu-arguments\": 85931,\n            \"sndPair-memory-arguments\": 32,\n            \"subtractInteger-cpu-arguments-intercept\": 205665,\n            \"subtractInteger-cpu-arguments-slope\": 812,\n            \"subtractInteger-memory-arguments-intercept\": 1,\n            \"subtractInteger-memory-arguments-slope\": 1,\n            \"tailList-cpu-arguments\": 41182,\n            \"tailList-memory-arguments\": 32,\n            \"trace-cpu-arguments\": 212342,\n            \"trace-memory-arguments\": 32,\n            \"unBData-cpu-arguments\": 31220,\n            \"unBData-memory-arguments\": 32,\n            \"unConstrData-cpu-arguments\": 32696,\n            \"unConstrData-memory-arguments\": 32,\n            \"unIData-cpu-arguments\": 43357,\n            \"unIData-memory-arguments\": 32,\n            \"unListData-cpu-arguments\": 32247,\n            \"unListData-memory-arguments\": 32,\n            \"unMapData-cpu-arguments\": 38314,\n            \"unMapData-memory-arguments\": 32,\n            \"verifyEd25519Signature-cpu-arguments-intercept\": 9462713,\n            \"verifyEd25519Signature-cpu-arguments-slope\": 1021,\n            \"verifyEd25519Signature-memory-arguments\": 10,\n        },\n        PlutusV2: {\n            \"addInteger-cpu-arguments-intercept\": 205665,\n            \"addInteger-cpu-arguments-slope\": 812,\n            \"addInteger-memory-arguments-intercept\": 1,\n            \"addInteger-memory-arguments-slope\": 1,\n            \"appendByteString-cpu-arguments-intercept\": 1000,\n            \"appendByteString-cpu-arguments-slope\": 571,\n            \"appendByteString-memory-arguments-intercept\": 0,\n            \"appendByteString-memory-arguments-slope\": 1,\n            \"appendString-cpu-arguments-intercept\": 1000,\n            \"appendString-cpu-arguments-slope\": 24177,\n            \"appendString-memory-arguments-intercept\": 4,\n            \"appendString-memory-arguments-slope\": 1,\n            \"bData-cpu-arguments\": 1000,\n            \"bData-memory-arguments\": 32,\n            \"blake2b_256-cpu-arguments-intercept\": 117366,\n            \"blake2b_256-cpu-arguments-slope\": 10475,\n            \"blake2b_256-memory-arguments\": 4,\n            \"cekApplyCost-exBudgetCPU\": 23000,\n            \"cekApplyCost-exBudgetMemory\": 100,\n            \"cekBuiltinCost-exBudgetCPU\": 23000,\n            \"cekBuiltinCost-exBudgetMemory\": 100,\n            \"cekConstCost-exBudgetCPU\": 23000,\n            \"cekConstCost-exBudgetMemory\": 100,\n            \"cekDelayCost-exBudgetCPU\": 23000,\n            \"cekDelayCost-exBudgetMemory\": 100,\n            \"cekForceCost-exBudgetCPU\": 23000,\n            \"cekForceCost-exBudgetMemory\": 100,\n            \"cekLamCost-exBudgetCPU\": 23000,\n            \"cekLamCost-exBudgetMemory\": 100,\n            \"cekStartupCost-exBudgetCPU\": 100,\n            \"cekStartupCost-exBudgetMemory\": 100,\n            \"cekVarCost-exBudgetCPU\": 23000,\n            \"cekVarCost-exBudgetMemory\": 100,\n            \"chooseData-cpu-arguments\": 19537,\n            \"chooseData-memory-arguments\": 32,\n            \"chooseList-cpu-arguments\": 175354,\n            \"chooseList-memory-arguments\": 32,\n            \"chooseUnit-cpu-arguments\": 46417,\n            \"chooseUnit-memory-arguments\": 4,\n            \"consByteString-cpu-arguments-intercept\": 221973,\n            \"consByteString-cpu-arguments-slope\": 511,\n            \"consByteString-memory-arguments-intercept\": 0,\n            \"consByteString-memory-arguments-slope\": 1,\n            \"constrData-cpu-arguments\": 89141,\n            \"constrData-memory-arguments\": 32,\n            \"decodeUtf8-cpu-arguments-intercept\": 497525,\n            \"decodeUtf8-cpu-arguments-slope\": 14068,\n            \"decodeUtf8-memory-arguments-intercept\": 4,\n            \"decodeUtf8-memory-arguments-slope\": 2,\n            \"divideInteger-cpu-arguments-constant\": 196500,\n            \"divideInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"divideInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"divideInteger-memory-arguments-intercept\": 0,\n            \"divideInteger-memory-arguments-minimum\": 1,\n            \"divideInteger-memory-arguments-slope\": 1,\n            \"encodeUtf8-cpu-arguments-intercept\": 1000,\n            \"encodeUtf8-cpu-arguments-slope\": 28662,\n            \"encodeUtf8-memory-arguments-intercept\": 4,\n            \"encodeUtf8-memory-arguments-slope\": 2,\n            \"equalsByteString-cpu-arguments-constant\": 245000,\n            \"equalsByteString-cpu-arguments-intercept\": 216773,\n            \"equalsByteString-cpu-arguments-slope\": 62,\n            \"equalsByteString-memory-arguments\": 1,\n            \"equalsData-cpu-arguments-intercept\": 1060367,\n            \"equalsData-cpu-arguments-slope\": 12586,\n            \"equalsData-memory-arguments\": 1,\n            \"equalsInteger-cpu-arguments-intercept\": 208512,\n            \"equalsInteger-cpu-arguments-slope\": 421,\n            \"equalsInteger-memory-arguments\": 1,\n            \"equalsString-cpu-arguments-constant\": 187000,\n            \"equalsString-cpu-arguments-intercept\": 1000,\n            \"equalsString-cpu-arguments-slope\": 52998,\n            \"equalsString-memory-arguments\": 1,\n            \"fstPair-cpu-arguments\": 80436,\n            \"fstPair-memory-arguments\": 32,\n            \"headList-cpu-arguments\": 43249,\n            \"headList-memory-arguments\": 32,\n            \"iData-cpu-arguments\": 1000,\n            \"iData-memory-arguments\": 32,\n            \"ifThenElse-cpu-arguments\": 80556,\n            \"ifThenElse-memory-arguments\": 1,\n            \"indexByteString-cpu-arguments\": 57667,\n            \"indexByteString-memory-arguments\": 4,\n            \"lengthOfByteString-cpu-arguments\": 1000,\n            \"lengthOfByteString-memory-arguments\": 10,\n            \"lessThanByteString-cpu-arguments-intercept\": 197145,\n            \"lessThanByteString-cpu-arguments-slope\": 156,\n            \"lessThanByteString-memory-arguments\": 1,\n            \"lessThanEqualsByteString-cpu-arguments-intercept\": 197145,\n            \"lessThanEqualsByteString-cpu-arguments-slope\": 156,\n            \"lessThanEqualsByteString-memory-arguments\": 1,\n            \"lessThanEqualsInteger-cpu-arguments-intercept\": 204924,\n            \"lessThanEqualsInteger-cpu-arguments-slope\": 473,\n            \"lessThanEqualsInteger-memory-arguments\": 1,\n            \"lessThanInteger-cpu-arguments-intercept\": 208896,\n            \"lessThanInteger-cpu-arguments-slope\": 511,\n            \"lessThanInteger-memory-arguments\": 1,\n            \"listData-cpu-arguments\": 52467,\n            \"listData-memory-arguments\": 32,\n            \"mapData-cpu-arguments\": 64832,\n            \"mapData-memory-arguments\": 32,\n            \"mkCons-cpu-arguments\": 65493,\n            \"mkCons-memory-arguments\": 32,\n            \"mkNilData-cpu-arguments\": 22558,\n            \"mkNilData-memory-arguments\": 32,\n            \"mkNilPairData-cpu-arguments\": 16563,\n            \"mkNilPairData-memory-arguments\": 32,\n            \"mkPairData-cpu-arguments\": 76511,\n            \"mkPairData-memory-arguments\": 32,\n            \"modInteger-cpu-arguments-constant\": 196500,\n            \"modInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"modInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"modInteger-memory-arguments-intercept\": 0,\n            \"modInteger-memory-arguments-minimum\": 1,\n            \"modInteger-memory-arguments-slope\": 1,\n            \"multiplyInteger-cpu-arguments-intercept\": 69522,\n            \"multiplyInteger-cpu-arguments-slope\": 11687,\n            \"multiplyInteger-memory-arguments-intercept\": 0,\n            \"multiplyInteger-memory-arguments-slope\": 1,\n            \"nullList-cpu-arguments\": 60091,\n            \"nullList-memory-arguments\": 32,\n            \"quotientInteger-cpu-arguments-constant\": 196500,\n            \"quotientInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"quotientInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"quotientInteger-memory-arguments-intercept\": 0,\n            \"quotientInteger-memory-arguments-minimum\": 1,\n            \"quotientInteger-memory-arguments-slope\": 1,\n            \"remainderInteger-cpu-arguments-constant\": 196500,\n            \"remainderInteger-cpu-arguments-model-arguments-intercept\": 453240,\n            \"remainderInteger-cpu-arguments-model-arguments-slope\": 220,\n            \"remainderInteger-memory-arguments-intercept\": 0,\n            \"remainderInteger-memory-arguments-minimum\": 1,\n            \"remainderInteger-memory-arguments-slope\": 1,\n            \"serialiseData-cpu-arguments-intercept\": 1159724,\n            \"serialiseData-cpu-arguments-slope\": 392670,\n            \"serialiseData-memory-arguments-intercept\": 0,\n            \"serialiseData-memory-arguments-slope\": 2,\n            \"sha2_256-cpu-arguments-intercept\": 806990,\n            \"sha2_256-cpu-arguments-slope\": 30482,\n            \"sha2_256-memory-arguments\": 4,\n            \"sha3_256-cpu-arguments-intercept\": 1927926,\n            \"sha3_256-cpu-arguments-slope\": 82523,\n            \"sha3_256-memory-arguments\": 4,\n            \"sliceByteString-cpu-arguments-intercept\": 265318,\n            \"sliceByteString-cpu-arguments-slope\": 0,\n            \"sliceByteString-memory-arguments-intercept\": 4,\n            \"sliceByteString-memory-arguments-slope\": 0,\n            \"sndPair-cpu-arguments\": 85931,\n            \"sndPair-memory-arguments\": 32,\n            \"subtractInteger-cpu-arguments-intercept\": 205665,\n            \"subtractInteger-cpu-arguments-slope\": 812,\n            \"subtractInteger-memory-arguments-intercept\": 1,\n            \"subtractInteger-memory-arguments-slope\": 1,\n            \"tailList-cpu-arguments\": 41182,\n            \"tailList-memory-arguments\": 32,\n            \"trace-cpu-arguments\": 212342,\n            \"trace-memory-arguments\": 32,\n            \"unBData-cpu-arguments\": 31220,\n            \"unBData-memory-arguments\": 32,\n            \"unConstrData-cpu-arguments\": 32696,\n            \"unConstrData-memory-arguments\": 32,\n            \"unIData-cpu-arguments\": 43357,\n            \"unIData-memory-arguments\": 32,\n            \"unListData-cpu-arguments\": 32247,\n            \"unListData-memory-arguments\": 32,\n            \"unMapData-cpu-arguments\": 38314,\n            \"unMapData-memory-arguments\": 32,\n            \"verifyEcdsaSecp256k1Signature-cpu-arguments\": 35892428,\n            \"verifyEcdsaSecp256k1Signature-memory-arguments\": 10,\n            \"verifyEd25519Signature-cpu-arguments-intercept\": 57996947,\n            \"verifyEd25519Signature-cpu-arguments-slope\": 18975,\n            \"verifyEd25519Signature-memory-arguments\": 10,\n            \"verifySchnorrSecp256k1Signature-cpu-arguments-intercept\": 38887044,\n            \"verifySchnorrSecp256k1Signature-cpu-arguments-slope\": 32947,\n            \"verifySchnorrSecp256k1Signature-memory-arguments\": 10,\n        },\n    },\n};\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/utils/cost_model.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PROTOCOL_PARAMETERS_DEFAULT": () => (/* binding */ PROTOCOL_PARAMETERS_DEFAULT),
+/* harmony export */   "createCostModels": () => (/* binding */ createCostModels)
+/* harmony export */ });
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_0__]);
+_core_mod_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
+function createCostModels(costModels) {
+    const costmdls = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Costmdls["new"]();
+    // add plutus v1
+    const costmdlV1 = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.CostModel["new"]();
+    Object.values(costModels.PlutusV1).forEach((cost, index) => {
+        costmdlV1.set(index, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Int["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(cost.toString())));
+    });
+    costmdls.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Language.new_plutus_v1(), costmdlV1);
+    // add plutus v2
+    const costmdlV2 = _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.CostModel.new_plutus_v2();
+    Object.values(costModels.PlutusV2 || []).forEach((cost, index) => {
+        costmdlV2.set(index, _core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Int["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.BigNum.from_str(cost.toString())));
+    });
+    costmdls.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_0__.C.Language.new_plutus_v2(), costmdlV2);
+    return costmdls;
+}
+const PROTOCOL_PARAMETERS_DEFAULT = {
+    minFeeA: 44,
+    minFeeB: 155381,
+    maxTxSize: 16384,
+    maxValSize: 5000,
+    keyDeposit: 2000000n,
+    poolDeposit: 500000000n,
+    priceMem: 0.0577,
+    priceStep: 0.0000721,
+    maxTxExMem: 14000000n,
+    maxTxExSteps: 10000000000n,
+    coinsPerUtxoByte: 4310n,
+    collateralPercentage: 150,
+    maxCollateralInputs: 3,
+    costModels: {
+        PlutusV1: {
+            "addInteger-cpu-arguments-intercept": 205665,
+            "addInteger-cpu-arguments-slope": 812,
+            "addInteger-memory-arguments-intercept": 1,
+            "addInteger-memory-arguments-slope": 1,
+            "appendByteString-cpu-arguments-intercept": 1000,
+            "appendByteString-cpu-arguments-slope": 571,
+            "appendByteString-memory-arguments-intercept": 0,
+            "appendByteString-memory-arguments-slope": 1,
+            "appendString-cpu-arguments-intercept": 1000,
+            "appendString-cpu-arguments-slope": 24177,
+            "appendString-memory-arguments-intercept": 4,
+            "appendString-memory-arguments-slope": 1,
+            "bData-cpu-arguments": 1000,
+            "bData-memory-arguments": 32,
+            "blake2b_256-cpu-arguments-intercept": 117366,
+            "blake2b_256-cpu-arguments-slope": 10475,
+            "blake2b_256-memory-arguments": 4,
+            "cekApplyCost-exBudgetCPU": 23000,
+            "cekApplyCost-exBudgetMemory": 100,
+            "cekBuiltinCost-exBudgetCPU": 23000,
+            "cekBuiltinCost-exBudgetMemory": 100,
+            "cekConstCost-exBudgetCPU": 23000,
+            "cekConstCost-exBudgetMemory": 100,
+            "cekDelayCost-exBudgetCPU": 23000,
+            "cekDelayCost-exBudgetMemory": 100,
+            "cekForceCost-exBudgetCPU": 23000,
+            "cekForceCost-exBudgetMemory": 100,
+            "cekLamCost-exBudgetCPU": 23000,
+            "cekLamCost-exBudgetMemory": 100,
+            "cekStartupCost-exBudgetCPU": 100,
+            "cekStartupCost-exBudgetMemory": 100,
+            "cekVarCost-exBudgetCPU": 23000,
+            "cekVarCost-exBudgetMemory": 100,
+            "chooseData-cpu-arguments": 19537,
+            "chooseData-memory-arguments": 32,
+            "chooseList-cpu-arguments": 175354,
+            "chooseList-memory-arguments": 32,
+            "chooseUnit-cpu-arguments": 46417,
+            "chooseUnit-memory-arguments": 4,
+            "consByteString-cpu-arguments-intercept": 221973,
+            "consByteString-cpu-arguments-slope": 511,
+            "consByteString-memory-arguments-intercept": 0,
+            "consByteString-memory-arguments-slope": 1,
+            "constrData-cpu-arguments": 89141,
+            "constrData-memory-arguments": 32,
+            "decodeUtf8-cpu-arguments-intercept": 497525,
+            "decodeUtf8-cpu-arguments-slope": 14068,
+            "decodeUtf8-memory-arguments-intercept": 4,
+            "decodeUtf8-memory-arguments-slope": 2,
+            "divideInteger-cpu-arguments-constant": 196500,
+            "divideInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "divideInteger-cpu-arguments-model-arguments-slope": 220,
+            "divideInteger-memory-arguments-intercept": 0,
+            "divideInteger-memory-arguments-minimum": 1,
+            "divideInteger-memory-arguments-slope": 1,
+            "encodeUtf8-cpu-arguments-intercept": 1000,
+            "encodeUtf8-cpu-arguments-slope": 28662,
+            "encodeUtf8-memory-arguments-intercept": 4,
+            "encodeUtf8-memory-arguments-slope": 2,
+            "equalsByteString-cpu-arguments-constant": 245000,
+            "equalsByteString-cpu-arguments-intercept": 216773,
+            "equalsByteString-cpu-arguments-slope": 62,
+            "equalsByteString-memory-arguments": 1,
+            "equalsData-cpu-arguments-intercept": 1060367,
+            "equalsData-cpu-arguments-slope": 12586,
+            "equalsData-memory-arguments": 1,
+            "equalsInteger-cpu-arguments-intercept": 208512,
+            "equalsInteger-cpu-arguments-slope": 421,
+            "equalsInteger-memory-arguments": 1,
+            "equalsString-cpu-arguments-constant": 187000,
+            "equalsString-cpu-arguments-intercept": 1000,
+            "equalsString-cpu-arguments-slope": 52998,
+            "equalsString-memory-arguments": 1,
+            "fstPair-cpu-arguments": 80436,
+            "fstPair-memory-arguments": 32,
+            "headList-cpu-arguments": 43249,
+            "headList-memory-arguments": 32,
+            "iData-cpu-arguments": 1000,
+            "iData-memory-arguments": 32,
+            "ifThenElse-cpu-arguments": 80556,
+            "ifThenElse-memory-arguments": 1,
+            "indexByteString-cpu-arguments": 57667,
+            "indexByteString-memory-arguments": 4,
+            "lengthOfByteString-cpu-arguments": 1000,
+            "lengthOfByteString-memory-arguments": 10,
+            "lessThanByteString-cpu-arguments-intercept": 197145,
+            "lessThanByteString-cpu-arguments-slope": 156,
+            "lessThanByteString-memory-arguments": 1,
+            "lessThanEqualsByteString-cpu-arguments-intercept": 197145,
+            "lessThanEqualsByteString-cpu-arguments-slope": 156,
+            "lessThanEqualsByteString-memory-arguments": 1,
+            "lessThanEqualsInteger-cpu-arguments-intercept": 204924,
+            "lessThanEqualsInteger-cpu-arguments-slope": 473,
+            "lessThanEqualsInteger-memory-arguments": 1,
+            "lessThanInteger-cpu-arguments-intercept": 208896,
+            "lessThanInteger-cpu-arguments-slope": 511,
+            "lessThanInteger-memory-arguments": 1,
+            "listData-cpu-arguments": 52467,
+            "listData-memory-arguments": 32,
+            "mapData-cpu-arguments": 64832,
+            "mapData-memory-arguments": 32,
+            "mkCons-cpu-arguments": 65493,
+            "mkCons-memory-arguments": 32,
+            "mkNilData-cpu-arguments": 22558,
+            "mkNilData-memory-arguments": 32,
+            "mkNilPairData-cpu-arguments": 16563,
+            "mkNilPairData-memory-arguments": 32,
+            "mkPairData-cpu-arguments": 76511,
+            "mkPairData-memory-arguments": 32,
+            "modInteger-cpu-arguments-constant": 196500,
+            "modInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "modInteger-cpu-arguments-model-arguments-slope": 220,
+            "modInteger-memory-arguments-intercept": 0,
+            "modInteger-memory-arguments-minimum": 1,
+            "modInteger-memory-arguments-slope": 1,
+            "multiplyInteger-cpu-arguments-intercept": 69522,
+            "multiplyInteger-cpu-arguments-slope": 11687,
+            "multiplyInteger-memory-arguments-intercept": 0,
+            "multiplyInteger-memory-arguments-slope": 1,
+            "nullList-cpu-arguments": 60091,
+            "nullList-memory-arguments": 32,
+            "quotientInteger-cpu-arguments-constant": 196500,
+            "quotientInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "quotientInteger-cpu-arguments-model-arguments-slope": 220,
+            "quotientInteger-memory-arguments-intercept": 0,
+            "quotientInteger-memory-arguments-minimum": 1,
+            "quotientInteger-memory-arguments-slope": 1,
+            "remainderInteger-cpu-arguments-constant": 196500,
+            "remainderInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "remainderInteger-cpu-arguments-model-arguments-slope": 220,
+            "remainderInteger-memory-arguments-intercept": 0,
+            "remainderInteger-memory-arguments-minimum": 1,
+            "remainderInteger-memory-arguments-slope": 1,
+            "sha2_256-cpu-arguments-intercept": 806990,
+            "sha2_256-cpu-arguments-slope": 30482,
+            "sha2_256-memory-arguments": 4,
+            "sha3_256-cpu-arguments-intercept": 1927926,
+            "sha3_256-cpu-arguments-slope": 82523,
+            "sha3_256-memory-arguments": 4,
+            "sliceByteString-cpu-arguments-intercept": 265318,
+            "sliceByteString-cpu-arguments-slope": 0,
+            "sliceByteString-memory-arguments-intercept": 4,
+            "sliceByteString-memory-arguments-slope": 0,
+            "sndPair-cpu-arguments": 85931,
+            "sndPair-memory-arguments": 32,
+            "subtractInteger-cpu-arguments-intercept": 205665,
+            "subtractInteger-cpu-arguments-slope": 812,
+            "subtractInteger-memory-arguments-intercept": 1,
+            "subtractInteger-memory-arguments-slope": 1,
+            "tailList-cpu-arguments": 41182,
+            "tailList-memory-arguments": 32,
+            "trace-cpu-arguments": 212342,
+            "trace-memory-arguments": 32,
+            "unBData-cpu-arguments": 31220,
+            "unBData-memory-arguments": 32,
+            "unConstrData-cpu-arguments": 32696,
+            "unConstrData-memory-arguments": 32,
+            "unIData-cpu-arguments": 43357,
+            "unIData-memory-arguments": 32,
+            "unListData-cpu-arguments": 32247,
+            "unListData-memory-arguments": 32,
+            "unMapData-cpu-arguments": 38314,
+            "unMapData-memory-arguments": 32,
+            "verifyEd25519Signature-cpu-arguments-intercept": 9462713,
+            "verifyEd25519Signature-cpu-arguments-slope": 1021,
+            "verifyEd25519Signature-memory-arguments": 10,
+        },
+        PlutusV2: {
+            "addInteger-cpu-arguments-intercept": 205665,
+            "addInteger-cpu-arguments-slope": 812,
+            "addInteger-memory-arguments-intercept": 1,
+            "addInteger-memory-arguments-slope": 1,
+            "appendByteString-cpu-arguments-intercept": 1000,
+            "appendByteString-cpu-arguments-slope": 571,
+            "appendByteString-memory-arguments-intercept": 0,
+            "appendByteString-memory-arguments-slope": 1,
+            "appendString-cpu-arguments-intercept": 1000,
+            "appendString-cpu-arguments-slope": 24177,
+            "appendString-memory-arguments-intercept": 4,
+            "appendString-memory-arguments-slope": 1,
+            "bData-cpu-arguments": 1000,
+            "bData-memory-arguments": 32,
+            "blake2b_256-cpu-arguments-intercept": 117366,
+            "blake2b_256-cpu-arguments-slope": 10475,
+            "blake2b_256-memory-arguments": 4,
+            "cekApplyCost-exBudgetCPU": 23000,
+            "cekApplyCost-exBudgetMemory": 100,
+            "cekBuiltinCost-exBudgetCPU": 23000,
+            "cekBuiltinCost-exBudgetMemory": 100,
+            "cekConstCost-exBudgetCPU": 23000,
+            "cekConstCost-exBudgetMemory": 100,
+            "cekDelayCost-exBudgetCPU": 23000,
+            "cekDelayCost-exBudgetMemory": 100,
+            "cekForceCost-exBudgetCPU": 23000,
+            "cekForceCost-exBudgetMemory": 100,
+            "cekLamCost-exBudgetCPU": 23000,
+            "cekLamCost-exBudgetMemory": 100,
+            "cekStartupCost-exBudgetCPU": 100,
+            "cekStartupCost-exBudgetMemory": 100,
+            "cekVarCost-exBudgetCPU": 23000,
+            "cekVarCost-exBudgetMemory": 100,
+            "chooseData-cpu-arguments": 19537,
+            "chooseData-memory-arguments": 32,
+            "chooseList-cpu-arguments": 175354,
+            "chooseList-memory-arguments": 32,
+            "chooseUnit-cpu-arguments": 46417,
+            "chooseUnit-memory-arguments": 4,
+            "consByteString-cpu-arguments-intercept": 221973,
+            "consByteString-cpu-arguments-slope": 511,
+            "consByteString-memory-arguments-intercept": 0,
+            "consByteString-memory-arguments-slope": 1,
+            "constrData-cpu-arguments": 89141,
+            "constrData-memory-arguments": 32,
+            "decodeUtf8-cpu-arguments-intercept": 497525,
+            "decodeUtf8-cpu-arguments-slope": 14068,
+            "decodeUtf8-memory-arguments-intercept": 4,
+            "decodeUtf8-memory-arguments-slope": 2,
+            "divideInteger-cpu-arguments-constant": 196500,
+            "divideInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "divideInteger-cpu-arguments-model-arguments-slope": 220,
+            "divideInteger-memory-arguments-intercept": 0,
+            "divideInteger-memory-arguments-minimum": 1,
+            "divideInteger-memory-arguments-slope": 1,
+            "encodeUtf8-cpu-arguments-intercept": 1000,
+            "encodeUtf8-cpu-arguments-slope": 28662,
+            "encodeUtf8-memory-arguments-intercept": 4,
+            "encodeUtf8-memory-arguments-slope": 2,
+            "equalsByteString-cpu-arguments-constant": 245000,
+            "equalsByteString-cpu-arguments-intercept": 216773,
+            "equalsByteString-cpu-arguments-slope": 62,
+            "equalsByteString-memory-arguments": 1,
+            "equalsData-cpu-arguments-intercept": 1060367,
+            "equalsData-cpu-arguments-slope": 12586,
+            "equalsData-memory-arguments": 1,
+            "equalsInteger-cpu-arguments-intercept": 208512,
+            "equalsInteger-cpu-arguments-slope": 421,
+            "equalsInteger-memory-arguments": 1,
+            "equalsString-cpu-arguments-constant": 187000,
+            "equalsString-cpu-arguments-intercept": 1000,
+            "equalsString-cpu-arguments-slope": 52998,
+            "equalsString-memory-arguments": 1,
+            "fstPair-cpu-arguments": 80436,
+            "fstPair-memory-arguments": 32,
+            "headList-cpu-arguments": 43249,
+            "headList-memory-arguments": 32,
+            "iData-cpu-arguments": 1000,
+            "iData-memory-arguments": 32,
+            "ifThenElse-cpu-arguments": 80556,
+            "ifThenElse-memory-arguments": 1,
+            "indexByteString-cpu-arguments": 57667,
+            "indexByteString-memory-arguments": 4,
+            "lengthOfByteString-cpu-arguments": 1000,
+            "lengthOfByteString-memory-arguments": 10,
+            "lessThanByteString-cpu-arguments-intercept": 197145,
+            "lessThanByteString-cpu-arguments-slope": 156,
+            "lessThanByteString-memory-arguments": 1,
+            "lessThanEqualsByteString-cpu-arguments-intercept": 197145,
+            "lessThanEqualsByteString-cpu-arguments-slope": 156,
+            "lessThanEqualsByteString-memory-arguments": 1,
+            "lessThanEqualsInteger-cpu-arguments-intercept": 204924,
+            "lessThanEqualsInteger-cpu-arguments-slope": 473,
+            "lessThanEqualsInteger-memory-arguments": 1,
+            "lessThanInteger-cpu-arguments-intercept": 208896,
+            "lessThanInteger-cpu-arguments-slope": 511,
+            "lessThanInteger-memory-arguments": 1,
+            "listData-cpu-arguments": 52467,
+            "listData-memory-arguments": 32,
+            "mapData-cpu-arguments": 64832,
+            "mapData-memory-arguments": 32,
+            "mkCons-cpu-arguments": 65493,
+            "mkCons-memory-arguments": 32,
+            "mkNilData-cpu-arguments": 22558,
+            "mkNilData-memory-arguments": 32,
+            "mkNilPairData-cpu-arguments": 16563,
+            "mkNilPairData-memory-arguments": 32,
+            "mkPairData-cpu-arguments": 76511,
+            "mkPairData-memory-arguments": 32,
+            "modInteger-cpu-arguments-constant": 196500,
+            "modInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "modInteger-cpu-arguments-model-arguments-slope": 220,
+            "modInteger-memory-arguments-intercept": 0,
+            "modInteger-memory-arguments-minimum": 1,
+            "modInteger-memory-arguments-slope": 1,
+            "multiplyInteger-cpu-arguments-intercept": 69522,
+            "multiplyInteger-cpu-arguments-slope": 11687,
+            "multiplyInteger-memory-arguments-intercept": 0,
+            "multiplyInteger-memory-arguments-slope": 1,
+            "nullList-cpu-arguments": 60091,
+            "nullList-memory-arguments": 32,
+            "quotientInteger-cpu-arguments-constant": 196500,
+            "quotientInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "quotientInteger-cpu-arguments-model-arguments-slope": 220,
+            "quotientInteger-memory-arguments-intercept": 0,
+            "quotientInteger-memory-arguments-minimum": 1,
+            "quotientInteger-memory-arguments-slope": 1,
+            "remainderInteger-cpu-arguments-constant": 196500,
+            "remainderInteger-cpu-arguments-model-arguments-intercept": 453240,
+            "remainderInteger-cpu-arguments-model-arguments-slope": 220,
+            "remainderInteger-memory-arguments-intercept": 0,
+            "remainderInteger-memory-arguments-minimum": 1,
+            "remainderInteger-memory-arguments-slope": 1,
+            "serialiseData-cpu-arguments-intercept": 1159724,
+            "serialiseData-cpu-arguments-slope": 392670,
+            "serialiseData-memory-arguments-intercept": 0,
+            "serialiseData-memory-arguments-slope": 2,
+            "sha2_256-cpu-arguments-intercept": 806990,
+            "sha2_256-cpu-arguments-slope": 30482,
+            "sha2_256-memory-arguments": 4,
+            "sha3_256-cpu-arguments-intercept": 1927926,
+            "sha3_256-cpu-arguments-slope": 82523,
+            "sha3_256-memory-arguments": 4,
+            "sliceByteString-cpu-arguments-intercept": 265318,
+            "sliceByteString-cpu-arguments-slope": 0,
+            "sliceByteString-memory-arguments-intercept": 4,
+            "sliceByteString-memory-arguments-slope": 0,
+            "sndPair-cpu-arguments": 85931,
+            "sndPair-memory-arguments": 32,
+            "subtractInteger-cpu-arguments-intercept": 205665,
+            "subtractInteger-cpu-arguments-slope": 812,
+            "subtractInteger-memory-arguments-intercept": 1,
+            "subtractInteger-memory-arguments-slope": 1,
+            "tailList-cpu-arguments": 41182,
+            "tailList-memory-arguments": 32,
+            "trace-cpu-arguments": 212342,
+            "trace-memory-arguments": 32,
+            "unBData-cpu-arguments": 31220,
+            "unBData-memory-arguments": 32,
+            "unConstrData-cpu-arguments": 32696,
+            "unConstrData-memory-arguments": 32,
+            "unIData-cpu-arguments": 43357,
+            "unIData-memory-arguments": 32,
+            "unListData-cpu-arguments": 32247,
+            "unListData-memory-arguments": 32,
+            "unMapData-cpu-arguments": 38314,
+            "unMapData-memory-arguments": 32,
+            "verifyEcdsaSecp256k1Signature-cpu-arguments": 35892428,
+            "verifyEcdsaSecp256k1Signature-memory-arguments": 10,
+            "verifyEd25519Signature-cpu-arguments-intercept": 57996947,
+            "verifyEd25519Signature-cpu-arguments-slope": 18975,
+            "verifyEd25519Signature-memory-arguments": 10,
+            "verifySchnorrSecp256k1Signature-cpu-arguments-intercept": 38887044,
+            "verifySchnorrSecp256k1Signature-cpu-arguments-slope": 32947,
+            "verifySchnorrSecp256k1Signature-memory-arguments": 10,
+        },
+    },
+};
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -357,7 +8200,136 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \*****************************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"MerkleTree\": () => (/* binding */ MerkleTree),\n/* harmony export */   \"combineHash\": () => (/* binding */ combineHash),\n/* harmony export */   \"concat\": () => (/* reexport safe */ _deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.concat),\n/* harmony export */   \"equals\": () => (/* reexport safe */ _deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals),\n/* harmony export */   \"sha256\": () => (/* binding */ sha256)\n/* harmony export */ });\n/* harmony import */ var _deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/std@0.148.0/bytes/mod.js */ \"./node_modules/lucid-cardano/esm/deps/deno.land/std@0.148.0/bytes/mod.js\");\n/* harmony import */ var _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../deps/deno.land/std@0.153.0/hash/sha256.js */ \"./node_modules/lucid-cardano/esm/deps/deno.land/std@0.153.0/hash/sha256.js\");\n/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils.js */ \"./node_modules/lucid-cardano/esm/src/utils/utils.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_utils_js__WEBPACK_IMPORTED_MODULE_2__]);\n_utils_js__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];\n// Haskell implementation: https://github.com/input-output-hk/hydra-poc/blob/master/plutus-merkle-tree/src/Plutus/MerkleTree.hs\n\n\n\nclass MerkleTree {\n    /** Construct Merkle tree from data, which get hashed with sha256 */\n    constructor(data) {\n        Object.defineProperty(this, \"root\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.root = MerkleTree.buildRecursively(data.map((d) => sha256(d)));\n    }\n    /** Construct Merkle tree from sha256 hashes */\n    static fromHashes(hashes) {\n        return new this(hashes);\n    }\n    static buildRecursively(hashes) {\n        if (hashes.length <= 0)\n            return null;\n        if (hashes.length === 1) {\n            return {\n                node: hashes[0],\n                left: null,\n                right: null,\n            };\n        }\n        const cutoff = Math.floor(hashes.length / 2);\n        const [left, right] = [hashes.slice(0, cutoff), hashes.slice(cutoff)];\n        const lnode = this.buildRecursively(left);\n        const rnode = this.buildRecursively(right);\n        if (lnode === null || rnode === null)\n            return null;\n        return {\n            node: combineHash(lnode.node, rnode.node),\n            left: lnode,\n            right: rnode,\n        };\n    }\n    rootHash() {\n        if (this.root === null)\n            throw new Error(\"Merkle tree root hash not found.\");\n        return this.root.node;\n    }\n    getProof(data) {\n        const hash = sha256(data);\n        const proof = [];\n        const searchRecursively = (tree) => {\n            if (tree && (0,_deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals)(tree.node, hash))\n                return true;\n            if (tree?.right) {\n                if (searchRecursively(tree.left)) {\n                    proof.push({ right: tree.right.node });\n                    return true;\n                }\n            }\n            if (tree?.left) {\n                if (searchRecursively(tree.right)) {\n                    proof.push({ left: tree.left.node });\n                    return true;\n                }\n            }\n        };\n        searchRecursively(this.root);\n        return proof;\n    }\n    size() {\n        const searchRecursively = (tree) => {\n            if (tree === null)\n                return 0;\n            return 1 + searchRecursively(tree.left) + searchRecursively(tree.right);\n        };\n        return searchRecursively(this.root);\n    }\n    static verify(data, rootHash, proof) {\n        const hash = sha256(data);\n        const searchRecursively = (rootHash2, proof) => {\n            if (proof.length <= 0)\n                return (0,_deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals)(rootHash, rootHash2);\n            const [h, t] = [proof[0], proof.slice(1)];\n            if (h.left) {\n                return searchRecursively(combineHash(h.left, rootHash2), t);\n            }\n            if (h.right) {\n                return searchRecursively(combineHash(rootHash2, h.right), t);\n            }\n            return false;\n        };\n        return searchRecursively(hash, proof);\n    }\n    toString() {\n        // deno-lint-ignore no-explicit-any\n        const searchRecursively = (tree) => {\n            if (tree === null)\n                return null;\n            return {\n                node: (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(tree.node),\n                left: searchRecursively(tree.left),\n                right: searchRecursively(tree.right),\n            };\n        };\n        return JSON.stringify(searchRecursively(this.root), null, 2);\n    }\n}\n\nfunction sha256(data) {\n    return new Uint8Array(new _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_1__.Sha256().update(data).arrayBuffer());\n}\nfunction combineHash(hash1, hash2) {\n    return sha256((0,_deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.concat)(hash1, hash2));\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/utils/merkle_tree.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MerkleTree": () => (/* binding */ MerkleTree),
+/* harmony export */   "combineHash": () => (/* binding */ combineHash),
+/* harmony export */   "concat": () => (/* reexport safe */ _deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.concat),
+/* harmony export */   "equals": () => (/* reexport safe */ _deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals),
+/* harmony export */   "sha256": () => (/* binding */ sha256)
+/* harmony export */ });
+/* harmony import */ var _deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/std@0.148.0/bytes/mod.js */ "./node_modules/lucid-cardano/esm/deps/deno.land/std@0.148.0/bytes/mod.js");
+/* harmony import */ var _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../deps/deno.land/std@0.153.0/hash/sha256.js */ "./node_modules/lucid-cardano/esm/deps/deno.land/std@0.153.0/hash/sha256.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils.js */ "./node_modules/lucid-cardano/esm/src/utils/utils.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_utils_js__WEBPACK_IMPORTED_MODULE_2__]);
+_utils_js__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+// Haskell implementation: https://github.com/input-output-hk/hydra-poc/blob/master/plutus-merkle-tree/src/Plutus/MerkleTree.hs
+
+
+
+class MerkleTree {
+    /** Construct Merkle tree from data, which get hashed with sha256 */
+    constructor(data) {
+        Object.defineProperty(this, "root", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.root = MerkleTree.buildRecursively(data.map((d) => sha256(d)));
+    }
+    /** Construct Merkle tree from sha256 hashes */
+    static fromHashes(hashes) {
+        return new this(hashes);
+    }
+    static buildRecursively(hashes) {
+        if (hashes.length <= 0)
+            return null;
+        if (hashes.length === 1) {
+            return {
+                node: hashes[0],
+                left: null,
+                right: null,
+            };
+        }
+        const cutoff = Math.floor(hashes.length / 2);
+        const [left, right] = [hashes.slice(0, cutoff), hashes.slice(cutoff)];
+        const lnode = this.buildRecursively(left);
+        const rnode = this.buildRecursively(right);
+        if (lnode === null || rnode === null)
+            return null;
+        return {
+            node: combineHash(lnode.node, rnode.node),
+            left: lnode,
+            right: rnode,
+        };
+    }
+    rootHash() {
+        if (this.root === null)
+            throw new Error("Merkle tree root hash not found.");
+        return this.root.node;
+    }
+    getProof(data) {
+        const hash = sha256(data);
+        const proof = [];
+        const searchRecursively = (tree) => {
+            if (tree && (0,_deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals)(tree.node, hash))
+                return true;
+            if (tree?.right) {
+                if (searchRecursively(tree.left)) {
+                    proof.push({ right: tree.right.node });
+                    return true;
+                }
+            }
+            if (tree?.left) {
+                if (searchRecursively(tree.right)) {
+                    proof.push({ left: tree.left.node });
+                    return true;
+                }
+            }
+        };
+        searchRecursively(this.root);
+        return proof;
+    }
+    size() {
+        const searchRecursively = (tree) => {
+            if (tree === null)
+                return 0;
+            return 1 + searchRecursively(tree.left) + searchRecursively(tree.right);
+        };
+        return searchRecursively(this.root);
+    }
+    static verify(data, rootHash, proof) {
+        const hash = sha256(data);
+        const searchRecursively = (rootHash2, proof) => {
+            if (proof.length <= 0)
+                return (0,_deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.equals)(rootHash, rootHash2);
+            const [h, t] = [proof[0], proof.slice(1)];
+            if (h.left) {
+                return searchRecursively(combineHash(h.left, rootHash2), t);
+            }
+            if (h.right) {
+                return searchRecursively(combineHash(rootHash2, h.right), t);
+            }
+            return false;
+        };
+        return searchRecursively(hash, proof);
+    }
+    toString() {
+        // deno-lint-ignore no-explicit-any
+        const searchRecursively = (tree) => {
+            if (tree === null)
+                return null;
+            return {
+                node: (0,_utils_js__WEBPACK_IMPORTED_MODULE_2__.toHex)(tree.node),
+                left: searchRecursively(tree.left),
+                right: searchRecursively(tree.right),
+            };
+        };
+        return JSON.stringify(searchRecursively(this.root), null, 2);
+    }
+}
+
+function sha256(data) {
+    return new Uint8Array(new _deps_deno_land_std_0_153_0_hash_sha256_js__WEBPACK_IMPORTED_MODULE_1__.Sha256().update(data).arrayBuffer());
+}
+function combineHash(hash1, hash2) {
+    return sha256((0,_deps_deno_land_std_0_148_0_bytes_mod_js__WEBPACK_IMPORTED_MODULE_0__.concat)(hash1, hash2));
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -367,7 +8339,53 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \*********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"MerkleTree\": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.MerkleTree),\n/* harmony export */   \"PROTOCOL_PARAMETERS_DEFAULT\": () => (/* reexport safe */ _cost_model_js__WEBPACK_IMPORTED_MODULE_0__.PROTOCOL_PARAMETERS_DEFAULT),\n/* harmony export */   \"Utils\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.Utils),\n/* harmony export */   \"applyDoubleCborEncoding\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.applyDoubleCborEncoding),\n/* harmony export */   \"applyParamsToScript\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.applyParamsToScript),\n/* harmony export */   \"assetsToValue\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.assetsToValue),\n/* harmony export */   \"combineHash\": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.combineHash),\n/* harmony export */   \"concat\": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.concat),\n/* harmony export */   \"coreToUtxo\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.coreToUtxo),\n/* harmony export */   \"createCostModels\": () => (/* reexport safe */ _cost_model_js__WEBPACK_IMPORTED_MODULE_0__.createCostModels),\n/* harmony export */   \"equals\": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.equals),\n/* harmony export */   \"fromHex\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromHex),\n/* harmony export */   \"fromLabel\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromLabel),\n/* harmony export */   \"fromScriptRef\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromScriptRef),\n/* harmony export */   \"fromText\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromText),\n/* harmony export */   \"fromUnit\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromUnit),\n/* harmony export */   \"generatePrivateKey\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.generatePrivateKey),\n/* harmony export */   \"generateSeedPhrase\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.generateSeedPhrase),\n/* harmony export */   \"getAddressDetails\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.getAddressDetails),\n/* harmony export */   \"nativeScriptFromJson\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.nativeScriptFromJson),\n/* harmony export */   \"networkToId\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.networkToId),\n/* harmony export */   \"paymentCredentialOf\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf),\n/* harmony export */   \"sha256\": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.sha256),\n/* harmony export */   \"stakeCredentialOf\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.stakeCredentialOf),\n/* harmony export */   \"toHex\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toHex),\n/* harmony export */   \"toLabel\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toLabel),\n/* harmony export */   \"toPublicKey\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toPublicKey),\n/* harmony export */   \"toScriptRef\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toScriptRef),\n/* harmony export */   \"toText\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toText),\n/* harmony export */   \"toUnit\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toUnit),\n/* harmony export */   \"utxoToCore\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore),\n/* harmony export */   \"valueToAssets\": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.valueToAssets)\n/* harmony export */ });\n/* harmony import */ var _cost_model_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cost_model.js */ \"./node_modules/lucid-cardano/esm/src/utils/cost_model.js\");\n/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils.js */ \"./node_modules/lucid-cardano/esm/src/utils/utils.js\");\n/* harmony import */ var _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./merkle_tree.js */ \"./node_modules/lucid-cardano/esm/src/utils/merkle_tree.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_cost_model_js__WEBPACK_IMPORTED_MODULE_0__, _utils_js__WEBPACK_IMPORTED_MODULE_1__, _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__]);\n([_cost_model_js__WEBPACK_IMPORTED_MODULE_0__, _utils_js__WEBPACK_IMPORTED_MODULE_1__, _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/utils/mod.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MerkleTree": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.MerkleTree),
+/* harmony export */   "PROTOCOL_PARAMETERS_DEFAULT": () => (/* reexport safe */ _cost_model_js__WEBPACK_IMPORTED_MODULE_0__.PROTOCOL_PARAMETERS_DEFAULT),
+/* harmony export */   "Utils": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.Utils),
+/* harmony export */   "applyDoubleCborEncoding": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.applyDoubleCborEncoding),
+/* harmony export */   "applyParamsToScript": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.applyParamsToScript),
+/* harmony export */   "assetsToValue": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.assetsToValue),
+/* harmony export */   "combineHash": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.combineHash),
+/* harmony export */   "concat": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.concat),
+/* harmony export */   "coreToUtxo": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.coreToUtxo),
+/* harmony export */   "createCostModels": () => (/* reexport safe */ _cost_model_js__WEBPACK_IMPORTED_MODULE_0__.createCostModels),
+/* harmony export */   "equals": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.equals),
+/* harmony export */   "fromHex": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromHex),
+/* harmony export */   "fromLabel": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromLabel),
+/* harmony export */   "fromScriptRef": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromScriptRef),
+/* harmony export */   "fromText": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromText),
+/* harmony export */   "fromUnit": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.fromUnit),
+/* harmony export */   "generatePrivateKey": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.generatePrivateKey),
+/* harmony export */   "generateSeedPhrase": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.generateSeedPhrase),
+/* harmony export */   "getAddressDetails": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.getAddressDetails),
+/* harmony export */   "nativeScriptFromJson": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.nativeScriptFromJson),
+/* harmony export */   "networkToId": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.networkToId),
+/* harmony export */   "paymentCredentialOf": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.paymentCredentialOf),
+/* harmony export */   "sha256": () => (/* reexport safe */ _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__.sha256),
+/* harmony export */   "stakeCredentialOf": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.stakeCredentialOf),
+/* harmony export */   "toHex": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toHex),
+/* harmony export */   "toLabel": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toLabel),
+/* harmony export */   "toPublicKey": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toPublicKey),
+/* harmony export */   "toScriptRef": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toScriptRef),
+/* harmony export */   "toText": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toText),
+/* harmony export */   "toUnit": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.toUnit),
+/* harmony export */   "utxoToCore": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.utxoToCore),
+/* harmony export */   "valueToAssets": () => (/* reexport safe */ _utils_js__WEBPACK_IMPORTED_MODULE_1__.valueToAssets)
+/* harmony export */ });
+/* harmony import */ var _cost_model_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cost_model.js */ "./node_modules/lucid-cardano/esm/src/utils/cost_model.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils.js */ "./node_modules/lucid-cardano/esm/src/utils/utils.js");
+/* harmony import */ var _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./merkle_tree.js */ "./node_modules/lucid-cardano/esm/src/utils/merkle_tree.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_cost_model_js__WEBPACK_IMPORTED_MODULE_0__, _utils_js__WEBPACK_IMPORTED_MODULE_1__, _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__]);
+([_cost_model_js__WEBPACK_IMPORTED_MODULE_0__, _utils_js__WEBPACK_IMPORTED_MODULE_1__, _merkle_tree_js__WEBPACK_IMPORTED_MODULE_2__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -377,7 +8395,527 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
   \***********************************************************/
 /***/ ((__webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Utils\": () => (/* binding */ Utils),\n/* harmony export */   \"applyDoubleCborEncoding\": () => (/* binding */ applyDoubleCborEncoding),\n/* harmony export */   \"applyParamsToScript\": () => (/* binding */ applyParamsToScript),\n/* harmony export */   \"assetsToValue\": () => (/* binding */ assetsToValue),\n/* harmony export */   \"coreToUtxo\": () => (/* binding */ coreToUtxo),\n/* harmony export */   \"fromHex\": () => (/* binding */ fromHex),\n/* harmony export */   \"fromLabel\": () => (/* binding */ fromLabel),\n/* harmony export */   \"fromScriptRef\": () => (/* binding */ fromScriptRef),\n/* harmony export */   \"fromText\": () => (/* binding */ fromText),\n/* harmony export */   \"fromUnit\": () => (/* binding */ fromUnit),\n/* harmony export */   \"generatePrivateKey\": () => (/* binding */ generatePrivateKey),\n/* harmony export */   \"generateSeedPhrase\": () => (/* binding */ generateSeedPhrase),\n/* harmony export */   \"getAddressDetails\": () => (/* binding */ getAddressDetails),\n/* harmony export */   \"nativeScriptFromJson\": () => (/* binding */ nativeScriptFromJson),\n/* harmony export */   \"networkToId\": () => (/* binding */ networkToId),\n/* harmony export */   \"paymentCredentialOf\": () => (/* binding */ paymentCredentialOf),\n/* harmony export */   \"stakeCredentialOf\": () => (/* binding */ stakeCredentialOf),\n/* harmony export */   \"toHex\": () => (/* binding */ toHex),\n/* harmony export */   \"toLabel\": () => (/* binding */ toLabel),\n/* harmony export */   \"toPublicKey\": () => (/* binding */ toPublicKey),\n/* harmony export */   \"toScriptRef\": () => (/* binding */ toScriptRef),\n/* harmony export */   \"toText\": () => (/* binding */ toText),\n/* harmony export */   \"toUnit\": () => (/* binding */ toUnit),\n/* harmony export */   \"utxoToCore\": () => (/* binding */ utxoToCore),\n/* harmony export */   \"valueToAssets\": () => (/* binding */ valueToAssets)\n/* harmony export */ });\n/* harmony import */ var _deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/std@0.100.0/encoding/hex.js */ \"./node_modules/lucid-cardano/esm/deps/deno.land/std@0.100.0/encoding/hex.js\");\n/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/mod.js */ \"./node_modules/lucid-cardano/esm/src/core/mod.js\");\n/* harmony import */ var _misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../misc/bip39.js */ \"./node_modules/lucid-cardano/esm/src/misc/bip39.js\");\n/* harmony import */ var _misc_crc8_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../misc/crc8.js */ \"./node_modules/lucid-cardano/esm/src/misc/crc8.js\");\n/* harmony import */ var _plutus_time_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../plutus/time.js */ \"./node_modules/lucid-cardano/esm/src/plutus/time.js\");\n/* harmony import */ var _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../plutus/data.js */ \"./node_modules/lucid-cardano/esm/src/plutus/data.js\");\nvar __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__]);\n([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);\n\n\n\n\n\n\nclass Utils {\n    constructor(lucid) {\n        Object.defineProperty(this, \"lucid\", {\n            enumerable: true,\n            configurable: true,\n            writable: true,\n            value: void 0\n        });\n        this.lucid = lucid;\n    }\n    validatorToAddress(validator, stakeCredential) {\n        const validatorHash = this.validatorToScriptHash(validator);\n        if (stakeCredential) {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BaseAddress[\"new\"](networkToId(this.lucid.network), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(validatorHash)), stakeCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(stakeCredential.hash))\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(stakeCredential.hash)))\n                .to_address()\n                .to_bech32(undefined);\n        }\n        else {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.EnterpriseAddress[\"new\"](networkToId(this.lucid.network), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(validatorHash)))\n                .to_address()\n                .to_bech32(undefined);\n        }\n    }\n    credentialToAddress(paymentCredential, stakeCredential) {\n        if (stakeCredential) {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BaseAddress[\"new\"](networkToId(this.lucid.network), paymentCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(paymentCredential.hash))\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(paymentCredential.hash)), stakeCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(stakeCredential.hash))\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(stakeCredential.hash)))\n                .to_address()\n                .to_bech32(undefined);\n        }\n        else {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.EnterpriseAddress[\"new\"](networkToId(this.lucid.network), paymentCredential.type === \"Key\"\n                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(paymentCredential.hash))\n                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(paymentCredential.hash)))\n                .to_address()\n                .to_bech32(undefined);\n        }\n    }\n    validatorToRewardAddress(validator) {\n        const validatorHash = this.validatorToScriptHash(validator);\n        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.RewardAddress[\"new\"](networkToId(this.lucid.network), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(validatorHash)))\n            .to_address()\n            .to_bech32(undefined);\n    }\n    credentialToRewardAddress(stakeCredential) {\n        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.RewardAddress[\"new\"](networkToId(this.lucid.network), stakeCredential.type === \"Key\"\n            ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(stakeCredential.hash))\n            : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(stakeCredential.hash)))\n            .to_address()\n            .to_bech32(undefined);\n    }\n    validatorToScriptHash(validator) {\n        switch (validator.type) {\n            case \"Native\":\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.NativeScript.from_bytes(fromHex(validator.script))\n                    .hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHashNamespace.NativeScript)\n                    .to_hex();\n            case \"PlutusV1\":\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(validator.script)))\n                    .hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHashNamespace.PlutusV1)\n                    .to_hex();\n            case \"PlutusV2\":\n                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(validator.script)))\n                    .hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHashNamespace.PlutusV2)\n                    .to_hex();\n            default:\n                throw new Error(\"No variant matched\");\n        }\n    }\n    mintingPolicyToId(mintingPolicy) {\n        return this.validatorToScriptHash(mintingPolicy);\n    }\n    datumToHash(datum) {\n        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.hash_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.from_bytes(fromHex(datum))).to_hex();\n    }\n    scriptHashToCredential(scriptHash) {\n        return {\n            type: \"Script\",\n            hash: scriptHash,\n        };\n    }\n    keyHashToCredential(keyHash) {\n        return {\n            type: \"Key\",\n            hash: keyHash,\n        };\n    }\n    generatePrivateKey() {\n        return generatePrivateKey();\n    }\n    generateSeedPhrase() {\n        return generateSeedPhrase();\n    }\n    unixTimeToSlot(unixTime) {\n        return (0,_plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.unixTimeToEnclosingSlot)(unixTime, _plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.SLOT_CONFIG_NETWORK[this.lucid.network]);\n    }\n    slotToUnixTime(slot) {\n        return (0,_plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.slotToBeginUnixTime)(slot, _plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.SLOT_CONFIG_NETWORK[this.lucid.network]);\n    }\n    /** Address can be in Bech32 or Hex. */\n    getAddressDetails(address) {\n        return getAddressDetails(address);\n    }\n    /**\n     * Convert a native script from Json to the Hex representation.\n     * It follows this Json format: https://github.com/input-output-hk/cardano-node/blob/master/doc/reference/simple-scripts.md\n     */\n    nativeScriptFromJson(nativeScript) {\n        return nativeScriptFromJson(nativeScript);\n    }\n    paymentCredentialOf(address) {\n        return paymentCredentialOf(address);\n    }\n    stakeCredentialOf(rewardAddress) {\n        return stakeCredentialOf(rewardAddress);\n    }\n}\nfunction addressFromHexOrBech32(address) {\n    try {\n        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Address.from_bytes(fromHex(address));\n    }\n    catch (_e) {\n        try {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Address.from_bech32(address);\n        }\n        catch (_e) {\n            throw new Error(\"Could not deserialize address.\");\n        }\n    }\n}\n/** Address can be in Bech32 or Hex. */\nfunction getAddressDetails(address) {\n    // Base Address\n    try {\n        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BaseAddress.from_address(addressFromHexOrBech32(address));\n        const paymentCredential = parsedAddress.payment_cred().kind() === 0\n            ? {\n                type: \"Key\",\n                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),\n            }\n            : {\n                type: \"Script\",\n                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),\n            };\n        const stakeCredential = parsedAddress.stake_cred().kind() === 0\n            ? {\n                type: \"Key\",\n                hash: toHex(parsedAddress.stake_cred().to_keyhash().to_bytes()),\n            }\n            : {\n                type: \"Script\",\n                hash: toHex(parsedAddress.stake_cred().to_scripthash().to_bytes()),\n            };\n        return {\n            type: \"Base\",\n            networkId: parsedAddress.to_address().network_id(),\n            address: {\n                bech32: parsedAddress.to_address().to_bech32(undefined),\n                hex: toHex(parsedAddress.to_address().to_bytes()),\n            },\n            paymentCredential,\n            stakeCredential,\n        };\n    }\n    catch (_e) { /* pass */ }\n    // Enterprise Address\n    try {\n        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.EnterpriseAddress.from_address(addressFromHexOrBech32(address));\n        const paymentCredential = parsedAddress.payment_cred().kind() === 0\n            ? {\n                type: \"Key\",\n                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),\n            }\n            : {\n                type: \"Script\",\n                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),\n            };\n        return {\n            type: \"Enterprise\",\n            networkId: parsedAddress.to_address().network_id(),\n            address: {\n                bech32: parsedAddress.to_address().to_bech32(undefined),\n                hex: toHex(parsedAddress.to_address().to_bytes()),\n            },\n            paymentCredential,\n        };\n    }\n    catch (_e) { /* pass */ }\n    // Pointer Address\n    try {\n        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PointerAddress.from_address(addressFromHexOrBech32(address));\n        const paymentCredential = parsedAddress.payment_cred().kind() === 0\n            ? {\n                type: \"Key\",\n                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),\n            }\n            : {\n                type: \"Script\",\n                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),\n            };\n        return {\n            type: \"Pointer\",\n            networkId: parsedAddress.to_address().network_id(),\n            address: {\n                bech32: parsedAddress.to_address().to_bech32(undefined),\n                hex: toHex(parsedAddress.to_address().to_bytes()),\n            },\n            paymentCredential,\n        };\n    }\n    catch (_e) { /* pass */ }\n    // Reward Address\n    try {\n        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.RewardAddress.from_address(addressFromHexOrBech32(address));\n        const stakeCredential = parsedAddress.payment_cred().kind() === 0\n            ? {\n                type: \"Key\",\n                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),\n            }\n            : {\n                type: \"Script\",\n                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),\n            };\n        return {\n            type: \"Reward\",\n            networkId: parsedAddress.to_address().network_id(),\n            address: {\n                bech32: parsedAddress.to_address().to_bech32(undefined),\n                hex: toHex(parsedAddress.to_address().to_bytes()),\n            },\n            stakeCredential,\n        };\n    }\n    catch (_e) { /* pass */ }\n    throw new Error(\"No address type matched for: \" + address);\n}\nfunction paymentCredentialOf(address) {\n    const { paymentCredential } = getAddressDetails(address);\n    if (!paymentCredential) {\n        throw new Error(\"The specified address does not contain a payment credential.\");\n    }\n    return paymentCredential;\n}\nfunction stakeCredentialOf(rewardAddress) {\n    const { stakeCredential } = getAddressDetails(rewardAddress);\n    if (!stakeCredential) {\n        throw new Error(\"The specified address does not contain a stake credential.\");\n    }\n    return stakeCredential;\n}\nfunction generatePrivateKey() {\n    return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PrivateKey.generate_ed25519().to_bech32();\n}\nfunction generateSeedPhrase() {\n    return (0,_misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__.generateMnemonic)(256);\n}\nfunction valueToAssets(value) {\n    const assets = {};\n    assets[\"lovelace\"] = BigInt(value.coin().to_str());\n    const ma = value.multiasset();\n    if (ma) {\n        const multiAssets = ma.keys();\n        for (let j = 0; j < multiAssets.len(); j++) {\n            const policy = multiAssets.get(j);\n            const policyAssets = ma.get(policy);\n            const assetNames = policyAssets.keys();\n            for (let k = 0; k < assetNames.len(); k++) {\n                const policyAsset = assetNames.get(k);\n                const quantity = policyAssets.get(policyAsset);\n                const unit = toHex(policy.to_bytes()) + toHex(policyAsset.name());\n                assets[unit] = BigInt(quantity.to_str());\n            }\n        }\n    }\n    return assets;\n}\nfunction assetsToValue(assets) {\n    const multiAsset = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.MultiAsset[\"new\"]();\n    const lovelace = assets[\"lovelace\"];\n    const units = Object.keys(assets);\n    const policies = Array.from(new Set(units\n        .filter((unit) => unit !== \"lovelace\")\n        .map((unit) => unit.slice(0, 56))));\n    policies.forEach((policy) => {\n        const policyUnits = units.filter((unit) => unit.slice(0, 56) === policy);\n        const assetsValue = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Assets[\"new\"]();\n        policyUnits.forEach((unit) => {\n            assetsValue.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.AssetName[\"new\"](fromHex(unit.slice(56))), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(assets[unit].toString()));\n        });\n        multiAsset.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_bytes(fromHex(policy)), assetsValue);\n    });\n    const value = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Value[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(lovelace ? lovelace.toString() : \"0\"));\n    if (units.length > 1 || !lovelace)\n        value.set_multiasset(multiAsset);\n    return value;\n}\nfunction fromScriptRef(scriptRef) {\n    const kind = scriptRef.get().kind();\n    switch (kind) {\n        case 0:\n            return {\n                type: \"Native\",\n                script: toHex(scriptRef.get().as_native().to_bytes()),\n            };\n        case 1:\n            return {\n                type: \"PlutusV1\",\n                script: toHex(scriptRef.get().as_plutus_v1().to_bytes()),\n            };\n        case 2:\n            return {\n                type: \"PlutusV2\",\n                script: toHex(scriptRef.get().as_plutus_v2().to_bytes()),\n            };\n        default:\n            throw new Error(\"No variant matched.\");\n    }\n}\nfunction toScriptRef(script) {\n    switch (script.type) {\n        case \"Native\":\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptRef[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Script.new_native(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.NativeScript.from_bytes(fromHex(script.script))));\n        case \"PlutusV1\":\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptRef[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Script.new_plutus_v1(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(script.script)))));\n        case \"PlutusV2\":\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptRef[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Script.new_plutus_v2(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(script.script)))));\n        default:\n            throw new Error(\"No variant matched.\");\n    }\n}\nfunction utxoToCore(utxo) {\n    const address = (() => {\n        try {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Address.from_bech32(utxo.address);\n        }\n        catch (_e) {\n            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ByronAddress.from_base58(utxo.address).to_address();\n        }\n    })();\n    const output = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionOutput[\"new\"](address, assetsToValue(utxo.assets));\n    if (utxo.datumHash) {\n        output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.DataHash.from_bytes(fromHex(utxo.datumHash))));\n    }\n    // inline datum\n    if (!utxo.datumHash && utxo.datum) {\n        output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Datum.new_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Data[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.from_bytes(fromHex(utxo.datum)))));\n    }\n    if (utxo.scriptRef) {\n        output.set_script_ref(toScriptRef(utxo.scriptRef));\n    }\n    return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionUnspentOutput[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionInput[\"new\"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionHash.from_bytes(fromHex(utxo.txHash)), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(utxo.outputIndex.toString())), output);\n}\nfunction coreToUtxo(coreUtxo) {\n    return {\n        txHash: toHex(coreUtxo.input().transaction_id().to_bytes()),\n        outputIndex: parseInt(coreUtxo.input().index().to_str()),\n        assets: valueToAssets(coreUtxo.output().amount()),\n        address: coreUtxo.output().address().as_byron()\n            ? coreUtxo.output().address().as_byron()?.to_base58()\n            : coreUtxo.output().address().to_bech32(undefined),\n        datumHash: coreUtxo.output()?.datum()?.as_data_hash()?.to_hex(),\n        datum: coreUtxo.output()?.datum()?.as_data() &&\n            toHex(coreUtxo.output().datum().as_data().get().to_bytes()),\n        scriptRef: coreUtxo.output()?.script_ref() &&\n            fromScriptRef(coreUtxo.output().script_ref()),\n    };\n}\nfunction networkToId(network) {\n    switch (network) {\n        case \"Preview\":\n            return 0;\n        case \"Preprod\":\n            return 0;\n        case \"Custom\":\n            return 0;\n        case \"Mainnet\":\n            return 1;\n        default:\n            throw new Error(\"Network not found\");\n    }\n}\nfunction fromHex(hex) {\n    return (0,_deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__.decodeString)(hex);\n}\nfunction toHex(bytes) {\n    return (0,_deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__.encodeToString)(bytes);\n}\n/** Convert a Hex encoded string to a Utf-8 encoded string. */\nfunction toText(hex) {\n    return new TextDecoder().decode((0,_deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__.decode)(new TextEncoder().encode(hex)));\n}\n/** Convert a Utf-8 encoded string to a Hex encoded string. */\nfunction fromText(text) {\n    return toHex(new TextEncoder().encode(text));\n}\nfunction toPublicKey(privateKey) {\n    return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PrivateKey.from_bech32(privateKey).to_public().to_bech32();\n}\n/** Padded number in Hex. */\nfunction checksum(num) {\n    return (0,_misc_crc8_js__WEBPACK_IMPORTED_MODULE_3__.crc8)(fromHex(num)).toString(16).padStart(2, \"0\");\n}\nfunction toLabel(num) {\n    if (num < 0 || num > 65535) {\n        throw new Error(`Label ${num} out of range: min label 1 - max label 65535.`);\n    }\n    const numHex = num.toString(16).padStart(4, \"0\");\n    return \"0\" + numHex + checksum(numHex) + \"0\";\n}\nfunction fromLabel(label) {\n    if (label.length !== 8 || !(label[0] === \"0\" && label[7] === \"0\")) {\n        return null;\n    }\n    const numHex = label.slice(1, 5);\n    const num = parseInt(numHex, 16);\n    const check = label.slice(5, 7);\n    return check === checksum(numHex) ? num : null;\n}\n/**\n * @param name Hex encoded\n */\nfunction toUnit(policyId, name, label) {\n    const hexLabel = Number.isInteger(label) ? toLabel(label) : \"\";\n    const n = name ? name : \"\";\n    if ((n + hexLabel).length > 64) {\n        throw new Error(\"Asset name size exceeds 32 bytes.\");\n    }\n    if (policyId.length !== 56) {\n        throw new Error(`Policy id invalid: ${policyId}.`);\n    }\n    return policyId + hexLabel + n;\n}\n/**\n * Splits unit into policy id, asset name (entire asset name), name (asset name without label) and label if applicable.\n * name will be returned in Hex.\n */\nfunction fromUnit(unit) {\n    const policyId = unit.slice(0, 56);\n    const assetName = unit.slice(56) || null;\n    const label = fromLabel(unit.slice(56, 64));\n    const name = (() => {\n        const hexName = Number.isInteger(label) ? unit.slice(64) : unit.slice(56);\n        return hexName || null;\n    })();\n    return { policyId, assetName, name, label };\n}\n/**\n * Convert a native script from Json to the Hex representation.\n * It follows this Json format: https://github.com/input-output-hk/cardano-node/blob/master/doc/reference/simple-scripts.md\n */\nfunction nativeScriptFromJson(nativeScript) {\n    return {\n        type: \"Native\",\n        script: toHex(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.encode_json_str_to_native_script(JSON.stringify(nativeScript), \"\", _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptSchema.Node).to_bytes()),\n    };\n}\nfunction applyParamsToScript(plutusScript, params, shape) {\n    const p = (shape ? _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__.Data.castTo(params, shape) : params);\n    return toHex(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.apply_params_to_plutus_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusList.from_bytes(fromHex(_plutus_data_js__WEBPACK_IMPORTED_MODULE_5__.Data.to(p))), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(plutusScript)))).to_bytes());\n}\n/** Returns double cbor encoded script. If script is already double cbor encoded it's returned as it is. */\nfunction applyDoubleCborEncoding(script) {\n    try {\n        _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(script)).bytes());\n        return script;\n    }\n    catch (_e) {\n        return toHex(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript[\"new\"](fromHex(script)).to_bytes());\n    }\n}\n\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } });\n\n//# sourceURL=webpack://teddyswap.ui/./node_modules/lucid-cardano/esm/src/utils/utils.js?");
+__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Utils": () => (/* binding */ Utils),
+/* harmony export */   "applyDoubleCborEncoding": () => (/* binding */ applyDoubleCborEncoding),
+/* harmony export */   "applyParamsToScript": () => (/* binding */ applyParamsToScript),
+/* harmony export */   "assetsToValue": () => (/* binding */ assetsToValue),
+/* harmony export */   "coreToUtxo": () => (/* binding */ coreToUtxo),
+/* harmony export */   "fromHex": () => (/* binding */ fromHex),
+/* harmony export */   "fromLabel": () => (/* binding */ fromLabel),
+/* harmony export */   "fromScriptRef": () => (/* binding */ fromScriptRef),
+/* harmony export */   "fromText": () => (/* binding */ fromText),
+/* harmony export */   "fromUnit": () => (/* binding */ fromUnit),
+/* harmony export */   "generatePrivateKey": () => (/* binding */ generatePrivateKey),
+/* harmony export */   "generateSeedPhrase": () => (/* binding */ generateSeedPhrase),
+/* harmony export */   "getAddressDetails": () => (/* binding */ getAddressDetails),
+/* harmony export */   "nativeScriptFromJson": () => (/* binding */ nativeScriptFromJson),
+/* harmony export */   "networkToId": () => (/* binding */ networkToId),
+/* harmony export */   "paymentCredentialOf": () => (/* binding */ paymentCredentialOf),
+/* harmony export */   "stakeCredentialOf": () => (/* binding */ stakeCredentialOf),
+/* harmony export */   "toHex": () => (/* binding */ toHex),
+/* harmony export */   "toLabel": () => (/* binding */ toLabel),
+/* harmony export */   "toPublicKey": () => (/* binding */ toPublicKey),
+/* harmony export */   "toScriptRef": () => (/* binding */ toScriptRef),
+/* harmony export */   "toText": () => (/* binding */ toText),
+/* harmony export */   "toUnit": () => (/* binding */ toUnit),
+/* harmony export */   "utxoToCore": () => (/* binding */ utxoToCore),
+/* harmony export */   "valueToAssets": () => (/* binding */ valueToAssets)
+/* harmony export */ });
+/* harmony import */ var _deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../deps/deno.land/std@0.100.0/encoding/hex.js */ "./node_modules/lucid-cardano/esm/deps/deno.land/std@0.100.0/encoding/hex.js");
+/* harmony import */ var _core_mod_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/mod.js */ "./node_modules/lucid-cardano/esm/src/core/mod.js");
+/* harmony import */ var _misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../misc/bip39.js */ "./node_modules/lucid-cardano/esm/src/misc/bip39.js");
+/* harmony import */ var _misc_crc8_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../misc/crc8.js */ "./node_modules/lucid-cardano/esm/src/misc/crc8.js");
+/* harmony import */ var _plutus_time_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../plutus/time.js */ "./node_modules/lucid-cardano/esm/src/plutus/time.js");
+/* harmony import */ var _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../plutus/data.js */ "./node_modules/lucid-cardano/esm/src/plutus/data.js");
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__]);
+([_core_mod_js__WEBPACK_IMPORTED_MODULE_1__, _misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__, _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+
+
+
+
+
+
+class Utils {
+    constructor(lucid) {
+        Object.defineProperty(this, "lucid", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.lucid = lucid;
+    }
+    validatorToAddress(validator, stakeCredential) {
+        const validatorHash = this.validatorToScriptHash(validator);
+        if (stakeCredential) {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BaseAddress["new"](networkToId(this.lucid.network), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(validatorHash)), stakeCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(stakeCredential.hash))
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(stakeCredential.hash)))
+                .to_address()
+                .to_bech32(undefined);
+        }
+        else {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.EnterpriseAddress["new"](networkToId(this.lucid.network), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(validatorHash)))
+                .to_address()
+                .to_bech32(undefined);
+        }
+    }
+    credentialToAddress(paymentCredential, stakeCredential) {
+        if (stakeCredential) {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BaseAddress["new"](networkToId(this.lucid.network), paymentCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(paymentCredential.hash))
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(paymentCredential.hash)), stakeCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(stakeCredential.hash))
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(stakeCredential.hash)))
+                .to_address()
+                .to_bech32(undefined);
+        }
+        else {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.EnterpriseAddress["new"](networkToId(this.lucid.network), paymentCredential.type === "Key"
+                ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(paymentCredential.hash))
+                : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(paymentCredential.hash)))
+                .to_address()
+                .to_bech32(undefined);
+        }
+    }
+    validatorToRewardAddress(validator) {
+        const validatorHash = this.validatorToScriptHash(validator);
+        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.RewardAddress["new"](networkToId(this.lucid.network), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(validatorHash)))
+            .to_address()
+            .to_bech32(undefined);
+    }
+    credentialToRewardAddress(stakeCredential) {
+        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.RewardAddress["new"](networkToId(this.lucid.network), stakeCredential.type === "Key"
+            ? _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_keyhash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Ed25519KeyHash.from_hex(stakeCredential.hash))
+            : _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.StakeCredential.from_scripthash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_hex(stakeCredential.hash)))
+            .to_address()
+            .to_bech32(undefined);
+    }
+    validatorToScriptHash(validator) {
+        switch (validator.type) {
+            case "Native":
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.NativeScript.from_bytes(fromHex(validator.script))
+                    .hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHashNamespace.NativeScript)
+                    .to_hex();
+            case "PlutusV1":
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(validator.script)))
+                    .hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHashNamespace.PlutusV1)
+                    .to_hex();
+            case "PlutusV2":
+                return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(validator.script)))
+                    .hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHashNamespace.PlutusV2)
+                    .to_hex();
+            default:
+                throw new Error("No variant matched");
+        }
+    }
+    mintingPolicyToId(mintingPolicy) {
+        return this.validatorToScriptHash(mintingPolicy);
+    }
+    datumToHash(datum) {
+        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.hash_plutus_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.from_bytes(fromHex(datum))).to_hex();
+    }
+    scriptHashToCredential(scriptHash) {
+        return {
+            type: "Script",
+            hash: scriptHash,
+        };
+    }
+    keyHashToCredential(keyHash) {
+        return {
+            type: "Key",
+            hash: keyHash,
+        };
+    }
+    generatePrivateKey() {
+        return generatePrivateKey();
+    }
+    generateSeedPhrase() {
+        return generateSeedPhrase();
+    }
+    unixTimeToSlot(unixTime) {
+        return (0,_plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.unixTimeToEnclosingSlot)(unixTime, _plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.SLOT_CONFIG_NETWORK[this.lucid.network]);
+    }
+    slotToUnixTime(slot) {
+        return (0,_plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.slotToBeginUnixTime)(slot, _plutus_time_js__WEBPACK_IMPORTED_MODULE_4__.SLOT_CONFIG_NETWORK[this.lucid.network]);
+    }
+    /** Address can be in Bech32 or Hex. */
+    getAddressDetails(address) {
+        return getAddressDetails(address);
+    }
+    /**
+     * Convert a native script from Json to the Hex representation.
+     * It follows this Json format: https://github.com/input-output-hk/cardano-node/blob/master/doc/reference/simple-scripts.md
+     */
+    nativeScriptFromJson(nativeScript) {
+        return nativeScriptFromJson(nativeScript);
+    }
+    paymentCredentialOf(address) {
+        return paymentCredentialOf(address);
+    }
+    stakeCredentialOf(rewardAddress) {
+        return stakeCredentialOf(rewardAddress);
+    }
+}
+function addressFromHexOrBech32(address) {
+    try {
+        return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Address.from_bytes(fromHex(address));
+    }
+    catch (_e) {
+        try {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Address.from_bech32(address);
+        }
+        catch (_e) {
+            throw new Error("Could not deserialize address.");
+        }
+    }
+}
+/** Address can be in Bech32 or Hex. */
+function getAddressDetails(address) {
+    // Base Address
+    try {
+        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BaseAddress.from_address(addressFromHexOrBech32(address));
+        const paymentCredential = parsedAddress.payment_cred().kind() === 0
+            ? {
+                type: "Key",
+                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),
+            }
+            : {
+                type: "Script",
+                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),
+            };
+        const stakeCredential = parsedAddress.stake_cred().kind() === 0
+            ? {
+                type: "Key",
+                hash: toHex(parsedAddress.stake_cred().to_keyhash().to_bytes()),
+            }
+            : {
+                type: "Script",
+                hash: toHex(parsedAddress.stake_cred().to_scripthash().to_bytes()),
+            };
+        return {
+            type: "Base",
+            networkId: parsedAddress.to_address().network_id(),
+            address: {
+                bech32: parsedAddress.to_address().to_bech32(undefined),
+                hex: toHex(parsedAddress.to_address().to_bytes()),
+            },
+            paymentCredential,
+            stakeCredential,
+        };
+    }
+    catch (_e) { /* pass */ }
+    // Enterprise Address
+    try {
+        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.EnterpriseAddress.from_address(addressFromHexOrBech32(address));
+        const paymentCredential = parsedAddress.payment_cred().kind() === 0
+            ? {
+                type: "Key",
+                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),
+            }
+            : {
+                type: "Script",
+                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),
+            };
+        return {
+            type: "Enterprise",
+            networkId: parsedAddress.to_address().network_id(),
+            address: {
+                bech32: parsedAddress.to_address().to_bech32(undefined),
+                hex: toHex(parsedAddress.to_address().to_bytes()),
+            },
+            paymentCredential,
+        };
+    }
+    catch (_e) { /* pass */ }
+    // Pointer Address
+    try {
+        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PointerAddress.from_address(addressFromHexOrBech32(address));
+        const paymentCredential = parsedAddress.payment_cred().kind() === 0
+            ? {
+                type: "Key",
+                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),
+            }
+            : {
+                type: "Script",
+                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),
+            };
+        return {
+            type: "Pointer",
+            networkId: parsedAddress.to_address().network_id(),
+            address: {
+                bech32: parsedAddress.to_address().to_bech32(undefined),
+                hex: toHex(parsedAddress.to_address().to_bytes()),
+            },
+            paymentCredential,
+        };
+    }
+    catch (_e) { /* pass */ }
+    // Reward Address
+    try {
+        const parsedAddress = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.RewardAddress.from_address(addressFromHexOrBech32(address));
+        const stakeCredential = parsedAddress.payment_cred().kind() === 0
+            ? {
+                type: "Key",
+                hash: toHex(parsedAddress.payment_cred().to_keyhash().to_bytes()),
+            }
+            : {
+                type: "Script",
+                hash: toHex(parsedAddress.payment_cred().to_scripthash().to_bytes()),
+            };
+        return {
+            type: "Reward",
+            networkId: parsedAddress.to_address().network_id(),
+            address: {
+                bech32: parsedAddress.to_address().to_bech32(undefined),
+                hex: toHex(parsedAddress.to_address().to_bytes()),
+            },
+            stakeCredential,
+        };
+    }
+    catch (_e) { /* pass */ }
+    throw new Error("No address type matched for: " + address);
+}
+function paymentCredentialOf(address) {
+    const { paymentCredential } = getAddressDetails(address);
+    if (!paymentCredential) {
+        throw new Error("The specified address does not contain a payment credential.");
+    }
+    return paymentCredential;
+}
+function stakeCredentialOf(rewardAddress) {
+    const { stakeCredential } = getAddressDetails(rewardAddress);
+    if (!stakeCredential) {
+        throw new Error("The specified address does not contain a stake credential.");
+    }
+    return stakeCredential;
+}
+function generatePrivateKey() {
+    return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PrivateKey.generate_ed25519().to_bech32();
+}
+function generateSeedPhrase() {
+    return (0,_misc_bip39_js__WEBPACK_IMPORTED_MODULE_2__.generateMnemonic)(256);
+}
+function valueToAssets(value) {
+    const assets = {};
+    assets["lovelace"] = BigInt(value.coin().to_str());
+    const ma = value.multiasset();
+    if (ma) {
+        const multiAssets = ma.keys();
+        for (let j = 0; j < multiAssets.len(); j++) {
+            const policy = multiAssets.get(j);
+            const policyAssets = ma.get(policy);
+            const assetNames = policyAssets.keys();
+            for (let k = 0; k < assetNames.len(); k++) {
+                const policyAsset = assetNames.get(k);
+                const quantity = policyAssets.get(policyAsset);
+                const unit = toHex(policy.to_bytes()) + toHex(policyAsset.name());
+                assets[unit] = BigInt(quantity.to_str());
+            }
+        }
+    }
+    return assets;
+}
+function assetsToValue(assets) {
+    const multiAsset = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.MultiAsset["new"]();
+    const lovelace = assets["lovelace"];
+    const units = Object.keys(assets);
+    const policies = Array.from(new Set(units
+        .filter((unit) => unit !== "lovelace")
+        .map((unit) => unit.slice(0, 56))));
+    policies.forEach((policy) => {
+        const policyUnits = units.filter((unit) => unit.slice(0, 56) === policy);
+        const assetsValue = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Assets["new"]();
+        policyUnits.forEach((unit) => {
+            assetsValue.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.AssetName["new"](fromHex(unit.slice(56))), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(assets[unit].toString()));
+        });
+        multiAsset.insert(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptHash.from_bytes(fromHex(policy)), assetsValue);
+    });
+    const value = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Value["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(lovelace ? lovelace.toString() : "0"));
+    if (units.length > 1 || !lovelace)
+        value.set_multiasset(multiAsset);
+    return value;
+}
+function fromScriptRef(scriptRef) {
+    const kind = scriptRef.get().kind();
+    switch (kind) {
+        case 0:
+            return {
+                type: "Native",
+                script: toHex(scriptRef.get().as_native().to_bytes()),
+            };
+        case 1:
+            return {
+                type: "PlutusV1",
+                script: toHex(scriptRef.get().as_plutus_v1().to_bytes()),
+            };
+        case 2:
+            return {
+                type: "PlutusV2",
+                script: toHex(scriptRef.get().as_plutus_v2().to_bytes()),
+            };
+        default:
+            throw new Error("No variant matched.");
+    }
+}
+function toScriptRef(script) {
+    switch (script.type) {
+        case "Native":
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptRef["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Script.new_native(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.NativeScript.from_bytes(fromHex(script.script))));
+        case "PlutusV1":
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptRef["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Script.new_plutus_v1(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(script.script)))));
+        case "PlutusV2":
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptRef["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Script.new_plutus_v2(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(script.script)))));
+        default:
+            throw new Error("No variant matched.");
+    }
+}
+function utxoToCore(utxo) {
+    const address = (() => {
+        try {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Address.from_bech32(utxo.address);
+        }
+        catch (_e) {
+            return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ByronAddress.from_base58(utxo.address).to_address();
+        }
+    })();
+    const output = _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionOutput["new"](address, assetsToValue(utxo.assets));
+    if (utxo.datumHash) {
+        output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Datum.new_data_hash(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.DataHash.from_bytes(fromHex(utxo.datumHash))));
+    }
+    // inline datum
+    if (!utxo.datumHash && utxo.datum) {
+        output.set_datum(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Datum.new_data(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.Data["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusData.from_bytes(fromHex(utxo.datum)))));
+    }
+    if (utxo.scriptRef) {
+        output.set_script_ref(toScriptRef(utxo.scriptRef));
+    }
+    return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionUnspentOutput["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionInput["new"](_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.TransactionHash.from_bytes(fromHex(utxo.txHash)), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.BigNum.from_str(utxo.outputIndex.toString())), output);
+}
+function coreToUtxo(coreUtxo) {
+    return {
+        txHash: toHex(coreUtxo.input().transaction_id().to_bytes()),
+        outputIndex: parseInt(coreUtxo.input().index().to_str()),
+        assets: valueToAssets(coreUtxo.output().amount()),
+        address: coreUtxo.output().address().as_byron()
+            ? coreUtxo.output().address().as_byron()?.to_base58()
+            : coreUtxo.output().address().to_bech32(undefined),
+        datumHash: coreUtxo.output()?.datum()?.as_data_hash()?.to_hex(),
+        datum: coreUtxo.output()?.datum()?.as_data() &&
+            toHex(coreUtxo.output().datum().as_data().get().to_bytes()),
+        scriptRef: coreUtxo.output()?.script_ref() &&
+            fromScriptRef(coreUtxo.output().script_ref()),
+    };
+}
+function networkToId(network) {
+    switch (network) {
+        case "Preview":
+            return 0;
+        case "Preprod":
+            return 0;
+        case "Custom":
+            return 0;
+        case "Mainnet":
+            return 1;
+        default:
+            throw new Error("Network not found");
+    }
+}
+function fromHex(hex) {
+    return (0,_deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__.decodeString)(hex);
+}
+function toHex(bytes) {
+    return (0,_deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__.encodeToString)(bytes);
+}
+/** Convert a Hex encoded string to a Utf-8 encoded string. */
+function toText(hex) {
+    return new TextDecoder().decode((0,_deps_deno_land_std_0_100_0_encoding_hex_js__WEBPACK_IMPORTED_MODULE_0__.decode)(new TextEncoder().encode(hex)));
+}
+/** Convert a Utf-8 encoded string to a Hex encoded string. */
+function fromText(text) {
+    return toHex(new TextEncoder().encode(text));
+}
+function toPublicKey(privateKey) {
+    return _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PrivateKey.from_bech32(privateKey).to_public().to_bech32();
+}
+/** Padded number in Hex. */
+function checksum(num) {
+    return (0,_misc_crc8_js__WEBPACK_IMPORTED_MODULE_3__.crc8)(fromHex(num)).toString(16).padStart(2, "0");
+}
+function toLabel(num) {
+    if (num < 0 || num > 65535) {
+        throw new Error(`Label ${num} out of range: min label 1 - max label 65535.`);
+    }
+    const numHex = num.toString(16).padStart(4, "0");
+    return "0" + numHex + checksum(numHex) + "0";
+}
+function fromLabel(label) {
+    if (label.length !== 8 || !(label[0] === "0" && label[7] === "0")) {
+        return null;
+    }
+    const numHex = label.slice(1, 5);
+    const num = parseInt(numHex, 16);
+    const check = label.slice(5, 7);
+    return check === checksum(numHex) ? num : null;
+}
+/**
+ * @param name Hex encoded
+ */
+function toUnit(policyId, name, label) {
+    const hexLabel = Number.isInteger(label) ? toLabel(label) : "";
+    const n = name ? name : "";
+    if ((n + hexLabel).length > 64) {
+        throw new Error("Asset name size exceeds 32 bytes.");
+    }
+    if (policyId.length !== 56) {
+        throw new Error(`Policy id invalid: ${policyId}.`);
+    }
+    return policyId + hexLabel + n;
+}
+/**
+ * Splits unit into policy id, asset name (entire asset name), name (asset name without label) and label if applicable.
+ * name will be returned in Hex.
+ */
+function fromUnit(unit) {
+    const policyId = unit.slice(0, 56);
+    const assetName = unit.slice(56) || null;
+    const label = fromLabel(unit.slice(56, 64));
+    const name = (() => {
+        const hexName = Number.isInteger(label) ? unit.slice(64) : unit.slice(56);
+        return hexName || null;
+    })();
+    return { policyId, assetName, name, label };
+}
+/**
+ * Convert a native script from Json to the Hex representation.
+ * It follows this Json format: https://github.com/input-output-hk/cardano-node/blob/master/doc/reference/simple-scripts.md
+ */
+function nativeScriptFromJson(nativeScript) {
+    return {
+        type: "Native",
+        script: toHex(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.encode_json_str_to_native_script(JSON.stringify(nativeScript), "", _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.ScriptSchema.Node).to_bytes()),
+    };
+}
+function applyParamsToScript(plutusScript, params, shape) {
+    const p = (shape ? _plutus_data_js__WEBPACK_IMPORTED_MODULE_5__.Data.castTo(params, shape) : params);
+    return toHex(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.apply_params_to_plutus_script(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusList.from_bytes(fromHex(_plutus_data_js__WEBPACK_IMPORTED_MODULE_5__.Data.to(p))), _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(applyDoubleCborEncoding(plutusScript)))).to_bytes());
+}
+/** Returns double cbor encoded script. If script is already double cbor encoded it's returned as it is. */
+function applyDoubleCborEncoding(script) {
+    try {
+        _core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript.from_bytes(fromHex(script)).bytes());
+        return script;
+    }
+    catch (_e) {
+        return toHex(_core_mod_js__WEBPACK_IMPORTED_MODULE_1__.C.PlutusScript["new"](fromHex(script)).to_bytes());
+    }
+}
+
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ })
 
@@ -701,11 +9239,8 @@ eval("__webpack_require__.a(__webpack_module__, async (__webpack_handle_async_de
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	// This entry module used 'module' so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__("./wwwroot/scripts/App.ts");
 /******/ 	
 /******/ })()
 ;
-=======
-(()=>{"use strict";var e,t,r,s,a,n,i={882:(e,t,r)=>{r.a(e,(async(e,t)=>{try{var s=r(571),a=e([s]);s=(a.then?(await a)():a)[0];const n=()=>{const e=[],t=window.cardano;for(const r in t){const s=t[r];null!=s.apiVersion&&null!=s.icon&&null!=s.name&&"ccvault"!==r&&e.push({apiVersion:s.apiVersion,icon:s.icon,name:s.name,id:r.toString()})}return e},i=async e=>{try{const t=window.cardano,r=await t[e].enable();window.CardanoWalletService.lucid=await s._k.new(new s.Oo("https://kupo-preview-api-teddy-swap-preview-414e80.us1.demeter.run","wss://ogmios-preview-api-teddy-swap-preview-414e80.us1.demeter.run"),"Preview"),window.CardanoWalletService.lucid.selectWallet(r),window.CardanoWalletService.walletApi=r}catch(e){console.error(e)}finally{return null!=window.CardanoWalletService.lucid}},o=async()=>await(window.CardanoWalletService.lucid?.wallet.address()),u=async()=>null!=window.CardanoWalletService.walletApi?(await window.CardanoWalletService.walletApi.getUsedAddresses()).map((e=>window.CardanoWalletService.lucid?.utils.getAddressDetails(e).address.bech32)).filter((e=>e)):[],c=async e=>{const t=await l();return await(window.CardanoWalletService.lucid?.wallet.signMessage(t,e))},l=async()=>await(window.CardanoWalletService.lucid?.wallet.rewardAddress()),d=()=>{delete window.CardanoWalletService.lucid,delete window.CardanoWalletService.walletApi};window.CardanoWalletService={enableAsync:i,disconnect:d,getWallets:n,getAddressAsync:o,getUsedAddressesAsync:u,signMessageAsync:c,getStakeAddressAsync:l},t()}catch(e){t(e)}}))},378:(e,t,r)=>{e.exports=r.p+"076fbae3fe7e20fe3173.wasm"},534:(e,t,r)=>{e.exports=r.p+"b575e92051802f01a358.wasm"},507:(e,t,r)=>{r.d(t,{tm:()=>n,v5:()=>i});const s=(new TextEncoder).encode("0123456789abcdef");function a(e){if(48<=e&&e<=57)return e-48;if(97<=e&&e<=102)return e-97+10;if(65<=e&&e<=70)return e-65+10;throw function(e){return new Error("encoding/hex: invalid byte: "+(new TextDecoder).decode(new Uint8Array([e])))}(e)}function n(e){return(new TextDecoder).decode(function(e){const t=new Uint8Array(2*e.length);for(let r=0;r<t.length;r++){const a=e[r];t[2*r]=s[a>>4],t[2*r+1]=s[15&a]}return t}(e))}function i(e){return function(e){const t=new Uint8Array(e.length>>>1);for(let r=0;r<t.length;r++){const s=a(e[2*r]),n=a(e[2*r+1]);t[r]=s<<4|n}if(e.length%2==1)throw a(e[2*t.length]),new Error("encoding/hex: odd length hex string");return t}((new TextEncoder).encode(e))}},246:(e,t,r)=>{r.d(t,{f:()=>B});var s,a,n,i,o,u,c,l,d,h,m,p,g,y,f,w,b,_,C=function(e,t,r,s,a){if("m"===s)throw new TypeError("Private method is not writable");if("a"===s&&!a)throw new TypeError("Private accessor was defined without a setter");if("function"==typeof t?e!==t||!a:!t.has(e))throw new TypeError("Cannot write private member to an object whose class did not declare it");return"a"===s?a.call(e,r):a?a.value=r:t.set(e,r),r},v=function(e,t,r,s){if("a"===r&&!s)throw new TypeError("Private accessor was defined without a getter");if("function"==typeof t?e!==t||!s:!t.has(e))throw new TypeError("Cannot read private member from an object whose class did not declare it");return"m"===r?s:"a"===r?s.call(e):s?s.value:t.get(e)};const k="0123456789abcdef".split(""),x=[-2147483648,8388608,32768,128],S=[24,16,8,0],I=[1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298],E=[];class B{constructor(e=!1,t=!1){s.set(this,void 0),a.set(this,void 0),n.set(this,void 0),i.set(this,void 0),o.set(this,void 0),u.set(this,void 0),c.set(this,void 0),l.set(this,void 0),d.set(this,void 0),h.set(this,void 0),m.set(this,void 0),p.set(this,void 0),g.set(this,void 0),y.set(this,void 0),f.set(this,void 0),w.set(this,void 0),b.set(this,0),_.set(this,void 0),this.init(e,t)}init(e,t){t?(E[0]=E[16]=E[1]=E[2]=E[3]=E[4]=E[5]=E[6]=E[7]=E[8]=E[9]=E[10]=E[11]=E[12]=E[13]=E[14]=E[15]=0,C(this,a,E,"f")):C(this,a,[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"f"),e?(C(this,u,3238371032,"f"),C(this,c,914150663,"f"),C(this,l,812702999,"f"),C(this,d,4144912697,"f"),C(this,h,4290775857,"f"),C(this,m,1750603025,"f"),C(this,p,1694076839,"f"),C(this,g,3204075428,"f")):(C(this,u,1779033703,"f"),C(this,c,3144134277,"f"),C(this,l,1013904242,"f"),C(this,d,2773480762,"f"),C(this,h,1359893119,"f"),C(this,m,2600822924,"f"),C(this,p,528734635,"f"),C(this,g,1541459225,"f")),C(this,s,C(this,_,C(this,n,C(this,f,0,"f"),"f"),"f"),"f"),C(this,i,C(this,y,!1,"f"),"f"),C(this,o,!0,"f"),C(this,w,e,"f")}update(e){if(v(this,i,"f"))return this;let t;t=e instanceof ArrayBuffer?new Uint8Array(e):e;let r=0;const o=t.length,u=v(this,a,"f");for(;r<o;){let e;if(v(this,y,"f")&&(C(this,y,!1,"f"),u[0]=v(this,s,"f"),u[16]=u[1]=u[2]=u[3]=u[4]=u[5]=u[6]=u[7]=u[8]=u[9]=u[10]=u[11]=u[12]=u[13]=u[14]=u[15]=0),"string"!=typeof t)for(e=v(this,_,"f");r<o&&e<64;++r)u[e>>2]|=t[r]<<S[3&e++];else for(e=v(this,_,"f");r<o&&e<64;++r){let s=t.charCodeAt(r);s<128?u[e>>2]|=s<<S[3&e++]:s<2048?(u[e>>2]|=(192|s>>6)<<S[3&e++],u[e>>2]|=(128|63&s)<<S[3&e++]):s<55296||s>=57344?(u[e>>2]|=(224|s>>12)<<S[3&e++],u[e>>2]|=(128|s>>6&63)<<S[3&e++],u[e>>2]|=(128|63&s)<<S[3&e++]):(s=65536+((1023&s)<<10|1023&t.charCodeAt(++r)),u[e>>2]|=(240|s>>18)<<S[3&e++],u[e>>2]|=(128|s>>12&63)<<S[3&e++],u[e>>2]|=(128|s>>6&63)<<S[3&e++],u[e>>2]|=(128|63&s)<<S[3&e++])}C(this,b,e,"f"),C(this,n,v(this,n,"f")+(e-v(this,_,"f")),"f"),e>=64?(C(this,s,u[16],"f"),C(this,_,e-64,"f"),this.hash(),C(this,y,!0,"f")):C(this,_,e,"f")}return v(this,n,"f")>4294967295&&(C(this,f,v(this,f,"f")+(v(this,n,"f")/4294967296<<0),"f"),C(this,n,v(this,n,"f")%4294967296,"f")),this}finalize(){if(v(this,i,"f"))return;C(this,i,!0,"f");const e=v(this,a,"f"),t=v(this,b,"f");e[16]=v(this,s,"f"),e[t>>2]|=x[3&t],C(this,s,e[16],"f"),t>=56&&(v(this,y,"f")||this.hash(),e[0]=v(this,s,"f"),e[16]=e[1]=e[2]=e[3]=e[4]=e[5]=e[6]=e[7]=e[8]=e[9]=e[10]=e[11]=e[12]=e[13]=e[14]=e[15]=0),e[14]=v(this,f,"f")<<3|v(this,n,"f")>>>29,e[15]=v(this,n,"f")<<3,this.hash()}hash(){let e=v(this,u,"f"),t=v(this,c,"f"),r=v(this,l,"f"),s=v(this,d,"f"),n=v(this,h,"f"),i=v(this,m,"f"),y=v(this,p,"f"),f=v(this,g,"f");const b=v(this,a,"f");let _,k,x,S,E,B,P,T,O,A;for(let e=16;e<64;++e)S=b[e-15],_=(S>>>7|S<<25)^(S>>>18|S<<14)^S>>>3,S=b[e-2],k=(S>>>17|S<<15)^(S>>>19|S<<13)^S>>>10,b[e]=b[e-16]+_+b[e-7]+k<<0;A=t&r;for(let a=0;a<64;a+=4)v(this,o,"f")?(v(this,w,"f")?(P=300032,S=b[0]-1413257819,f=S-150054599<<0,s=S+24177077<<0):(P=704751109,S=b[0]-210244248,f=S-1521486534<<0,s=S+143694565<<0),C(this,o,!1,"f")):(_=(e>>>2|e<<30)^(e>>>13|e<<19)^(e>>>22|e<<10),k=(n>>>6|n<<26)^(n>>>11|n<<21)^(n>>>25|n<<7),P=e&t,x=P^e&r^A,B=n&i^~n&y,S=f+k+B+I[a]+b[a],E=_+x,f=s+S<<0,s=S+E<<0),_=(s>>>2|s<<30)^(s>>>13|s<<19)^(s>>>22|s<<10),k=(f>>>6|f<<26)^(f>>>11|f<<21)^(f>>>25|f<<7),T=s&e,x=T^s&t^P,B=f&n^~f&i,S=y+k+B+I[a+1]+b[a+1],E=_+x,y=r+S<<0,r=S+E<<0,_=(r>>>2|r<<30)^(r>>>13|r<<19)^(r>>>22|r<<10),k=(y>>>6|y<<26)^(y>>>11|y<<21)^(y>>>25|y<<7),O=r&s,x=O^r&e^T,B=y&f^~y&n,S=i+k+B+I[a+2]+b[a+2],E=_+x,i=t+S<<0,t=S+E<<0,_=(t>>>2|t<<30)^(t>>>13|t<<19)^(t>>>22|t<<10),k=(i>>>6|i<<26)^(i>>>11|i<<21)^(i>>>25|i<<7),A=t&r,x=A^t&s^O,B=i&y^~i&f,S=n+k+B+I[a+3]+b[a+3],E=_+x,n=e+S<<0,e=S+E<<0;C(this,u,v(this,u,"f")+e<<0,"f"),C(this,c,v(this,c,"f")+t<<0,"f"),C(this,l,v(this,l,"f")+r<<0,"f"),C(this,d,v(this,d,"f")+s<<0,"f"),C(this,h,v(this,h,"f")+n<<0,"f"),C(this,m,v(this,m,"f")+i<<0,"f"),C(this,p,v(this,p,"f")+y<<0,"f"),C(this,g,v(this,g,"f")+f<<0,"f")}hex(){this.finalize();const e=v(this,u,"f"),t=v(this,c,"f"),r=v(this,l,"f"),s=v(this,d,"f"),a=v(this,h,"f"),n=v(this,m,"f"),i=v(this,p,"f"),o=v(this,g,"f");let y=k[e>>28&15]+k[e>>24&15]+k[e>>20&15]+k[e>>16&15]+k[e>>12&15]+k[e>>8&15]+k[e>>4&15]+k[15&e]+k[t>>28&15]+k[t>>24&15]+k[t>>20&15]+k[t>>16&15]+k[t>>12&15]+k[t>>8&15]+k[t>>4&15]+k[15&t]+k[r>>28&15]+k[r>>24&15]+k[r>>20&15]+k[r>>16&15]+k[r>>12&15]+k[r>>8&15]+k[r>>4&15]+k[15&r]+k[s>>28&15]+k[s>>24&15]+k[s>>20&15]+k[s>>16&15]+k[s>>12&15]+k[s>>8&15]+k[s>>4&15]+k[15&s]+k[a>>28&15]+k[a>>24&15]+k[a>>20&15]+k[a>>16&15]+k[a>>12&15]+k[a>>8&15]+k[a>>4&15]+k[15&a]+k[n>>28&15]+k[n>>24&15]+k[n>>20&15]+k[n>>16&15]+k[n>>12&15]+k[n>>8&15]+k[n>>4&15]+k[15&n]+k[i>>28&15]+k[i>>24&15]+k[i>>20&15]+k[i>>16&15]+k[i>>12&15]+k[i>>8&15]+k[i>>4&15]+k[15&i];return v(this,w,"f")||(y+=k[o>>28&15]+k[o>>24&15]+k[o>>20&15]+k[o>>16&15]+k[o>>12&15]+k[o>>8&15]+k[o>>4&15]+k[15&o]),y}toString(){return this.hex()}digest(){this.finalize();const e=v(this,u,"f"),t=v(this,c,"f"),r=v(this,l,"f"),s=v(this,d,"f"),a=v(this,h,"f"),n=v(this,m,"f"),i=v(this,p,"f"),o=v(this,g,"f"),y=[e>>24&255,e>>16&255,e>>8&255,255&e,t>>24&255,t>>16&255,t>>8&255,255&t,r>>24&255,r>>16&255,r>>8&255,255&r,s>>24&255,s>>16&255,s>>8&255,255&s,a>>24&255,a>>16&255,a>>8&255,255&a,n>>24&255,n>>16&255,n>>8&255,255&n,i>>24&255,i>>16&255,i>>8&255,255&i];return v(this,w,"f")||y.push(o>>24&255,o>>16&255,o>>8&255,255&o),y}array(){return this.digest()}arrayBuffer(){this.finalize();const e=new ArrayBuffer(v(this,w,"f")?28:32),t=new DataView(e);return t.setUint32(0,v(this,u,"f")),t.setUint32(4,v(this,c,"f")),t.setUint32(8,v(this,l,"f")),t.setUint32(12,v(this,d,"f")),t.setUint32(16,v(this,h,"f")),t.setUint32(20,v(this,m,"f")),t.setUint32(24,v(this,p,"f")),v(this,w,"f")||t.setUint32(28,v(this,g,"f")),e}}s=new WeakMap,a=new WeakMap,n=new WeakMap,i=new WeakMap,o=new WeakMap,u=new WeakMap,c=new WeakMap,l=new WeakMap,d=new WeakMap,h=new WeakMap,m=new WeakMap,p=new WeakMap,g=new WeakMap,y=new WeakMap,f=new WeakMap,w=new WeakMap,b=new WeakMap,_=new WeakMap,new WeakMap,new WeakMap,new WeakMap,new WeakMap},384:(e,t,r)=>{r.d(t,{Dy:()=>o});const s=Symbol.for("TypeBox.Kind"),a=Symbol.for("TypeBox.Hint"),n=Symbol.for("TypeBox.Modifier");let i=0;const o=new class{ReadonlyOptional(e){return{[n]:"ReadonlyOptional",...e}}Readonly(e){return{[n]:"Readonly",...e}}Optional(e){return{[n]:"Optional",...e}}Any(e={}){return this.Create({...e,[s]:"Any"})}Array(e,t={}){return this.Create({...t,[s]:"Array",type:"array",items:e})}Boolean(e={}){return this.Create({...e,[s]:"Boolean",type:"boolean"})}ConstructorParameters(e,t={}){return this.Tuple([...e.parameters],{...t})}Constructor(e,t,r={}){if("Tuple"===e[s]){const a=void 0===e.items?[]:e.items;return this.Create({...r,[s]:"Constructor",type:"object",instanceOf:"Constructor",parameters:a,returns:t})}if(globalThis.Array.isArray(e))return this.Create({...r,[s]:"Constructor",type:"object",instanceOf:"Constructor",parameters:e,returns:t});throw new Error("TypeBuilder.Constructor: Invalid parameters")}Date(e={}){return this.Create({...e,[s]:"Date",type:"object",instanceOf:"Date"})}Enum(e,t={}){const r=Object.keys(e).filter((e=>isNaN(e))).map((t=>e[t])).map((e=>"string"==typeof e?{[s]:"Literal",type:"string",const:e}:{[s]:"Literal",type:"number",const:e}));return this.Create({...t,[s]:"Union",[a]:"Enum",anyOf:r})}Function(e,t,r={}){if("Tuple"===e[s]){const a=void 0===e.items?[]:e.items;return this.Create({...r,[s]:"Function",type:"object",instanceOf:"Function",parameters:a,returns:t})}if(globalThis.Array.isArray(e))return this.Create({...r,[s]:"Function",type:"object",instanceOf:"Function",parameters:e,returns:t});throw new Error("TypeBuilder.Function: Invalid parameters")}InstanceType(e,t={}){return{...t,...this.Clone(e.returns)}}Integer(e={}){return this.Create({...e,[s]:"Integer",type:"integer"})}Intersect(e,t={}){const r=e=>e[n]&&"Optional"===e[n]||"ReadonlyOptional"===e[n],[a,i]=[new Set,new Set];for(const t of e)for(const[e,s]of Object.entries(t.properties))r(s)&&i.add(e);for(const t of e)for(const e of Object.keys(t.properties))i.has(e)||a.add(e);const o={};for(const t of e)for(const[e,r]of Object.entries(t.properties))o[e]=void 0===o[e]?r:{[s]:"Union",anyOf:[o[e],{...r}]};return a.size>0?this.Create({...t,[s]:"Object",type:"object",properties:o,required:[...a]}):this.Create({...t,[s]:"Object",type:"object",properties:o})}KeyOf(e,t={}){const r=Object.keys(e.properties).map((e=>this.Create({...t,[s]:"Literal",type:"string",const:e})));return this.Create({...t,[s]:"Union",[a]:"KeyOf",anyOf:r})}Literal(e,t={}){return this.Create({...t,[s]:"Literal",const:e,type:typeof e})}Never(e={}){return this.Create({...e,[s]:"Never",allOf:[{type:"boolean",const:!1},{type:"boolean",const:!0}]})}Null(e={}){return this.Create({...e,[s]:"Null",type:"null"})}Number(e={}){return this.Create({...e,[s]:"Number",type:"number"})}Object(e,t={}){const r=Object.keys(e),a=r.filter((t=>{const r=e[t][n];return r&&("Optional"===r||"ReadonlyOptional"===r)})),i=r.filter((e=>!a.includes(e)));return i.length>0?this.Create({...t,[s]:"Object",type:"object",properties:e,required:i}):this.Create({...t,[s]:"Object",type:"object",properties:e})}Omit(e,t,r={}){const n="Union"===t[s]?t.anyOf.map((e=>e.const)):t,i={...this.Clone(e),...r,[a]:"Omit"};i.required&&(i.required=i.required.filter((e=>!n.includes(e))),0===i.required.length&&delete i.required);for(const e of Object.keys(i.properties))n.includes(e)&&delete i.properties[e];return this.Create(i)}Parameters(e,t={}){return o.Tuple(e.parameters,{...t})}Partial(e,t={}){const r={...this.Clone(e),...t,[a]:"Partial"};delete r.required;for(const e of Object.keys(r.properties)){const t=r.properties[e];switch(t[n]){case"ReadonlyOptional":case"Readonly":t[n]="ReadonlyOptional";break;default:t[n]="Optional"}}return this.Create(r)}Pick(e,t,r={}){const n="Union"===t[s]?t.anyOf.map((e=>e.const)):t,i={...this.Clone(e),...r,[a]:"Pick"};i.required&&(i.required=i.required.filter((e=>n.includes(e))),0===i.required.length&&delete i.required);for(const e of Object.keys(i.properties))n.includes(e)||delete i.properties[e];return this.Create(i)}Promise(e,t={}){return this.Create({...t,[s]:"Promise",type:"object",instanceOf:"Promise",item:e})}Record(e,t,r={}){if("Union"===e[s])return this.Object(e.anyOf.reduce(((e,r)=>({...e,[r.const]:t})),{}),{...r,[a]:"Record"});const n=["Integer","Number"].includes(e[s])?"^(0|[1-9][0-9]*)$":"String"===e[s]&&e.pattern?e.pattern:"^.*$";return this.Create({...r,[s]:"Record",type:"object",patternProperties:{[n]:t},additionalProperties:!1})}Recursive(e,t={}){void 0===t.$id&&(t.$id="T"+i++);const r=e({[s]:"Self",$ref:`${t.$id}`});return r.$id=t.$id,this.Create({...t,...r})}Ref(e,t={}){if(void 0===e.$id)throw Error("TypeBuilder.Ref: Referenced schema must specify an $id");return this.Create({...t,[s]:"Ref",$ref:e.$id})}RegEx(e,t={}){return this.Create({...t,[s]:"String",type:"string",pattern:e.source})}Required(e,t={}){const r={...this.Clone(e),...t,[a]:"Required"};r.required=Object.keys(r.properties);for(const e of Object.keys(r.properties)){const t=r.properties[e];switch(t[n]){case"ReadonlyOptional":case"Readonly":t[n]="Readonly";break;default:delete t[n]}}return this.Create(r)}ReturnType(e,t={}){return{...t,...this.Clone(e.returns)}}Strict(e){return JSON.parse(JSON.stringify(e))}String(e={}){return this.Create({...e,[s]:"String",type:"string"})}Tuple(e,t={}){const r=e.length,a=e.length,n=e.length>0?{...t,[s]:"Tuple",type:"array",items:e,additionalItems:!1,minItems:r,maxItems:a}:{...t,[s]:"Tuple",type:"array",minItems:r,maxItems:a};return this.Create(n)}Undefined(e={}){return this.Create({...e,[s]:"Undefined",type:"null",typeOf:"Undefined"})}Union(e,t={}){return 0===e.length?o.Never({...t}):this.Create({...t,[s]:"Union",anyOf:e})}Uint8Array(e={}){return this.Create({...e,[s]:"Uint8Array",type:"object",instanceOf:"Uint8Array"})}Unknown(e={}){return this.Create({...e,[s]:"Unknown"})}Unsafe(e={}){return this.Create({...e,[s]:e[s]||"Unsafe"})}Void(e={}){return this.Create({...e,[s]:"Void",type:"null",typeOf:"Void"})}Create(e){return e}Clone(e){return"object"!=typeof(t=e)||null===t||Array.isArray(t)?(e=>"object"==typeof e&&null!==e&&Array.isArray(e))(e)?e.map((e=>this.Clone(e))):e:Object.keys(e).reduce(((t,r)=>({...t,[r]:this.Clone(e[r])})),Object.getOwnPropertySymbols(e).reduce(((t,r)=>({...t,[r]:this.Clone(e[r])})),{}));var t}}},571:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{Oo:()=>a.Oo,_k:()=>a._k});var a=r(380),n=e([a]);a=(n.then?(await n)():n)[0],s()}catch(e){s(e)}}))},110:(e,t,r)=>{r.d(t,{Z:()=>s});const s={name:"lucid-cardano",version:"0.9.4",license:"MIT",author:"Alessandro Konrad",description:"Lucid is a library, which allows you to create Cardano transactions and off-chain code for your Plutus contracts in JavaScript, Deno and Node.js.",repository:"https://github.com/spacebudz/lucid"}},812:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{C:()=>c,M:()=>l});const a="undefined"==typeof window;if(a){const d=await import("node-fetch"),{Crypto:h}=await import("@peculiar/webcrypto"),{WebSocket:m}=await import("ws");global.WebSocket||(global.WebSocket=m),global.crypto||(global.crypto=new h),global.fetch||(global.fetch=d.default),global.Headers||(global.Headers=d.Headers),global.Request||(global.Request=d.Request),global.Response||(global.Response=d.Response)}async function n(){try{if(a)return await import("./wasm_modules/cardano_multiplatform_lib_nodejs/cardano_multiplatform_lib.js");const e=await r.e(277).then(r.bind(r,277));return await e.default(await fetch(new URL(r(534),r.b))),e}catch(e){return null}}async function i(){try{if(a)return await import("./wasm_modules/cardano_message_signing_nodejs/cardano_message_signing.js");const e=await r.e(643).then(r.bind(r,643));return await e.default(await fetch(new URL(r(378),r.b))),e}catch(e){return null}}const[o,u]=await Promise.all([n(),i()]),c=o,l=u;s()}catch(p){s(p)}}),1)},609:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{C:()=>a.C,M:()=>a.M});var a=r(812),n=e([a]);a=(n.then?(await n)():n)[0],s()}catch(e){s(e)}}))},716:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{_:()=>g});var a=r(609),n=r(483),i=r(687),o=r(676),u=r(145),c=r(771),l=r(239),d=r(271),h=r(611),m=r(802),p=e([a,n,i,o,u,c,l,h,m]);[a,n,i,o,u,c,l,h,m]=p.then?(await p)():p;class g{constructor(){Object.defineProperty(this,"txBuilderConfig",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"wallet",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"provider",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"network",{enumerable:!0,configurable:!0,writable:!0,value:"Mainnet"}),Object.defineProperty(this,"utils",{enumerable:!0,configurable:!0,writable:!0,value:void 0})}static async new(e,t){const r=new this;if(t&&(r.network=t),e){r.provider=e;const t=await e.getProtocolParameters();r.provider instanceof m.G&&(r.network="Custom",d.BV[r.network]={zeroTime:r.provider.now(),zeroSlot:0,slotLength:1e3});const s=d.BV[r.network];r.txBuilderConfig=a.C.TransactionBuilderConfigBuilder.new().coins_per_utxo_byte(a.C.BigNum.from_str(t.coinsPerUtxoByte.toString())).fee_algo(a.C.LinearFee.new(a.C.BigNum.from_str(t.minFeeA.toString()),a.C.BigNum.from_str(t.minFeeB.toString()))).key_deposit(a.C.BigNum.from_str(t.keyDeposit.toString())).pool_deposit(a.C.BigNum.from_str(t.poolDeposit.toString())).max_tx_size(t.maxTxSize).max_value_size(t.maxValSize).collateral_percentage(t.collateralPercentage).max_collateral_inputs(t.maxCollateralInputs).max_tx_ex_units(a.C.ExUnits.new(a.C.BigNum.from_str(t.maxTxExMem.toString()),a.C.BigNum.from_str(t.maxTxExSteps.toString()))).ex_unit_prices(a.C.ExUnitPrices.from_float(t.priceMem,t.priceStep)).slot_config(a.C.BigNum.from_str(s.zeroTime.toString()),a.C.BigNum.from_str(s.zeroSlot.toString()),s.slotLength).blockfrost(a.C.Blockfrost.new((e?.url||"")+"/utils/txs/evaluate",e?.projectId||"")).costmdls((0,n.sJ)(t.costModels)).build()}return r.utils=new n.cQ(r),r}async switchProvider(e,t){if("Custom"===this.network)throw new Error("Cannot switch when on custom network.");const r=await g.new(e,t);return this.txBuilderConfig=r.txBuilderConfig,this.provider=e||this.provider,this.network=t||this.network,this.wallet=r.wallet,this}newTx(){return new i.Tx(this)}fromTx(e){return new o.u(this,a.C.Transaction.from_bytes((0,n.H_)(e)))}newMessage(e,t){return new l.v(this,e,t)}verifyMessage(e,t,r){const{paymentCredential:s,stakeCredential:a,address:{hex:n}}=this.utils.getAddressDetails(e),i=s?.hash||a?.hash;if(!i)throw new Error("Not a valid address provided.");return(0,c._)(n,i,t,r)}currentSlot(){return this.utils.unixTimeToSlot(Date.now())}utxosAt(e){return this.provider.getUtxos(e)}utxosAtWithUnit(e,t){return this.provider.getUtxosWithUnit(e,t)}utxoByUnit(e){return this.provider.getUtxoByUnit(e)}utxosByOutRef(e){return this.provider.getUtxosByOutRef(e)}delegationAt(e){return this.provider.getDelegation(e)}awaitTx(e,t=3e3){return this.provider.awaitTx(e,t)}async datumOf(e,t){if(!e.datum){if(!e.datumHash)throw new Error("This UTxO does not have a datum hash.");e.datum=await this.provider.getDatum(e.datumHash)}return t?h.V.from(e.datum,t):e.datum}selectWalletFromPrivateKey(e){const t=a.C.PrivateKey.from_bech32(e),r=t.to_public().hash();return this.wallet={address:async()=>a.C.EnterpriseAddress.new("Mainnet"===this.network?1:0,a.C.StakeCredential.from_keyhash(r)).to_address().to_bech32(void 0),rewardAddress:async()=>null,getUtxos:async()=>await this.utxosAt((0,n.I9)(await this.wallet.address())),getUtxosCore:async()=>{const e=await this.utxosAt((0,n.I9)(await this.wallet.address())),t=a.C.TransactionUnspentOutputs.new();return e.forEach((e=>{t.add((0,n.Sw)(e))})),t},getDelegation:async()=>({poolId:null,rewards:0n}),signTx:async e=>{const r=a.C.make_vkey_witness(a.C.hash_transaction(e.body()),t),s=a.C.TransactionWitnessSetBuilder.new();return s.add_vkey(r),s.build()},signMessage:async(t,s)=>{const{paymentCredential:a,address:{hex:n}}=this.utils.getAddressDetails(t),i=a?.hash,o=r.to_hex();if(!i||i!==o)throw new Error(`Cannot sign message for address: ${t}.`);return(0,c.r)(n,s,e)},submitTx:async e=>await this.provider.submitTx(e)},this}selectWallet(e){return this.wallet={address:async()=>a.C.Address.from_bytes((0,n.H_)(await(async()=>{const[t]=await e.getUsedAddresses();if(t)return t;const[r]=await e.getUnusedAddresses();return r})())).to_bech32(void 0),rewardAddress:async()=>{const[t]=await e.getRewardAddresses();return t?a.C.RewardAddress.from_address(a.C.Address.from_bytes((0,n.H_)(t))).to_address().to_bech32(void 0):null},getUtxos:async()=>(await e.getUtxos()||[]).map((e=>{const t=a.C.TransactionUnspentOutput.from_bytes((0,n.H_)(e));return(0,n.lo)(t)})),getUtxosCore:async()=>{const t=a.C.TransactionUnspentOutputs.new();return(await e.getUtxos()||[]).forEach((e=>{t.add(a.C.TransactionUnspentOutput.from_bytes((0,n.H_)(e)))})),t},getDelegation:async()=>{const e=await this.wallet.rewardAddress();return e?await this.delegationAt(e):{poolId:null,rewards:0n}},signTx:async t=>{const r=await e.signTx((0,n.NC)(t.to_bytes()),!0);return a.C.TransactionWitnessSet.from_bytes((0,n.H_)(r))},signMessage:async(t,r)=>{const s=(0,n.NC)(a.C.Address.from_bech32(t).to_bytes());return await e.signData(s,r)},submitTx:async t=>await e.submitTx(t)},this}selectWalletFrom({address:e,utxos:t,rewardAddress:r}){const s=this.utils.getAddressDetails(e);return this.wallet={address:async()=>e,rewardAddress:async()=>(!r&&s.stakeCredential?(()=>"Key"===s.stakeCredential.type?a.C.RewardAddress.new("Mainnet"===this.network?1:0,a.C.StakeCredential.from_keyhash(a.C.Ed25519KeyHash.from_hex(s.stakeCredential.hash))).to_address().to_bech32(void 0):a.C.RewardAddress.new("Mainnet"===this.network?1:0,a.C.StakeCredential.from_scripthash(a.C.ScriptHash.from_hex(s.stakeCredential.hash))).to_address().to_bech32(void 0))():r)||null,getUtxos:async()=>t||await this.utxosAt((0,n.I9)(e)),getUtxosCore:async()=>{const r=a.C.TransactionUnspentOutputs.new();return(t||await this.utxosAt((0,n.I9)(e))).forEach((e=>r.add((0,n.Sw)(e)))),r},getDelegation:async()=>{const e=await this.wallet.rewardAddress();return e?await this.delegationAt(e):{poolId:null,rewards:0n}},signTx:async()=>{throw new Error("Not implemented")},signMessage:async()=>{throw new Error("Not implemented")},submitTx:async e=>await this.provider.submitTx(e)},this}selectWalletFromSeed(e,t){const{address:r,rewardAddress:s,paymentKey:i,stakeKey:o}=(0,u.n)(e,{addressType:t?.addressType||"Base",accountIndex:t?.accountIndex||0,password:t?.password,network:this.network}),l=a.C.PrivateKey.from_bech32(i).to_public().hash().to_hex(),d=o?a.C.PrivateKey.from_bech32(o).to_public().hash().to_hex():"",h={[l]:i,[d]:o};return this.wallet={address:async()=>r,rewardAddress:async()=>s||null,getUtxos:async()=>this.utxosAt((0,n.I9)(r)),getUtxosCore:async()=>{const e=a.C.TransactionUnspentOutputs.new();return(await this.utxosAt((0,n.I9)(r))).forEach((t=>e.add((0,n.Sw)(t)))),e},getDelegation:async()=>{const e=await this.wallet.rewardAddress();return e?await this.delegationAt(e):{poolId:null,rewards:0n}},signTx:async e=>{const t=await this.utxosAt(r),s=[l,d],n=(0,u.W)(e,s,t),i=a.C.TransactionWitnessSetBuilder.new();return n.forEach((t=>{const r=a.C.make_vkey_witness(a.C.hash_transaction(e.body()),a.C.PrivateKey.from_bech32(h[t]));i.add_vkey(r)})),i.build()},signMessage:async(e,t)=>{const{paymentCredential:r,stakeCredential:s,address:{hex:a}}=this.utils.getAddressDetails(e),n=h[r?.hash||s?.hash];if(!n)throw new Error(`Cannot sign message for address: ${e}.`);return(0,c.r)(a,t,n)},submitTx:async e=>await this.provider.submitTx(e)},this}}s()}catch(e){s(e)}}))},239:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{v:()=>o});var a=r(771),n=r(380),i=e([a,n]);[a,n]=i.then?(await i)():i;class o{constructor(e,t,r){Object.defineProperty(this,"lucid",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"address",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"payload",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),this.lucid=e,this.address=t,this.payload=r}sign(){return this.lucid.wallet.signMessage(this.address,this.payload)}signWithPrivateKey(e){const{paymentCredential:t,stakeCredential:r,address:{hex:s}}=this.lucid.utils.getAddressDetails(this.address),i=t?.hash||r?.hash,o=n.C.PrivateKey.from_bech32(e).to_public().hash().to_hex();if(!i||i!==o)throw new Error(`Cannot sign message for address: ${this.address}.`);return(0,a.r)(s,this.payload,e)}}s()}catch(e){s(e)}}))},669:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{_k:()=>a._});var a=r(716),n=r(687),i=r(676),o=r(866),u=e([a,n,i,o]);[a,n,i,o]=u.then?(await u)():u,s()}catch(e){s(e)}}))},687:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{Tx:()=>c});var a=r(609),n=r(483),i=r(65),o=r(676),u=e([a,n,i,o]);[a,n,i,o]=u.then?(await u)():u;class c{constructor(e){Object.defineProperty(this,"txBuilder",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"tasks",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"lucid",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),this.lucid=e,this.txBuilder=a.C.TransactionBuilder.new(this.lucid.txBuilderConfig),this.tasks=[]}readFrom(e){return this.tasks.push((async t=>{for(const r of e){if(r.datumHash){r.datum=await t.lucid.datumOf(r);const e=a.C.PlutusData.from_bytes((0,n.H_)(r.datum));t.txBuilder.add_plutus_data(e)}const e=(0,n.Sw)(r);t.txBuilder.add_reference_input(e)}})),this}collectFrom(e,t){return this.tasks.push((async r=>{for(const s of e){s.datumHash&&!s.datum&&(s.datum=await r.lucid.datumOf(s));const e=(0,n.Sw)(s);r.txBuilder.add_input(e,t&&a.C.ScriptWitness.new_plutus_witness(a.C.PlutusWitness.new(a.C.PlutusData.from_bytes((0,n.H_)(t)),s.datumHash&&s.datum?a.C.PlutusData.from_bytes((0,n.H_)(s.datum)):void 0,void 0)))}})),this}mintAssets(e,t){return this.tasks.push((r=>{const s=Object.keys(e),i=s[0].slice(0,56),o=a.C.MintAssets.new();s.forEach((t=>{if(t.slice(0,56)!==i)throw new Error("Only one policy id allowed. You can chain multiple mintAssets functions together if you need to mint assets with different policy ids.");o.insert(a.C.AssetName.new((0,n.H_)(t.slice(56))),a.C.Int.from_str(e[t].toString()))}));const u=a.C.ScriptHash.from_bytes((0,n.H_)(i));r.txBuilder.add_mint(u,o,t?a.C.ScriptWitness.new_plutus_witness(a.C.PlutusWitness.new(a.C.PlutusData.from_bytes((0,n.H_)(t)),void 0,void 0)):void 0)})),this}payToAddress(e,t){return this.tasks.push((r=>{const s=a.C.TransactionOutput.new(h(e,r.lucid),(0,n.D)(t));r.txBuilder.add_output(s)})),this}payToAddressWithData(e,t,r){return this.tasks.push((s=>{if("string"==typeof t&&(t={asHash:t}),[t.hash,t.asHash,t.inline].filter((e=>e)).length>1)throw new Error("Not allowed to set hash, asHash and inline at the same time.");const i=a.C.TransactionOutput.new(h(e,s.lucid),(0,n.D)(r));if(t.hash)i.set_datum(a.C.Datum.new_data_hash(a.C.DataHash.from_hex(t.hash)));else if(t.asHash){const e=a.C.PlutusData.from_bytes((0,n.H_)(t.asHash));i.set_datum(a.C.Datum.new_data_hash(a.C.hash_plutus_data(e))),s.txBuilder.add_plutus_data(e)}else if(t.inline){const e=a.C.PlutusData.from_bytes((0,n.H_)(t.inline));i.set_datum(a.C.Datum.new_data(a.C.Data.new(e)))}const o=t.scriptRef;o&&i.set_script_ref((0,n.pZ)(o)),s.txBuilder.add_output(i)})),this}payToContract(e,t,r){if("string"==typeof t&&(t={asHash:t}),!(t.hash||t.asHash||t.inline))throw new Error("No datum set. Script output becomes unspendable without datum.");return this.payToAddressWithData(e,t,r)}delegateTo(e,t,r){return this.tasks.push((s=>{const i=s.lucid.utils.getAddressDetails(e);if("Reward"!==i.type||!i.stakeCredential)throw new Error("Not a reward address provided.");const o="Key"===i.stakeCredential.type?a.C.StakeCredential.from_keyhash(a.C.Ed25519KeyHash.from_bytes((0,n.H_)(i.stakeCredential.hash))):a.C.StakeCredential.from_scripthash(a.C.ScriptHash.from_bytes((0,n.H_)(i.stakeCredential.hash)));s.txBuilder.add_certificate(a.C.Certificate.new_stake_delegation(a.C.StakeDelegation.new(o,a.C.Ed25519KeyHash.from_bech32(t))),r?a.C.ScriptWitness.new_plutus_witness(a.C.PlutusWitness.new(a.C.PlutusData.from_bytes((0,n.H_)(r)),void 0,void 0)):void 0)})),this}registerStake(e){return this.tasks.push((t=>{const r=t.lucid.utils.getAddressDetails(e);if("Reward"!==r.type||!r.stakeCredential)throw new Error("Not a reward address provided.");const s="Key"===r.stakeCredential.type?a.C.StakeCredential.from_keyhash(a.C.Ed25519KeyHash.from_bytes((0,n.H_)(r.stakeCredential.hash))):a.C.StakeCredential.from_scripthash(a.C.ScriptHash.from_bytes((0,n.H_)(r.stakeCredential.hash)));t.txBuilder.add_certificate(a.C.Certificate.new_stake_registration(a.C.StakeRegistration.new(s)),void 0)})),this}deregisterStake(e,t){return this.tasks.push((r=>{const s=r.lucid.utils.getAddressDetails(e);if("Reward"!==s.type||!s.stakeCredential)throw new Error("Not a reward address provided.");const i="Key"===s.stakeCredential.type?a.C.StakeCredential.from_keyhash(a.C.Ed25519KeyHash.from_bytes((0,n.H_)(s.stakeCredential.hash))):a.C.StakeCredential.from_scripthash(a.C.ScriptHash.from_bytes((0,n.H_)(s.stakeCredential.hash)));r.txBuilder.add_certificate(a.C.Certificate.new_stake_deregistration(a.C.StakeDeregistration.new(i)),t?a.C.ScriptWitness.new_plutus_witness(a.C.PlutusWitness.new(a.C.PlutusData.from_bytes((0,n.H_)(t)),void 0,void 0)):void 0)})),this}registerPool(e){return this.tasks.push((async t=>{const r=await d(e,t.lucid),s=a.C.Certificate.new_pool_registration(r);t.txBuilder.add_certificate(s,void 0)})),this}updatePool(e){return this.tasks.push((async t=>{const r=await d(e,t.lucid);r.set_is_update(!0);const s=a.C.Certificate.new_pool_registration(r);t.txBuilder.add_certificate(s,void 0)})),this}retirePool(e,t){return this.tasks.push((r=>{const s=a.C.Certificate.new_pool_retirement(a.C.PoolRetirement.new(a.C.Ed25519KeyHash.from_bech32(e),t));r.txBuilder.add_certificate(s,void 0)})),this}withdraw(e,t,r){return this.tasks.push((s=>{s.txBuilder.add_withdrawal(a.C.RewardAddress.from_address(h(e,s.lucid)),a.C.BigNum.from_str(t.toString()),r?a.C.ScriptWitness.new_plutus_witness(a.C.PlutusWitness.new(a.C.PlutusData.from_bytes((0,n.H_)(r)),void 0,void 0)):void 0)})),this}addSigner(e){const t=this.lucid.utils.getAddressDetails(e);if(!t.paymentCredential&&!t.stakeCredential)throw new Error("Not a valid address.");const r="Reward"===t.type?t.stakeCredential:t.paymentCredential;if("Script"===r.type)throw new Error("Only key hashes are allowed as signers.");return this.addSignerKey(r.hash)}addSignerKey(e){return this.tasks.push((t=>{t.txBuilder.add_required_signer(a.C.Ed25519KeyHash.from_bytes((0,n.H_)(e)))})),this}validFrom(e){return this.tasks.push((t=>{const r=t.lucid.utils.unixTimeToSlot(e);t.txBuilder.set_validity_start_interval(a.C.BigNum.from_str(r.toString()))})),this}validTo(e){return this.tasks.push((t=>{const r=t.lucid.utils.unixTimeToSlot(e);t.txBuilder.set_ttl(a.C.BigNum.from_str(r.toString()))})),this}attachMetadata(e,t){return this.tasks.push((r=>{r.txBuilder.add_json_metadatum(a.C.BigNum.from_str(e.toString()),JSON.stringify(t))})),this}attachMetadataWithConversion(e,t){return this.tasks.push((r=>{r.txBuilder.add_json_metadatum_with_schema(a.C.BigNum.from_str(e.toString()),JSON.stringify(t),a.C.MetadataJsonSchema.BasicConversions)})),this}addNetworkId(e){return this.tasks.push((t=>{t.txBuilder.set_network_id(a.C.NetworkId.from_bytes((0,n.H_)(e.toString(16).padStart(2,"0"))))})),this}attachSpendingValidator(e){return this.tasks.push((t=>{l(t,e)})),this}attachMintingPolicy(e){return this.tasks.push((t=>{l(t,e)})),this}attachCertificateValidator(e){return this.tasks.push((t=>{l(t,e)})),this}attachWithdrawalValidator(e){return this.tasks.push((t=>{l(t,e)})),this}compose(e){return e&&(this.tasks=this.tasks.concat(e.tasks)),this}async complete(e){if([e?.change?.outputData?.hash,e?.change?.outputData?.asHash,e?.change?.outputData?.inline].filter((e=>e)).length>1)throw new Error("Not allowed to set hash, asHash and inline at the same time.");let t=this.tasks.shift();for(;t;)await t(this),t=this.tasks.shift();const r=await this.lucid.wallet.getUtxosCore(),s=h(e?.change?.address||await this.lucid.wallet.address(),this.lucid);return(e?.coinSelection||void 0===e?.coinSelection)&&this.txBuilder.add_inputs_from(r,s),this.txBuilder.balance(s,(()=>e?.change?.outputData?.hash?a.C.Datum.new_data_hash(a.C.DataHash.from_hex(e.change.outputData.hash)):e?.change?.outputData?.asHash?(this.txBuilder.add_plutus_data(a.C.PlutusData.from_bytes((0,n.H_)(e.change.outputData.asHash))),a.C.Datum.new_data_hash(a.C.hash_plutus_data(a.C.PlutusData.from_bytes((0,n.H_)(e.change.outputData.asHash))))):e?.change?.outputData?.inline?a.C.Datum.new_data(a.C.Data.new(a.C.PlutusData.from_bytes((0,n.H_)(e.change.outputData.inline)))):void 0)()),new o.u(this.lucid,await this.txBuilder.construct(r,s,void 0===e?.nativeUplc||e?.nativeUplc))}async toString(){let e=this.tasks.shift();for(;e;)await e(this),e=this.tasks.shift();return(0,n.NC)(this.txBuilder.to_bytes())}}function l(e,{type:t,script:r}){if("Native"===t)return e.txBuilder.add_native_script(a.C.NativeScript.from_bytes((0,n.H_)(r)));if("PlutusV1"===t)return e.txBuilder.add_plutus_script(a.C.PlutusScript.from_bytes((0,n.H_)((0,i.EE)(r))));if("PlutusV2"===t)return e.txBuilder.add_plutus_v2_script(a.C.PlutusScript.from_bytes((0,n.H_)((0,i.EE)(r))));throw new Error("No variant matched.")}async function d(e,t){const r=a.C.Ed25519KeyHashes.new();e.owners.forEach((e=>{const{stakeCredential:s}=t.utils.getAddressDetails(e);if("Key"!==s?.type)throw new Error("Only key hashes allowed for pool owners.");r.add(a.C.Ed25519KeyHash.from_hex(s.hash))}));const s=e.metadataUrl?await fetch(e.metadataUrl).then((e=>e.arrayBuffer())):null,i=s?a.C.PoolMetadataHash.from_bytes(a.C.hash_blake2b256(new Uint8Array(s))):null,o=a.C.Relays.new();return e.relays.forEach((e=>{switch(e.type){case"SingleHostIp":{const t=e.ipV4?a.C.Ipv4.new(new Uint8Array(e.ipV4.split(".").map((e=>parseInt(e))))):void 0,r=e.ipV6?a.C.Ipv6.new((0,n.H_)(e.ipV6.replaceAll(":",""))):void 0;o.add(a.C.Relay.new_single_host_addr(a.C.SingleHostAddr.new(e.port,t,r)));break}case"SingleHostDomainName":o.add(a.C.Relay.new_single_host_name(a.C.SingleHostName.new(e.port,a.C.DNSRecordAorAAAA.new(e.domainName))));break;case"MultiHost":o.add(a.C.Relay.new_multi_host_name(a.C.MultiHostName.new(a.C.DNSRecordSRV.new(e.domainName))))}})),a.C.PoolRegistration.new(a.C.PoolParams.new(a.C.Ed25519KeyHash.from_bech32(e.poolId),a.C.VRFKeyHash.from_hex(e.vrfKeyHash),a.C.BigNum.from_str(e.pledge.toString()),a.C.BigNum.from_str(e.cost.toString()),a.C.UnitInterval.from_float(e.margin),a.C.RewardAddress.from_address(h(e.rewardAddress,t)),r,o,i?a.C.PoolMetadata.new(a.C.URL.new(e.metadataUrl),i):void 0))}function h(e,t){const r=t.utils.getAddressDetails(e),s=(0,n.dZ)(t.network);if(r.networkId!==s)throw new Error(`Invalid address: Expected address with network id ${s}, but got ${r.networkId}`);return a.C.Address.from_bech32(e)}s()}catch(m){s(m)}}))},676:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{u:()=>u});var a=r(609),n=r(866),i=r(483),o=e([a,n,i]);[a,n,i]=o.then?(await o)():o;class u{constructor(e,t){Object.defineProperty(this,"txComplete",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"witnessSetBuilder",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"tasks",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"lucid",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),this.lucid=e,this.txComplete=t,this.witnessSetBuilder=a.C.TransactionWitnessSetBuilder.new(),this.tasks=[]}sign(){return this.tasks.push((async()=>{const e=await this.lucid.wallet.signTx(this.txComplete);this.witnessSetBuilder.add_existing(e)})),this}signWithPrivateKey(e){const t=a.C.PrivateKey.from_bech32(e),r=a.C.make_vkey_witness(a.C.hash_transaction(this.txComplete.body()),t);return this.witnessSetBuilder.add_vkey(r),this}async partialSign(){const e=await this.lucid.wallet.signTx(this.txComplete);return this.witnessSetBuilder.add_existing(e),(0,i.NC)(e.to_bytes())}partialSignWithPrivateKey(e){const t=a.C.PrivateKey.from_bech32(e),r=a.C.make_vkey_witness(a.C.hash_transaction(this.txComplete.body()),t);this.witnessSetBuilder.add_vkey(r);const s=a.C.TransactionWitnessSetBuilder.new();return s.add_vkey(r),(0,i.NC)(s.build().to_bytes())}assemble(e){return e.forEach((e=>{const t=a.C.TransactionWitnessSet.from_bytes((0,i.H_)(e));this.witnessSetBuilder.add_existing(t)})),this}async complete(){for(const e of this.tasks)await e();this.witnessSetBuilder.add_existing(this.txComplete.witness_set());const e=a.C.Transaction.new(this.txComplete.body(),this.witnessSetBuilder.build(),this.txComplete.auxiliary_data());return new n.v(this.lucid,e)}toString(){return(0,i.NC)(this.txComplete.to_bytes())}toHash(){return a.C.hash_transaction(this.txComplete.body()).to_hex()}}s()}catch(e){s(e)}}))},866:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{v:()=>o});var a=r(609),n=r(483),i=e([a,n]);[a,n]=i.then?(await i)():i;class o{constructor(e,t){Object.defineProperty(this,"txSigned",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"lucid",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),this.lucid=e,this.txSigned=t}async submit(){return await(this.lucid.wallet||this.lucid.provider).submitTx((0,n.NC)(this.txSigned.to_bytes()))}toString(){return(0,n.NC)(this.txSigned.to_bytes())}toHash(){return a.C.hash_transaction(this.txSigned.body()).to_hex()}}s()}catch(e){s(e)}}))},774:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{O:()=>m,o:()=>d});var a=r(246),n=r(483),i=e([n]);n=(i.then?(await i)():i)[0];const o="Invalid mnemonic",u="Invalid entropy",c="Invalid mnemonic checksum",l="A wordlist is required but a default could not be found.\nPlease pass a 2048 word array explicitly.";function d(e,t){if(!(t=t||b))throw new Error(l);const r=(s=e,(s||"").normalize("NFKD")).split(" ");var s;if(r.length%3!=0)throw new Error(o);const a=r.map((e=>{const r=t.indexOf(e);if(-1===r)throw new Error(o);return y(r.toString(2),"0",11)})).join(""),i=32*Math.floor(a.length/33),d=a.slice(0,i),h=a.slice(i),m=d.match(/(.{1,8})/g).map(w);if(m.length<16)throw new Error(u);if(m.length>32)throw new Error(u);if(m.length%4!=0)throw new Error(u);const p=new Uint8Array(m);if(g(p)!==h)throw new Error(c);return(0,n.NC)(p)}function h(e){const t=65536,r=new Uint8Array(e);if(e>4294967295)throw new RangeError("requested too many random bytes");if(e>0)if(e>t)for(let s=0;s<e;s+=t)crypto.getRandomValues(r.slice(s,s+t));else crypto.getRandomValues(r);return r}function m(e,t,r){if((e=e||128)%32!=0)throw new TypeError(u);return p((t=t||h)(e/8),r)}function p(e,t){if(!(t=t||b))throw new Error(l);if(e.length<16)throw new TypeError(u);if(e.length>32)throw new TypeError(u);if(e.length%4!=0)throw new TypeError(u);const r=(f(Array.from(e))+g(e)).match(/(.{1,11})/g).map((e=>{const r=w(e);return t[r]}));return"あいこくしん"===t[0]?r.join("　"):r.join(" ")}function g(e){const t=8*e.length/32,r=(new a.f).update(e).digest();return f(Array.from(r)).slice(0,t)}function y(e,t,r){for(;e.length<r;)e=t+e;return e}function f(e){return e.map((e=>y(e.toString(2),"0",8))).join("")}function w(e){return parseInt(e,2)}const b=["abandon","ability","able","about","above","absent","absorb","abstract","absurd","abuse","access","accident","account","accuse","achieve","acid","acoustic","acquire","across","act","action","actor","actress","actual","adapt","add","addict","address","adjust","admit","adult","advance","advice","aerobic","affair","afford","afraid","again","age","agent","agree","ahead","aim","air","airport","aisle","alarm","album","alcohol","alert","alien","all","alley","allow","almost","alone","alpha","already","also","alter","always","amateur","amazing","among","amount","amused","analyst","anchor","ancient","anger","angle","angry","animal","ankle","announce","annual","another","answer","antenna","antique","anxiety","any","apart","apology","appear","apple","approve","april","arch","arctic","area","arena","argue","arm","armed","armor","army","around","arrange","arrest","arrive","arrow","art","artefact","artist","artwork","ask","aspect","assault","asset","assist","assume","asthma","athlete","atom","attack","attend","attitude","attract","auction","audit","august","aunt","author","auto","autumn","average","avocado","avoid","awake","aware","away","awesome","awful","awkward","axis","baby","bachelor","bacon","badge","bag","balance","balcony","ball","bamboo","banana","banner","bar","barely","bargain","barrel","base","basic","basket","battle","beach","bean","beauty","because","become","beef","before","begin","behave","behind","believe","below","belt","bench","benefit","best","betray","better","between","beyond","bicycle","bid","bike","bind","biology","bird","birth","bitter","black","blade","blame","blanket","blast","bleak","bless","blind","blood","blossom","blouse","blue","blur","blush","board","boat","body","boil","bomb","bone","bonus","book","boost","border","boring","borrow","boss","bottom","bounce","box","boy","bracket","brain","brand","brass","brave","bread","breeze","brick","bridge","brief","bright","bring","brisk","broccoli","broken","bronze","broom","brother","brown","brush","bubble","buddy","budget","buffalo","build","bulb","bulk","bullet","bundle","bunker","burden","burger","burst","bus","business","busy","butter","buyer","buzz","cabbage","cabin","cable","cactus","cage","cake","call","calm","camera","camp","can","canal","cancel","candy","cannon","canoe","canvas","canyon","capable","capital","captain","car","carbon","card","cargo","carpet","carry","cart","case","cash","casino","castle","casual","cat","catalog","catch","category","cattle","caught","cause","caution","cave","ceiling","celery","cement","census","century","cereal","certain","chair","chalk","champion","change","chaos","chapter","charge","chase","chat","cheap","check","cheese","chef","cherry","chest","chicken","chief","child","chimney","choice","choose","chronic","chuckle","chunk","churn","cigar","cinnamon","circle","citizen","city","civil","claim","clap","clarify","claw","clay","clean","clerk","clever","click","client","cliff","climb","clinic","clip","clock","clog","close","cloth","cloud","clown","club","clump","cluster","clutch","coach","coast","coconut","code","coffee","coil","coin","collect","color","column","combine","come","comfort","comic","common","company","concert","conduct","confirm","congress","connect","consider","control","convince","cook","cool","copper","copy","coral","core","corn","correct","cost","cotton","couch","country","couple","course","cousin","cover","coyote","crack","cradle","craft","cram","crane","crash","crater","crawl","crazy","cream","credit","creek","crew","cricket","crime","crisp","critic","crop","cross","crouch","crowd","crucial","cruel","cruise","crumble","crunch","crush","cry","crystal","cube","culture","cup","cupboard","curious","current","curtain","curve","cushion","custom","cute","cycle","dad","damage","damp","dance","danger","daring","dash","daughter","dawn","day","deal","debate","debris","decade","december","decide","decline","decorate","decrease","deer","defense","define","defy","degree","delay","deliver","demand","demise","denial","dentist","deny","depart","depend","deposit","depth","deputy","derive","describe","desert","design","desk","despair","destroy","detail","detect","develop","device","devote","diagram","dial","diamond","diary","dice","diesel","diet","differ","digital","dignity","dilemma","dinner","dinosaur","direct","dirt","disagree","discover","disease","dish","dismiss","disorder","display","distance","divert","divide","divorce","dizzy","doctor","document","dog","doll","dolphin","domain","donate","donkey","donor","door","dose","double","dove","draft","dragon","drama","drastic","draw","dream","dress","drift","drill","drink","drip","drive","drop","drum","dry","duck","dumb","dune","during","dust","dutch","duty","dwarf","dynamic","eager","eagle","early","earn","earth","easily","east","easy","echo","ecology","economy","edge","edit","educate","effort","egg","eight","either","elbow","elder","electric","elegant","element","elephant","elevator","elite","else","embark","embody","embrace","emerge","emotion","employ","empower","empty","enable","enact","end","endless","endorse","enemy","energy","enforce","engage","engine","enhance","enjoy","enlist","enough","enrich","enroll","ensure","enter","entire","entry","envelope","episode","equal","equip","era","erase","erode","erosion","error","erupt","escape","essay","essence","estate","eternal","ethics","evidence","evil","evoke","evolve","exact","example","excess","exchange","excite","exclude","excuse","execute","exercise","exhaust","exhibit","exile","exist","exit","exotic","expand","expect","expire","explain","expose","express","extend","extra","eye","eyebrow","fabric","face","faculty","fade","faint","faith","fall","false","fame","family","famous","fan","fancy","fantasy","farm","fashion","fat","fatal","father","fatigue","fault","favorite","feature","february","federal","fee","feed","feel","female","fence","festival","fetch","fever","few","fiber","fiction","field","figure","file","film","filter","final","find","fine","finger","finish","fire","firm","first","fiscal","fish","fit","fitness","fix","flag","flame","flash","flat","flavor","flee","flight","flip","float","flock","floor","flower","fluid","flush","fly","foam","focus","fog","foil","fold","follow","food","foot","force","forest","forget","fork","fortune","forum","forward","fossil","foster","found","fox","fragile","frame","frequent","fresh","friend","fringe","frog","front","frost","frown","frozen","fruit","fuel","fun","funny","furnace","fury","future","gadget","gain","galaxy","gallery","game","gap","garage","garbage","garden","garlic","garment","gas","gasp","gate","gather","gauge","gaze","general","genius","genre","gentle","genuine","gesture","ghost","giant","gift","giggle","ginger","giraffe","girl","give","glad","glance","glare","glass","glide","glimpse","globe","gloom","glory","glove","glow","glue","goat","goddess","gold","good","goose","gorilla","gospel","gossip","govern","gown","grab","grace","grain","grant","grape","grass","gravity","great","green","grid","grief","grit","grocery","group","grow","grunt","guard","guess","guide","guilt","guitar","gun","gym","habit","hair","half","hammer","hamster","hand","happy","harbor","hard","harsh","harvest","hat","have","hawk","hazard","head","health","heart","heavy","hedgehog","height","hello","helmet","help","hen","hero","hidden","high","hill","hint","hip","hire","history","hobby","hockey","hold","hole","holiday","hollow","home","honey","hood","hope","horn","horror","horse","hospital","host","hotel","hour","hover","hub","huge","human","humble","humor","hundred","hungry","hunt","hurdle","hurry","hurt","husband","hybrid","ice","icon","idea","identify","idle","ignore","ill","illegal","illness","image","imitate","immense","immune","impact","impose","improve","impulse","inch","include","income","increase","index","indicate","indoor","industry","infant","inflict","inform","inhale","inherit","initial","inject","injury","inmate","inner","innocent","input","inquiry","insane","insect","inside","inspire","install","intact","interest","into","invest","invite","involve","iron","island","isolate","issue","item","ivory","jacket","jaguar","jar","jazz","jealous","jeans","jelly","jewel","job","join","joke","journey","joy","judge","juice","jump","jungle","junior","junk","just","kangaroo","keen","keep","ketchup","key","kick","kid","kidney","kind","kingdom","kiss","kit","kitchen","kite","kitten","kiwi","knee","knife","knock","know","lab","label","labor","ladder","lady","lake","lamp","language","laptop","large","later","latin","laugh","laundry","lava","law","lawn","lawsuit","layer","lazy","leader","leaf","learn","leave","lecture","left","leg","legal","legend","leisure","lemon","lend","length","lens","leopard","lesson","letter","level","liar","liberty","library","license","life","lift","light","like","limb","limit","link","lion","liquid","list","little","live","lizard","load","loan","lobster","local","lock","logic","lonely","long","loop","lottery","loud","lounge","love","loyal","lucky","luggage","lumber","lunar","lunch","luxury","lyrics","machine","mad","magic","magnet","maid","mail","main","major","make","mammal","man","manage","mandate","mango","mansion","manual","maple","marble","march","margin","marine","market","marriage","mask","mass","master","match","material","math","matrix","matter","maximum","maze","meadow","mean","measure","meat","mechanic","medal","media","melody","melt","member","memory","mention","menu","mercy","merge","merit","merry","mesh","message","metal","method","middle","midnight","milk","million","mimic","mind","minimum","minor","minute","miracle","mirror","misery","miss","mistake","mix","mixed","mixture","mobile","model","modify","mom","moment","monitor","monkey","monster","month","moon","moral","more","morning","mosquito","mother","motion","motor","mountain","mouse","move","movie","much","muffin","mule","multiply","muscle","museum","mushroom","music","must","mutual","myself","mystery","myth","naive","name","napkin","narrow","nasty","nation","nature","near","neck","need","negative","neglect","neither","nephew","nerve","nest","net","network","neutral","never","news","next","nice","night","noble","noise","nominee","noodle","normal","north","nose","notable","note","nothing","notice","novel","now","nuclear","number","nurse","nut","oak","obey","object","oblige","obscure","observe","obtain","obvious","occur","ocean","october","odor","off","offer","office","often","oil","okay","old","olive","olympic","omit","once","one","onion","online","only","open","opera","opinion","oppose","option","orange","orbit","orchard","order","ordinary","organ","orient","original","orphan","ostrich","other","outdoor","outer","output","outside","oval","oven","over","own","owner","oxygen","oyster","ozone","pact","paddle","page","pair","palace","palm","panda","panel","panic","panther","paper","parade","parent","park","parrot","party","pass","patch","path","patient","patrol","pattern","pause","pave","payment","peace","peanut","pear","peasant","pelican","pen","penalty","pencil","people","pepper","perfect","permit","person","pet","phone","photo","phrase","physical","piano","picnic","picture","piece","pig","pigeon","pill","pilot","pink","pioneer","pipe","pistol","pitch","pizza","place","planet","plastic","plate","play","please","pledge","pluck","plug","plunge","poem","poet","point","polar","pole","police","pond","pony","pool","popular","portion","position","possible","post","potato","pottery","poverty","powder","power","practice","praise","predict","prefer","prepare","present","pretty","prevent","price","pride","primary","print","priority","prison","private","prize","problem","process","produce","profit","program","project","promote","proof","property","prosper","protect","proud","provide","public","pudding","pull","pulp","pulse","pumpkin","punch","pupil","puppy","purchase","purity","purpose","purse","push","put","puzzle","pyramid","quality","quantum","quarter","question","quick","quit","quiz","quote","rabbit","raccoon","race","rack","radar","radio","rail","rain","raise","rally","ramp","ranch","random","range","rapid","rare","rate","rather","raven","raw","razor","ready","real","reason","rebel","rebuild","recall","receive","recipe","record","recycle","reduce","reflect","reform","refuse","region","regret","regular","reject","relax","release","relief","rely","remain","remember","remind","remove","render","renew","rent","reopen","repair","repeat","replace","report","require","rescue","resemble","resist","resource","response","result","retire","retreat","return","reunion","reveal","review","reward","rhythm","rib","ribbon","rice","rich","ride","ridge","rifle","right","rigid","ring","riot","ripple","risk","ritual","rival","river","road","roast","robot","robust","rocket","romance","roof","rookie","room","rose","rotate","rough","round","route","royal","rubber","rude","rug","rule","run","runway","rural","sad","saddle","sadness","safe","sail","salad","salmon","salon","salt","salute","same","sample","sand","satisfy","satoshi","sauce","sausage","save","say","scale","scan","scare","scatter","scene","scheme","school","science","scissors","scorpion","scout","scrap","screen","script","scrub","sea","search","season","seat","second","secret","section","security","seed","seek","segment","select","sell","seminar","senior","sense","sentence","series","service","session","settle","setup","seven","shadow","shaft","shallow","share","shed","shell","sheriff","shield","shift","shine","ship","shiver","shock","shoe","shoot","shop","short","shoulder","shove","shrimp","shrug","shuffle","shy","sibling","sick","side","siege","sight","sign","silent","silk","silly","silver","similar","simple","since","sing","siren","sister","situate","six","size","skate","sketch","ski","skill","skin","skirt","skull","slab","slam","sleep","slender","slice","slide","slight","slim","slogan","slot","slow","slush","small","smart","smile","smoke","smooth","snack","snake","snap","sniff","snow","soap","soccer","social","sock","soda","soft","solar","soldier","solid","solution","solve","someone","song","soon","sorry","sort","soul","sound","soup","source","south","space","spare","spatial","spawn","speak","special","speed","spell","spend","sphere","spice","spider","spike","spin","spirit","split","spoil","sponsor","spoon","sport","spot","spray","spread","spring","spy","square","squeeze","squirrel","stable","stadium","staff","stage","stairs","stamp","stand","start","state","stay","steak","steel","stem","step","stereo","stick","still","sting","stock","stomach","stone","stool","story","stove","strategy","street","strike","strong","struggle","student","stuff","stumble","style","subject","submit","subway","success","such","sudden","suffer","sugar","suggest","suit","summer","sun","sunny","sunset","super","supply","supreme","sure","surface","surge","surprise","surround","survey","suspect","sustain","swallow","swamp","swap","swarm","swear","sweet","swift","swim","swing","switch","sword","symbol","symptom","syrup","system","table","tackle","tag","tail","talent","talk","tank","tape","target","task","taste","tattoo","taxi","teach","team","tell","ten","tenant","tennis","tent","term","test","text","thank","that","theme","then","theory","there","they","thing","this","thought","three","thrive","throw","thumb","thunder","ticket","tide","tiger","tilt","timber","time","tiny","tip","tired","tissue","title","toast","tobacco","today","toddler","toe","together","toilet","token","tomato","tomorrow","tone","tongue","tonight","tool","tooth","top","topic","topple","torch","tornado","tortoise","toss","total","tourist","toward","tower","town","toy","track","trade","traffic","tragic","train","transfer","trap","trash","travel","tray","treat","tree","trend","trial","tribe","trick","trigger","trim","trip","trophy","trouble","truck","true","truly","trumpet","trust","truth","try","tube","tuition","tumble","tuna","tunnel","turkey","turn","turtle","twelve","twenty","twice","twin","twist","two","type","typical","ugly","umbrella","unable","unaware","uncle","uncover","under","undo","unfair","unfold","unhappy","uniform","unique","unit","universe","unknown","unlock","until","unusual","unveil","update","upgrade","uphold","upon","upper","upset","urban","urge","usage","use","used","useful","useless","usual","utility","vacant","vacuum","vague","valid","valley","valve","van","vanish","vapor","various","vast","vault","vehicle","velvet","vendor","venture","venue","verb","verify","version","very","vessel","veteran","viable","vibrant","vicious","victory","video","view","village","vintage","violin","virtual","virus","visa","visit","visual","vital","vivid","vocal","voice","void","volcano","volume","vote","voyage","wage","wagon","wait","walk","wall","walnut","want","warfare","warm","warrior","wash","wasp","waste","water","wave","way","wealth","weapon","wear","weasel","weather","web","wedding","weekend","weird","welcome","west","wet","whale","what","wheat","wheel","when","where","whip","whisper","wide","width","wife","wild","will","win","window","wine","wing","wink","winner","winter","wire","wisdom","wise","wish","witness","wolf","woman","wonder","wood","wool","word","work","world","worry","worth","wrap","wreck","wrestle","wrist","write","wrong","yard","year","yellow","you","young","youth","zebra","zero","zone","zoo"];s()}catch(_){s(_)}}))},398:(e,t,r)=>{r.d(t,{t:()=>a});let s=[0,7,14,9,28,27,18,21,56,63,54,49,36,35,42,45,112,119,126,121,108,107,98,101,72,79,70,65,84,83,90,93,224,231,238,233,252,251,242,245,216,223,214,209,196,195,202,205,144,151,158,153,140,139,130,133,168,175,166,161,180,179,186,189,199,192,201,206,219,220,213,210,255,248,241,246,227,228,237,234,183,176,185,190,171,172,165,162,143,136,129,134,147,148,157,154,39,32,41,46,59,60,53,50,31,24,17,22,3,4,13,10,87,80,89,94,75,76,69,66,111,104,97,102,115,116,125,122,137,142,135,128,149,146,155,156,177,182,191,184,173,170,163,164,249,254,247,240,229,226,235,236,193,198,207,200,221,218,211,212,105,110,103,96,117,114,123,124,81,86,95,88,77,74,67,68,25,30,23,16,5,2,11,12,33,38,47,40,61,58,51,52,78,73,64,71,82,85,92,91,118,113,120,127,106,109,100,99,62,57,48,55,34,37,44,43,6,1,8,15,26,29,20,19,174,169,160,167,178,181,188,187,150,145,152,159,138,141,132,131,222,217,208,215,194,197,204,203,230,225,232,239,250,253,244,243];function a(e,t=0){let r=~~t;for(let t=0;t<e.length;t++)r=255&s[255&(r^e[t])];return r}"undefined"!=typeof Int32Array&&(s=new Int32Array(s))},771:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{_:()=>o,r:()=>i});var a=r(380),n=e([a]);function i(e,t,r){const s=a.M.HeaderMap.new();s.set_algorithm_id(a.M.Label.from_algorithm_id(a.M.AlgorithmId.EdDSA)),s.set_header(a.M.Label.new_text("address"),a.M.CBORValue.new_bytes((0,a.H_)(e)));const n=a.M.ProtectedHeaderMap.new(s),i=a.M.HeaderMap.new(),o=a.M.Headers.new(n,i),u=a.M.COSESign1Builder.new(o,(0,a.H_)(t),!1),c=u.make_data_to_sign().to_bytes(),l=a.C.PrivateKey.from_bech32(r),d=l.sign(c).to_bytes(),h=u.build(d),m=a.M.COSEKey.new(a.M.Label.from_key_type(a.M.KeyType.OKP));return m.set_algorithm_id(a.M.Label.from_algorithm_id(a.M.AlgorithmId.EdDSA)),m.set_header(a.M.Label.new_int(a.M.Int.new_negative(a.M.BigNum.from_str("1"))),a.M.CBORValue.new_int(a.M.Int.new_i32(6))),m.set_header(a.M.Label.new_int(a.M.Int.new_negative(a.M.BigNum.from_str("2"))),a.M.CBORValue.new_bytes(l.to_public().as_bytes())),{signature:(0,a.NC)(h.to_bytes()),key:(0,a.NC)(m.to_bytes())}}function o(e,t,r,s){const n=a.M.COSESign1.from_bytes((0,a.H_)(s.signature)),i=a.M.COSEKey.from_bytes((0,a.H_)(s.key)),o=n.headers().protected().deserialized_headers(),u=(()=>{try{return(0,a.NC)(o.header(a.M.Label.new_text("address"))?.as_bytes())}catch(e){throw new Error("No address found in signature.")}})(),c=(()=>{try{const e=o.algorithm_id()?.as_int();return e?.is_positive()?parseInt(e.as_positive()?.to_str()):parseInt(e?.as_negative()?.to_str())}catch(e){throw new Error("Failed to retrieve Algorithm Id.")}})(),l=(()=>{try{const e=i.algorithm_id()?.as_int();return e?.is_positive()?parseInt(e.as_positive()?.to_str()):parseInt(e?.as_negative()?.to_str())}catch(e){throw new Error("Failed to retrieve Algorithm Id.")}})(),d=(()=>{try{const e=i.header(a.M.Label.new_int(a.M.Int.new_negative(a.M.BigNum.from_str("1"))))?.as_int();return e?.is_positive()?parseInt(e.as_positive()?.to_str()):parseInt(e?.as_negative()?.to_str())}catch(e){throw new Error("Failed to retrieve Curve.")}})(),h=(()=>{try{const e=i.key_type().as_int();return e?.is_positive()?parseInt(e.as_positive()?.to_str()):parseInt(e?.as_negative()?.to_str())}catch(e){throw new Error("Failed to retrieve Key Type.")}})(),m=(()=>{try{return a.C.PublicKey.from_bytes(i.header(a.M.Label.new_int(a.M.Int.new_negative(a.M.BigNum.from_str("2"))))?.as_bytes())}catch(e){throw new Error("No public key found.")}})(),p=(()=>{try{return(0,a.NC)(n.payload())}catch(e){throw new Error("No payload found.")}})(),g=a.C.Ed25519Signature.from_bytes(n.signature()),y=n.signed_data(void 0,void 0).to_bytes();return u===e&&t===m.hash().to_hex()&&(c===l||c===a.M.AlgorithmId.EdDSA)&&6===d&&1===h&&p===r&&m.verify(y,g)}a=(n.then?(await n)():n)[0],s()}catch(u){s(u)}}))},145:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{W:()=>u,n:()=>o});var a=r(380),n=r(774),i=e([a,n]);function o(e,t={addressType:"Base",accountIndex:0,network:"Mainnet"}){function r(e){if("number"!=typeof e)throw new Error("Type number required here!");return 2147483648+e}const s=(0,n.o)(e),i=a.C.Bip32PrivateKey.from_bip39_entropy((0,a.H_)(s),t.password?(new TextEncoder).encode(t.password):new Uint8Array).derive(r(1852)).derive(r(1815)).derive(r(t.accountIndex)),o=i.derive(0).derive(0).to_raw_key(),u=i.derive(2).derive(0).to_raw_key(),c=o.to_public().hash(),l=u.to_public().hash(),d="Mainnet"===t.network?1:0;return{address:"Base"===t.addressType?a.C.BaseAddress.new(d,a.C.StakeCredential.from_keyhash(c),a.C.StakeCredential.from_keyhash(l)).to_address().to_bech32(void 0):a.C.EnterpriseAddress.new(d,a.C.StakeCredential.from_keyhash(c)).to_address().to_bech32(void 0),rewardAddress:"Base"===t.addressType?a.C.RewardAddress.new(d,a.C.StakeCredential.from_keyhash(l)).to_address().to_bech32(void 0):null,paymentKey:o.to_bech32(),stakeKey:"Base"===t.addressType?u.to_bech32():null}}function u(e,t,r){const s=[],n=e.body().inputs();for(let e=0;e<n.len();e++){const t=n.get(e),i=(0,a.NC)(t.transaction_id().to_bytes()),o=parseInt(t.index().to_str()),u=r.find((e=>e.txHash===i&&e.outputIndex===o));if(u){const{paymentCredential:e}=(0,a.IL)(u.address);s.push(e?.hash)}}const i=e.body();i.certs()&&function(e){const t=e.certs();if(t)for(let e=0;e<t.len();e++){const r=t.get(e);if(0===r.kind()){const e=r.as_stake_registration()?.stake_credential();e?.kind()}else if(1===r.kind()){const e=r.as_stake_deregistration()?.stake_credential();if(0===e?.kind()){const t=(0,a.NC)(e.to_keyhash().to_bytes());s.push(t)}}else if(2===r.kind()){const e=r.as_stake_delegation()?.stake_credential();if(0===e?.kind()){const t=(0,a.NC)(e.to_keyhash().to_bytes());s.push(t)}}else if(3===r.kind()){const e=r.as_pool_registration()?.pool_params(),t=e?.pool_owners();if(!t)break;for(let e=0;e<t.len();e++){const r=(0,a.NC)(t.get(e).to_bytes());s.push(r)}const n=e.operator().to_hex();s.push(n)}else if(4===r.kind()){const e=r.as_pool_retirement().pool_keyhash().to_hex();s.push(e)}else if(6===r.kind()){const e=r.as_move_instantaneous_rewards_cert()?.move_instantaneous_reward().as_to_stake_creds()?.keys();if(!e)break;for(let t=0;t<e.len();t++){const r=e.get(t);if(0===r.kind()){const e=(0,a.NC)(r.to_keyhash().to_bytes());s.push(e)}}}}}(i);const o=i.withdrawals();o&&function(e){const t=e.keys();for(let e=0;e<t.len();e++){const r=t.get(e).payment_cred();0===r.kind()&&s.push(r.to_keyhash().to_hex())}}(o);const u=e.witness_set().native_scripts();u&&function e(t){for(let r=0;r<t.len();r++){const n=t.get(r);if(0===n.kind()){const e=(0,a.NC)(n.as_script_pubkey().addr_keyhash().to_bytes());s.push(e)}if(1===n.kind())return void e(n.as_script_all().native_scripts());if(2===n.kind())return void e(n.as_script_any().native_scripts());if(3===n.kind())return void e(n.as_script_n_of_k().native_scripts())}}(u);const c=i.required_signers();if(c)for(let e=0;e<c.len();e++)s.push((0,a.NC)(c.get(e).to_bytes()));const l=i.collateral();if(l)for(let e=0;e<l.len();e++){const t=l.get(e),n=(0,a.NC)(t.transaction_id().to_bytes()),i=parseInt(t.index().to_str()),o=r.find((e=>e.txHash===n&&e.outputIndex===i));if(o){const{paymentCredential:e}=(0,a.IL)(o.address);s.push(e?.hash)}}return s.filter((e=>t.includes(e)))}[a,n]=i.then?(await i)():i,s()}catch(c){s(c)}}))},380:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{C:()=>a.C,H_:()=>o.H_,IL:()=>o.IL,M:()=>a.M,NC:()=>o.NC,Oo:()=>i.Oo,_k:()=>n._k});var a=r(609),n=r(669),i=r(347),o=r(483),u=r(766),c=e([a,n,i,o,u]);[a,n,i,o,u]=c.then?(await c)():c,s()}catch(e){s(e)}}))},611:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{V:()=>c});var a=r(384),n=r(609),i=r(65),o=e([n,i]);[n,i]=o.then?(await o)():o;class u{constructor(e,t){Object.defineProperty(this,"index",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"fields",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),this.index=e,this.fields=t}}const c={Integer:function(e){const t=a.Dy.Unsafe({dataType:"integer"});return e&&Object.entries(e).forEach((([e,r])=>{t[e]=r})),t},Bytes:function(e){const t=a.Dy.Unsafe({dataType:"bytes"});return e&&Object.entries(e).forEach((([e,r])=>{t[e]=r})),t},Boolean:function(){return a.Dy.Unsafe({anyOf:[{title:"False",dataType:"constructor",index:0,fields:[]},{title:"True",dataType:"constructor",index:1,fields:[]}]})},Any:function(){return a.Dy.Unsafe({description:"Any Data."})},Array:function(e,t){const r=a.Dy.Array(e);return v(r,{dataType:"list",items:e}),t&&Object.entries(t).forEach((([e,t])=>{r[e]=t})),r},Map:function(e,t,r){const s=a.Dy.Unsafe({dataType:"map",keys:e,values:t});return r&&Object.entries(r).forEach((([e,t])=>{s[e]=t})),s},Object:function(e,t){const r=a.Dy.Object(e);return v(r,{anyOf:[{dataType:"constructor",index:0,fields:Object.entries(e).map((([e,t])=>({...t,title:e})))}]}),r.anyOf[0].hasConstr=void 0===t?.hasConstr||t.hasConstr,r},Enum:function(e){const t=a.Dy.Union(e);return v(t,{anyOf:e.map(((e,t)=>0===e.anyOf[0].fields.length?{...e.anyOf[0],index:t}:{dataType:"constructor",title:(()=>{const t=e.anyOf[0].fields[0].title;if(t.charAt(0)!==t.charAt(0).toUpperCase())throw new Error(`Enum '${t}' needs to start with an uppercase letter.`);return e.anyOf[0].fields[0].title})(),index:t,fields:e.anyOf[0].fields[0].items}))}),t},Tuple:function(e,t){const r=a.Dy.Tuple(e);return v(r,{dataType:"list",items:e}),t&&Object.entries(t).forEach((([e,t])=>{r[e]=t})),r},Literal:function(e){if(e.charAt(0)!==e.charAt(0).toUpperCase())throw new Error(`Enum '${e}' needs to start with an uppercase letter.`);const t=a.Dy.Literal(e);return v(t,{anyOf:[{dataType:"constructor",title:e,index:0,fields:[]}]}),t},Nullable:function(e){return a.Dy.Unsafe({anyOf:[{title:"Some",description:"An optional value.",dataType:"constructor",index:0,fields:[e]},{title:"None",description:"Nothing.",dataType:"constructor",index:1,fields:[]}]})},to:l,from:d,fromJson:h,toJson:m,void:function(){return"d87980"},castFrom:p,castTo:g};function l(e,t){const r=t?g(e,t):e;return(0,i.NC)(function e(t){try{if("bigint"==typeof t)return n.C.PlutusData.new_integer(n.C.BigInt.from_str(t.toString()));if("string"==typeof t)return n.C.PlutusData.new_bytes((0,i.H_)(t));if(t instanceof u){const{index:r,fields:s}=t,a=n.C.PlutusList.new();return s.forEach((t=>a.add(e(t)))),n.C.PlutusData.new_constr_plutus_data(n.C.ConstrPlutusData.new(n.C.BigNum.from_str(r.toString()),a))}if(t instanceof Array){const r=n.C.PlutusList.new();return t.forEach((t=>r.add(e(t)))),n.C.PlutusData.new_list(r)}if(t instanceof Map){const r=n.C.PlutusMap.new();for(const[s,a]of t.entries())r.insert(e(s),e(a));return n.C.PlutusData.new_map(r)}throw new Error("Unsupported type")}catch(e){throw new Error("Could not serialize the data: "+e)}}(r).to_bytes())}function d(e,t){const r=function e(t){if(0===t.kind()){const r=t.as_constr_plutus_data(),s=r.data(),a=[];for(let t=0;t<s.len();t++)a.push(e(s.get(t)));return new u(parseInt(r.alternative().to_str()),a)}if(1===t.kind()){const r=t.as_map(),s=new Map,a=r.keys();for(let t=0;t<a.len();t++)s.set(e(a.get(t)),e(r.get(a.get(t))));return s}if(2===t.kind()){const r=t.as_list(),s=[];for(let t=0;t<r.len();t++)s.push(e(r.get(t)));return s}if(3===t.kind())return BigInt(t.as_integer().to_str());if(4===t.kind())return(0,i.NC)(t.as_bytes());throw new Error("Unsupported type")}(n.C.PlutusData.from_bytes((0,i.H_)(e)));return t?p(r,t):r}function h(e){return function e(t){if("string"==typeof t)return t.startsWith("0x")?(0,i.NC)((0,i.H_)(t.slice(2))):(0,i.t1)(t);if("number"==typeof t)return BigInt(t);if("bigint"==typeof t)return t;if(t instanceof Array)return t.map((t=>e(t)));if(t instanceof Object){const r=new Map;return Object.entries(t).forEach((([t,s])=>{r.set(e(t),e(s))})),r}throw new Error("Unsupported type")}(e)}function m(e){return function e(t){if("bigint"==typeof t||"number"==typeof t||"string"==typeof t&&!isNaN(parseInt(t))&&"n"===t.slice(-1)){const e="string"==typeof t?BigInt(t.slice(0,-1)):t;return parseInt(e.toString())}if("string"==typeof t)try{return new TextDecoder(void 0,{fatal:!0}).decode((0,i.H_)(t))}catch(e){return"0x"+(0,i.NC)((0,i.H_)(t))}if(t instanceof Array)return t.map((t=>e(t)));if(t instanceof Map){const r={};return t.forEach(((t,s)=>{const a=e(s);if("string"!=typeof a&&"number"!=typeof a)throw new Error("Unsupported type (Note: Only bytes or integers can be keys of a JSON object)");r[a]=e(t)})),r}throw new Error("Unsupported type (Note: Constructor cannot be converted to JSON)")}(e)}function p(e,t){if(!t)throw new Error("Could not type cast data.");switch((t.anyOf?"enum":"")||t.dataType){case"integer":if("bigint"!=typeof e)throw new Error("Could not type cast to integer.");return y(e,t),e;case"bytes":if("string"!=typeof e)throw new Error("Could not type cast to bytes.");return f(e,t),e;case"constructor":if(e instanceof u&&e.index===t.index&&(t.hasConstr||void 0===t.hasConstr)){const r={};if(t.fields.length!==e.fields.length)throw new Error("Could not ype cast to object. Fields do not match.");return t.fields.forEach(((t,s)=>{if(/[A-Z]/.test(t.title[0]))throw new Error("Could not type cast to object. Object properties need to start with a lowercase letter.");r[t.title]=p(e.fields[s],t)})),r}if(e instanceof Array&&!t.hasConstr&&void 0!==t.hasConstr){const r={};if(t.fields.length!==e.length)throw new Error("Could not ype cast to object. Fields do not match.");return t.fields.forEach(((t,s)=>{if(/[A-Z]/.test(t.title[0]))throw new Error("Could not type cast to object. Object properties need to start with a lowercase letter.");r[t.title]=p(e[s],t)})),r}throw new Error("Could not type cast to object.");case"enum":{if(1===t.anyOf.length)return p(e,t.anyOf[0]);if(!(e instanceof u))throw new Error("Could not type cast to enum.");const r=t.anyOf.find((t=>t.index===e.index));if(!r||r.fields.length!==e.fields.length)throw new Error("Could not type cast to enum.");if(_(t)){if(0!==e.fields.length)throw new Error("Could not type cast to boolean.");switch(e.index){case 0:return!1;case 1:return!0}throw new Error("Could not type cast to boolean.")}if(C(t)){switch(e.index){case 0:if(1!==e.fields.length)throw new Error("Could not type cast to nullable object.");return p(e.fields[0],t.anyOf[0].fields[0]);case 1:if(0!==e.fields.length)throw new Error("Could not type cast to nullable object.");return null}throw new Error("Could not type cast to nullable object.")}if("constructor"===r.dataType){if(0===r.fields.length){if(/[A-Z]/.test(r.title[0]))return r.title;throw new Error("Could not type cast to enum.")}if(!/[A-Z]/.test(r.title))throw new Error("Could not type cast to enum. Enums need to start with an uppercase letter.");if(r.fields.length!==e.fields.length)throw new Error("Could not type cast to enum.");return{[r.title]:r.fields.map(((t,r)=>p(e.fields[r],t)))}}throw new Error("Could not type cast to enum.")}case"list":if(t.items instanceof Array){if(e instanceof u&&0===e.index&&t.hasConstr)return e.fields.map(((e,r)=>p(e,t.items[r])));if(e instanceof Array&&!t.hasConstr)return e.map(((e,r)=>p(e,t.items[r])));throw new Error("Could not type cast to tuple.")}if(!(e instanceof Array))throw new Error("Could not type cast to array.");return w(e,t),e.map((e=>p(e,t.items)));case"map":{if(!(e instanceof Map))throw new Error("Could not type cast to map.");b(e,t);const r=new Map;for(const[s,a]of e.entries())r.set(p(s,t.keys),p(a,t.values));return r}case void 0:return e}throw new Error("Could not type cast data.")}function g(e,t){if(!t)throw new Error("Could not type cast struct.");switch((t.anyOf?"enum":"")||t.dataType){case"integer":if("bigint"!=typeof e)throw new Error("Could not type cast to integer.");return y(e,t),e;case"bytes":if("string"!=typeof e)throw new Error("Could not type cast to bytes.");return f(e,t),e;case"constructor":{if("object"!=typeof e||null===e)throw new Error("Could not type cast to constructor.");const r=t.fields.map((t=>g(e[t.title],t)));return t.hasConstr||void 0===t.hasConstr?new u(t.index,r):r}case"enum":if(1===t.anyOf.length)return g(e,t.anyOf[0]);if(_(t)){if("boolean"!=typeof e)throw new Error("Could not type cast to boolean.");return new u(e?1:0,[])}if(C(t)){if(null===e)return new u(1,[]);{const r=t.anyOf[0].fields;if(1!==r.length)throw new Error("Could not type cast to nullable object.");return new u(0,[g(e,r[0])])}}switch(typeof e){case"string":{if(!/[A-Z]/.test(e[0]))throw new Error("Could not type cast to enum. Enum needs to start with an uppercase letter.");const r=t.anyOf.findIndex((t=>"constructor"===t.dataType&&0===t.fields.length&&t.title===e));if(-1===r)throw new Error("Could not type cast to enum.");return new u(r,[])}case"object":{if(null===e)throw new Error("Could not type cast to enum.");const r=Object.keys(e)[0];if(!/[A-Z]/.test(r))throw new Error("Could not type cast to enum. Enum needs to start with an uppercase letter.");const s=t.anyOf.find((e=>"constructor"===e.dataType&&e.title===r));if(!s)throw new Error("Could not type cast to enum.");return new u(s.index,e[r].map(((e,t)=>g(e,s.fields[t]))))}}throw new Error("Could not type cast to enum.");case"list":if(!(e instanceof Array))throw new Error("Could not type cast to array/tuple.");if(t.items instanceof Array){const r=e.map(((e,r)=>g(e,t.items[r])));return t.hasConstr?new u(0,r):r}return w(e,t),e.map((e=>g(e,t.items)));case"map":{if(!(e instanceof Map))throw new Error("Could not type cast to map.");b(e,t);const r=new Map;for(const[s,a]of e.entries())r.set(g(s,t.keys),g(a,t.values));return r}case void 0:return e}throw new Error("Could not type cast struct.")}function y(e,t){if(t.minimum&&e<BigInt(t.minimum))throw new Error(`Integer ${e} is below the minimum ${t.minimum}.`);if(t.maximum&&e>BigInt(t.maximum))throw new Error(`Integer ${e} is above the maxiumum ${t.maximum}.`);if(t.exclusiveMinimum&&e<=BigInt(t.exclusiveMinimum))throw new Error(`Integer ${e} is below the exclusive minimum ${t.exclusiveMinimum}.`);if(t.exclusiveMaximum&&e>=BigInt(t.exclusiveMaximum))throw new Error(`Integer ${e} is above the exclusive maximum ${t.exclusiveMaximum}.`)}function f(e,t){if(t.enum&&!t.enum.some((t=>t===e)))throw new Error(`None of the keywords match with '${e}'.`);if(t.minLength&&e.length/2<t.minLength)throw new Error(`Bytes need to have a length of at least ${t.minLength} bytes.`);if(t.maxLength&&e.length/2>t.maxLength)throw new Error(`Bytes can have a length of at most ${t.minLength} bytes.`)}function w(e,t){if(t.minItems&&e.length<t.minItems)throw new Error(`Array needs to contain at least ${t.minItems} items.`);if(t.maxItems&&e.length>t.maxItems)throw new Error(`Array can contain at most ${t.maxItems} items.`);if(t.uniqueItems&&new Set(e).size!==e.length)throw new Error("Array constains duplicates.")}function b(e,t){if(t.minItems&&e.size<t.minItems)throw new Error(`Map needs to contain at least ${t.minItems} items.`);if(t.maxItems&&e.size>t.maxItems)throw new Error(`Map can contain at most ${t.maxItems} items.`)}function _(e){return e.anyOf&&"False"===e.anyOf[0]?.title&&"True"===e.anyOf[1]?.title}function C(e){return e.anyOf&&"Some"===e.anyOf[0]?.title&&"None"===e.anyOf[1]?.title}function v(e,t){Object.keys(e).forEach((t=>{delete e[t]})),Object.assign(e,t)}s()}catch(k){s(k)}}))},766:(e,t,r)=>{r.a(e,(async(e,t)=>{try{var s=r(611),a=(r(271),e([s]));s=(a.then?(await a)():a)[0],t()}catch(e){t(e)}}))},271:(e,t,r)=>{r.d(t,{BV:()=>s,WN:()=>n,cM:()=>a});const s={Mainnet:{zeroTime:1596059091e3,zeroSlot:4492800,slotLength:1e3},Preview:{zeroTime:1666656e6,zeroSlot:0,slotLength:1e3},Preprod:{zeroTime:16557696e5,zeroSlot:86400,slotLength:1e3},Custom:{zeroTime:0,zeroSlot:0,slotLength:0}};function a(e,t){const r=(e-t.zeroSlot)*t.slotLength;return t.zeroTime+r}function n(e,t){const r=e-t.zeroTime;return Math.floor(r/t.slotLength)+t.zeroSlot}},307:(e,t,r)=>{r.a(e,(async(e,t)=>{try{var s=r(609),a=r(483),n=r(110),i=e([s,a]);[s,a]=i.then?(await i)():i,n.Z.version,t()}catch(e){t(e)}}))},802:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{G:()=>u});var a=r(812),n=r(483),i=r(65),o=e([a,n,i]);[a,n,i]=o.then?(await o)():o;class u{constructor(e,t=n.DV){Object.defineProperty(this,"ledger",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"mempool",{enumerable:!0,configurable:!0,writable:!0,value:{}}),Object.defineProperty(this,"chain",{enumerable:!0,configurable:!0,writable:!0,value:{}}),Object.defineProperty(this,"blockHeight",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"slot",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"time",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"protocolParameters",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"datumTable",{enumerable:!0,configurable:!0,writable:!0,value:{}});const r="00".repeat(32);this.blockHeight=0,this.slot=0,this.time=Date.now(),this.ledger={},e.forEach((({address:e,assets:t},s)=>{this.ledger[r+s]={utxo:{txHash:r,outputIndex:s,address:e,assets:t},spent:!1}})),this.protocolParameters=t}now(){return this.time}awaitSlot(e=1){this.slot+=e,this.time+=1e3*e;const t=this.blockHeight;if(this.blockHeight=Math.floor(this.slot/20),this.blockHeight>t){for(const[e,{utxo:t,spent:r}]of Object.entries(this.mempool))this.ledger[e]={utxo:t,spent:r};for(const[e,{spent:t}]of Object.entries(this.ledger))t&&delete this.ledger[e];this.mempool={}}}awaitBlock(e=1){this.blockHeight+=e,this.slot+=20*e,this.time+=20*e*1e3;for(const[e,{utxo:t,spent:r}]of Object.entries(this.mempool))this.ledger[e]={utxo:t,spent:r};for(const[e,{spent:t}]of Object.entries(this.ledger))t&&delete this.ledger[e];this.mempool={}}getUtxos(e){const t=Object.values(this.ledger).flatMap((({utxo:t})=>{if("string"==typeof e)return e===t.address?t:[];{const{paymentCredential:r}=(0,i.IL)(t.address);return r?.hash===e.hash?t:[]}}));return Promise.resolve(t)}getProtocolParameters(){return Promise.resolve(this.protocolParameters)}getDatum(e){return Promise.resolve(this.datumTable[e])}getUtxosWithUnit(e,t){const r=Object.values(this.ledger).flatMap((({utxo:r})=>{if("string"==typeof e)return e===r.address&&r.assets[t]>0n?r:[];{const{paymentCredential:s}=(0,i.IL)(r.address);return s?.hash===e.hash&&r.assets[t]>0n?r:[]}}));return Promise.resolve(r)}getUtxosByOutRef(e){return Promise.resolve(e.flatMap((e=>this.ledger[e.txHash+e.outputIndex]?.utxo||[])))}getUtxoByUnit(e){const t=Object.values(this.ledger).flatMap((({utxo:t})=>t.assets[e]>0n?t:[]));if(t.length>1)throw new Error("Unit needs to be an NFT or only held by one address.");return Promise.resolve(t[0])}getDelegation(e){return Promise.resolve({poolId:this.chain[e]?.delegation?.poolId||null,rewards:this.chain[e]?.delegation?.rewards||0n})}awaitTx(e){return this.mempool[e+0]?(this.awaitBlock(),Promise.resolve(!0)):Promise.resolve(!0)}distributeRewards(e){for(const[t,{registeredStake:r,delegation:s}]of Object.entries(this.chain))r&&s.poolId&&(this.chain[t]={registeredStake:r,delegation:{poolId:s.poolId,rewards:s.rewards+=e}});this.awaitBlock()}submitTx(e){const t=a.C.Transaction.from_bytes((0,i.H_)(e)),r=t.body(),s=t.witness_set(),n=s.plutus_data(),o=a.C.hash_transaction(r).to_hex(),u=r.validity_start_interval()?parseInt(r.validity_start_interval().to_str()):null,c=r.ttl()?parseInt(r.ttl().to_str()):null;if(Number.isInteger(u)&&this.slot<u)throw new Error(`Lower bound (${u}) not in slot range (${this.slot}).`);if(Number.isInteger(c)&&this.slot>c)throw new Error(`Upper bound (${c}) not in slot range (${this.slot}).`);const l=(()=>{const e={};for(let t=0;t<(n?.len()||0);t++){const r=n.get(t);e[a.C.hash_plutus_data(r).to_hex()]=(0,i.NC)(r.to_bytes())}return e})(),d=new Set,h=(()=>{const e=[];for(let t=0;t<(s.vkeys()?.len()||0);t++){const r=s.vkeys().get(t),a=r.vkey().public_key(),n=a.hash().to_hex();if(!a.verify((0,i.H_)(o),r.signature()))throw new Error(`Invalid vkey witness. Key hash: ${n}`);e.push(n)}return e})(),m=a.C.Ed25519KeyHashes.new();h.forEach((e=>m.add(a.C.Ed25519KeyHash.from_hex(e))));const p=(()=>{const e=[];for(let t=0;t<(s.native_scripts()?.len()||0);t++){const r=s.native_scripts().get(t),n=r.hash(a.C.ScriptHashNamespace.NativeScript).to_hex();if(!r.verify(Number.isInteger(u)?a.C.BigNum.from_str(u.toString()):void 0,Number.isInteger(c)?a.C.BigNum.from_str(c.toString()):void 0,m))throw new Error(`Invalid native script witness. Script hash: ${n}`);for(let e=0;e<r.get_required_signers().len();e++){const t=r.get_required_signers().get(e).to_hex();d.add(t)}e.push(n)}return e})(),g={},y=[],f=(()=>{const e=[];for(let t=0;t<(s.plutus_scripts()?.len()||0);t++){const r=s.plutus_scripts().get(t).hash(a.C.ScriptHashNamespace.PlutusV1).to_hex();e.push(r)}for(let t=0;t<(s.plutus_v2_scripts()?.len()||0);t++){const r=s.plutus_v2_scripts().get(t).hash(a.C.ScriptHashNamespace.PlutusV2).to_hex();e.push(r)}return e})(),w=r.inputs();w.sort();const b=[];for(let e=0;e<w.len();e++){const t=w.get(e),r=t.transaction_id().to_hex()+t.index().to_str(),s=this.ledger[r],{entry:n,type:o}=s?{entry:s,type:"Ledger"}:{entry:this.mempool[r],type:"Mempool"};if(!n||n.spent)throw new Error(`Could not spend UTxO: ${JSON.stringify({txHash:n?.utxo.txHash,outputIndex:n?.utxo.outputIndex})}\nIt does not exist or was already spent.`);const u=n.utxo.scriptRef;if(u)switch(u.type){case"Native":{const e=a.C.NativeScript.from_bytes((0,i.H_)(u.script));g[e.hash(a.C.ScriptHashNamespace.NativeScript).to_hex()]=e;break}case"PlutusV1":{const e=a.C.PlutusScript.from_bytes((0,i.H_)(u.script));y.push(e.hash(a.C.ScriptHashNamespace.PlutusV1).to_hex());break}case"PlutusV2":{const e=a.C.PlutusScript.from_bytes((0,i.H_)(u.script));y.push(e.hash(a.C.ScriptHashNamespace.PlutusV2).to_hex());break}}n.utxo.datumHash&&d.add(n.utxo.datumHash),b.push({entry:n,type:o})}for(let e=0;e<(r.reference_inputs()?.len()||0);e++){const t=r.reference_inputs().get(e),s=t.transaction_id().to_hex()+t.index().to_str(),n=this.ledger[s]||this.mempool[s];if(!n||n.spent)throw new Error(`Could not read UTxO: ${JSON.stringify({txHash:n?.utxo.txHash,outputIndex:n?.utxo.outputIndex})}\nIt does not exist or was already spent.`);const o=n.utxo.scriptRef;if(o)switch(o.type){case"Native":{const e=a.C.NativeScript.from_bytes((0,i.H_)(o.script));g[e.hash(a.C.ScriptHashNamespace.NativeScript).to_hex()]=e;break}case"PlutusV1":{const e=a.C.PlutusScript.from_bytes((0,i.H_)(o.script));y.push(e.hash(a.C.ScriptHashNamespace.PlutusV1).to_hex());break}case"PlutusV2":{const e=a.C.PlutusScript.from_bytes((0,i.H_)(o.script));y.push(e.hash(a.C.ScriptHashNamespace.PlutusV2).to_hex());break}}n.utxo.datumHash&&d.add(n.utxo.datumHash)}const _=(()=>{const e={0:"Spend",1:"Mint",2:"Cert",3:"Reward"},t=[];for(let r=0;r<(s.redeemers()?.len()||0);r++){const a=s.redeemers().get(r);t.push({tag:e[a.tag().kind()],index:parseInt(a.index().to_str())})}return t})();function C(e,t,r){switch(e.type){case"Key":if(!h.includes(e.hash))throw new Error(`Missing vkey witness. Key hash: ${e.hash}`);d.add(e.hash);break;case"Script":if(p.includes(e.hash)){d.add(e.hash);break}if(g[e.hash]){if(!g[e.hash].verify(Number.isInteger(u)?a.C.BigNum.from_str(u.toString()):void 0,Number.isInteger(c)?a.C.BigNum.from_str(c.toString()):void 0,m))throw new Error(`Invalid native script witness. Script hash: ${e.hash}`);break}if((f.includes(e.hash)||y.includes(e.hash))&&_.find((e=>e.tag===t&&e.index===r))){d.add(e.hash);break}throw new Error(`Missing script witness. Script hash: ${e.hash}`)}}for(let e=0;e<(r.collateral()?.len()||0);e++){const t=r.collateral().get(e),s=t.transaction_id().to_hex()+t.index().to_str(),a=this.ledger[s]||this.mempool[s];if(!a||a.spent)throw new Error(`Could not read UTxO: ${JSON.stringify({txHash:a?.utxo.txHash,outputIndex:a?.utxo.outputIndex})}\nIt does not exist or was already spent.`);const{paymentCredential:n}=(0,i.IL)(a.utxo.address);if("Script"===n?.type)throw new Error("Collateral inputs can only contain vkeys.");C(n,null,null)}for(let e=0;e<(r.required_signers()?.len()||0);e++)C({type:"Key",hash:r.required_signers().get(e).to_hex()},null,null);for(let e=0;e<(r.mint()?.keys().len()||0);e++)C({type:"Script",hash:r.mint().keys().get(e).to_hex()},"Mint",e);const v=[];for(let e=0;e<(r.withdrawals()?.keys().len()||0);e++){const t=r.withdrawals().keys().get(e),s=BigInt(r.withdrawals().get(t).to_str()),a=t.to_address().to_bech32(void 0),{stakeCredential:n}=(0,i.IL)(a);if(C(n,"Reward",e),this.chain[a]?.delegation.rewards!==s)throw new Error("Withdrawal amount doesn't match actual reward balance.");v.push({rewardAddress:a,withdrawal:s})}const k=[];for(let e=0;e<(r.certs()?.len()||0);e++){const t=r.certs().get(e);switch(t.kind()){case 0:{const e=t.as_stake_registration(),r=a.C.RewardAddress.new(a.C.NetworkInfo.testnet().network_id(),e.stake_credential()).to_address().to_bech32(void 0);if(this.chain[r]?.registeredStake)throw new Error(`Stake key is already registered. Reward address: ${r}`);k.push({type:"Registration",rewardAddress:r});break}case 1:{const r=t.as_stake_deregistration(),s=a.C.RewardAddress.new(a.C.NetworkInfo.testnet().network_id(),r.stake_credential()).to_address().to_bech32(void 0),{stakeCredential:n}=(0,i.IL)(s);if(C(n,"Cert",e),!this.chain[s]?.registeredStake)throw new Error(`Stake key is already deregistered. Reward address: ${s}`);k.push({type:"Deregistration",rewardAddress:s});break}case 2:{const r=t.as_stake_delegation(),s=a.C.RewardAddress.new(a.C.NetworkInfo.testnet().network_id(),r.stake_credential()).to_address().to_bech32(void 0),n=r.pool_keyhash().to_bech32("pool"),{stakeCredential:o}=(0,i.IL)(s);if(C(o,"Cert",e),!this.chain[s]?.registeredStake&&!k.find((e=>"Registration"===e.type&&e.rewardAddress===s)))throw new Error(`Stake key is not registered. Reward address: ${s}`);k.push({type:"Delegation",rewardAddress:s,poolId:n});break}}}b.forEach((({entry:{utxo:e}},t)=>{const{paymentCredential:r}=(0,i.IL)(e.address);C(r,"Spend",t)}));const x=(()=>{const e=[];for(let t=0;t<r.outputs().len();t++){const s=r.outputs().get(t),n=a.C.TransactionUnspentOutput.new(a.C.TransactionInput.new(a.C.TransactionHash.from_hex(o),a.C.BigNum.from_str(t.toString())),s),u=(0,i.lo)(n);u.datumHash&&d.add(u.datumHash),e.push({utxo:u,spent:!1})}return e})(),[S]=h.filter((e=>!d.has(e)));if(S)throw new Error(`Extraneous vkey witness. Key hash: ${S}`);const[I]=p.filter((e=>!d.has(e)));if(I)throw new Error(`Extraneous native script. Script hash: ${I}`);const[E]=f.filter((e=>!d.has(e)));if(E)throw new Error(`Extraneous plutus script. Script hash: ${E}`);const[B]=Object.keys(l).filter((e=>!d.has(e)));if(B)throw new Error(`Extraneous plutus data. Datum hash: ${B}`);b.forEach((({entry:e,type:t})=>{const r=e.utxo.txHash+e.utxo.outputIndex;e.spent=!0,"Ledger"===t?this.ledger[r]=e:"Mempool"===t&&(this.mempool[r]=e)})),v.forEach((({rewardAddress:e,withdrawal:t})=>{this.chain[e].delegation.rewards-=t})),k.forEach((({type:e,rewardAddress:t,poolId:r})=>{switch(e){case"Registration":this.chain[t]?this.chain[t].registeredStake=!0:this.chain[t]={registeredStake:!0,delegation:{poolId:null,rewards:0n}};break;case"Deregistration":this.chain[t].registeredStake=!1,this.chain[t].delegation.poolId=null;break;case"Delegation":this.chain[t].delegation.poolId=r}})),x.forEach((({utxo:e,spent:t})=>{this.mempool[e.txHash+e.outputIndex]={utxo:e,spent:t}}));for(const[e,t]of Object.entries(l))this.datumTable[e]=t;return Promise.resolve(o)}log(){function e(e){const t="lovelace"===e?"1":e;let r=0;for(let e=0;e<t.length;e++)r+=t.charCodeAt(e);return"#"+((1<<24)+(123*r%256<<16)+(321*r%256<<8)+213*r%256).toString(16).slice(1)}const t={},r={};for(const{utxo:e}of Object.values(this.ledger))for(const[s,a]of Object.entries(e.assets))r[e.address]?r[e.address]?.[s]?r[e.address][s]+=a:r[e.address][s]=a:r[e.address]={[s]:a},t[s]?t[s]+=a:t[s]=a;console.log("\n%cBlockchain state","color:purple"),console.log(`\n    Block height:   %c${this.blockHeight}%c\n    Slot:           %c${this.slot}%c\n    Unix time:      %c${this.time}\n  `,"color:yellow","color:white","color:yellow","color:white","color:yellow"),console.log("\n");for(const[s,a]of Object.entries(r)){console.log(`Address: %c${s}`,"color:blue","\n");for(const[r,s]of Object.entries(a)){const a=Math.max(Math.floor(Number(s)/Number(t[r])*60),1);console.log(`%c${"▆".repeat(a)+" ".repeat(60-a)}`,`color: ${e(r)}`,"",`${r}:`,s,"")}console.log(`\n${"▁".repeat(60)}\n`)}}}s()}catch(e){s(e)}}))},209:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{O:()=>o});var a=r(609),n=r(483),i=e([a,n]);[a,n]=i.then?(await i)():i;class o{constructor(e,t){Object.defineProperty(this,"kupoUrl",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),Object.defineProperty(this,"ogmiosUrl",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),this.kupoUrl=e,this.ogmiosUrl=t}async getProtocolParameters(){const e=await this.ogmiosWsp("Query",{query:"currentProtocolParameters"});return new Promise(((t,r)=>{e.addEventListener("message",(s=>{try{const{result:r}=JSON.parse(s.data),a={};Object.keys(r.costModels).forEach((e=>{const t=e.split(":")[1].toUpperCase();a["Plutus"+t]=r.costModels[e]}));const[n,i]=r.prices.memory.split("/"),[o,u]=r.prices.steps.split("/");t({minFeeA:parseInt(r.minFeeCoefficient),minFeeB:parseInt(r.minFeeConstant),maxTxSize:parseInt(r.maxTxSize),maxValSize:parseInt(r.maxValueSize),keyDeposit:BigInt(r.stakeKeyDeposit),poolDeposit:BigInt(r.poolDeposit),priceMem:parseInt(n)/parseInt(i),priceStep:parseInt(o)/parseInt(u),maxTxExMem:BigInt(r.maxExecutionUnitsPerTransaction.memory),maxTxExSteps:BigInt(r.maxExecutionUnitsPerTransaction.steps),coinsPerUtxoByte:BigInt(r.coinsPerUtxoByte),collateralPercentage:parseInt(r.collateralPercentage),maxCollateralInputs:parseInt(r.maxCollateralInputs),costModels:a}),e.close()}catch(e){r(e)}}),{once:!0})}))}async getUtxos(e){const t="string"==typeof e,r=t?e:e.hash,s=await fetch(`${this.kupoUrl}/matches/${r}${t?"":"/*"}?unspent`).then((e=>e.json()));return this.kupmiosUtxosToUtxos(s)}async getUtxosWithUnit(e,t){const r="string"==typeof e,s=r?e:e.hash,{policyId:a,assetName:i}=(0,n.g9)(t),o=await fetch(`${this.kupoUrl}/matches/${s}${r?"":"/*"}?unspent&policy_id=${a}${i?`&asset_name=${i}`:""}`).then((e=>e.json()));return this.kupmiosUtxosToUtxos(o)}async getUtxoByUnit(e){const{policyId:t,assetName:r}=(0,n.g9)(e),s=await fetch(`${this.kupoUrl}/matches/${t}.${r?`${r}`:"*"}?unspent`).then((e=>e.json())),a=await this.kupmiosUtxosToUtxos(s);if(a.length>1)throw new Error("Unit needs to be an NFT or only held by one address.");return a[0]}async getUtxosByOutRef(e){const t=[...new Set(e.map((e=>e.txHash)))];return(await Promise.all(t.map((async e=>{const t=await fetch(`${this.kupoUrl}/matches/*@${e}?unspent`).then((e=>e.json()));return this.kupmiosUtxosToUtxos(t)})))).reduce(((e,t)=>e.concat(t)),[]).filter((t=>e.some((e=>t.txHash===e.txHash&&t.outputIndex===e.outputIndex))))}async getDelegation(e){const t=await this.ogmiosWsp("Query",{query:{delegationsAndRewards:[e]}});return new Promise(((e,r)=>{t.addEventListener("message",(s=>{try{const{result:r}=JSON.parse(s.data),a=r?Object.values(r)[0]:{};e({poolId:a?.delegate||null,rewards:BigInt(a?.rewards||0)}),t.close()}catch(e){r(e)}}),{once:!0})}))}async getDatum(e){const t=await fetch(`${this.kupoUrl}/datums/${e}`).then((e=>e.json()));if(!t||!t.datum)throw new Error(`No datum found for datum hash: ${e}`);return t.datum}awaitTx(e,t=3e3){return new Promise((r=>{const s=setInterval((async()=>{const t=await fetch(`${this.kupoUrl}/matches/*@${e}?unspent`).then((e=>e.json()));if(t&&t.length>0)return clearInterval(s),void r(!0)}),t)}))}async submitTx(e){const t=await this.ogmiosWsp("SubmitTx",{submit:e});return new Promise(((e,r)=>{t.addEventListener("message",(s=>{try{const{result:a}=JSON.parse(s.data);a.SubmitSuccess?e(a.SubmitSuccess.txId):r(a.SubmitFail),t.close()}catch(e){r(e)}}),{once:!0})}))}kupmiosUtxosToUtxos(e){return Promise.all(e.map((async e=>({txHash:e.transaction_id,outputIndex:parseInt(e.output_index),address:e.address,assets:(()=>{const t={lovelace:BigInt(e.value.coins)};return Object.keys(e.value.assets).forEach((r=>{t[r.replace(".","")]=BigInt(e.value.assets[r])})),t})(),datumHash:"hash"===e?.datum_type?e.datum_hash:null,datum:"inline"===e?.datum_type?await this.getDatum(e.datum_hash):null,scriptRef:e.script_hash&&await(async()=>{const{script:t,language:r}=await fetch(`${this.kupoUrl}/scripts/${e.script_hash}`).then((e=>e.json()));return"native"===r?{type:"Native",script:t}:"plutus:v1"===r?{type:"PlutusV1",script:(0,n.NC)(a.C.PlutusScript.new((0,n.H_)(t)).to_bytes())}:"plutus:v2"===r?{type:"PlutusV2",script:(0,n.NC)(a.C.PlutusScript.new((0,n.H_)(t)).to_bytes())}:void 0})()}))))}async ogmiosWsp(e,t){const r=new WebSocket(this.ogmiosUrl);return await new Promise((e=>{r.addEventListener("open",(()=>e(1)),{once:!0})})),r.send(JSON.stringify({type:"jsonwsp/request",version:"1.0",servicename:"ogmios",methodname:e,args:t})),r}}s()}catch(e){s(e)}}))},347:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{Oo:()=>n.O});var a=r(307),n=r(209),i=r(802),o=e([a,n,i]);[a,n,i]=o.then?(await o)():o,s()}catch(e){s(e)}}))},293:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{D:()=>o,s:()=>i});var a=r(609),n=e([a]);function i(e){const t=a.C.Costmdls.new(),r=a.C.CostModel.new();Object.values(e.PlutusV1).forEach(((e,t)=>{r.set(t,a.C.Int.new(a.C.BigNum.from_str(e.toString())))})),t.insert(a.C.Language.new_plutus_v1(),r);const s=a.C.CostModel.new_plutus_v2();return Object.values(e.PlutusV2||[]).forEach(((e,t)=>{s.set(t,a.C.Int.new(a.C.BigNum.from_str(e.toString())))})),t.insert(a.C.Language.new_plutus_v2(),s),t}a=(n.then?(await n)():n)[0];const o={minFeeA:44,minFeeB:155381,maxTxSize:16384,maxValSize:5e3,keyDeposit:2000000n,poolDeposit:500000000n,priceMem:.0577,priceStep:721e-7,maxTxExMem:14000000n,maxTxExSteps:10000000000n,coinsPerUtxoByte:4310n,collateralPercentage:150,maxCollateralInputs:3,costModels:{PlutusV1:{"addInteger-cpu-arguments-intercept":205665,"addInteger-cpu-arguments-slope":812,"addInteger-memory-arguments-intercept":1,"addInteger-memory-arguments-slope":1,"appendByteString-cpu-arguments-intercept":1e3,"appendByteString-cpu-arguments-slope":571,"appendByteString-memory-arguments-intercept":0,"appendByteString-memory-arguments-slope":1,"appendString-cpu-arguments-intercept":1e3,"appendString-cpu-arguments-slope":24177,"appendString-memory-arguments-intercept":4,"appendString-memory-arguments-slope":1,"bData-cpu-arguments":1e3,"bData-memory-arguments":32,"blake2b_256-cpu-arguments-intercept":117366,"blake2b_256-cpu-arguments-slope":10475,"blake2b_256-memory-arguments":4,"cekApplyCost-exBudgetCPU":23e3,"cekApplyCost-exBudgetMemory":100,"cekBuiltinCost-exBudgetCPU":23e3,"cekBuiltinCost-exBudgetMemory":100,"cekConstCost-exBudgetCPU":23e3,"cekConstCost-exBudgetMemory":100,"cekDelayCost-exBudgetCPU":23e3,"cekDelayCost-exBudgetMemory":100,"cekForceCost-exBudgetCPU":23e3,"cekForceCost-exBudgetMemory":100,"cekLamCost-exBudgetCPU":23e3,"cekLamCost-exBudgetMemory":100,"cekStartupCost-exBudgetCPU":100,"cekStartupCost-exBudgetMemory":100,"cekVarCost-exBudgetCPU":23e3,"cekVarCost-exBudgetMemory":100,"chooseData-cpu-arguments":19537,"chooseData-memory-arguments":32,"chooseList-cpu-arguments":175354,"chooseList-memory-arguments":32,"chooseUnit-cpu-arguments":46417,"chooseUnit-memory-arguments":4,"consByteString-cpu-arguments-intercept":221973,"consByteString-cpu-arguments-slope":511,"consByteString-memory-arguments-intercept":0,"consByteString-memory-arguments-slope":1,"constrData-cpu-arguments":89141,"constrData-memory-arguments":32,"decodeUtf8-cpu-arguments-intercept":497525,"decodeUtf8-cpu-arguments-slope":14068,"decodeUtf8-memory-arguments-intercept":4,"decodeUtf8-memory-arguments-slope":2,"divideInteger-cpu-arguments-constant":196500,"divideInteger-cpu-arguments-model-arguments-intercept":453240,"divideInteger-cpu-arguments-model-arguments-slope":220,"divideInteger-memory-arguments-intercept":0,"divideInteger-memory-arguments-minimum":1,"divideInteger-memory-arguments-slope":1,"encodeUtf8-cpu-arguments-intercept":1e3,"encodeUtf8-cpu-arguments-slope":28662,"encodeUtf8-memory-arguments-intercept":4,"encodeUtf8-memory-arguments-slope":2,"equalsByteString-cpu-arguments-constant":245e3,"equalsByteString-cpu-arguments-intercept":216773,"equalsByteString-cpu-arguments-slope":62,"equalsByteString-memory-arguments":1,"equalsData-cpu-arguments-intercept":1060367,"equalsData-cpu-arguments-slope":12586,"equalsData-memory-arguments":1,"equalsInteger-cpu-arguments-intercept":208512,"equalsInteger-cpu-arguments-slope":421,"equalsInteger-memory-arguments":1,"equalsString-cpu-arguments-constant":187e3,"equalsString-cpu-arguments-intercept":1e3,"equalsString-cpu-arguments-slope":52998,"equalsString-memory-arguments":1,"fstPair-cpu-arguments":80436,"fstPair-memory-arguments":32,"headList-cpu-arguments":43249,"headList-memory-arguments":32,"iData-cpu-arguments":1e3,"iData-memory-arguments":32,"ifThenElse-cpu-arguments":80556,"ifThenElse-memory-arguments":1,"indexByteString-cpu-arguments":57667,"indexByteString-memory-arguments":4,"lengthOfByteString-cpu-arguments":1e3,"lengthOfByteString-memory-arguments":10,"lessThanByteString-cpu-arguments-intercept":197145,"lessThanByteString-cpu-arguments-slope":156,"lessThanByteString-memory-arguments":1,"lessThanEqualsByteString-cpu-arguments-intercept":197145,"lessThanEqualsByteString-cpu-arguments-slope":156,"lessThanEqualsByteString-memory-arguments":1,"lessThanEqualsInteger-cpu-arguments-intercept":204924,"lessThanEqualsInteger-cpu-arguments-slope":473,"lessThanEqualsInteger-memory-arguments":1,"lessThanInteger-cpu-arguments-intercept":208896,"lessThanInteger-cpu-arguments-slope":511,"lessThanInteger-memory-arguments":1,"listData-cpu-arguments":52467,"listData-memory-arguments":32,"mapData-cpu-arguments":64832,"mapData-memory-arguments":32,"mkCons-cpu-arguments":65493,"mkCons-memory-arguments":32,"mkNilData-cpu-arguments":22558,"mkNilData-memory-arguments":32,"mkNilPairData-cpu-arguments":16563,"mkNilPairData-memory-arguments":32,"mkPairData-cpu-arguments":76511,"mkPairData-memory-arguments":32,"modInteger-cpu-arguments-constant":196500,"modInteger-cpu-arguments-model-arguments-intercept":453240,"modInteger-cpu-arguments-model-arguments-slope":220,"modInteger-memory-arguments-intercept":0,"modInteger-memory-arguments-minimum":1,"modInteger-memory-arguments-slope":1,"multiplyInteger-cpu-arguments-intercept":69522,"multiplyInteger-cpu-arguments-slope":11687,"multiplyInteger-memory-arguments-intercept":0,"multiplyInteger-memory-arguments-slope":1,"nullList-cpu-arguments":60091,"nullList-memory-arguments":32,"quotientInteger-cpu-arguments-constant":196500,"quotientInteger-cpu-arguments-model-arguments-intercept":453240,"quotientInteger-cpu-arguments-model-arguments-slope":220,"quotientInteger-memory-arguments-intercept":0,"quotientInteger-memory-arguments-minimum":1,"quotientInteger-memory-arguments-slope":1,"remainderInteger-cpu-arguments-constant":196500,"remainderInteger-cpu-arguments-model-arguments-intercept":453240,"remainderInteger-cpu-arguments-model-arguments-slope":220,"remainderInteger-memory-arguments-intercept":0,"remainderInteger-memory-arguments-minimum":1,"remainderInteger-memory-arguments-slope":1,"sha2_256-cpu-arguments-intercept":806990,"sha2_256-cpu-arguments-slope":30482,"sha2_256-memory-arguments":4,"sha3_256-cpu-arguments-intercept":1927926,"sha3_256-cpu-arguments-slope":82523,"sha3_256-memory-arguments":4,"sliceByteString-cpu-arguments-intercept":265318,"sliceByteString-cpu-arguments-slope":0,"sliceByteString-memory-arguments-intercept":4,"sliceByteString-memory-arguments-slope":0,"sndPair-cpu-arguments":85931,"sndPair-memory-arguments":32,"subtractInteger-cpu-arguments-intercept":205665,"subtractInteger-cpu-arguments-slope":812,"subtractInteger-memory-arguments-intercept":1,"subtractInteger-memory-arguments-slope":1,"tailList-cpu-arguments":41182,"tailList-memory-arguments":32,"trace-cpu-arguments":212342,"trace-memory-arguments":32,"unBData-cpu-arguments":31220,"unBData-memory-arguments":32,"unConstrData-cpu-arguments":32696,"unConstrData-memory-arguments":32,"unIData-cpu-arguments":43357,"unIData-memory-arguments":32,"unListData-cpu-arguments":32247,"unListData-memory-arguments":32,"unMapData-cpu-arguments":38314,"unMapData-memory-arguments":32,"verifyEd25519Signature-cpu-arguments-intercept":9462713,"verifyEd25519Signature-cpu-arguments-slope":1021,"verifyEd25519Signature-memory-arguments":10},PlutusV2:{"addInteger-cpu-arguments-intercept":205665,"addInteger-cpu-arguments-slope":812,"addInteger-memory-arguments-intercept":1,"addInteger-memory-arguments-slope":1,"appendByteString-cpu-arguments-intercept":1e3,"appendByteString-cpu-arguments-slope":571,"appendByteString-memory-arguments-intercept":0,"appendByteString-memory-arguments-slope":1,"appendString-cpu-arguments-intercept":1e3,"appendString-cpu-arguments-slope":24177,"appendString-memory-arguments-intercept":4,"appendString-memory-arguments-slope":1,"bData-cpu-arguments":1e3,"bData-memory-arguments":32,"blake2b_256-cpu-arguments-intercept":117366,"blake2b_256-cpu-arguments-slope":10475,"blake2b_256-memory-arguments":4,"cekApplyCost-exBudgetCPU":23e3,"cekApplyCost-exBudgetMemory":100,"cekBuiltinCost-exBudgetCPU":23e3,"cekBuiltinCost-exBudgetMemory":100,"cekConstCost-exBudgetCPU":23e3,"cekConstCost-exBudgetMemory":100,"cekDelayCost-exBudgetCPU":23e3,"cekDelayCost-exBudgetMemory":100,"cekForceCost-exBudgetCPU":23e3,"cekForceCost-exBudgetMemory":100,"cekLamCost-exBudgetCPU":23e3,"cekLamCost-exBudgetMemory":100,"cekStartupCost-exBudgetCPU":100,"cekStartupCost-exBudgetMemory":100,"cekVarCost-exBudgetCPU":23e3,"cekVarCost-exBudgetMemory":100,"chooseData-cpu-arguments":19537,"chooseData-memory-arguments":32,"chooseList-cpu-arguments":175354,"chooseList-memory-arguments":32,"chooseUnit-cpu-arguments":46417,"chooseUnit-memory-arguments":4,"consByteString-cpu-arguments-intercept":221973,"consByteString-cpu-arguments-slope":511,"consByteString-memory-arguments-intercept":0,"consByteString-memory-arguments-slope":1,"constrData-cpu-arguments":89141,"constrData-memory-arguments":32,"decodeUtf8-cpu-arguments-intercept":497525,"decodeUtf8-cpu-arguments-slope":14068,"decodeUtf8-memory-arguments-intercept":4,"decodeUtf8-memory-arguments-slope":2,"divideInteger-cpu-arguments-constant":196500,"divideInteger-cpu-arguments-model-arguments-intercept":453240,"divideInteger-cpu-arguments-model-arguments-slope":220,"divideInteger-memory-arguments-intercept":0,"divideInteger-memory-arguments-minimum":1,"divideInteger-memory-arguments-slope":1,"encodeUtf8-cpu-arguments-intercept":1e3,"encodeUtf8-cpu-arguments-slope":28662,"encodeUtf8-memory-arguments-intercept":4,"encodeUtf8-memory-arguments-slope":2,"equalsByteString-cpu-arguments-constant":245e3,"equalsByteString-cpu-arguments-intercept":216773,"equalsByteString-cpu-arguments-slope":62,"equalsByteString-memory-arguments":1,"equalsData-cpu-arguments-intercept":1060367,"equalsData-cpu-arguments-slope":12586,"equalsData-memory-arguments":1,"equalsInteger-cpu-arguments-intercept":208512,"equalsInteger-cpu-arguments-slope":421,"equalsInteger-memory-arguments":1,"equalsString-cpu-arguments-constant":187e3,"equalsString-cpu-arguments-intercept":1e3,"equalsString-cpu-arguments-slope":52998,"equalsString-memory-arguments":1,"fstPair-cpu-arguments":80436,"fstPair-memory-arguments":32,"headList-cpu-arguments":43249,"headList-memory-arguments":32,"iData-cpu-arguments":1e3,"iData-memory-arguments":32,"ifThenElse-cpu-arguments":80556,"ifThenElse-memory-arguments":1,"indexByteString-cpu-arguments":57667,"indexByteString-memory-arguments":4,"lengthOfByteString-cpu-arguments":1e3,"lengthOfByteString-memory-arguments":10,"lessThanByteString-cpu-arguments-intercept":197145,"lessThanByteString-cpu-arguments-slope":156,"lessThanByteString-memory-arguments":1,"lessThanEqualsByteString-cpu-arguments-intercept":197145,"lessThanEqualsByteString-cpu-arguments-slope":156,"lessThanEqualsByteString-memory-arguments":1,"lessThanEqualsInteger-cpu-arguments-intercept":204924,"lessThanEqualsInteger-cpu-arguments-slope":473,"lessThanEqualsInteger-memory-arguments":1,"lessThanInteger-cpu-arguments-intercept":208896,"lessThanInteger-cpu-arguments-slope":511,"lessThanInteger-memory-arguments":1,"listData-cpu-arguments":52467,"listData-memory-arguments":32,"mapData-cpu-arguments":64832,"mapData-memory-arguments":32,"mkCons-cpu-arguments":65493,"mkCons-memory-arguments":32,"mkNilData-cpu-arguments":22558,"mkNilData-memory-arguments":32,"mkNilPairData-cpu-arguments":16563,"mkNilPairData-memory-arguments":32,"mkPairData-cpu-arguments":76511,"mkPairData-memory-arguments":32,"modInteger-cpu-arguments-constant":196500,"modInteger-cpu-arguments-model-arguments-intercept":453240,"modInteger-cpu-arguments-model-arguments-slope":220,"modInteger-memory-arguments-intercept":0,"modInteger-memory-arguments-minimum":1,"modInteger-memory-arguments-slope":1,"multiplyInteger-cpu-arguments-intercept":69522,"multiplyInteger-cpu-arguments-slope":11687,"multiplyInteger-memory-arguments-intercept":0,"multiplyInteger-memory-arguments-slope":1,"nullList-cpu-arguments":60091,"nullList-memory-arguments":32,"quotientInteger-cpu-arguments-constant":196500,"quotientInteger-cpu-arguments-model-arguments-intercept":453240,"quotientInteger-cpu-arguments-model-arguments-slope":220,"quotientInteger-memory-arguments-intercept":0,"quotientInteger-memory-arguments-minimum":1,"quotientInteger-memory-arguments-slope":1,"remainderInteger-cpu-arguments-constant":196500,"remainderInteger-cpu-arguments-model-arguments-intercept":453240,"remainderInteger-cpu-arguments-model-arguments-slope":220,"remainderInteger-memory-arguments-intercept":0,"remainderInteger-memory-arguments-minimum":1,"remainderInteger-memory-arguments-slope":1,"serialiseData-cpu-arguments-intercept":1159724,"serialiseData-cpu-arguments-slope":392670,"serialiseData-memory-arguments-intercept":0,"serialiseData-memory-arguments-slope":2,"sha2_256-cpu-arguments-intercept":806990,"sha2_256-cpu-arguments-slope":30482,"sha2_256-memory-arguments":4,"sha3_256-cpu-arguments-intercept":1927926,"sha3_256-cpu-arguments-slope":82523,"sha3_256-memory-arguments":4,"sliceByteString-cpu-arguments-intercept":265318,"sliceByteString-cpu-arguments-slope":0,"sliceByteString-memory-arguments-intercept":4,"sliceByteString-memory-arguments-slope":0,"sndPair-cpu-arguments":85931,"sndPair-memory-arguments":32,"subtractInteger-cpu-arguments-intercept":205665,"subtractInteger-cpu-arguments-slope":812,"subtractInteger-memory-arguments-intercept":1,"subtractInteger-memory-arguments-slope":1,"tailList-cpu-arguments":41182,"tailList-memory-arguments":32,"trace-cpu-arguments":212342,"trace-memory-arguments":32,"unBData-cpu-arguments":31220,"unBData-memory-arguments":32,"unConstrData-cpu-arguments":32696,"unConstrData-memory-arguments":32,"unIData-cpu-arguments":43357,"unIData-memory-arguments":32,"unListData-cpu-arguments":32247,"unListData-memory-arguments":32,"unMapData-cpu-arguments":38314,"unMapData-memory-arguments":32,"verifyEcdsaSecp256k1Signature-cpu-arguments":35892428,"verifyEcdsaSecp256k1Signature-memory-arguments":10,"verifyEd25519Signature-cpu-arguments-intercept":57996947,"verifyEd25519Signature-cpu-arguments-slope":18975,"verifyEd25519Signature-memory-arguments":10,"verifySchnorrSecp256k1Signature-cpu-arguments-intercept":38887044,"verifySchnorrSecp256k1Signature-cpu-arguments-slope":32947,"verifySchnorrSecp256k1Signature-memory-arguments":10}}};s()}catch(u){s(u)}}))},799:(e,t,r)=>{r.a(e,(async(e,t)=>{try{r(246);var s=r(65),a=e([s]);s=(a.then?(await a)():a)[0],t()}catch(e){t(e)}}))},483:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{D:()=>n.D,DV:()=>a.D,H_:()=>n.H_,I9:()=>n.I9,IL:()=>n.IL,NC:()=>n.NC,Sw:()=>n.Sw,cQ:()=>n.cQ,dZ:()=>n.dZ,g9:()=>n.g9,lo:()=>n.lo,pZ:()=>n.pZ,sJ:()=>a.s});var a=r(293),n=r(65),i=r(799),o=e([a,n,i]);[a,n,i]=o.then?(await o)():o,s()}catch(e){s(e)}}))},65:(e,t,r)=>{r.a(e,(async(e,s)=>{try{r.d(t,{D:()=>f,EE:()=>T,H_:()=>k,I9:()=>p,IL:()=>m,NC:()=>x,Sw:()=>_,cQ:()=>d,dZ:()=>v,g9:()=>B,lo:()=>C,pZ:()=>b,t1:()=>S});var a=r(507),n=r(609),i=r(774),o=r(398),u=r(271),c=r(611),l=e([n,i,c]);[n,i,c]=l.then?(await l)():l;class d{constructor(e){Object.defineProperty(this,"lucid",{enumerable:!0,configurable:!0,writable:!0,value:void 0}),this.lucid=e}validatorToAddress(e,t){const r=this.validatorToScriptHash(e);return t?n.C.BaseAddress.new(v(this.lucid.network),n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(r)),"Key"===t.type?n.C.StakeCredential.from_keyhash(n.C.Ed25519KeyHash.from_hex(t.hash)):n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(t.hash))).to_address().to_bech32(void 0):n.C.EnterpriseAddress.new(v(this.lucid.network),n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(r))).to_address().to_bech32(void 0)}credentialToAddress(e,t){return t?n.C.BaseAddress.new(v(this.lucid.network),"Key"===e.type?n.C.StakeCredential.from_keyhash(n.C.Ed25519KeyHash.from_hex(e.hash)):n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(e.hash)),"Key"===t.type?n.C.StakeCredential.from_keyhash(n.C.Ed25519KeyHash.from_hex(t.hash)):n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(t.hash))).to_address().to_bech32(void 0):n.C.EnterpriseAddress.new(v(this.lucid.network),"Key"===e.type?n.C.StakeCredential.from_keyhash(n.C.Ed25519KeyHash.from_hex(e.hash)):n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(e.hash))).to_address().to_bech32(void 0)}validatorToRewardAddress(e){const t=this.validatorToScriptHash(e);return n.C.RewardAddress.new(v(this.lucid.network),n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(t))).to_address().to_bech32(void 0)}credentialToRewardAddress(e){return n.C.RewardAddress.new(v(this.lucid.network),"Key"===e.type?n.C.StakeCredential.from_keyhash(n.C.Ed25519KeyHash.from_hex(e.hash)):n.C.StakeCredential.from_scripthash(n.C.ScriptHash.from_hex(e.hash))).to_address().to_bech32(void 0)}validatorToScriptHash(e){switch(e.type){case"Native":return n.C.NativeScript.from_bytes(k(e.script)).hash(n.C.ScriptHashNamespace.NativeScript).to_hex();case"PlutusV1":return n.C.PlutusScript.from_bytes(k(T(e.script))).hash(n.C.ScriptHashNamespace.PlutusV1).to_hex();case"PlutusV2":return n.C.PlutusScript.from_bytes(k(T(e.script))).hash(n.C.ScriptHashNamespace.PlutusV2).to_hex();default:throw new Error("No variant matched")}}mintingPolicyToId(e){return this.validatorToScriptHash(e)}datumToHash(e){return n.C.hash_plutus_data(n.C.PlutusData.from_bytes(k(e))).to_hex()}scriptHashToCredential(e){return{type:"Script",hash:e}}keyHashToCredential(e){return{type:"Key",hash:e}}generatePrivateKey(){return n.C.PrivateKey.generate_ed25519().to_bech32()}generateSeedPhrase(){return(0,i.O)(256)}unixTimeToSlot(e){return(0,u.WN)(e,u.BV[this.lucid.network])}slotToUnixTime(e){return(0,u.cM)(e,u.BV[this.lucid.network])}getAddressDetails(e){return m(e)}nativeScriptFromJson(e){return P(e)}paymentCredentialOf(e){return p(e)}stakeCredentialOf(e){return g(e)}}function h(e){try{return n.C.Address.from_bytes(k(e))}catch(t){try{return n.C.Address.from_bech32(e)}catch(e){throw new Error("Could not deserialize address.")}}}function m(e){try{const t=n.C.BaseAddress.from_address(h(e)),r=0===t.payment_cred().kind()?{type:"Key",hash:x(t.payment_cred().to_keyhash().to_bytes())}:{type:"Script",hash:x(t.payment_cred().to_scripthash().to_bytes())},s=0===t.stake_cred().kind()?{type:"Key",hash:x(t.stake_cred().to_keyhash().to_bytes())}:{type:"Script",hash:x(t.stake_cred().to_scripthash().to_bytes())};return{type:"Base",networkId:t.to_address().network_id(),address:{bech32:t.to_address().to_bech32(void 0),hex:x(t.to_address().to_bytes())},paymentCredential:r,stakeCredential:s}}catch(e){}try{const t=n.C.EnterpriseAddress.from_address(h(e)),r=0===t.payment_cred().kind()?{type:"Key",hash:x(t.payment_cred().to_keyhash().to_bytes())}:{type:"Script",hash:x(t.payment_cred().to_scripthash().to_bytes())};return{type:"Enterprise",networkId:t.to_address().network_id(),address:{bech32:t.to_address().to_bech32(void 0),hex:x(t.to_address().to_bytes())},paymentCredential:r}}catch(e){}try{const t=n.C.PointerAddress.from_address(h(e)),r=0===t.payment_cred().kind()?{type:"Key",hash:x(t.payment_cred().to_keyhash().to_bytes())}:{type:"Script",hash:x(t.payment_cred().to_scripthash().to_bytes())};return{type:"Pointer",networkId:t.to_address().network_id(),address:{bech32:t.to_address().to_bech32(void 0),hex:x(t.to_address().to_bytes())},paymentCredential:r}}catch(e){}try{const t=n.C.RewardAddress.from_address(h(e)),r=0===t.payment_cred().kind()?{type:"Key",hash:x(t.payment_cred().to_keyhash().to_bytes())}:{type:"Script",hash:x(t.payment_cred().to_scripthash().to_bytes())};return{type:"Reward",networkId:t.to_address().network_id(),address:{bech32:t.to_address().to_bech32(void 0),hex:x(t.to_address().to_bytes())},stakeCredential:r}}catch(e){}throw new Error("No address type matched for: "+e)}function p(e){const{paymentCredential:t}=m(e);if(!t)throw new Error("The specified address does not contain a payment credential.");return t}function g(e){const{stakeCredential:t}=m(e);if(!t)throw new Error("The specified address does not contain a stake credential.");return t}function y(e){const t={};t.lovelace=BigInt(e.coin().to_str());const r=e.multiasset();if(r){const e=r.keys();for(let s=0;s<e.len();s++){const a=e.get(s),n=r.get(a),i=n.keys();for(let e=0;e<i.len();e++){const r=i.get(e),s=n.get(r);t[x(a.to_bytes())+x(r.name())]=BigInt(s.to_str())}}}return t}function f(e){const t=n.C.MultiAsset.new(),r=e.lovelace,s=Object.keys(e);Array.from(new Set(s.filter((e=>"lovelace"!==e)).map((e=>e.slice(0,56))))).forEach((r=>{const a=s.filter((e=>e.slice(0,56)===r)),i=n.C.Assets.new();a.forEach((t=>{i.insert(n.C.AssetName.new(k(t.slice(56))),n.C.BigNum.from_str(e[t].toString()))})),t.insert(n.C.ScriptHash.from_bytes(k(r)),i)}));const a=n.C.Value.new(n.C.BigNum.from_str(r?r.toString():"0"));return(s.length>1||!r)&&a.set_multiasset(t),a}function w(e){switch(e.get().kind()){case 0:return{type:"Native",script:x(e.get().as_native().to_bytes())};case 1:return{type:"PlutusV1",script:x(e.get().as_plutus_v1().to_bytes())};case 2:return{type:"PlutusV2",script:x(e.get().as_plutus_v2().to_bytes())};default:throw new Error("No variant matched.")}}function b(e){switch(e.type){case"Native":return n.C.ScriptRef.new(n.C.Script.new_native(n.C.NativeScript.from_bytes(k(e.script))));case"PlutusV1":return n.C.ScriptRef.new(n.C.Script.new_plutus_v1(n.C.PlutusScript.from_bytes(k(T(e.script)))));case"PlutusV2":return n.C.ScriptRef.new(n.C.Script.new_plutus_v2(n.C.PlutusScript.from_bytes(k(T(e.script)))));default:throw new Error("No variant matched.")}}function _(e){const t=(()=>{try{return n.C.Address.from_bech32(e.address)}catch(t){return n.C.ByronAddress.from_base58(e.address).to_address()}})(),r=n.C.TransactionOutput.new(t,f(e.assets));return e.datumHash&&r.set_datum(n.C.Datum.new_data_hash(n.C.DataHash.from_bytes(k(e.datumHash)))),!e.datumHash&&e.datum&&r.set_datum(n.C.Datum.new_data(n.C.Data.new(n.C.PlutusData.from_bytes(k(e.datum))))),e.scriptRef&&r.set_script_ref(b(e.scriptRef)),n.C.TransactionUnspentOutput.new(n.C.TransactionInput.new(n.C.TransactionHash.from_bytes(k(e.txHash)),n.C.BigNum.from_str(e.outputIndex.toString())),r)}function C(e){return{txHash:x(e.input().transaction_id().to_bytes()),outputIndex:parseInt(e.input().index().to_str()),assets:y(e.output().amount()),address:e.output().address().as_byron()?e.output().address().as_byron()?.to_base58():e.output().address().to_bech32(void 0),datumHash:e.output()?.datum()?.as_data_hash()?.to_hex(),datum:e.output()?.datum()?.as_data()&&x(e.output().datum().as_data().get().to_bytes()),scriptRef:e.output()?.script_ref()&&w(e.output().script_ref())}}function v(e){switch(e){case"Preview":case"Preprod":case"Custom":return 0;case"Mainnet":return 1;default:throw new Error("Network not found")}}function k(e){return(0,a.v5)(e)}function x(e){return(0,a.tm)(e)}function S(e){return x((new TextEncoder).encode(e))}function I(e){return(0,o.t)(k(e)).toString(16).padStart(2,"0")}function E(e){if(8!==e.length||"0"!==e[0]||"0"!==e[7])return null;const t=e.slice(1,5),r=parseInt(t,16);return e.slice(5,7)===I(t)?r:null}function B(e){const t=e.slice(0,56),r=e.slice(56)||null,s=E(e.slice(56,64));return{policyId:t,assetName:r,name:(Number.isInteger(s)?e.slice(64):e.slice(56))||null,label:s}}function P(e){return{type:"Native",script:x(n.C.encode_json_str_to_native_script(JSON.stringify(e),"",n.C.ScriptSchema.Node).to_bytes())}}function T(e){try{return n.C.PlutusScript.from_bytes(n.C.PlutusScript.from_bytes(k(e)).bytes()),e}catch(t){return x(n.C.PlutusScript.new(k(e)).to_bytes())}}s()}catch(O){s(O)}}))}},o={};function u(e){var t=o[e];if(void 0!==t)return t.exports;var r=o[e]={exports:{}};return i[e](r,r.exports,u),r.exports}u.m=i,e="function"==typeof Symbol?Symbol("webpack queues"):"__webpack_queues__",t="function"==typeof Symbol?Symbol("webpack exports"):"__webpack_exports__",r="function"==typeof Symbol?Symbol("webpack error"):"__webpack_error__",s=e=>{e&&!e.d&&(e.d=1,e.forEach((e=>e.r--)),e.forEach((e=>e.r--?e.r++:e())))},u.a=(a,n,i)=>{var o;i&&((o=[]).d=1);var u,c,l,d=new Set,h=a.exports,m=new Promise(((e,t)=>{l=t,c=e}));m[t]=h,m[e]=e=>(o&&e(o),d.forEach(e),m.catch((e=>{}))),a.exports=m,n((a=>{var n;u=(a=>a.map((a=>{if(null!==a&&"object"==typeof a){if(a[e])return a;if(a.then){var n=[];n.d=0,a.then((e=>{i[t]=e,s(n)}),(e=>{i[r]=e,s(n)}));var i={};return i[e]=e=>e(n),i}}var o={};return o[e]=e=>{},o[t]=a,o})))(a);var i=()=>u.map((e=>{if(e[r])throw e[r];return e[t]})),c=new Promise((t=>{(n=()=>t(i)).r=0;var r=e=>e!==o&&!d.has(e)&&(d.add(e),e&&!e.d&&(n.r++,e.push(n)));u.map((t=>t[e](r)))}));return n.r?c:i()}),(e=>(e?l(m[r]=e):c(h),s(o)))),o&&(o.d=0)},u.d=(e,t)=>{for(var r in t)u.o(t,r)&&!u.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:t[r]})},u.f={},u.e=e=>Promise.all(Object.keys(u.f).reduce(((t,r)=>(u.f[r](e,t),t)),[])),u.u=e=>e+".app.bundle.js",u.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),u.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),a={},n="teddyswap.ui:",u.l=(e,t,r,s)=>{if(a[e])a[e].push(t);else{var i,o;if(void 0!==r)for(var c=document.getElementsByTagName("script"),l=0;l<c.length;l++){var d=c[l];if(d.getAttribute("src")==e||d.getAttribute("data-webpack")==n+r){i=d;break}}i||(o=!0,(i=document.createElement("script")).charset="utf-8",i.timeout=120,u.nc&&i.setAttribute("nonce",u.nc),i.setAttribute("data-webpack",n+r),i.src=e),a[e]=[t];var h=(t,r)=>{i.onerror=i.onload=null,clearTimeout(m);var s=a[e];if(delete a[e],i.parentNode&&i.parentNode.removeChild(i),s&&s.forEach((e=>e(r))),t)return t(r)},m=setTimeout(h.bind(null,void 0,{type:"timeout",target:i}),12e4);i.onerror=h.bind(null,i.onerror),i.onload=h.bind(null,i.onload),o&&document.head.appendChild(i)}},u.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},(()=>{var e;u.g.importScripts&&(e=u.g.location+"");var t=u.g.document;if(!e&&t&&(t.currentScript&&(e=t.currentScript.src),!e)){var r=t.getElementsByTagName("script");r.length&&(e=r[r.length-1].src)}if(!e)throw new Error("Automatic publicPath is not supported in this browser");e=e.replace(/#.*$/,"").replace(/\?.*$/,"").replace(/\/[^\/]+$/,"/"),u.p=e})(),(()=>{u.b=document.baseURI||self.location.href;var e={179:0};u.f.j=(t,r)=>{var s=u.o(e,t)?e[t]:void 0;if(0!==s)if(s)r.push(s[2]);else{var a=new Promise(((r,a)=>s=e[t]=[r,a]));r.push(s[2]=a);var n=u.p+u.u(t),i=new Error;u.l(n,(r=>{if(u.o(e,t)&&(0!==(s=e[t])&&(e[t]=void 0),s)){var a=r&&("load"===r.type?"missing":r.type),n=r&&r.target&&r.target.src;i.message="Loading chunk "+t+" failed.\n("+a+": "+n+")",i.name="ChunkLoadError",i.type=a,i.request=n,s[1](i)}}),"chunk-"+t,t)}};var t=(t,r)=>{var s,a,[n,i,o]=r,c=0;if(n.some((t=>0!==e[t]))){for(s in i)u.o(i,s)&&(u.m[s]=i[s]);o&&o(u)}for(t&&t(r);c<n.length;c++)a=n[c],u.o(e,a)&&e[a]&&e[a][0](),e[a]=0},r=self.webpackChunkteddyswap_ui=self.webpackChunkteddyswap_ui||[];r.forEach(t.bind(null,0)),r.push=t.bind(null,r.push.bind(r))})(),u(882)})();
->>>>>>> 346cab5b5da884b09d2c58bd4514108e3adc02fa
