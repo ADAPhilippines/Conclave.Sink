@@ -940,6 +940,14 @@ video {
   max-height: 45px;
 }
 
+.min-h-\[100vh\] {
+  min-height: 100vh;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
 .\!w-\[6px\] {
   width: 6px !important;
 }
@@ -1636,6 +1644,10 @@ body:has(.mud-drawer--open) {
   display: none;
 }
 
+.swap-summary {
+  box-shadow: var(--mud-elevation-2);
+}
+
 .time-range-btn-active {
   color: white !important;
   font-weight: 600 !important;
@@ -1859,6 +1871,10 @@ body:has(.mud-drawer--open) {
     margin: auto;
   }
 
+  .md\:mb-0 {
+    margin-bottom: 0px;
+  }
+
   .md\:\!block {
     display: block !important;
   }
@@ -1927,10 +1943,6 @@ body:has(.mud-drawer--open) {
 
   .lg\:\!mb-8 {
     margin-bottom: 2rem !important;
-  }
-
-  .lg\:mb-0 {
-    margin-bottom: 0px;
   }
 
   .lg\:block {

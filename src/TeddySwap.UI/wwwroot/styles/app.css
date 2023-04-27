@@ -18,6 +18,10 @@ body:has(.mud-drawer--open) {
     display: none;
 }
 
+.swap-summary {
+    box-shadow: var(--mud-elevation-2);
+}
+
 .time-range-btn-active {
     color: white !important;
     font-weight: 600 !important;
