@@ -9,5 +9,7 @@ public partial record TxOutputBase
     public ulong Amount { get; init; }
     public string Address { get; init; } = string.Empty;
     public string? DatumCbor { get; init; }
+    public IEnumerable<TxInput> Inputs { get; init; } = new List<TxInput>();
     public IEnumerable<Asset>? Assets { get; set; }
+
 }

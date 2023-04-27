@@ -33,7 +33,7 @@ body:has(.mud-drawer--open) {
     backdrop-filter: blur(100px);
 }
 
-.confirm-swap-dialog-token-chip > .mud-chip.mud-disabled {
+.confirm-swap-dialog-token-chip>.mud-chip.mud-disabled {
     opacity: 1;
 }
 
@@ -77,7 +77,7 @@ body:has(.mud-drawer--open) {
     font-weight: bold;
 }
 
-.select-token-dialog > .mud-list.mud-list-padding {
+.select-token-dialog>.mud-list.mud-list-padding {
     height: 288px !important;
 }
 
@@ -95,6 +95,13 @@ body:has(.mud-drawer--open) {
 
 .mud-input-label-outlined {
     background-color: var(--mud-palette-primary) !important;
+}
+
+
+.nft-rarity {
+    height: 42px;
+    width: 42px;
+    font-weight: 600;
 }
 
 .mud-drawer.mud-drawer--open {

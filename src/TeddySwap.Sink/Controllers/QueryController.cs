@@ -1,5 +1,5 @@
-using TeddySwap.Sink.Data;
 using Microsoft.AspNetCore.Mvc;
+using TeddySwap.Sink.Data;
 
 namespace TeddySwap.Sink.Controllers;
 
@@ -8,11 +8,11 @@ namespace TeddySwap.Sink.Controllers;
 public class QueryController : ControllerBase
 {
     private readonly ILogger<QueryController> _logger;
-    private readonly TeddySwapSinkDbContext _dbContext;
+    private readonly TeddySwapSinkCoreDbContext _dbContext;
 
     public QueryController(
         ILogger<QueryController> logger,
-        TeddySwapSinkDbContext dbContext
+        TeddySwapSinkCoreDbContext dbContext
     )
     {
         _logger = logger;
