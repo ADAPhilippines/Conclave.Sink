@@ -1,0 +1,76 @@
+@using TeddySwap.UI.Services
+@inject AppStateService AppStateService
+
+<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-3 lg:!mb-8">
+    <div class="flex items-center justify-between md:justify-start gap-4">
+        <div class="flex items-center">
+            <div class="flex relative mr-[35px] w-[30px] h-[30px] md:w-[40px] md:h-[40px]">
+                <MudImage Src="@FromCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-[25px] z-[2]" : "left-0 z-[1]") + " absolute w-[30px] h-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
+                <MudImage Src="@ToCurrentlySelectedToken?.Logo" Class="@((_areTokensSwapped ? "left-0 z[1]" : "left-[25px] z-[2]") + " absolute w-[30px] h-[30px] transition-left duration-150 ease-in-out md:w-[40px] md:h-[40px]")" />
+            </div>
+            <div class="font-semibold mr-2 flex items-center md:text-[16px]">
+                <div class="@(_areTokensSwapped ? "order-3" : "order-1")">
+                    @FromCurrentlySelectedToken?.Name
+                </div>
+                <div class="order-2">-</div>
+                <div class="@(_areTokensSwapped ? "order-1" : "order-3")">
+                    @ToCurrentlySelectedToken?.Name
+                </div>
+            </div>
+            <MudTooltip Placement="Placement.Right">
+                <ChildContent>
+                    <MudIconButton Class="!p-0" Size="Size.Small" Icon="@Icons.Material.Filled.Verified" />
+                </ChildContent>
+                <TooltipContent>
+                    <MudText Typo="Typo.caption">This pair is verified.</MudText>
+                </TooltipContent>
+            </MudTooltip>
+        </div>
+
+        <div>
+            <MudIconButton
+                Class="!rounded-full !p-[3px] m-auto"
+                Variant="Variant.Filled"
+                Icon="@Icons.Material.Filled.SwapHoriz"
+                OnClick="SwapTokens"
+                Color="Color.Primary"
+            >
+            </MudIconButton>
+        </div>
+    </div>
+
+    <div class="mb-3 md:mb-0">
+        <p class="font-bold text-[18px] md:text-[19px]">
+            0.088253 ADA
+        </p>
+
+        <p class="text-[12px] md:text-[14px] text-[var(--mud-palette-text-secondary)]">
+            @DateTime.Now.ToString("MMM dd yyyy HH:mm")
+        </p>
+    </div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-4 mb-8">
+    <MudCard Elevation="2" Class="!bg-[var(--mud-palette-drawer-background)]">
+        <MudCardContent Class="text-center">
+            <MudText Class="text-[18px] text-[var(--mud-palette-success)] font-semibold">+13.69%</MudText>
+            <MudText Class="text-[12px]">Change 24H</MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="2" Class="!bg-[var(--mud-palette-drawer-background)]">
+        <MudCardContent Class="text-center">
+            <MudText Class="text-[18px] text-[var(--mud-palette-success)] font-semibold">+23.69%</MudText>
+            <MudText Class="text-[12px]">Change 1M</MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="2"  Class="!bg-[var(--mud-palette-drawer-background)]">
+        <MudCardContent Class="text-center">
+            <MudText Class="text-[18px] font-semibold">₳6.23m</MudText>
+            <MudText Class="text-[12px]">Volume 1M</MudText>
+        </MudCardContent>
+    </MudCard>
+</div>
+
+
+
+<MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="100%"></MudChart>

@@ -1,0 +1,39 @@
+@using System.Net.Http.Json
+@using TeddySwap.UI.Models
+
+
+<MudTable
+    Items="@Transactions"
+    Elevation="6"
+    Class="!rounded-none trading-history p-[8px]"
+    HeaderClass="backdrop-blur-[100px] px-[24px]"
+>
+    <HeaderContent> 
+        <MudTh>Created Time</MudTh>
+        <MudTh>Type</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Input</MudTh>
+        <MudTh>Output</MudTh>
+        <MudTh>Owner</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Created time">
+            <div class="flex items-center gap-1">
+                <div class="!h-[6px] !w-[6px] rounded-full bg-[var(--mud-palette-success)]"></div>
+                <div>@context.CreatedTime</div>
+            </div>
+        </MudTd>
+        <MudTd Class="@((context.Type == TransactionType.Buy ? "!text-[var(--mud-palette-success)]" : "!text-[var(--mud-palette-error)]") + " font-semibold before:!text-[var(--mud-palette-text-primary)]")" DataLabel="Type">@context.Type</MudTd>
+        <MudTd DataLabel="Price">@context.Price ADA</MudTd>
+        <MudTd DataLabel="Input">@context.Input MIN</MudTd>
+        <MudTd DataLabel="Output">@context.Output ADA</MudTd>
+        <MudTd Class="" DataLabel="Owner">
+            <div class="flex items-center gap-2">
+                <div>@context.Owner.Substring(0, 6)...@context.Owner.Substring(context.Owner.Length - 6)</div>
+                <MudLink Href="#" Target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.Link" />
+                </MudLink>
+            </div>
+        </MudTd>
+    </RowTemplate>
+</MudTable>

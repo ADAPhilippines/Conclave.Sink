@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PeterO.Cbor2;
+using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
@@ -15,34 +16,34 @@ public class OrderService
 
     private readonly TeddySwapSinkSettings _settings;
     private readonly DatumService _datumService;
-    private readonly CardanoService _cardanoService;
+    private readonly ByteArrayService _byteArrayService;
     private readonly ILogger<OrderService> _logger;
-    private IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapOrderSinkDbContext> _dbContextFactory;
 
     public OrderService(
         DatumService datumService,
         IOptions<TeddySwapSinkSettings> settings,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
-        CardanoService cardanoService,
+        IDbContextFactory<TeddySwapOrderSinkDbContext> dbContextFactory,
+        ByteArrayService byteArrayService,
         ILogger<OrderService> logger)
     {
         _settings = settings.Value;
         _datumService = datumService;
-        _cardanoService = cardanoService;
+        _byteArrayService = byteArrayService;
         _logger = logger;
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<Order?> ProcessOrderAsync(OuraTransactionEvent transactionEvent)
+    public async Task<Order?> ProcessOrderAsync(OuraTransaction transaction)
     {
-        TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+        using TeddySwapOrderSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
         Order? order = null;
 
-        if (transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Inputs is not null &&
-            transactionEvent.Transaction.Outputs is not null)
+        if (transaction is not null &&
+            transaction.Inputs is not null &&
+            transaction.Outputs is not null)
         {
-            List<string> inputRefs = transactionEvent.Transaction.Inputs.Select(i => i.TxHash + i.Index).ToList();
+            List<string> inputRefs = transaction.Inputs.Select(i => i.TxHash + i.Index).ToList();
             List<TxOutput>? inputs = await _dbContext.TxOutputs
                 .Include(o => o.Assets)
                 .Where(o => inputRefs.Contains(o.TxHash + o.Index)).ToListAsync();
@@ -54,7 +55,7 @@ public class OrderService
                     _settings.RedeemAddress
                 };
 
-            if (transactionEvent.Context is null) return null;
+            if (transaction.Context is null) return null;
 
             // Find Validator Utxos
             TxOutput? poolInput = inputs.Where(i => i.Address == _settings.PoolAddress).FirstOrDefault();
@@ -63,34 +64,36 @@ public class OrderService
             // Return if not a TeddySwap transaction
             if (poolInput is null || orderInput is null) return null;
 
-            order = ProcessOrder(poolInput, orderInput, transactionEvent);
+            order = ProcessOrder(poolInput, orderInput, transaction);
         }
 
 
         return order;
     }
 
-    public Order? ProcessOrder(TxOutput poolInput, TxOutput orderInput, OuraTransactionEvent transactionEvent)
+    public Order? ProcessOrder(TxOutput poolInput, TxOutput orderInput, OuraTransaction transaction)
     {
 
-        if (transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Context.TxIdx is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Outputs is not null)
+        if (transaction is not null &&
+            transaction.Outputs is not null)
         {
 
             OrderType orderType = _datumService.GetOrderType(orderInput.Address);
-            List<OuraTxOutput> outputs = transactionEvent.Transaction.Outputs.ToList();
-            PoolDatum? poolDatum = _datumService.CborToPoolDatum(CBORObject.DecodeFromBytes(poolInput.InlineDatum));
+            List<OuraTxOutput> outputs = transaction.Outputs.ToList();
+
+            if (outputs.Count < 2) return null;
+
+            byte[] poolDatumByteArray = _byteArrayService.HexToByteArray(poolInput.DatumCbor ?? "");
+            byte[] orderDatumByteArray = _byteArrayService.HexToByteArray(orderInput.DatumCbor ?? "");
+
+            PoolDatum? poolDatum = _datumService.CborToPoolDatum(CBORObject.DecodeFromBytes(poolDatumByteArray));
+
             OuraTxOutput? poolOutput = outputs[0];
             OuraTxOutput? rewardOutput = outputs[1];
-            OuraTxOutput? batcherOutput = outputs[2];
 
             if (poolDatum is not null &&
                 poolOutput is not null &&
-                rewardOutput is not null &&
-                batcherOutput is not null)
+                rewardOutput is not null)
             {
                 string assetX = string.Concat(poolDatum.ReserveX.PolicyId, poolDatum.ReserveX.Name);
                 string assetY = string.Concat(poolDatum.ReserveY.PolicyId, poolDatum.ReserveY.Name);
@@ -120,7 +123,8 @@ public class OrderService
 
                         break;
                     case OrderType.Swap:
-                        SwapDatum? swapDatum = _datumService.CborToSwapDatum(CBORObject.DecodeFromBytes(orderInput.InlineDatum));
+                        SwapDatum? swapDatum = _datumService.CborToSwapDatum(CBORObject.DecodeFromBytes(orderDatumByteArray));
+
                         if (swapDatum is not null)
                         {
                             orderBase = swapDatum.Base.PolicyId + swapDatum.Base.Name;
@@ -139,21 +143,26 @@ public class OrderService
                         break;
                 }
 
+
                 if (poolDatum is not null &&
                     rewardOutput is not null &&
                     rewardOutput.Address is not null &&
-                    batcherOutput.Address is not null &&
-                    transactionEvent.Context.Slot is not null)
+                    transaction.Context is not null &&
+                    transaction.Context.Slot is not null &&
+                    transaction.Hash is not null)
                 {
+
+                    string? batcherAddress = outputs.Count < 3 ? null : outputs[2].Address;
+
                     return new()
                     {
-                        TxHash = transactionEvent.Context.TxHash,
-                        Index = (ulong)transactionEvent.Context.TxIdx,
+                        TxHash = transaction.Hash,
+                        Index = (ulong)transaction.Index,
                         OrderType = orderType,
                         UserAddress = rewardOutput.Address,
-                        BatcherAddress = batcherOutput.Address,
-                        PoolDatum = poolInput.InlineDatum,
-                        OrderDatum = orderInput.InlineDatum,
+                        BatcherAddress = batcherAddress,
+                        PoolDatum = poolDatumByteArray,
+                        OrderDatum = orderDatumByteArray,
                         AssetX = assetX,
                         AssetY = assetY,
                         AssetLq = assetLq,
@@ -165,7 +174,7 @@ public class OrderService
                         OrderX = orderX,
                         OrderY = orderY,
                         OrderLq = orderLq,
-                        Slot = (ulong)transactionEvent.Context.Slot
+                        Slot = (ulong)transaction.Context.Slot
                     };
                 }
             }

@@ -1,0 +1,87 @@
+<MudDialog Class="w-[92%] max-w-[496px] pb-4">
+    <DialogContent>
+        <MudIconButton
+            OnClick="@(() => MudDialog.Close())"
+            Class="absolute top-[-56px] right-[10px] z-[10]"
+            Icon="@Icons.Material.Filled.Close"
+            aria-label="close"
+        >
+        </MudIconButton>
+
+        <MudPaper Class="flex justify-between items-center p-4 ">
+            <div class="font-semibold text-[16px]">@AppStateService.FromValue</div>
+            <div class="confirm-swap-dialog-token-chip">
+                <TokenChip Disabled="true" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
+            </div>
+        </MudPaper>
+
+        <MudPaper Class="flex justify-between items-center p-4 mt-2">
+            <div class="font-semibold text-[16px]">@AppStateService.ToValue</div>
+            <div class="confirm-swap-dialog-token-chip">
+                <TokenChip Disabled="true" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
+            </div>
+        </MudPaper>
+
+        <MudPaper Class="flex justify-between items-center p-4 mt-6">
+            <MudList Class="w-full" DisableGutters>
+                <MudListItem Class="flex justify-between items-center py-0">
+                    <div class="flex justify-between items-center text-[12px]">
+                        <div>Slippage tolerance:</div>
+                        <div class="font-semibold">@AppStateService.SlippageToleranceValue%</div>
+                    </div>
+                </MudListItem>
+                <MudListItem Class="flex justify-between items-center py-0">
+                    <div class="flex justify-between items-center text-[12px]">
+                        <div>Honey:</div>
+                        <div class="font-semibold">@AppStateService.HoneyValue</div>
+                    </div>
+                </MudListItem>
+                <MudListItem Class="flex justify-between items-center py-0">
+                    <div class="flex justify-between items-center text-[12px]">
+                        <div>Estimated output:</div>
+                        <div class="font-semibold">15.725234 - 31.450468 @AppStateService?.ToCurrentlySelectedToken?.Name</div>
+                    </div>
+                </MudListItem>
+                <MudListItem Class="flex justify-between items-center py-0">
+                    <div class="flex justify-between items-center text-[12px]">
+                        <div>Refundable deposit:</div>
+                        <div class="font-semibold">2 ADA</div>
+                    </div>
+                </MudListItem>
+                <MudListItem Class="flex justify-between items-center py-0">
+                    <div class="flex justify-between items-center text-[12px]">
+                        <div class="flex">
+                            <div>Total Fees</div>
+                            <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
+                                <ChildContent>
+                                    <MudIcon Class="w-[14px] h-[14px] ml-1" Icon="@IconsService.OutlinedQuestionMark" Size="Size.Small" />
+                                </ChildContent>
+                                <TooltipContent>
+                                    <MudText Typo="Typo.caption">
+                                        <div>Transaction fee: 1 ADA</div>
+                                        <div>Execution fee: 2 - 4 ADA</div>
+                                    </MudText>
+                                </TooltipContent>
+                            </MudTooltip>
+                            <span>:</span>
+                        </div>
+                        <div class="font-semibold">3-5 ADA</div>
+                    </div>
+                </MudListItem>
+            </MudList>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <div class="px-[16px] w-full mt-2">
+            <MudButton
+                FullWidth
+                OnClick="OpenWaitingConfirmationDialog"
+                Class="text-[20px] py-[6px] font-medium normal-case"
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+            >
+                Confirm Swap
+            </MudButton>
+        </div>
+    </DialogActions>
+</MudDialog>

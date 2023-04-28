@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body:has(.mud-drawer--open) {
+    height: 100vh;
+}
+
+.swap-chart .mud-tab {
+    font-size: 16px;
+    text-transform: none;
+    font-weight: 600;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.swap-chart .mud-tabs-scroll-button {
+    display: none;
+}
+
+.swap-summary {
+    box-shadow: var(--mud-elevation-2);
+}
+
+.burger-menu-dots button {
+    width: 100%;
+    height: 40.5px;
+    border-radius: 0;
+}
+
+.burger-menu-dots .mud-icon-button-label {
+    position: absolute;
+    left: 28px;
+    width: fit-content;
+}
+
+.mud-tooltip.mud-tooltip-default {
+    background-color: var(--mud-palette-surface) !important;
+    backdrop-filter: blur(100px);
+}
+
+.confirm-swap-dialog-token-chip>.mud-chip.mud-disabled {
+    opacity: 1;
+}
+
+.mud-button-filled.mud-button-filled-primary:hover {
+    background-color: var(--mud-palette-primary-darken);
+}
+
+.swap-input .mud-input-label {
+    border-radius: 4px;
+    color: white !important;
+    background-color: var(--mud-palette-drawer-background) !important;
+}
+
+.swap-input .mud-input.mud-input-outlined {
+    padding-bottom: 25px;
+}
+
+.swap-settings-dialog h6 {
+    font-weight: bold;
+}
+
+.select-token-dialog>.mud-list.mud-list-padding {
+    height: 288px !important;
+}
+
+.slippage-tolerance-input input,
+.honey-input input {
+    text-align: right !important;
+    padding: 0 !important;
+    height: 33px !important;
+}
+
+.honey-input,
+.slippage-tolerance-input {
+    margin-top: 0 !important;
+}
+
+.mud-input-label-outlined {
+    background-color: var(--mud-palette-primary) !important;
+}
+
+.nft-rarity {
+    height: 42px;
+    width: 42px;
+    font-weight: 600;
+}
+
+.mud-drawer.mud-drawer--open {
+    position: fixed;
+}
+
+.mud-expand-panel .mud-expand-panel-header,
+.mud-icon-root.mud-expand-panel-icon {
+    display: block !important;
+}
+
+.mud-icon-root.mud-expand-panel-icon {
+    margin: auto;
+}
+
+.mud-table-toolbar {
+    padding: 0px !important;
+}
+
+.mud-paper {
+    backdrop-filter: blur(24px) !important;
+}
+
+.mud-dialog {
+    background-color: var(--mud-palette-drawer-background);
+}
+
+.mud-nav-link {
+    font-weight: bold;
+}
+
+#leaderboard-tabs .mud-tabs-toolbar {
+    background: transparent !important;
+}
+
+#leaderboard-tabs .mud-tabs-toolbar-wrapper {
+    background-color: var(--mud-palette-surface);
+    border-radius: var(--mud-default-borderradius);
+    backdrop-filter: blur(24px) !important;
+    overflow: hidden;
+}
+
+#leaderboard-tabs .mud-tab-active {
+    background-color: var(--mud-palette-secondary);
+    color: var(--mud-palette-text-primary);
+}
+
+#leaderboard-tabs .mud-tab {
+    text-transform: none;
+    font-weight: bold;
+}
+
+#leaderboard-tabs .mud-table-container {
+    padding: 12px;
+}
+
+#leaderboard-tabs .mud-table-pagination-toolbar {
+    background-color: var(--mud-palette-background-grey);
+}
+
+#leaderboard-search .mud-icon-default {
+    color: var(--mud-palette-text-primary) !important;
+}
+
+#leaderboard-search ::placeholder {
+    opacity: 1;
+}
+
+#wallet-list .mud-list-item-clickable {
+    background-color: var(--mud-palette-surface);
+    border-radius: var(--mud-default-borderradius);
+    backdrop-filter: blur(24px) !important;
+}
+
+@media (max-width: 768px) {
+    #leaderboard-tabs .mud-tabs-toolbar-inner {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #leaderboard-tabs .mud-tabs-scroll-button {
+        display: none !important;
+    }
+
+    #leaderboard-tabs .mud-tabs-header {
+        flex-grow: 1;
+        text-align: center;
+        width: 100%;
+        display: block;
+    }
+}

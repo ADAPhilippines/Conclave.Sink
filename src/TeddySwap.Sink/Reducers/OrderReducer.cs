@@ -1,89 +1,76 @@
 using System.Numerics;
 using System.Text;
-using CardanoSharp.Wallet.Encoding;
-using CardanoSharp.Wallet.Enums;
-using CardanoSharp.Wallet.Extensions;
-using CardanoSharp.Wallet.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Options;
-using PeterO.Cbor2;
+using TeddySwap.Common.Enums;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
-using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Models.Oura;
 using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Reducers;
 
 [OuraReducer(OuraVariant.Transaction)]
-public class OrderReducer : OuraReducerBase, IOuraCoreReducer
+public class OrderReducer : OuraReducerBase
 {
     private readonly ILogger<OrderReducer> _logger;
-    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
-    private readonly CardanoService _cardanoService;
+    private readonly IDbContextFactory<TeddySwapOrderSinkDbContext> _dbContextFactory;
     private readonly OrderService _orderService;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly TeddySwapSinkSettings _settings;
 
     public OrderReducer(
         ILogger<OrderReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
-        CardanoService cardanoService,
-        OrderService orderService,
-        IServiceProvider serviceProvider,
-        IOptions<TeddySwapSinkSettings> settings)
+        IDbContextFactory<TeddySwapOrderSinkDbContext> dbContextFactory,
+        OrderService orderService)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
-        _cardanoService = cardanoService;
         _orderService = orderService;
-        _serviceProvider = serviceProvider;
-        _settings = settings.Value;
     }
 
-    public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
+    public async Task ReduceAsync(OuraTransaction transaction)
     {
-        if (transactionEvent is not null &&
-            transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Fee is not null &&
-            transactionEvent.Context.TxIdx is not null)
+
+        if (transaction is not null &&
+            transaction.Context is not null &&
+            transaction.Fee is not null)
         {
-            TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+            using TeddySwapOrderSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            if (_dbContext is null) return;
 
             Block? block = await _dbContext.Blocks
-                .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
+                .Where(b => b.BlockHash == transaction.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
+            if (block.InvalidTransactions is not null && block.InvalidTransactions.ToList().Contains((ulong)transaction.Index)) return;
 
-            if (block.InvalidTransactions is null ||
-                !block.InvalidTransactions.ToList().Contains((ulong)transactionEvent.Context.TxIdx))
+            Order? existingOrder = await _dbContext.Orders
+                .Where(o => o.TxHash == transaction.Hash && o.Index == (ulong)transaction.Index)
+                .FirstOrDefaultAsync();
+
+            if (existingOrder is not null) return;
+
+            Order? order = await _orderService.ProcessOrderAsync(transaction);
+
+            if (order is not null)
             {
-                Order? order = await _orderService.ProcessOrderAsync(transactionEvent);
+                order.Block = block;
+                order.Blockhash = block.BlockHash;
 
-                if (order is not null)
+                await _dbContext.Orders.AddAsync(order);
+
+                if (order.OrderType == OrderType.Swap)
                 {
-                    order.Block = block;
-                    order.Blockhash = block.BlockHash;
-
-                    await _dbContext.Orders.AddAsync(order);
-
-                    if (order.OrderType == OrderType.Swap)
+                    await _dbContext.Prices.AddAsync(new Price()
                     {
-
-                        await _dbContext.Prices.AddAsync(new Price()
-                        {
-                            TxHash = order.TxHash,
-                            Index = order.Index,
-                            Order = order,
-                            PriceX = BigIntegerDivToDecimal(order.ReservesX, order.ReservesY, 6),
-                            PriceY = BigIntegerDivToDecimal(order.ReservesY, order.ReservesX, 6),
-                        });
-                    }
+                        TxHash = order.TxHash,
+                        Index = order.Index,
+                        Order = order,
+                        PriceX = BigIntegerDivToDecimal(order.ReservesX, order.ReservesY, 6),
+                        PriceY = BigIntegerDivToDecimal(order.ReservesY, order.ReservesX, 6),
+                    });
                 }
+
             }
 
             await _dbContext.SaveChangesAsync();
@@ -116,5 +103,19 @@ public class OrderReducer : OuraReducerBase, IOuraCoreReducer
 
         return decimal.Parse(result.ToString());
     }
-    public async Task RollbackAsync(Block _) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block rollbackBlock)
+    {
+        if (rollbackBlock is not null)
+        {
+            using TeddySwapOrderSinkDbContext? _dbContext = await _dbContextFactory.CreateDbContextAsync();
+
+            List<Order>? orders = await _dbContext.Orders
+                .Include(o => o.Block)
+                .Where(o => o.Block == rollbackBlock)
+                .ToListAsync();
+
+            _dbContext.Orders.RemoveRange(orders);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }

@@ -1,10 +1,15 @@
+using System.Text;
+using System.Text.Json;
+using CardanoSharp.Wallet.Encoding;
+using CardanoSharp.Wallet.Enums;
+using CardanoSharp.Wallet.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
 using TeddySwap.Common.Models;
 using TeddySwap.Sink.Data;
 using TeddySwap.Sink.Models;
 using TeddySwap.Sink.Models.Oura;
+using TeddySwap.Sink.Services;
 
 namespace TeddySwap.Sink.Reducers;
 
@@ -12,90 +17,92 @@ namespace TeddySwap.Sink.Reducers;
 public class TransactionReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TransactionReducer> _logger;
-    private readonly IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
-
+    private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
+    private readonly ByteArrayService _byteArrayService;
+    private readonly TeddySwapSinkSettings _settings;
 
     public TransactionReducer(
         ILogger<TransactionReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory,
-        IOptions<TeddySwapSinkSettings> settings)
+        IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory,
+        ByteArrayService byteArrayService,
+        IOptions<TeddySwapSinkSettings> settings
+        )
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
+        _byteArrayService = byteArrayService;
+        _settings = settings.Value;
     }
 
-    public async Task ReduceAsync(OuraTransactionEvent transactionEvent)
+    public async Task ReduceAsync(OuraTransaction transaction)
     {
-        if (transactionEvent is not null &&
-            transactionEvent.Context is not null &&
-            transactionEvent.Context.TxHash is not null &&
-            transactionEvent.Transaction is not null &&
-            transactionEvent.Transaction.Fee is not null &&
-            transactionEvent.Context.TxIdx is not null)
+        if (transaction is not null &&
+            transaction.Context is not null &&
+            transaction.Fee is not null &&
+            transaction.Hash is not null)
         {
-            TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
 
             Block? block = await _dbContext.Blocks
-                .Where(b => b.BlockHash == transactionEvent.Context.BlockHash)
+                .Where(b => b.BlockHash == transaction.Context.BlockHash)
                 .FirstOrDefaultAsync();
 
             if (block is null) throw new NullReferenceException("Block does not exist!");
 
-            Transaction transaction = new()
+            Transaction? existingTransaction = await _dbContext.Transactions
+                .Where(t => t.Hash == transaction.Hash)
+                .FirstOrDefaultAsync();
+
+            if (existingTransaction is not null) return;
+
+            Transaction newTransaction = new()
             {
-                Hash = transactionEvent.Context.TxHash,
-                Fee = (ulong)transactionEvent.Transaction.Fee,
-                Index = (ulong)transactionEvent.Context.TxIdx,
+                Hash = transaction.Hash,
+                Fee = (ulong)transaction.Fee,
+                Index = (ulong)transaction.Index,
                 Block = block,
-                Blockhash = block.BlockHash
+                Blockhash = block.BlockHash,
+                Metadata = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(transaction.Metadata))),
+                HasCollateralOutput = transaction.HasCollateralOutput
             };
 
-
-            EntityEntry<Transaction> transactionEntry = await _dbContext.Transactions.AddAsync(transaction);
-
             // Record collateral input if available
-            if (transactionEvent.Transaction.CollateralInputs is not null)
+            if (transaction.CollateralInputs is not null)
             {
-                List<CollateralTxInput> collateralInputs = new List<CollateralTxInput>();
-                foreach (OuraTxInput ouraTxInput in transactionEvent.Transaction.CollateralInputs)
+                List<CollateralTxIn> collateralInputs = new();
+                foreach (OuraTxInput ouraTxInput in transaction.CollateralInputs)
                 {
-                    TxOutput? txInputOutput = await _dbContext.TxOutputs
-                        .Where(txOutput => txOutput.TxHash == ouraTxInput.TxHash && txOutput.Index == ouraTxInput.Index)
-                        .FirstOrDefaultAsync();
-
-                    if (txInputOutput is not null)
+                    collateralInputs.Add(new CollateralTxIn()
                     {
-                        collateralInputs.Add(new()
-                        {
-                            TxOutput = txInputOutput,
-                            Transaction = transactionEntry.Entity
-                        });
-                    }
+                        TxHash = transaction.Hash,
+                        Transaction = newTransaction,
+                        TxOutputHash = ouraTxInput.TxHash,
+                        TxOutputIndex = ouraTxInput.Index
+                    });
                 }
-                await _dbContext.CollateralTxInputs.AddRangeAsync(collateralInputs);
+                await _dbContext.CollateralTxIns.AddRangeAsync(collateralInputs);
             }
-
 
             // If Transaction is invalid record, collateral output
             if (block.InvalidTransactions is not null &&
-                transactionEvent.Transaction.CollateralOutput is not null &&
-                transactionEvent.Transaction.CollateralOutput.Address is not null &&
-                transactionEvent.Transaction.CollateralOutput.Amount is not null &&
-                transactionEvent.Transaction.CollateralOutput.Assets is not null &&
-                block.InvalidTransactions.ToList().Contains(transaction.Index))
+                transaction.CollateralOutput is not null &&
+                transaction.CollateralOutput.Address is not null &&
+                block.InvalidTransactions.ToList().Contains((ulong)transaction.Index))
             {
-                CollateralTxOutput collateralOutput = new()
+                CollateralTxOut collateralOutput = new()
                 {
-                    Transaction = transaction,
+                    Transaction = newTransaction,
+                    TxIndex = (ulong)transaction.Index,
+                    TxHash = transaction.Hash,
                     Index = 0,
-                    Address = transactionEvent.Transaction.CollateralOutput.Address,
-                    Amount = (ulong)transactionEvent.Transaction.CollateralOutput.Amount,
-                    Assets = transactionEvent.Transaction.CollateralOutput.Assets
-                                 .Select(asset => new Asset { PolicyId = asset.Policy, Name = asset.Asset, Amount = asset.Amount ?? 0 })
+                    Address = transaction.CollateralOutput.Address,
+                    Amount = transaction.CollateralOutput.Amount
                 };
-                await _dbContext.CollateralTxOutputs.AddAsync(collateralOutput);
+
+                await _dbContext.CollateralTxOuts.AddAsync(collateralOutput);
             }
-            
+
+            await _dbContext.Transactions.AddAsync(newTransaction);
             await _dbContext.SaveChangesAsync();
         }
     }

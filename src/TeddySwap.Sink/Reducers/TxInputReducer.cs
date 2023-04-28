@@ -10,44 +10,73 @@ namespace TeddySwap.Sink.Reducers;
 public class TxInputReducer : OuraReducerBase, IOuraCoreReducer
 {
     private readonly ILogger<TxInputReducer> _logger;
-    private IDbContextFactory<TeddySwapSinkDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<TeddySwapSinkCoreDbContext> _dbContextFactory;
     public TxInputReducer(
         ILogger<TxInputReducer> logger,
-        IDbContextFactory<TeddySwapSinkDbContext> dbContextFactory)
+        IDbContextFactory<TeddySwapSinkCoreDbContext> dbContextFactory)
     {
         _logger = logger;
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task ReduceAsync(OuraTxInputEvent txInputEvent)
+    public async Task ReduceAsync(OuraTxInput txInput)
     {
-        using TeddySwapSinkDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
-        if (txInputEvent is not null &&
-            txInputEvent.TxInput is not null &&
-            txInputEvent.Context is not null &&
-            txInputEvent.Context.Slot is not null &&
-             txInputEvent.Context.TxHash is not null)
+        if (txInput is not null &&
+            txInput.TxHash is not null &&
+            txInput.Context is not null &&
+            txInput.Context.TxHash is not null)
         {
-            TxOutput? txOutput = await _dbContext.TxOutputs
-                .Where(txOutput => txOutput.TxHash == txInputEvent.TxInput.TxHash && txOutput.Index == txInputEvent.TxInput.Index).FirstOrDefaultAsync();
-            Transaction? tx = await _dbContext.Transactions.Include(tx => tx.Block).Where(tx => tx.Hash == txInputEvent.Context.TxHash).FirstOrDefaultAsync();
+            using TeddySwapSinkCoreDbContext _dbContext = await _dbContextFactory.CreateDbContextAsync();
+            Transaction? tx = await _dbContext.Transactions
+                .Include(tx => tx.Block)
+                .Where(tx => tx.Hash == txInput.TxHash)
+                .FirstOrDefaultAsync();
             if (tx is not null)
             {
+                TxOutput? txOutput = await _dbContext.TxOutputs
+                    .Where(txOutput => txOutput.TxHash == txInput.TxHash && txOutput.Index == txInput.Index)
+                    .FirstOrDefaultAsync();
                 if (txOutput is not null)
+                {
+                    TxInput? input = await _dbContext.TxInputs
+                        .Where(i => i.TxHash == txOutput.TxHash && i.TxOutputIndex == txOutput.Index)
+                        .FirstOrDefaultAsync();
+
+                    if (input is null)
+                    {
+                        await _dbContext.TxInputs.AddAsync(new()
+                        {
+                            TxHash = txInput.TxHash,
+                            Transaction = tx,
+                            TxOutputHash = txInput.TxHash,
+                            TxOutputIndex = txInput.Index,
+                            TxOutput = txOutput
+                        });
+
+                    }
+                    await _dbContext.SaveChangesAsync();
+                }
+                else
                 {
                     await _dbContext.TxInputs.AddAsync(new()
                     {
-                        TxHash = txInputEvent.Context.TxHash,
+                        TxHash = txInput.Context.TxHash,
                         Transaction = tx,
-                        TxOutputHash = txInputEvent.TxInput.TxHash,
-                        TxOutputIndex = txInputEvent.TxInput.Index,
-                        TxOutput = txOutput
+                        // GENESIS TX HACK
+                        TxOutput = new TxOutput
+                        {
+                            Transaction = new Transaction
+                            {
+                                Hash = $"GENESIS_{tx.Hash}_{txInput.Fingerprint}",
+                                Block = tx.Block
+                            },
+                            Address = "GENESIS"
+                        }
                     });
                 }
-                await _dbContext.SaveChangesAsync();
             }
         }
     }
 
-    public async Task RollbackAsync(Block rollbackBlock) => await Task.CompletedTask;
+    public async Task RollbackAsync(Block _) => await Task.CompletedTask;
 }

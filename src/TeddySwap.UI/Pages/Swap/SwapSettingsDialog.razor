@@ -1,0 +1,140 @@
+@inherits TeddySwapBasePage
+@using TeddySwap.UI.Services
+@inject IconsService IconsService
+
+<MudDialog Class="swap-settings-dialog w-[92%] max-w-[500px] pb-2">
+    <DialogContent>
+        <MudIconButton
+            OnClick="@(() => MudDialog.Close())"
+            Class="absolute top-[-56px] right-[10px] z-[10]"
+            Icon="@Icons.Material.Filled.Close"
+            aria-label="close"
+        >
+        </MudIconButton>
+        <div>
+            <div class="flex gap-1 items-center">
+                <h5 class="font-bold">Slippage tolerance</h5>
+                <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
+                    <ChildContent>
+                        <MudIcon Icon="@IconsService.OutlinedQuestionMark" Class="w-[14px] cursor-pointer" />
+                    </ChildContent>
+                    <TooltipContent>
+                        <MudText Typo="Typo.caption">
+                            Your transaction will revert if the price changes unfavorably by more than this percentage
+                        </MudText>
+                    </TooltipContent>
+                </MudTooltip>
+            </div>
+            <div class="flex gap-4 items-center mt-2">
+                <MudButton
+                    DisableElevation
+                    OnClick="@(() => OnSlippageButtonClicked(1))"
+                    Size="Size.Large"
+                    Class="@(AppStateService.SlippageToleranceValue == 1 ? "py-[6px] px-[16px] h-[36.5px] rounded-[50px] bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "py-[6px] px-[16px] h-[36.5px] rounded-[50px] hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Color="Color.Transparent"
+                    Variant="Variant.Filled">
+                        1%
+                </MudButton>
+                <MudButton 
+                    DisableElevation
+                    OnClick="@(() => OnSlippageButtonClicked(3))"
+                    Size="Size.Large"
+                    Class="@(AppStateService.SlippageToleranceValue == 3 ? "py-[6px] px-[16px] h-[36.5px] rounded-[50px] bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "py-[6px] px-[16px] h-[36.5px] rounded-[50px] hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Color="Color.Transparent"
+                    Variant="Variant.Filled">
+                        3%
+                </MudButton>
+                <MudButton
+                    DisableElevation
+                    OnClick="@(() => OnSlippageButtonClicked(7))"
+                    Size="Size.Large"
+                     Class="@(AppStateService.SlippageToleranceValue == 7 ? "py-[6px] px-[16px] h-[36.5px] rounded-[50px] bg-[var(--mud-palette-primary)] hover:bg-[var(--mud-palette-primary-darken)]" : "py-[6px] px-[16px] h-[36.5px] rounded-[50px] hover:bg-[rgba(3, 105, 161, 0.08)]")"
+                    Color="Color.Transparent"
+                    Variant="Variant.Filled">
+                        7%
+                </MudButton>
+                <MudNumericField
+                    HideSpinButtons
+                    @bind-Value="AppStateService.SlippageToleranceValue"
+                    Immediate
+                    Placeholder="1"
+                    Class="slippage-tolerance-input"    
+                    Adornment="Adornment.End"
+                    AdornmentText="%"
+                    Variant="Variant.Outlined"
+                    Min="1"                    
+                />
+            </div>
+             <div class="mt-4">
+                 @if (AppStateService.SlippageToleranceValue == 0)
+                 {
+                    <MudAlert
+                        Class="bg-[var(--mud-palette-warning-darken)]"
+                        Severity="Severity.Warning"
+                        Variant="Variant.Filled">
+                            Minimal Slippage is 0.01
+                    </MudAlert>
+                 }
+                 else if (AppStateService.SlippageToleranceValue < 3)
+                 {
+                    <MudAlert
+                        Class="bg-[var(--mud-palette-warning-darken)]"
+                        Severity="Severity.Warning"
+                        Variant="Variant.Filled">
+                            Your transaction may fail
+                    </MudAlert>
+                 }
+                 else if (AppStateService.SlippageToleranceValue > 10)
+                 {
+                    <MudAlert
+                        Class="bg-[var(--mud-palette-warning-darken)]"
+                        Severity="Severity.Warning"
+                        Variant="Variant.Filled">
+                            Your transaction may be frontrun
+                    </MudAlert>
+                 }
+             </div>
+        </div>
+        <div class="mt-4">
+            <div class="flex gap-1 items-center">
+                <h5 class="font-bold">Honey</h5>
+                <MudTooltip Placement="Placement.Right" Class="max-w-[200px] text-left">
+                    <ChildContent><span class="cursor-pointer">🍯</span></ChildContent>
+                    <TooltipContent>
+                        <MudText Typo="Typo.caption">
+                            Max execution fee multiplier
+                        </MudText>
+                    </TooltipContent>
+                </MudTooltip>
+            </div>
+            <div class="flex gap-2 md:gap-4 items-center mt-2">
+                <MudButton
+                    OnClick="OnMinimumButtonClicked"
+                    Class="!normal-case !h-[33px]"
+                    Size="Size.Large"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary">
+                        Minimum
+                </MudButton>
+                <MudNumericField
+                    HideSpinButtons
+                    Placeholder="0"
+                    @bind-Value="AppStateService.HoneyValue"
+                    Immediate
+                    Class="honey-input"
+                    Adornment="Adornment.End"
+                    AdornmentText="ADA"
+                    Variant="Variant.Outlined"
+                    Min="0"
+                />
+            </div>
+        </div>
+        <div class="mt-2 text-[12px]">
+            Execution Fee Range 2 - 2.4 ADA
+        </div>
+        @if (AppStateService.HoneyValue < MINIMUM_HONEY_VALUE)
+        {
+            <MudAlert Dense Class="mt-4" Variant="Variant.Filled" Severity="Severity.Error">Minimal Honey value is 1.2</MudAlert>
+        }
+    </DialogContent>
+</MudDialog>

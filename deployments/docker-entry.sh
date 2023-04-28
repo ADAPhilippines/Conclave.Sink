@@ -3,11 +3,12 @@
 # Start the first process
 ASPNETCORE_URLS="http://*:1337" dotnet /bin/TeddySwap.Sink.dll &
 
+
 # Wait for Dotnet to startup
-sleep 5
+sleep 10
 
 # Start the second process
-/bin/oura daemon --config /config/oura.toml &
+/bin/oura daemon --config /config/oura.$TeddySwapSinkSettings__NetworkType.toml &
   
 # Wait for any process to exit
 wait -n

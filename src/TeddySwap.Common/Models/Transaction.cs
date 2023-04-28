@@ -8,7 +8,10 @@ public record Transaction
     public string Blockhash { get; init; } = string.Empty;
     public Block Block { get; init; } = new();
     public IEnumerable<TxInput> Inputs { get; init; } = new List<TxInput>();
-    public IEnumerable<CollateralTxInput> CollateralInputs { get; init; } = new List<CollateralTxInput>();
     public IEnumerable<TxOutput> Outputs { get; init; } = new List<TxOutput>();
-    public CollateralTxOutput? CollateralOutput { get; init; }
+    public IEnumerable<CollateralTxIn> CollateralTxIns { get; init; } = new List<CollateralTxIn>();
+    public CollateralTxOut? CollateralTxOut { get; init; }
+    public bool HasCollateralOutput { get; init; }
+    public string? Metadata { get; init; }
+
 }

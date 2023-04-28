@@ -1,6 +1,6 @@
 namespace TeddySwap.Common.Models.Response;
 
-public class PaginatedLeaderboardResponse : PaginatedResponse<LeaderboardResponse>
+public class PaginatedLeaderBoardResponse : PaginatedResponse<LeaderBoardResponse>
 {
     public int TotalAmount { get; init; }
 }

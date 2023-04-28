@@ -1,0 +1,13 @@
+@inherits TeddySwapBasePage
+
+<MudChip
+    Disabled="Disabled"
+    OnClick="OpenTokenSelectionDialog"
+    Color="Color.Primary"
+    Class="!m-0"
+>
+    <div class="flex items-center gap-2">
+        <MudImage Src=@CurrentlySelectedToken.Logo Height="24" Width="24" />
+        <MudText class="font-semibold">@CurrentlySelectedToken.Name</MudText>
+    </div>
+</MudChip>
