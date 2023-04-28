@@ -8,9 +8,9 @@
 
 <PageTitle>TeddySwap | Cardano | Swap</PageTitle>
 
-<div class="flex flex-col lg:flex-row gap-4 relative">
+<div class="flex flex-col lg:flex-row gap-4 relative lg:min-w-[765px]">
     <div class="flex flex-col lg:flex-row gap-4 relative lg:absolute left-0 right-0">
-        <MudCard Elevation="6" Class="@((_isChartButtonClicked ? "lg:right-0" : "lg:right-[50%] lg:translate-x-[50%]") + " relative lg:absolute transition-all duration-150 ease-in-out !rounded-xl p-[24px] flex flex-col gap-[25px] max-w-[448px] mx-auto grow w-full h-fit lg:order-1 z-[100]")">
+        <MudCard Elevation="6" Class="@((_isChartButtonClicked ? "lg:right-0" : "lg:right-[50%] lg:translate-x-[50%]") + " relative lg:absolute transition-all duration-150 ease-in-out p-[24px] flex flex-col gap-[25px] max-w-[448px] mx-auto grow w-full h-fit lg:order-1 z-[100]")">
             <MudCardHeader Class="p-0">
                 <div class="flex justify-between items-center w-full">
                     <div class="font-bold text-[20px]">Swap</div>
@@ -98,7 +98,7 @@
                         FullWidth
                         Disabled
                         OnClick="OpenConfirmSwapDialog"
-                        Class="!rounded-xl text-[20px] py-[6px] font-medium normal-case"
+                        Class= "text-[20px] py-[6px] font-medium normal-case"
                         Variant="Variant.Filled"
                         >
                             Enter an amount
@@ -109,7 +109,7 @@
                     <MudButton
                         FullWidth
                         OnClick="OpenConfirmSwapDialog"
-                        Class="!rounded-xl text-[20px] py-[6px] font-medium normal-case"
+                        Class= "text-[20px] py-[6px] font-medium normal-case"
                         Variant="Variant.Filled"
                         Color="Color.Primary"
                         >
@@ -117,7 +117,7 @@
                     </MudButton>
                 }
             </MudCardActions>
-            <MudCardContent Class="!bg-[var(--mud-palette-drawer-background)] pt-[20px] px-[12px] !pb-0 !rounded-xl swap-summary">
+            <MudCardContent Class="!bg-[var(--mud-palette-drawer-background)] pt-[20px] px-[12px] !pb-0 swap-summary">
                 <MudText Class="font-semibold text-[12px]">
                     1 @AppStateService?.FromCurrentlySelectedToken?.Name = @SwapCalculatorService.ConvertToTokenX(AppStateService.FromValue).ToString("N2") @AppStateService?.ToCurrentlySelectedToken?.Name
                 </MudText>
@@ -250,13 +250,13 @@
         <MudButton
             FullWidth
             OnClick="ToggleChart"
-            Class="!rounded-xl !bg-[var(--mud-palette-surface)] !normal-case lg:hidden max-w-[448px] m-auto !text-[20px] relative z-[100]"
+            Class= "!bg-[var(--mud-palette-surface)] !normal-case lg:hidden max-w-[448px] m-auto !text-[20px] relative z-[100]"
             StartIcon="@Icons.Material.Filled.BarChart"
         >
         @(_isChartButtonClicked ? "Hide" : "Show") Chart
         </MudButton>
 
-        <div class="@((_isChartButtonClicked ?  "translate-y-0 lg:left-0 opacity-100 lg:top-0" : "translate-y-[-100%] lg:translate-y-0 lg:left-[300px] top-0 opacity-0") + " relative lg:absolute w-full lg:w-[calc(100%-468px)] max-w-[1040.4px] overflow-hidden transition-all duration-150 h-fit flex flex-col gap-5 !rounded-xl ease-in-out swap-chart")">
+        <div class="@((_isChartButtonClicked ?  "translate-y-0 lg:left-0 opacity-100 lg:top-0" : "translate-y-[-100%] lg:translate-y-0 lg:left-[300px] top-0 opacity-0") + " relative lg:absolute w-full lg:w-[calc(100%-468px)] max-w-[1040.4px] overflow-hidden transition-all duration-150 h-fit flex flex-col gap-5 ease-in-out swap-chart")">
             <MudTabs Elevation="6" ApplyEffectsToContainer="true">
                 <MudTabPanel Text="Chart">
                     <MudPaper Class="@((_isChartButtonClicked ? "!p-[24px]" : "!p-[24px]") + " rounded-none")">

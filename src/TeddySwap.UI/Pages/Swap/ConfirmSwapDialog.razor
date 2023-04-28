@@ -1,4 +1,4 @@
-<MudDialog Class="w-[92%] max-w-[496px] !rounded-xl pb-4">
+<MudDialog Class="w-[92%] max-w-[496px] pb-4">
     <DialogContent>
         <MudIconButton
             OnClick="@(() => MudDialog.Close())"
@@ -8,21 +8,21 @@
         >
         </MudIconButton>
 
-        <MudPaper Class="flex justify-between items-center p-4 !rounded-xl">
+        <MudPaper Class="flex justify-between items-center p-4 ">
             <div class="font-semibold text-[16px]">@AppStateService.FromValue</div>
             <div class="confirm-swap-dialog-token-chip">
                 <TokenChip Disabled="true" CurrentlySelectedToken="AppStateService.FromCurrentlySelectedToken" />
             </div>
         </MudPaper>
 
-        <MudPaper Class="flex justify-between items-center p-4 !rounded-xl mt-2">
+        <MudPaper Class="flex justify-between items-center p-4 mt-2">
             <div class="font-semibold text-[16px]">@AppStateService.ToValue</div>
             <div class="confirm-swap-dialog-token-chip">
                 <TokenChip Disabled="true" CurrentlySelectedToken="AppStateService.ToCurrentlySelectedToken" />
             </div>
         </MudPaper>
 
-        <MudPaper Class="flex justify-between items-center p-4 !rounded-xl mt-6">
+        <MudPaper Class="flex justify-between items-center p-4 mt-6">
             <MudList Class="w-full" DisableGutters>
                 <MudListItem Class="flex justify-between items-center py-0">
                     <div class="flex justify-between items-center text-[12px]">
@@ -76,7 +76,7 @@
             <MudButton
                 FullWidth
                 OnClick="OpenWaitingConfirmationDialog"
-                Class="!rounded-xl text-[20px] py-[6px] font-medium normal-case"
+                Class="text-[20px] py-[6px] font-medium normal-case"
                 Variant="Variant.Filled"
                 Color="Color.Primary"
             >
