@@ -592,8 +592,8 @@ video {
   bottom: 13px;
 }
 
-.bottom-\[24px\] {
-  bottom: 24px;
+.bottom-\[15px\] {
+  bottom: 15px;
 }
 
 .bottom-\[93px\] {
@@ -628,6 +628,10 @@ video {
   right: 10px;
 }
 
+.right-\[11px\] {
+  right: 11px;
+}
+
 .right-\[7px\] {
   right: 7px;
 }
@@ -656,16 +660,12 @@ video {
   top: 50%;
 }
 
-.top-\[93px\] {
-  top: 93px;
-}
-
-.right-\[11px\] {
-  right: 11px;
-}
-
 .top-\[7px\] {
   top: 7px;
+}
+
+.top-\[93px\] {
+  top: 93px;
 }
 
 .z-\[1000\] {
@@ -787,6 +787,10 @@ video {
   margin-top: 0.5rem;
 }
 
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -809,10 +813,6 @@ video {
 
 .mt-\[200px\] {
   margin-top: 200px;
-}
-
-.mt-3 {
-  margin-top: 0.75rem;
 }
 
 .\!block {
@@ -916,6 +916,10 @@ video {
   height: 100%;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
 .max-h-\[45px\] {
   max-height: 45px;
 }
@@ -928,12 +932,12 @@ video {
   width: 6px !important;
 }
 
-.\!w-\[80px\] {
-  width: 80px !important;
+.\!w-\[78\%\] {
+  width: 78% !important;
 }
 
-.\!w-\[86\%\] {
-  width: 86% !important;
+.\!w-\[80px\] {
+  width: 80px !important;
 }
 
 .w-2 {
@@ -980,8 +984,8 @@ video {
   width: 400px;
 }
 
-.w-\[86\%\] {
-  width: 86%;
+.w-\[78\%\] {
+  width: 78%;
 }
 
 .w-\[92\%\] {
@@ -995,34 +999,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.\!w-full {
-  width: 100% !important;
-}
-
-.\!w-\[98\%\] {
-  width: 98% !important;
-}
-
-.\!w-\[95\%\] {
-  width: 95% !important;
-}
-
-.\!w-\[81\%\] {
-  width: 81% !important;
-}
-
-.w-\[81\%\] {
-  width: 81%;
-}
-
-.w-\[78\%\] {
-  width: 78%;
-}
-
-.\!w-\[78\%\] {
-  width: 78% !important;
 }
 
 .max-w-\[1040\.4px\] {
@@ -1140,10 +1116,6 @@ video {
   align-content: center;
 }
 
-.\!items-center {
-  align-items: center !important;
-}
-
 .items-center {
   align-items: center;
 }
@@ -1214,6 +1186,10 @@ video {
 
 .\!rounded-none {
   border-radius: 0px !important;
+}
+
+.rounded {
+  border-radius: 0.25rem;
 }
 
 .rounded-\[50px\] {
@@ -1388,11 +1364,6 @@ video {
   padding-bottom: 0.75rem;
 }
 
-.py-\[10px\] {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .py-\[6px\] {
   padding-top: 6px;
   padding-bottom: 6px;
@@ -1405,6 +1376,10 @@ video {
 
 .\!pb-0 {
   padding-bottom: 0px !important;
+}
+
+.\!pb-24 {
+  padding-bottom: 6rem !important;
 }
 
 .\!pb-\[4px\] {
@@ -1431,16 +1406,8 @@ video {
   padding-left: 16px;
 }
 
-.pl-\[22px\] {
-  padding-left: 22px;
-}
-
-.pl-\[28px\] {
-  padding-left: 28px;
-}
-
-.pr-\[8px\] {
-  padding-right: 8px;
+.pt-3 {
+  padding-top: 0.75rem;
 }
 
 .pt-\[20px\] {
@@ -1449,14 +1416,6 @@ video {
 
 .pt-\[4px\] {
   padding-top: 4px;
-}
-
-.pt-4 {
-  padding-top: 1rem;
-}
-
-.pt-3 {
-  padding-top: 0.75rem;
 }
 
 .text-left {
@@ -1649,10 +1608,17 @@ body:has(.mud-drawer--open) {
   box-shadow: var(--mud-elevation-2);
 }
 
-.time-range-btn-active {
-  color: white !important;
-  font-weight: 600 !important;
-  background-color: var(--mud-palette-drawer-background) !important;
+.burger-menu-dots button {
+  width: 100%;
+  height: 40.5px;
+  border-radius: 0;
+}
+
+.burger-menu-dots .mud-icon-button-label {
+  position: absolute;
+  left: 28px;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .mud-tooltip.mud-tooltip-default {
@@ -1663,20 +1629,6 @@ body:has(.mud-drawer--open) {
 
 .confirm-swap-dialog-token-chip>.mud-chip.mud-disabled {
   opacity: 1;
-}
-
-.others-submenu .mud-button-label {
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--mud-palette-text-secondary);
-  text-transform: capitalize;
-  text-align: left;
-}
-
-.others-submenu button {
-  width: 100%;
-  justify-content: flex-start;
-  padding: 8px 0 8px 28px
 }
 
 .mud-button-filled.mud-button-filled-primary:hover {
@@ -1950,21 +1902,17 @@ body:has(.mud-drawer--open) {
     display: none;
   }
 
-  .lg\:h-full {
-    height: 100%;
-  }
-
   .lg\:h-fit {
     height: -moz-fit-content;
     height: fit-content;
   }
 
-  .lg\:w-\[calc\(100\%-468px\)\] {
-    width: calc(100% - 468px);
+  .lg\:h-full {
+    height: 100%;
   }
 
-  .lg\:min-w-\[765px\] {
-    min-width: 765px;
+  .lg\:w-\[calc\(100\%-468px\)\] {
+    width: calc(100% - 468px);
   }
 
   .lg\:translate-x-\[50\%\] {
