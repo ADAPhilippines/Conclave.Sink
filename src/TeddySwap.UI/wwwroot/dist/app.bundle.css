@@ -688,6 +688,10 @@ video {
   top: 93px;
 }
 
+.top-px {
+  top: 1px;
+}
+
 .z-\[1000\] {
   z-index: 1000;
 }
@@ -940,6 +944,10 @@ video {
   height: 200px;
 }
 
+.h-2 {
+  height: 0.5rem;
+}
+
 .max-h-\[45px\] {
   max-height: 45px;
 }
@@ -1023,6 +1031,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-2 {
+  width: 0.5rem;
 }
 
 .max-w-\[1040\.4px\] {
@@ -1531,6 +1543,10 @@ video {
 
 .text-\[24px\] {
   font-size: 24px;
+}
+
+.\!text-\[12px\] {
+  font-size: 12px !important;
 }
 
 .\!font-bold {
