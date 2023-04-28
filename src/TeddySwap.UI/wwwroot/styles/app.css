@@ -7,9 +7,9 @@ body:has(.mud-drawer--open) {
 }
 
 .swap-chart .mud-tab {
-    font-size: 20px;
+    font-size: 16px;
     text-transform: none;
-    font-weight: 700;
+    font-weight: 600;
     padding-top: 15px;
     padding-bottom: 15px;
 }
@@ -51,22 +51,14 @@ body:has(.mud-drawer--open) {
     padding: 8px 0 8px 28px
 }
 
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--mud-palette-warning-darken);
-    border-radius: 10px;
-}
-
 .mud-button-filled.mud-button-filled-primary:hover {
     background-color: var(--mud-palette-primary-darken);
 }
 
 .swap-input .mud-input-label {
-    border-radius: 5px;
+    border-radius: 4px;
     color: white !important;
+    background-color: var(--mud-palette-drawer-background) !important;
 }
 
 .swap-input .mud-input.mud-input-outlined {

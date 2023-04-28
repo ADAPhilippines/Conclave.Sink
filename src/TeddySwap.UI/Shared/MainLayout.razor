@@ -104,43 +104,7 @@
 
 <div class="bg-[url('/images/bear-with-balloons.png')] w-[384[x] h-[527px] bg-cover fixed bottom-0 right-20 w-96" />
 
-<MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary">
-    <MudDrawerHeader Class="@((IsWalletConnected ? "pl-[22px]" : "pl-[28px]") + " pr-[8px] py-[10px] flex !items-center")">
-        @if (IsWalletConnected)
-        {
-            <MudChip OnClick="OnWalletDisconnect" Size="Size.Medium"
-            Class="lg:hidden !w-[86%] !px-5 !py-5 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl !rounded-full">
-                <div class="flex gap-2">
-                    <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="18" height="18"
-                        alt="connected-wallet-logo" />
-                    <div class="grid content-center">
-                        <!-- SUPER WEIRD I DONT KNOW WHY I NEED TO CHECK THIS AGAIN LOL -->
-                        @if (!string.IsNullOrEmpty(ConnectedAddress))
-                        {
-                            <span>
-                                @ConnectedAddress.Substring(0, 4)
-                                ...
-                                @ConnectedAddress.Substring(ConnectedAddress.Length - 3)
-                            </span>
-                        }
-                    </div>
-                </div>
-            </MudChip>
-        }
-        else
-        {
-           <MudButton
-            Variant="Variant.Filled"
-            Size="Size.Small"
-            Color="Color.Secondary"
-            Class="!normal-case !text-[16px] !font-bold !px-4 w-[86%] !rounded-full"
-            OnClick="() => OnConnectWalletShowClicked()"
-            >
-                Connect
-            </MudButton>
-        }
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
-    </MudDrawerHeader>
+<MudDrawer @bind-Open="IsDrawerOpen" Anchor="Anchor.End" Elevation="1" Variant="DrawerVariant.Temporary" Class="pt-3">
     <MudNavMenu>
         <MudNavLink Href="/leaderboard" ActiveClass="!text-[var(--mud-palette-text-primary)]"
             Class="!font-bold text-[var(--mud-palette-text-secondary)]">Leaderboard</MudNavLink>
@@ -170,6 +134,47 @@
             </MudMenuItem>
         </MudMenu>
     </MudNavMenu>
+
+    <MudIconButton
+        Icon="@Icons.Material.Filled.Close"
+        Color="Color.Inherit"
+        OnClick="ToggleDrawer"
+        Class="absolute top-[7px] right-[11px]"
+    />
+
+    @if (IsWalletConnected)
+    {
+        <MudChip OnClick="OnWalletDisconnect" Size="Size.Medium"
+        Class="lg:hidden !w-[78%] m-auto mt-6 !px-5 !py-5 !bg-[var(--mud-palette-surface)] hover:!bg-[var(--mud-palette-background-grey)] cursor-pointer backdrop-blur-xl !rounded-full">
+            <div class="flex gap-2">
+                <img src="@CardanoWalletService?.ConnectedWallet?.Icon" width="18" height="18"
+                    alt="connected-wallet-logo" />
+                <div class="grid content-center">
+                    <!-- SUPER WEIRD I DONT KNOW WHY I NEED TO CHECK THIS AGAIN LOL -->
+                    @if (!string.IsNullOrEmpty(ConnectedAddress))
+                    {
+                        <span>
+                            @ConnectedAddress.Substring(0, 6)
+                            ...
+                            @ConnectedAddress.Substring(ConnectedAddress.Length - 6)
+                        </span>
+                    }
+                </div>
+            </div>
+        </MudChip>
+    }
+    else
+    {
+        <MudButton
+            Variant="Variant.Filled"
+            Size="Size.Small"
+            Color="Color.Secondary"
+            Class="!normal-case !text-[16px] !font-bold !px-4 w-[78%] mx-auto mt-6"
+            OnClick="() => OnConnectWalletShowClicked()"
+            >
+                Connect Wallet
+        </MudButton>
+    }
 </MudDrawer>
 
 <div class="flex gap-2 fixed bottom-[24px] text-[12px] left-[24px] z-[1000] bg-[var(--mud-palette-surface)] rounded-full py-2 px-4">
