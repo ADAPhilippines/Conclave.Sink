@@ -10,21 +10,25 @@ namespace TeddySwap.UI.Pages.Swap;
 public partial class Swap
 {
     [Inject]
-    private IDialogService DialogService { get; set; } = default!;
+    private IDialogService? DialogService { get; set; }
 
     [Inject]
-    protected new AppStateService AppStateService { get; set; } = default!;
+    protected new AppStateService? AppStateService { get; set; }
 
     [Inject]
     protected CardanoWalletService? CardanoWalletService { get; set; }
 
-    private IEnumerable<Token>? Tokens { get; set; } = default!;
+    private IEnumerable<Token>? Tokens { get; set; }
 
     private double _priceImpactValue;
 
     private double PriceImpactValue
     {
-        get => SwapCalculatorService.CalculatePriceImpact(AppStateService.FromValue);
+        get
+        {
+            ArgumentNullException.ThrowIfNull(AppStateService);
+            return SwapCalculatorService.CalculatePriceImpact(AppStateService.FromValue);
+        }
         set =>  _priceImpactValue = value;
     }
 
@@ -53,12 +57,14 @@ public partial class Swap
     
     private void OpenSwapSettingsDialog()
     {
+        ArgumentNullException.ThrowIfNull(DialogService);
         var options = new DialogOptions { CloseOnEscapeKey = true };
         DialogService.Show<SwapSettingsDialog>("Swap Settings",  options);
     }
 
     private void OpenConfirmSwapDialog()
     {
+        ArgumentNullException.ThrowIfNull(DialogService);
         var options = new DialogOptions { CloseOnEscapeKey = true };
         DialogService.Show<ConfirmSwapDialog>("Confirm swap", options);
     }
